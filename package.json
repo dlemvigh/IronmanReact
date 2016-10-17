@@ -9,6 +9,10 @@
   },
   "author": "david lemvigh",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dlemvigh/IronmanReact/"
+  },
   "dependencies": {
     "material-ui": "^0.16.0",
     "react": "^15.3.2",
