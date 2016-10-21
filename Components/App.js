@@ -1,9 +1,9 @@
 import React from 'react'
 import { Router, Route, IndexRedirect, browserHistory } from 'react-router'
 
-import Main from './Main'
-import Activity from './Activity'
-import Leaderboard from './Leaderboard'
+import Main from './Main/Main'
+import Activity from './Activity/Activity'
+import Leaderboard from './Leaderboard/Leaderboard'
 
 export default class App extends React.Component {
   render(){

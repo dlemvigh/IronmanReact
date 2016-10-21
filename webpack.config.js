@@ -2,10 +2,10 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'source-map',
   entry: [
     './index.js'
   ],
+  devtool: "source-map",
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -20,9 +20,14 @@ module.exports = {
         presets: ['react', 'es2015', 'stage-0']
       }   
     },{
-      test: /\.scss$/,
-      loaders: ['style', 'css', 'sass']
-    }]
+    test: /\.scss$/,
+    loaders: [
+        'style',
+        'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+        'resolve-url',
+        'sass'
+    ]
+}]
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

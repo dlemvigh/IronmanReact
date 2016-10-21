@@ -1,0 +1,53 @@
+import React from "react"
+import { ControlLabel, FormGroup, FormControl } from "react-bootstrap"
+import DateTime from "react-datetime"
+
+export default class ControlDate extends React.Component {
+
+    static propTypes = {
+        value: React.PropTypes.oneOfType([
+            React.PropTypes.string,
+            React.PropTypes.object
+  ]),
+        onChange: React.PropTypes.func
+    }
+
+    constructor(props) {
+        super(props)
+        this.onChange = this.onChange.bind(this);
+    }
+
+    isValid(){
+        return this.getValidationState() === "success";
+    }
+
+    getValidationState() {
+        if (typeof this.props.value === "string") {
+            if (this.props.value.length > 0) return "error"
+        }else{
+            return "success"
+        }
+    }
+
+    onChange(value) {
+        if (typeof value !== "string") {
+            value = value.startOf("day");
+        }
+        this.props.onChange(value);
+    }
+
+    render() {
+        return (
+            <FormGroup validationState={this.getValidationState()}>
+                <ControlLabel>Date</ControlLabel>
+                <DateTime
+                    dateFormat="D/M-YYYY"
+                    timeFormat={false}
+                    defaultValue={new Date()}
+                    value={this.props.value}
+                    onChange={this.onChange} 
+                    />
+            </FormGroup>
+        );
+    }
+}   
