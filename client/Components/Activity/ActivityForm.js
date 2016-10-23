@@ -1,11 +1,14 @@
 import React from 'react'
-import { Button, Col, Form, Row } from "react-bootstrap"
-import _ from "lodash"
+import { Button, Col, ControlLabel, Form, FormGroup, Row } from "react-bootstrap"
+import CSSModules from "react-css-modules";
 import Moment from "moment"
+import _ from "lodash";
 
+import styles from "./ActivityForm.scss";
 import ControlDate from "../Common/ControlDate";
 import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
+import ControlScore from "../Common/ControlScore";
 
 const disciplines = [
     { id: "1", name: "run", unit: "km", score: 5}, 
@@ -15,7 +18,7 @@ const disciplines = [
     { id: "5", name: "misc", unit: "hours", score: 25}
 ]
 
-export default class ActivityForm extends React.Component {
+class ActivityForm extends React.Component {
     constructor(props) {
         super(props)
         this.handleChangeDiscipline = this.handleChangeDiscipline.bind(this); 
@@ -28,6 +31,7 @@ export default class ActivityForm extends React.Component {
         discipline: "",
         distance: "",
         unit: 'km',
+        score: "",
         date: Moment().startOf("date")
     }
 
@@ -43,7 +47,8 @@ export default class ActivityForm extends React.Component {
         if (item) {
             this.setState({
                 discipline: item.name,
-                unit: item.unit
+                unit: item.unit,
+                score: item.score
             });
         }
     }
@@ -90,18 +95,25 @@ export default class ActivityForm extends React.Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <Row>
-                    <Col sm={4}>
+                    <Col sm={3}>
                         <ControlDiscipline ref="discipline" value={this.state.discipline} onChange={this.handleChangeDiscipline} disciplines={disciplines} />
                     </Col>
-                    <Col sm={4}>
+                    <Col sm={3} xs={8} >
                         <ControlDistance ref="distance" value={this.state.distance} unit={this.state.unit} onChange={this.handleChangeDistance} />
                     </Col>
-                    <Col sm={4}>
+                    <Col sm={2} xs={4}>
+                        <ControlScore value={this.state.score * this.state.distance} readonly />
+                    </Col>
+                    <Col sm={3} xs={8}>
                         <ControlDate ref="date" value={this.state.date} onChange={this.handleChangeDate} />
                     </Col>
+                    <Col sm={1} xs={4}>
+                        <Button type="submit" bsStyle="primary" styleName="form-noncontrol-offset">Log</Button>
+                    </Col>
                 </Row>
-                <Button type="submit" bsStyle="primary">Log</Button>
             </form>
         );
     }
-}   
+}
+
+export default CSSModules(ActivityForm, styles);

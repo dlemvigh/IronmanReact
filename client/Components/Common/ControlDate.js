@@ -33,7 +33,9 @@ export default class ControlDate extends React.Component {
         if (typeof value !== "string") {
             value = value.startOf("day");
         }
-        this.props.onChange(value);
+        if (this.props.onChange) {
+            this.props.onChange(value);
+        }
     }
 
     render() {
