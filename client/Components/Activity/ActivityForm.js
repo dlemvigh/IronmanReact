@@ -16,7 +16,7 @@ const disciplines = [
     { id: "3", name: "swim", unit: "km", score: 25},
     { id: "4", name: "caloric", unit: "cal", score: 0.06},
     { id: "5", name: "misc", unit: "hours", score: 25}
-]
+];
 
 class ActivityForm extends React.Component {
     constructor(props) {
