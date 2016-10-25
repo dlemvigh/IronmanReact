@@ -7,10 +7,10 @@ class ActivityHeader extends React.Component {
     render() {
         return (
             <tr>
-                <th styleName="bordered">Discipline</th>
-                <th styleName="bordered">Distance</th>
-                <th styleName="bordered">Score</th>
-                <th styleName="bordered">Date</th>
+                <th>Discipline</th>
+                <th>Distance</th>
+                <th>Score</th>
+                <th>Date</th>
             </tr>
         );
     }

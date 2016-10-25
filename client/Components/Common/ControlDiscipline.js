@@ -28,7 +28,9 @@ export default class ControlDiscipline extends React.Component {
 
     onChange(event) {
         const discipline = event.target.value;
-        this.props.onChange(discipline);
+        if (this.props.onChange) {
+            this.props.onChange(discipline);
+        }
     }
 
     render() {

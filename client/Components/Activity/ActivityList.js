@@ -1,4 +1,5 @@
 import React from 'react'
+import { Table } from "react-bootstrap"
 
 import ActivityHeader from './ActivityHeader'
 import ActivityItem from './ActivityItem'
@@ -6,7 +7,7 @@ import ActivityItem from './ActivityItem'
 export default class ActivityList extends React.Component {
     render() {
         return (
-            <table>
+            <Table>
                 <thead>
                     <ActivityHeader />
                 </thead>
@@ -16,7 +17,7 @@ export default class ActivityList extends React.Component {
                             <ActivityItem key={index} {...item} />)
                     }
                 </tbody>
-            </table>
+            </Table>
         );
     }
 }

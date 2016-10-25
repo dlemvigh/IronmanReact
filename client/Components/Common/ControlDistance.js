@@ -17,7 +17,9 @@ export default class ControlDistance extends React.Component {
 
     onChange(event) {
         const distance = event.target.value;
-        this.props.onChange(distance);
+        if (this.props.onChange) {
+            this.props.onChange(distance);
+        }
     }
     
     isValid(){

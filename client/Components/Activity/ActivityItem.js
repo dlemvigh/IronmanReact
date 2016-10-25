@@ -16,10 +16,10 @@ class ActivityItem extends React.Component {
     render() {
         return (
             <tr>
-                <td styleName="bordered">{this.props.discipline}</td>
-                <td styleName="bordered">{this.props.distance} {this.props.unit}</td>
-                <td styleName="bordered">{this.props.score}</td>
-                <td styleName="bordered"><Date value={this.props.date} /></td>
+                <td>{this.props.discipline}</td>
+                <td>{this.props.distance} {this.props.unit}</td>
+                <td>{this.props.score}</td>
+                <td><Date value={this.props.date} /></td>
             </tr>
         );
     }
