@@ -18,8 +18,8 @@ export default {
   },
   async resolve (root, params, options) {
     const [discipline, user] = await Promise.all([
-      DisciplineModel.findById(params.data.disciplineId).exec(),
-      UserModel.findById(params.data.userId).exec()
+      DisciplineModel.findById(params.data.disciplineId).select({name: 1, score: 1, unit: 1}).exec(),
+      UserModel.findById(params.data.userId).select({name: 1}).exec()
     ]);
 
     const activity = new ActivityModel({

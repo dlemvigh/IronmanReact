@@ -12,11 +12,11 @@ import ActivityModel from "../../../models/activity";
 export default {
     type: new GraphQLList(activityType),
     args: {},
-    resolve (root, params, options) {
-        // const projection = getProjection(options.fieldASTs[0]);
+    resolve (root, params, info, options) {
+        const projection = getProjection(options.fieldASTs[0]);
         return ActivityModel
             .find()
-            // .select(projection)
+            .select(projection)
             .exec();
     }
 };

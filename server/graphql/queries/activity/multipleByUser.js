@@ -17,11 +17,11 @@ export default {
             type: new GraphQLNonNull(GraphQLID)
         }
     },
-    resolve (root, params, options) {
-        // const projection = getProjection(options.fieldASTs[0]);
+    resolve (root, params, info, options) {
+        const projection = getProjection(options.fieldASTs[0]);
         return ActivityModel
             .find({ userId: params.userId })
-            // .select(projection)
+            .select(projection)
             .exec();
     }
 };

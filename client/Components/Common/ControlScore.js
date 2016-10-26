@@ -21,7 +21,6 @@ export default class ControlDistance extends React.Component {
     }
 
     render() {
-        console.log(this.props.readonly);
         return (
             <FormGroup>
                 <ControlLabel>Score</ControlLabel>

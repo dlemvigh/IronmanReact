@@ -12,11 +12,11 @@ import DisciplineModel from "../../../models/discipline";
 export default {
     type: new GraphQLList(disciplineType),
     args: {},
-    resolve (root, params, options) {
-        // const projection = getProjection(options.fieldASTs[0]);
+    resolve (root, params, info, options) {
+        const projection = getProjection(options.fieldASTs[0]);
         return DisciplineModel
             .find()
-            // .select(projection)
+            .select(projection)
             .exec();
     }
 };
