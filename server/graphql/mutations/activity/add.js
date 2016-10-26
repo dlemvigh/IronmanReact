@@ -17,8 +17,10 @@ export default {
     }
   },
   async resolve (root, params, options) {
-    const discipline = await DisciplineModel.findById(params.data.disciplineId).exec();
-    const user = await UserModel.findById(params.data.userId).exec()
+    const [discipline, user] = await Promise.all([
+      DisciplineModel.findById(params.data.disciplineId).exec(),
+      UserModel.findById(params.data.userId).exec()
+    ]);
 
     const activity = new ActivityModel({
       ...params.data,
@@ -27,7 +29,7 @@ export default {
       unit: discipline.unit,
       score: discipline.score * params.data.distance
     });
-    
+
     const newActivity = await activity.save();
     if (!newActivity){
       throw new Error('Error adding new activity');
