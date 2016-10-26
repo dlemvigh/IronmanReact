@@ -22,6 +22,9 @@ export default class Header extends React.Component {
                             <LinkContainer to="/activity">
                                 <NavItem eventKey={2}>Activity</NavItem>
                             </LinkContainer>
+                            <LinkContainer to="/sandbox">
+                                <NavItem eventKey={3}>Sandbox</NavItem>
+                            </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

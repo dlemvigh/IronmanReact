@@ -1,0 +1,48 @@
+type Activity {
+  _id: ID!
+  disciplineId: ID
+  disciplineName: String
+  distance: Float
+  unit: String
+  score: Float
+  date: DateTime
+  userId: ID
+  userName: String
+}
+
+input ActivityInput {
+  disciplineId: ID
+  distance: Float
+  date: String
+  userId: ID
+}
+
+scalar DateTime
+
+type Discipline {
+  _id: ID!
+  name: String
+  score: Float
+  unit: String
+}
+
+type Mutation {
+  addActivity(data: ActivityInput!): Boolean
+  removeActivity(_id: ID!): Activity
+}
+
+type Query {
+  activity(id: ID!): Activity
+  activities: [Activity]
+  activitiesByUser(userId: ID!): [Activity]
+  discipline(id: ID!): Discipline
+  disciplines: [Discipline]
+  user(id: ID!): User
+  users: [User]
+}
+
+type User {
+  _id: ID!
+  name: String
+  facebookId: String
+}
