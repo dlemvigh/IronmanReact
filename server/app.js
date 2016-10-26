@@ -32,7 +32,7 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true,
 }));
 
-mongoose.connect('mongodb://localhost/graphql');
+mongoose.connect('mongodb://localhost/ironman');
 
 app.listen(4000);
 console.log('Running a GraphQL API server at localhost:4000/graphql');
