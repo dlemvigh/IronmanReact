@@ -17,26 +17,21 @@ export default {
     }
   },
   async resolve (root, params, options) {
-    const discipline = DisciplineModel.findById(params.data.disciplineId).exec();
-    const user = UserModel.findById(params.data.userId).exec()
+    const discipline = await DisciplineModel.findById(params.data.disciplineId).exec();
+    const user = await UserModel.findById(params.data.userId).exec()
 
-    Promise.all([discipline, user]).then(([d,u]) => {
-      const obj = {
-        ...params.data,
-        disciplineName: d.name,
-        userName: u.name,
-        unit: d.unit,
-        score: d.score * params.data.distance
-      };
-      console.log("act", obj);
-      const activity = new ActivityModel(obj).save((err) => console.log("save", err));
-    })
-    // const blogPostModel = new BlogPostModel(params.data);
-    // const newBlogPost = await blogPostModel.save();
-
-    // if (!newBlogPost) {
-    //   throw new Error('Error adding new activity');
-    // }
+    const activity = new ActivityModel({
+      ...params.data,
+      disciplineName: discipline.name,
+      userName: user.name,
+      unit: discipline.unit,
+      score: discipline.score * params.data.distance
+    });
+    
+    const newActivity = await activity.save();
+    if (!newActivity){
+      throw new Error('Error adding new activity');
+    }
 
     return true;
   }
