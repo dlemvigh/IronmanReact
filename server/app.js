@@ -6,6 +6,9 @@ var { buildSchema } = require('graphql');
 import mongoose from "mongoose"
 mongoose.Promise = global.Promise;
 
+import { populate } from "./util/data.js"
+populate();
+
 import schema from "./graphql";
 
 // Construct a schema, using GraphQL schema language

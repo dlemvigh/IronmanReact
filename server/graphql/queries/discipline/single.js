@@ -18,10 +18,10 @@ export default {
         }
     },
     resolve (root, params, options) {
-        const projection = getProjection(options.fieldASTs[0]);
+        // const projection = getProjection(options.fieldASTs[0]);
         return DisciplineModel
             .findById(params.id)
-            .select(projection)
+            // .select(projection)
             .exec();
     }
 };

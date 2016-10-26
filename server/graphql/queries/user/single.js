@@ -5,17 +5,22 @@ import {
   GraphQLNonNull
 } from 'graphql';
 
-import disciplineType from "../../types/discipline";
+import userType from "../../types/user";
 import getProjection from '../../get-projection';
-import DisciplineModel from "../../../models/discipline";
+import UserModel from "../../../models/user";
 
 export default {
-    type: new GraphQLList(disciplineType),
-    args: {},
+    type: userType,
+    args: {
+        id: {
+            name: 'id',
+            type: new GraphQLNonNull(GraphQLID)
+        }
+    },
     resolve (root, params, options) {
         // const projection = getProjection(options.fieldASTs[0]);
-        return DisciplineModel
-            .find()
+        return UserModel
+            .findById(params.id)
             // .select(projection)
             .exec();
     }
