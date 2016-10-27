@@ -4,7 +4,6 @@ import { Router, Route, IndexRedirect, browserHistory } from 'react-router'
 import Main from '../Main/Main'
 import Activity from '../Activity/Activity'
 import Leaderboard from '../Leaderboard/Leaderboard'
-import Sandbox from '../Sandbox/Sandbox'
 
 export default class App extends React.Component {
   render(){
@@ -14,7 +13,6 @@ export default class App extends React.Component {
           <IndexRedirect to="/leaderboard" />
           <Route path='/activity' component={Activity} />
           <Route path='/leaderboard' component={Leaderboard} />
-          <Route path='/sandbox' component={Sandbox} />
         </Route>
       </Router>
     );    

@@ -17,7 +17,8 @@ module.exports = {
       exclude: /node_modules/, 
       loader: 'babel', 
       query: {
-        presets: ['react', 'es2015', 'stage-0']
+        presets: ['react', 'es2015', 'stage-0'],
+        plugins: ['./babelRelayPlugin'].map(require.resolve)
       }   
     },{
     test: /\.scss$/,
