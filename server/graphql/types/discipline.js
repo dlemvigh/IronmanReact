@@ -5,12 +5,20 @@ import {
   GraphQLFloat,
   GraphQLID
 } from 'graphql';
+import {
+  connectionArgs,
+  connectionFromPromisedArray
+} from "graphql-relay";
 
-export default new GraphQLObjectType({
+import ActivityModel from "../../models/activity";
+import getProjection from '../get-projection';
+
+const DisciplineType = new GraphQLObjectType({
     name: 'Discipline',
-    fields: {
-        _id: {
-            type: new GraphQLNonNull(GraphQLID)
+    fields: () => ({
+        id: {
+            type: new GraphQLNonNull(GraphQLID),
+            resolve: (root) => root._id
         },
         name: {
             type: GraphQLString
@@ -20,6 +28,21 @@ export default new GraphQLObjectType({
         },
         unit: {
             type: GraphQLString
-        }
-    }
+        },
+        // activityConnection: {
+        //     type: activityConnection.connectionType,
+        //     args: connectionArgs,
+        //     resolve (root, params, info, options) {
+        //         const activities = ActivityModel
+        //                 .find({disciplineId: root._id});
+        //         return connectionFromPromisedArray(
+        //             activities,
+        //             params);
+        //     }
+        // }
+    })
 });
+
+console.log("disc")
+
+export default DisciplineType;

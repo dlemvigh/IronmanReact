@@ -8,7 +8,7 @@ import CustomGraphQLDateType from "graphql-custom-datetype"
 
 export default new GraphQLInputObjectType({
     name: 'ActivityInput',
-    fields: {
+    fields: () => ({
         disciplineId: {
             type: GraphQLID
         },
@@ -21,5 +21,5 @@ export default new GraphQLInputObjectType({
         userId: {
             type: GraphQLID
         }        
-    }
+    })
 });

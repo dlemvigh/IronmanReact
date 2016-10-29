@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --inline --content-base . --history-api-fallback",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server/index.js --watch server",
-    "update-schema": "babel-node ./server/update-schema.js"
+    "update-schema": "babel-node ./server/util/update-schema.js"
   },
   "author": "david lemvigh",
   "license": "MIT",
@@ -22,6 +22,7 @@
     "express-graphql": "^0.5.4",
     "graphql": "^0.7.2",
     "graphql-custom-datetype": "^0.3.0",
+    "graphql-relay": "^0.4.3",
     "jquery": "^3.1.1",
     "lodash": "^4.16.4",
     "moment": "^2.15.1",
