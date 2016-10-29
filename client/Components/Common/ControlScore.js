@@ -1,23 +1,22 @@
 import React from "react";
 import { ControlLabel, Form, FormGroup, FormControl, InputGroup } from "react-bootstrap"
 
-export default class ControlDistance extends React.Component {
+export default class ControlScore extends React.Component {
     static propTypes = {
-        value: React.PropTypes.string,
+        value: React.PropTypes.number,
         onChange: React.PropTypes.func,
         readonly: React.PropTypes.bool
     }
 
-    constructor(props) {
-        super(props)
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(event) {
+    onChange = (event) => {
         const score = event.target.value;
         if (this.props.onChange) {
             this.props.onChange(distance);
         }
+    }
+
+    round(){
+        return Math.round(this.props.value * 100) / 100;
     }
 
     render() {
@@ -26,7 +25,7 @@ export default class ControlDistance extends React.Component {
                 <ControlLabel>Score</ControlLabel>
                 <FormControl
                 type="text"
-                value={this.props.value}
+                value={this.round()}
                 disabled={this.props.readonly}
                 onChange={this.onChange} />
         </FormGroup>

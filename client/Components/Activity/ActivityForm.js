@@ -9,7 +9,7 @@ import ControlDate from "../Common/ControlDate";
 import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
-
+import AddActivityMutation from "../../Mutations/AddActivityMutation"
 const disciplines = [
     { id: "1", name: "run", unit: "km", score: 5}, 
     { id: "2", name: "bike", unit: "km", score: 1}, 
@@ -19,13 +19,6 @@ const disciplines = [
 ];
 
 class ActivityForm extends React.Component {
-    constructor(props) {
-        super(props)
-        this.handleChangeDiscipline = this.handleChangeDiscipline.bind(this); 
-        this.handleChangeDistance = this.handleChangeDistance.bind(this);
-        this.handleChangeDate = this.handleChangeDate.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);    
-    }
 
     state = {
         discipline: "",
@@ -42,7 +35,7 @@ class ActivityForm extends React.Component {
         });
     }
 
-    handleChangeDiscipline(discipline) {
+    handleChangeDiscipline = (discipline) => {
         const item = _.find(disciplines, { id: discipline });
         if (item) {
             this.setState({
@@ -53,11 +46,11 @@ class ActivityForm extends React.Component {
         }
     }
 
-    handleChangeDistance(distance) {
+    handleChangeDistance = (distance) => {
         this.setState({ distance });        
     }
 
-    handleChangeDate(date) {
+    handleChangeDate = (date) => {
         this.setState({ date });
     }
 
@@ -67,11 +60,17 @@ class ActivityForm extends React.Component {
             this.refs.date.isValid();
     }
 
-    handleSubmit(event){
+    handleSubmit = (event) => {
         event.preventDefault();
         if (this.isValid()) {
             const activity = this.getActivity();
             this.props.commitActivity(activity);
+            Relay.Store.update(
+                new AddActivityMutation({
+                    ...activity,
+                    store: this.props.store
+                })
+            )
             this.clearState();
         }
     }

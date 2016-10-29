@@ -1,46 +1,30 @@
 import React from 'react'
+import Relay from 'react-relay'
 
 import ActivityForm from './ActivityForm'
 import ActivityList from './ActivityList'
 
-export default class Activity extends React.Component {
-    constructor(props) {
-        super(props);
-        this.commitActivity = this.commitActivity.bind(this);
-    }
-
-    state = {
-        data: [
-            {
-                discipline: "run",
-                distance: 5,
-                unit: "km",
-                score: 25,
-                date: new Date()
-            },{
-                discipline: "swim",
-                distance: 1.2,
-                unit: "km",
-                score: 30,
-                date: new Date()
-            }
-        ]
-    };
-    
-
-    commitActivity(activity) {
-        this.setState({
-            data: this.state.data.concat([activity])
-        });
-    }
+class Activity extends React.Component {
 
     render() {
         return (
             <div>
-                <ActivityForm commitActivity={this.commitActivity} />
+                <ActivityForm />
                 <h3>Activities</h3>
-                <ActivityList activities={this.state.data} />
+                <ActivityList user={this.props.user} />
             </div>
         )
     }
 }
+
+Activity = Relay.createContainer(Activity, {
+    fragments: {
+        user: () => Relay.QL`
+            fragment on User {
+                ${ActivityList.getFragment('user')}
+            }
+        `
+    }
+})
+
+export default Activity

@@ -10,12 +10,7 @@ export default class ControlDistance extends React.Component {
         unit: React.PropTypes.string
     }
 
-    constructor(props) {
-        super(props)
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(event) {
+    onChange = (event) => {
         const distance = event.target.value;
         if (this.props.onChange) {
             this.props.onChange(distance);

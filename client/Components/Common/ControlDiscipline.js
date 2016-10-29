@@ -13,11 +13,6 @@ export default class ControlDiscipline extends React.Component {
         ).isRequired   
     }
 
-    constructor(props) {
-        super(props)
-        this.onChange = this.onChange.bind(this);
-    }
-
     isValid(){
         return this.getValidationState() === "success";
     }
@@ -26,7 +21,7 @@ export default class ControlDiscipline extends React.Component {
         if (this.props.value.length > 0) return "success";
     }
 
-    onChange(event) {
+    onChange = (event) => {
         const discipline = event.target.value;
         if (this.props.onChange) {
             this.props.onChange(discipline);
