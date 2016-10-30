@@ -31,7 +31,6 @@ Sandbox = Relay.createContainer(Sandbox, {
 
 class SandboxWrapper extends React.Component {
     render() {
-        console.log("wrapper")
         return (
             <div>
                 {

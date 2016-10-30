@@ -9,9 +9,9 @@ class Activity extends React.Component {
     render() {
         return (
             <div>
-                <ActivityForm />
+                <ActivityForm {...this.props} />
                 <h3>Activities</h3>
-                <ActivityList user={this.props.user} />
+                <ActivityList {...this.props} />
             </div>
         )
     }
@@ -21,9 +21,15 @@ Activity = Relay.createContainer(Activity, {
     fragments: {
         user: () => Relay.QL`
             fragment on User {
+                ${ActivityForm.getFragment('user')}
                 ${ActivityList.getFragment('user')}
             }
-        `
+        `,
+        // disciplines: () => Relay.QL`
+        //     fragment on Discipline {
+        //         ${ActivityForm.getFragment('disciplines')}
+        //     }
+        // `
     }
 })
 

@@ -7,19 +7,13 @@ import {
   GraphQLID
 } from 'graphql';
 import {
-  connectionDefinitions,
   connectionArgs,
   connectionFromPromisedArray
 } from "graphql-relay";
 
-import activityType from "./activity"
+import activityConnection from "./activityConnection";
 import ActivityModel from "../../models/activity";
 import getProjection from '../get-projection';
-
-const activityConnection = connectionDefinitions({
-    name: 'Activity',
-    nodeType: activityType
-});
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -47,7 +41,5 @@ const UserType = new GraphQLObjectType({
         }
     })
 });
-
-console.log("user")
 
 export default UserType;

@@ -7,7 +7,6 @@ import ActivityItem from './ActivityItem'
 
 class ActivityList extends React.Component {
     render() {
-        console.log("props", this.props)
         return (
             <Table>
                 <thead>

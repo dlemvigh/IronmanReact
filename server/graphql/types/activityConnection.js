@@ -5,5 +5,3 @@ export default connectionDefinitions({
     name: 'Activity',
     nodeType: activityType
 });
-
-console.log("act-con")

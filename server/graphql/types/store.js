@@ -12,23 +12,14 @@ import {
 
 import getProjection from '../get-projection';
 
-const DisciplineType = new GraphQLObjectType({
-    name: 'Discipline',
+const StoreType = new GraphQLObjectType({
+    name: 'Store',
     fields: () => ({
         id: {
             type: new GraphQLNonNull(GraphQLID),
-            resolve: (root) => root._id
-        },
-        name: {
-            type: GraphQLString
-        },
-        score: {
-            type: GraphQLFloat
-        },
-        unit: {
-            type: GraphQLString
-        },
+            resolve: () => '42'
+        }
     })
 });
 
-export default DisciplineType;
+export default StoreType;

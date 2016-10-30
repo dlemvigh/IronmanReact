@@ -19,7 +19,6 @@ export default {
     },
     resolve (root, params, info, options) {
         const projection = getProjection(options.fieldASTs[0]);
-        console.log("user", projection, options.fieldASTs)
         return UserModel
             .findById(params.id)
             // .select(projection)

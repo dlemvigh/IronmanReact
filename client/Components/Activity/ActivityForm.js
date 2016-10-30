@@ -1,4 +1,5 @@
 import React from 'react'
+import Relay from 'react-relay'
 import { Button, Col, ControlLabel, Form, FormGroup, Row } from "react-bootstrap"
 import CSSModules from "react-css-modules";
 import Moment from "moment"
@@ -54,7 +55,7 @@ class ActivityForm extends React.Component {
         this.setState({ date });
     }
 
-    isValid() {
+    isValid = () => {
         return this.refs.discipline.isValid() &&
             this.refs.distance.isValid() &&
             this.refs.date.isValid();
@@ -64,12 +65,14 @@ class ActivityForm extends React.Component {
         event.preventDefault();
         if (this.isValid()) {
             const activity = this.getActivity();
-            this.props.commitActivity(activity);
-            Relay.Store.update(
+            Relay.Store.commitUpdate(
                 new AddActivityMutation({
                     ...activity,
                     store: this.props.store
-                })
+                }), {
+                    onFailure: (resp) => console.log("fail", resp),
+                    onSuccess: (resp) => console.log("success", resp)
+                }
             )
             this.clearState();
         }
@@ -79,6 +82,7 @@ class ActivityForm extends React.Component {
         const item = _.find(disciplines, { name: this.state.discipline }) || {};
 
         const activity = {
+            userId: this.props.user.id,
             discipline: item.name,
             distance: parseFloat(this.state.distance),
             unit: item.unit,
@@ -115,4 +119,21 @@ class ActivityForm extends React.Component {
     }
 }
 
-export default CSSModules(ActivityForm, styles);
+ActivityForm = CSSModules(ActivityForm, styles)
+
+ActivityForm = Relay.createContainer(ActivityForm, {
+    fragments: {
+        user: () => Relay.QL`
+            fragment on User {
+                id
+            }
+        `,
+        // disciplines: () => Relay.QL`
+        //     fragment on Discipline {
+        //         ${ControlDiscipline.getFragment('disciplines')}
+        //     }
+        // `
+    }
+})
+
+export default ActivityForm

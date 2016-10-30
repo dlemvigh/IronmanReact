@@ -2,7 +2,6 @@ type Activity {
   id: ID!
   disciplineId: ID
   disciplineName: String
-  discipline: Discipline
   distance: Float
   unit: String
   score: Float
@@ -29,11 +28,17 @@ type ActivityEdge {
   cursor: String!
 }
 
-input ActivityInput {
+input AddActivityInput {
   disciplineId: ID
   distance: Float
   date: String
   userId: ID
+  clientMutationId: String
+}
+
+type AddActivityPayload {
+  activityEdge: ActivityEdge
+  clientMutationId: String
 }
 
 scalar DateTime
@@ -46,7 +51,7 @@ type Discipline {
 }
 
 type Mutation {
-  addActivity(data: ActivityInput!): Boolean
+  addActivity(input: AddActivityInput!): AddActivityPayload
   removeActivity(_id: ID!): Activity
 }
 

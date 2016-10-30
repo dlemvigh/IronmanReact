@@ -24,7 +24,6 @@ export default class App extends React.Component {
             component={Activity} 
             queries={ActivityQueries}
             render={({props}) => {
-              console.log(props)
               return props ? <Activity {...props} /> : <span>loading</span>}
             }  
             />

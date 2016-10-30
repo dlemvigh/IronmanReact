@@ -39,4 +39,5 @@ ActivityItem = Relay.createContainer(ActivityItem, {
     }
 })
 
-export default CSSModules(ActivityItem, styles)
+// export default CSSModules(ActivityItem, styles)
+export default ActivityItem;

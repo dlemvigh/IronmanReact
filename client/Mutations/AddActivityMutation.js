@@ -19,9 +19,6 @@ class AddActivityMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on AddActivityPayload {
                 activityEdge,
-                user {
-                    activityConnection
-                }
             }
         `
     }
@@ -30,7 +27,8 @@ class AddActivityMutation extends Relay.Mutation {
         return [{
             type: 'RANGE_ADD',
             parentName: 'user',
-            parentID: this.props.user.id,
+            parentID: this.props.userId,
+            connectionName: 'activityConnection',
             edgeName: 'activityEdge',
             rangeBehaviors: {
                 '': 'append',
