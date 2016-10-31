@@ -15,4 +15,6 @@ const disciplineSchema = new mongoose.Schema({
     },
 });
 
+disciplineSchema.virtual('id').get(function() { return this._id; })
+
 export default mongoose.model("Discipline", disciplineSchema);

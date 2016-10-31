@@ -10,12 +10,13 @@ mongoose.Promise = global.Promise;
 import { populate } from "./util/data.js"
 populate();
 
-import schema from "./graphql";
+import schema from "./graphql/schema";
 
 var app = express();
 app.use(cors());
 app.use('/graphql', graphqlHTTP({
   schema: schema,
+  pretty: true,
   graphiql: true,
 }));
 
