@@ -8,12 +8,14 @@ import {
   GraphQLID
 } from 'graphql';
 import {
-  fromGlobalId,
-  globalIdField,
   connectionArgs,
   connectionDefinitions,
   connectionFromPromisedArray,
-  nodeDefinitions
+  cursorForObjectInConnection,
+  fromGlobalId,
+  globalIdField,
+  mutationWithClientMutationId,
+  nodeDefinitions,
 } from "graphql-relay";
 
 import database from './database';
@@ -167,8 +169,42 @@ const queryType = new GraphQLObjectType({
   })
 });
 
+const addActivityMutation = mutationWithClientMutationId({
+  name: 'AddActivity',
+  inputFields: {
+    userId: { type: new GraphQLNonNull(GraphQLString) },
+    disciplineId: { type: new GraphQLNonNull(GraphQLString) },
+    distance: { type: new GraphQLNonNull(GraphQLFloat) },
+    date: { type: new GraphQLNonNull(GraphQLString) },
+  },
+
+  outputFields: {
+    activityEdge: {
+      type: activityEdge,
+      resolve: async (obj) => {
+        const activities = await database.getActivities();
+        const cursorId = cursorForObjectInConnection(activities, obj);
+        return { node: obj, cursor: cursorId };
+      }
+    },
+    store: {
+      type: storeType,
+      resolve: () => database.getStore()
+    }
+  },
+
+  mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => database.addActivity(userId, disciplineId, distance, date)
+});
+
+const mutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: () => ({
+    addActivity: addActivityMutation
+  })
+});
+
 export default new GraphQLSchema({
   query: queryType,
-  // mutation: mutationType
+  mutation: mutationType
 });
 
