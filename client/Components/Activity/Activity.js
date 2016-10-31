@@ -19,17 +19,10 @@ class Activity extends React.Component {
 
 Activity = Relay.createContainer(Activity, {
     fragments: {
-        user: () => Relay.QL`
-            fragment on User {
-                ${ActivityForm.getFragment('user')}
-                ${ActivityList.getFragment('user')}
-            }
-        `,
-        // disciplines: () => Relay.QL`
-        //     fragment on Discipline {
-        //         ${ActivityForm.getFragment('disciplines')}
-        //     }
-        // `
+        store: () => Relay.QL`
+            fragment on Store {
+                id
+            }`,
     }
 })
 

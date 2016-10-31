@@ -11,7 +11,8 @@ class AddActivityMutation extends Relay.Mutation {
         return {
             disciplineId: this.props.disciplineId,
             userId: this.props.userId,
-            distance: this.props.distance
+            distance: this.props.distance,
+            date: this.props.date
         }
     }
 
@@ -19,6 +20,7 @@ class AddActivityMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on AddActivityPayload {
                 activityEdge,
+                store { activities }
             }
         `
     }
@@ -26,13 +28,12 @@ class AddActivityMutation extends Relay.Mutation {
     getConfigs() {
         return [{
             type: 'RANGE_ADD',
-            parentName: 'user',
-            parentID: this.props.userId,
-            connectionName: 'activityConnection',
+            parentName: 'store',
+            parentID: this.props.storeId,
+            connectionName: 'activities',
             edgeName: 'activityEdge',
             rangeBehaviors: {
                 '': 'append',
-                'orderby(newest)': 'prepend'
             }
         }]
     }

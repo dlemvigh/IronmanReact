@@ -79,16 +79,16 @@ class ActivityForm extends React.Component {
     }
 
     getActivity() {
-        const item = _.find(disciplines, { name: this.state.discipline }) || {};
+        // const item = _.find(disciplines, { name: this.state.discipline }) || {};
 
-        const activity = {
-            userId: this.props.user.id,
-            discipline: item.name,
-            distance: parseFloat(this.state.distance),
-            unit: item.unit,
-            score: item.score * this.state.distance,
-            date: this.state.date
-        }
+        // const activity = {
+        //     userId: this.props.user.id,
+        //     discipline: item.name,
+        //     distance: parseFloat(this.state.distance),
+        //     unit: item.unit,
+        //     score: item.score * this.state.distance,
+        //     date: this.state.date
+        // }
 
         return activity;
     }
@@ -121,19 +121,19 @@ class ActivityForm extends React.Component {
 
 ActivityForm = CSSModules(ActivityForm, styles)
 
-ActivityForm = Relay.createContainer(ActivityForm, {
-    fragments: {
-        user: () => Relay.QL`
-            fragment on User {
-                id
-            }
-        `,
-        // disciplines: () => Relay.QL`
-        //     fragment on Discipline {
-        //         ${ControlDiscipline.getFragment('disciplines')}
-        //     }
-        // `
-    }
-})
+// ActivityForm = Relay.createContainer(ActivityForm, {
+//     fragments: {
+//         user: () => Relay.QL`
+//             fragment on User {
+//                 id
+//             }
+//         `,
+//         // disciplines: () => Relay.QL`
+//         //     fragment on Discipline {
+//         //         ${ControlDiscipline.getFragment('disciplines')}
+//         //     }
+//         // `
+//     }
+// })
 
 export default ActivityForm

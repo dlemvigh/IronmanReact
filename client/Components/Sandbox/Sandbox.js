@@ -34,7 +34,7 @@ class SandboxWrapper extends React.Component {
         return (
             <div>
                 {
-                    this.props.user.activityConnection.edges.map(edge => {
+                    this.props.store.activities.edges.map(edge => {
                         return <Sandbox key={edge.node.id} activity={edge.node} />
                     })
                 }
@@ -45,9 +45,10 @@ class SandboxWrapper extends React.Component {
 
 SandboxWrapper = Relay.createContainer(SandboxWrapper, {
     fragments: {
-        user: () => Relay.QL`
-            fragment on User {
-                activityConnection(first: 5) {
+        store: () => Relay.QL`
+            fragment on Store {
+                id
+                activities(first: 100) {
                     edges {
                         node {
                             id
@@ -55,18 +56,17 @@ SandboxWrapper = Relay.createContainer(SandboxWrapper, {
                         }
                     }
                 }
-            }
-        `
+            }`,
     }
 })
 
 class SandboxRoute extends Relay.Route {
     static routeName = 'SandboxRoute';
     static queries = {
-        user: (Component) => Relay.QL`
+        store: (Component) => Relay.QL`
             query SandboxQuery {
-                user(id: "5810e4e99425c73cdc9beb0b") {
-                    ${Component.getFragment('user')}
+                store {
+                    ${Component.getFragment('store')}
                 }
             }
         `

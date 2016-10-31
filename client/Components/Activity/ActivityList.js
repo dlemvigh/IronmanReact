@@ -23,21 +23,21 @@ class ActivityList extends React.Component {
     }
 }
 
-ActivityList = Relay.createContainer(ActivityList, {
-    fragments: {
-        user: () => Relay.QL`
-            fragment on User {
-                activityConnection(first: 100) {
-                    edges {
-                        node {
-                            id
-                            ${ActivityItem.getFragment('activity')}
-                        }
-                    }
-                }
-            }
-        `
-    }
-})
+// ActivityList = Relay.createContainer(ActivityList, {
+//     fragments: {
+//         user: () => Relay.QL`
+//             fragment on User {
+//                 activityConnection(first: 100) {
+//                     edges {
+//                         node {
+//                             id
+//                             ${ActivityItem.getFragment('activity')}
+//                         }
+//                     }
+//                 }
+//             }
+//         `
+//     }
+// })
 
 export default ActivityList

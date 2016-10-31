@@ -49,7 +49,6 @@ async function addActivity(userId, disciplineId, distance, date) {
        score: discipline.score * distance,
        date
      });
-     console.log("add act", activity)
  
      const newActivity = await activity.save();
      if (!newActivity){

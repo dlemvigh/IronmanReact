@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm-run-all --parallel client server --parallel postclient postserver",
+    "start": "npm-run-all update-schema --parallel client server --parallel postclient postserver",
     "client": "webpack-dev-server --inline --content-base . --history-api-fallback",
     "postclient": "start http://localhost:8080/",
     "server": "nodemon server/index.js --watch server",
