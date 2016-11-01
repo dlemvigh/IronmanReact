@@ -39,17 +39,19 @@ async function addActivity(userId, disciplineId, distance, date) {
        UserModel.findById(userId).select({name: 1}).exec()
      ]);
      date = Moment(date).startOf("date")
- 
+
      const activity = new ActivityModel({
-       disciplineId,
-       disciplineName: discipline.name,
        userId,
        userName: user.name,
+       disciplineId,
+       disciplineName: discipline.name,
+       distance,
        unit: discipline.unit,
        score: discipline.score * distance,
        date
      });
  
+     console.log("act", activity)
      const newActivity = await activity.save();
      if (!newActivity){
        throw new Error('Error adding new activity');

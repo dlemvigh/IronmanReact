@@ -6,12 +6,6 @@ class ControlDiscipline extends React.Component {
     static propTypes = {
         value: React.PropTypes.string,
         onChange: React.PropTypes.func,
-        disciplines: React.PropTypes.arrayOf(
-            React.PropTypes.shape({
-                id: React.PropTypes.string.isRequired,
-                name: React.PropTypes.string.isRequired
-            })
-        ).isRequired   
     }
 
     isValid(){
@@ -23,10 +17,15 @@ class ControlDiscipline extends React.Component {
     }
 
     onChange = (event) => {
-        const discipline = event.target.value;
-        if (this.props.onChange) {
-            this.props.onChange(discipline);
+        const options = event.target.selectedOptions;
+        if (options.length == 1 && this.props.onChange) {
+
+            const [selected] = options;
+            this.props.onChange({
+                ...selected.dataset
+            });
         }
+        const discipline = event.target.value;
     }
 
     render() {
@@ -39,23 +38,38 @@ class ControlDiscipline extends React.Component {
                     onChange={this.onChange} 
                     componentClass="select">
                     <option disabled value="">Choose...</option>
-                    { this.props.disciplines.map(item => 
-                        <option key={item.id} value={item.id}>{item.name}</option>) }
+                    { this.props.store.disciplines.edges.map(edge => 
+                        <option 
+                            key={edge.node.id} 
+                            value={edge.node.id}
+                            data-id={edge.node._id}
+                            data-name={edge.node.name}
+                            data-unit={edge.node.unit}
+                            data-score={edge.node.score}>{edge.node.name}</option>) }
                 </FormControl>
             </FormGroup>
         );
     }
 }
 
-// ControlDiscipline = Relay.createContainer(ControlDiscipline, {
-//     fragments: {
-//         // disciplines: () => Relay.QL`
-//         //     fragment on Discipline {
-//         //         id
-//         //         name
-//         //     }
-//         // `
-//     }
-// })
+ControlDiscipline = Relay.createContainer(ControlDiscipline, {
+    fragments: {
+        store: () => Relay.QL`
+            fragment on Store {
+                disciplines(first: 100) {
+                    edges {
+                        node {
+                            _id
+                            id
+                            name
+                            unit
+                            score
+                        }
+                    }
+                }
+            }
+        `
+    }
+})
 
 export default ControlDiscipline

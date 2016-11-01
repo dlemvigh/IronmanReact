@@ -14,7 +14,7 @@ class ActivityList extends React.Component {
                 </thead>
                 <tbody>
                     {
-                        this.props.user.activityConnection.edges.map(edge => 
+                        this.props.store.activities.edges.map(edge => 
                             <ActivityItem key={edge.node.id} activity={edge.node} />)
                     }
                 </tbody>
@@ -23,21 +23,21 @@ class ActivityList extends React.Component {
     }
 }
 
-// ActivityList = Relay.createContainer(ActivityList, {
-//     fragments: {
-//         user: () => Relay.QL`
-//             fragment on User {
-//                 activityConnection(first: 100) {
-//                     edges {
-//                         node {
-//                             id
-//                             ${ActivityItem.getFragment('activity')}
-//                         }
-//                     }
-//                 }
-//             }
-//         `
-//     }
-// })
+ActivityList = Relay.createContainer(ActivityList, {
+    fragments: {
+        store: () => Relay.QL`
+            fragment on Store {
+                activities(first: 100) {
+                    edges {
+                        node {
+                            id
+                            ${ActivityItem.getFragment('activity')}
+                        }
+                    }
+                }
+            }
+        `
+    }
+})
 
 export default ActivityList

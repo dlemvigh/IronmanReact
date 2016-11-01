@@ -193,7 +193,7 @@ const addActivityMutation = mutationWithClientMutationId({
     }
   },
 
-  mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => database.addActivity(userId, disciplineId, distance, date)
+  mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {console.log(arguments); return database.addActivity(userId, disciplineId, distance, date)}
 });
 
 const mutationType = new GraphQLObjectType({

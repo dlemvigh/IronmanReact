@@ -11,17 +11,11 @@ import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
 import AddActivityMutation from "../../Mutations/AddActivityMutation"
-const disciplines = [
-    { id: "1", name: "run", unit: "km", score: 5}, 
-    { id: "2", name: "bike", unit: "km", score: 1}, 
-    { id: "3", name: "swim", unit: "km", score: 25},
-    { id: "4", name: "caloric", unit: "cal", score: 0.06},
-    { id: "5", name: "misc", unit: "hours", score: 25}
-];
 
 class ActivityForm extends React.Component {
 
     state = {
+        disciplineId: "",
         discipline: "",
         distance: "",
         unit: 'km',
@@ -37,14 +31,12 @@ class ActivityForm extends React.Component {
     }
 
     handleChangeDiscipline = (discipline) => {
-        const item = _.find(disciplines, { id: discipline });
-        if (item) {
-            this.setState({
-                discipline: item.name,
-                unit: item.unit,
-                score: item.score
-            });
-        }
+        this.setState({
+            disciplineId: discipline.id,
+            discipline: discipline.name,
+            unit: discipline.unit,
+            score: discipline.score
+        });
     }
 
     handleChangeDistance = (distance) => {
@@ -56,7 +48,7 @@ class ActivityForm extends React.Component {
     }
 
     isValid = () => {
-        return this.refs.discipline.isValid() &&
+        return this.refs.discipline.refs.component.isValid() &&
             this.refs.distance.isValid() &&
             this.refs.date.isValid();
     }
@@ -65,10 +57,11 @@ class ActivityForm extends React.Component {
         event.preventDefault();
         if (this.isValid()) {
             const activity = this.getActivity();
+
             Relay.Store.commitUpdate(
                 new AddActivityMutation({
                     ...activity,
-                    store: this.props.store
+                    storeId: this.props.store.id
                 }), {
                     onFailure: (resp) => console.log("fail", resp),
                     onSuccess: (resp) => console.log("success", resp)
@@ -79,17 +72,15 @@ class ActivityForm extends React.Component {
     }
 
     getActivity() {
-        // const item = _.find(disciplines, { name: this.state.discipline }) || {};
 
-        // const activity = {
-        //     userId: this.props.user.id,
-        //     discipline: item.name,
-        //     distance: parseFloat(this.state.distance),
-        //     unit: item.unit,
-        //     score: item.score * this.state.distance,
-        //     date: this.state.date
-        // }
-
+        const activity = {
+            userId: "5810e4e99425c73cdc9beb0c",
+            disciplineId: this.state.disciplineId,
+            distance: parseFloat(this.state.distance),
+            unit: this.state.unit,
+            score: this.state.score * this.state.distance,
+            date: this.state.date.toISOString()
+        }
         return activity;
     }
 
@@ -99,7 +90,7 @@ class ActivityForm extends React.Component {
             <form onSubmit={this.handleSubmit}>
                 <Row>
                     <Col sm={3}>
-                        <ControlDiscipline ref="discipline" value={this.state.discipline} onChange={this.handleChangeDiscipline} disciplines={disciplines} />
+                        <ControlDiscipline ref="discipline" value={this.state.discipline} onChange={this.handleChangeDiscipline} store={this.props.store} />
                     </Col>
                     <Col sm={3} xs={8} >
                         <ControlDistance ref="distance" value={this.state.distance} unit={this.state.unit} onChange={this.handleChangeDistance} />
@@ -121,19 +112,15 @@ class ActivityForm extends React.Component {
 
 ActivityForm = CSSModules(ActivityForm, styles)
 
-// ActivityForm = Relay.createContainer(ActivityForm, {
-//     fragments: {
-//         user: () => Relay.QL`
-//             fragment on User {
-//                 id
-//             }
-//         `,
-//         // disciplines: () => Relay.QL`
-//         //     fragment on Discipline {
-//         //         ${ControlDiscipline.getFragment('disciplines')}
-//         //     }
-//         // `
-//     }
-// })
+ActivityForm = Relay.createContainer(ActivityForm, {
+    fragments: {
+        store: () => Relay.QL`
+            fragment on Store {
+                id
+                ${ControlDiscipline.getFragment('store')}
+            }
+        `,
+    }
+})
 
 export default ActivityForm

@@ -26,6 +26,7 @@ class AddActivityMutation extends Relay.Mutation {
     }
 
     getConfigs() {
+        debugger
         return [{
             type: 'RANGE_ADD',
             parentName: 'store',
