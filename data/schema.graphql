@@ -1,0 +1,88 @@
+type Activity {
+  id: ID!
+  disciplineId: ID
+  disciplineName: String
+  distance: Float
+  unit: String
+  score: Float
+  date: DateTime
+  userId: ID
+  userName: String
+}
+
+# A connection to a list of items.
+type ActivityConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ActivityEdge]
+}
+
+# An edge in a connection.
+type ActivityEdge {
+  # The item at the end of the edge
+  node: Activity
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input AddActivityInput {
+  disciplineId: ID
+  distance: Float
+  date: String
+  userId: ID
+  clientMutationId: String
+}
+
+type AddActivityPayload {
+  activityEdge: ActivityEdge
+  clientMutationId: String
+}
+
+scalar DateTime
+
+type Discipline {
+  id: ID!
+  name: String
+  score: Float
+  unit: String
+}
+
+type Mutation {
+  addActivity(input: AddActivityInput!): AddActivityPayload
+  removeActivity(_id: ID!): Activity
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Query {
+  activity(id: ID!): Activity
+  activities: [Activity]
+  activitiesByUser(userId: ID!): [Activity]
+  discipline(id: ID!): Discipline
+  disciplines: [Discipline]
+  user(id: ID!): User
+  users: [User]
+}
+
+type User {
+  id: ID!
+  name: String
+  facebookId: String
+  activityConnection(after: String, first: Int, before: String, last: Int): ActivityConnection
+}

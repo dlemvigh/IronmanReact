@@ -1,10 +1,11 @@
 import React from 'react'
+import Relay from 'react-relay'
 import { Table } from "react-bootstrap"
 
 import ActivityHeader from './ActivityHeader'
 import ActivityItem from './ActivityItem'
 
-export default class ActivityList extends React.Component {
+class ActivityList extends React.Component {
     render() {
         return (
             <Table>
@@ -13,11 +14,30 @@ export default class ActivityList extends React.Component {
                 </thead>
                 <tbody>
                     {
-                        this.props.activities.map((item, index) => 
-                            <ActivityItem key={index} {...item} />)
+                        this.props.user.activityConnection.edges.map(edge => 
+                            <ActivityItem key={edge.node.id} activity={edge.node} />)
                     }
                 </tbody>
             </Table>
         );
     }
 }
+
+ActivityList = Relay.createContainer(ActivityList, {
+    fragments: {
+        user: () => Relay.QL`
+            fragment on User {
+                activityConnection(first: 100) {
+                    edges {
+                        node {
+                            id
+                            ${ActivityItem.getFragment('activity')}
+                        }
+                    }
+                }
+            }
+        `
+    }
+})
+
+export default ActivityList

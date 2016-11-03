@@ -1,7 +1,8 @@
 import React from "react"
+import Relay from "react-relay"
 import { ControlLabel, Form, FormGroup, FormControl } from "react-bootstrap"
 
-export default class ControlDiscipline extends React.Component {
+class ControlDiscipline extends React.Component {
     static propTypes = {
         value: React.PropTypes.string,
         onChange: React.PropTypes.func,
@@ -13,11 +14,6 @@ export default class ControlDiscipline extends React.Component {
         ).isRequired   
     }
 
-    constructor(props) {
-        super(props)
-        this.onChange = this.onChange.bind(this);
-    }
-
     isValid(){
         return this.getValidationState() === "success";
     }
@@ -26,7 +22,7 @@ export default class ControlDiscipline extends React.Component {
         if (this.props.value.length > 0) return "success";
     }
 
-    onChange(event) {
+    onChange = (event) => {
         const discipline = event.target.value;
         if (this.props.onChange) {
             this.props.onChange(discipline);
@@ -50,3 +46,16 @@ export default class ControlDiscipline extends React.Component {
         );
     }
 }
+
+// ControlDiscipline = Relay.createContainer(ControlDiscipline, {
+//     fragments: {
+//         // disciplines: () => Relay.QL`
+//         //     fragment on Discipline {
+//         //         id
+//         //         name
+//         //     }
+//         // `
+//     }
+// })
+
+export default ControlDiscipline

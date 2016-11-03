@@ -12,11 +12,6 @@ export default class ControlDate extends React.Component {
         onChange: React.PropTypes.func
     }
 
-    constructor(props) {
-        super(props)
-        this.onChange = this.onChange.bind(this);
-    }
-
     isValid(){
         return this.getValidationState() === "success";
     }
@@ -29,7 +24,7 @@ export default class ControlDate extends React.Component {
         }
     }
 
-    onChange(value) {
+    onChange = (value) => {
         if (typeof value !== "string") {
             value = value.startOf("day");
         }
