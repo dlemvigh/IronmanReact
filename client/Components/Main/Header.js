@@ -19,7 +19,7 @@ export default class Header extends React.Component {
                             <LinkContainer to="/leaderboard">
                                 <NavItem eventKey={1}>Leaderboard</NavItem>
                             </LinkContainer>
-                            <LinkContainer to="/activity">
+                            <LinkContainer to="/activity/5810e4e99425c73cdc9beb0b">
                                 <NavItem eventKey={2}>Activity</NavItem>
                             </LinkContainer>
                             <LinkContainer to="/sandbox">

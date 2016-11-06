@@ -1,33 +1,35 @@
 import React from 'react'
 import Relay from 'react-relay'
-import { Router, Route, IndexRedirect, browserHistory, applyRouterMiddleware } from 'react-router'
+import { Router, Route, IndexRedirect, browserHistory, hashHistory, applyRouterMiddleware } from 'react-router'
 import useRelay from 'react-router-relay';
 
 import Main from '../Main/Main'
 import Activity from '../Activity/Activity'
 import ActivityQueries from '../Activity/ActivityQueries'
 import Leaderboard from '../Leaderboard/Leaderboard'
+import LeaderboardQueries from '../Leaderboard/LeaderboardQueries'
 import Sandbox from '../Sandbox/Sandbox'
 
 export default class App extends React.Component {
   render(){
     return (
       <Router 
-        history={browserHistory}
+        history={hashHistory}
         render={applyRouterMiddleware(useRelay)}
         environment={Relay.Store}
       >
         <Route path='/' component={Main}>
           <IndexRedirect to="/leaderboard" />
           <Route 
-            path='/activity' 
+            path='/activity/:userId' 
             component={Activity} 
             queries={ActivityQueries}
-            render={({props}) => {
-              return props ? <Activity {...props} /> : <span>loading</span>}
-            }  
-            />
-          <Route path='/leaderboard' component={Leaderboard} />
+            render={({props}) => props && <Activity {...props} />} />  
+          <Route 
+            path='/leaderboard' 
+            component={Leaderboard}
+            queries={LeaderboardQueries}
+            render={({props}) => props && <Leaderboard {...props} /> } />
           <Route path='/sandbox' component={Sandbox} />
         </Route>
       </Router>

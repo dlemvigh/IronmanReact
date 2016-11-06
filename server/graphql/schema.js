@@ -12,6 +12,7 @@ import {
   connectionDefinitions,
   connectionFromPromisedArray,
   cursorForObjectInConnection,
+  offsetToCursor,
   fromGlobalId,
   globalIdField,
   mutationWithClientMutationId,
@@ -124,6 +125,11 @@ const userType = new GraphQLObjectType({
         },
         active: {
             type: GraphQLBoolean
+        },
+        activities: {
+            type: activityConnection,
+            args: connectionArgs,
+            resolve: (root, args) => connectionFromPromisedArray(database.getActivities({userId: root._id}), args)
         }
     }),
     interfaces: [nodeInterface]
@@ -138,11 +144,6 @@ const storeType = new GraphQLObjectType({
         echo: {
             type: GraphQLString,
             resolve: () => 'hello'
-        },
-        activities: {
-            type: activityConnection,
-            args: connectionArgs,
-            resolve: (_, args) => connectionFromPromisedArray(database.getActivities(), args)
         },
         disciplines: {
             type: disciplineConnection,
@@ -165,6 +166,16 @@ const queryType = new GraphQLObjectType({
       type: storeType,
       resolve: () => database.getStore()
     },
+    user: {
+        type: userType,
+        args: {
+            id: {
+                name: "id",
+                type:new GraphQLNonNull(GraphQLString)
+            }        
+        },
+        resolve (root, params, options) { return database.getUser(params.id) }
+    },
     node: nodeField
   })
 });
@@ -182,18 +193,24 @@ const addActivityMutation = mutationWithClientMutationId({
     activityEdge: {
       type: activityEdge,
       resolve: async (obj) => {
-        const activities = await database.getActivities();
-        const cursorId = cursorForObjectInConnection(activities, obj);
-        return { node: obj, cursor: cursorId };
+        const activities = await database.getActivities({userId: obj.userId});
+        const index = activities.findIndex(x => x._id === obj._id);
+        const cursorIndex = offsetToCursor(index);
+        return { node: obj, cursor: cursorIndex };
       }
     },
-    store: {
-      type: storeType,
-      resolve: () => database.getStore()
+    user: {
+        type: userType,
+        resolve: async (obj) => {
+            return await database.getUser(obj.userId)
+        }
     }
   },
 
-  mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {console.log(arguments); return database.addActivity(userId, disciplineId, distance, date)}
+  mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {
+      console.log("mutate add log") 
+      return database.addActivity(userId, disciplineId, distance, date); 
+    }
 });
 
 const mutationType = new GraphQLObjectType({

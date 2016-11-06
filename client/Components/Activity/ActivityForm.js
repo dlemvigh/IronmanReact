@@ -63,7 +63,7 @@ class ActivityForm extends React.Component {
                     ...activity,
                     storeId: this.props.store.id
                 }), {
-                    onFailure: (resp) => console.log("fail", resp),
+                    onFailure: (resp) => {debugger; console.log("fail", resp)},
                     onSuccess: (resp) => console.log("success", resp)
                 }
             )
@@ -74,7 +74,8 @@ class ActivityForm extends React.Component {
     getActivity() {
 
         const activity = {
-            userId: "5810e4e99425c73cdc9beb0c",
+            userId: this.props.user._id,
+            nodeId: this.props.user.id,
             disciplineId: this.state.disciplineId,
             distance: parseFloat(this.state.distance),
             unit: this.state.unit,
@@ -90,7 +91,7 @@ class ActivityForm extends React.Component {
             <form onSubmit={this.handleSubmit}>
                 <Row>
                     <Col sm={3}>
-                        <ControlDiscipline ref="discipline" value={this.state.discipline} onChange={this.handleChangeDiscipline} store={this.props.store} />
+                        <ControlDiscipline ref="discipline" value={this.state.disciplineId} onChange={this.handleChangeDiscipline} store={this.props.store} />
                     </Col>
                     <Col sm={3} xs={8} >
                         <ControlDistance ref="distance" value={this.state.distance} unit={this.state.unit} onChange={this.handleChangeDistance} />
@@ -120,6 +121,12 @@ ActivityForm = Relay.createContainer(ActivityForm, {
                 ${ControlDiscipline.getFragment('store')}
             }
         `,
+        user: () => Relay.QL`
+            fragment on User {
+                _id
+                id
+            }
+        `
     }
 })
 

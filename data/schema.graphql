@@ -41,7 +41,7 @@ input AddActivityInput {
 
 type AddActivityPayload {
   activityEdge: ActivityEdge
-  store: Store
+  user: User
   clientMutationId: String
 }
 
@@ -102,6 +102,7 @@ type PageInfo {
 
 type Query {
   store: Store
+  user(id: String!): User
 
   # Fetches an object given its ID
   node(
@@ -114,7 +115,6 @@ type Store implements Node {
   # The ID of an object
   id: ID!
   echo: String
-  activities(after: String, first: Int, before: String, last: Int): ActivityConnection
   disciplines(after: String, first: Int, before: String, last: Int): DisciplineConnection
   users(after: String, first: Int, before: String, last: Int): UserConnection
 }
@@ -127,6 +127,7 @@ type User implements Node {
   name: String
   facebookId: String
   active: Boolean
+  activities(after: String, first: Int, before: String, last: Int): ActivityConnection
 }
 
 # A connection to a list of items.

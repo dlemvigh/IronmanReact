@@ -1,6 +1,7 @@
 import Relay from "react-relay"
 
 class AddActivityMutation extends Relay.Mutation {
+
     getMutation() {
         return Relay.QL`
             mutation { addActivity }
@@ -20,24 +21,23 @@ class AddActivityMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on AddActivityPayload {
                 activityEdge,
-                store { activities }
+                user { activities }
             }
         `
     }
 
-    getConfigs() {
-        debugger
-        return [{
-            type: 'RANGE_ADD',
-            parentName: 'store',
-            parentID: this.props.storeId,
-            connectionName: 'activities',
-            edgeName: 'activityEdge',
-            rangeBehaviors: {
-                '': 'append',
-            }
-        }]
-    }
+  getConfigs() {
+    return [{
+      type: 'RANGE_ADD',
+      parentName: 'user',
+      parentID: this.props.nodeId,
+      connectionName: 'activities',
+      edgeName: 'activityEdge',
+      rangeBehaviors: {
+        '': 'prepend',
+      },
+    }];
+  }
 }
 
 export default AddActivityMutation;
