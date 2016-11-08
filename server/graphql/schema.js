@@ -208,10 +208,35 @@ const addActivityMutation = mutationWithClientMutationId({
   },
 
   mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {
-      console.log("mutate add log") 
       return database.addActivity(userId, disciplineId, distance, date); 
     }
 });
+
+const removeActivityMutation = mutationWithClientMutationId({
+    name: 'RemoveActivity',
+    inputFields: {
+        id: { type: new GraphQLNonNull(GraphQLString) }
+    },
+    outputFields: {
+        removedActivityId: {
+            type: GraphQLString,
+            resolve: (obj) => {
+                return obj._id;
+            }
+        },
+        user: {
+            type: userType,
+            resolve: async (obj) => {
+                return await database.getUser(obj.userId)
+            }
+        }
+    },
+    mutateAndGetPayload: async ({activityId}) => {
+        console.log("delete", activityId);
+        await database.removeActivity(activityId);
+        return activityId;
+    }
+})
 
 const mutationType = new GraphQLObjectType({
   name: 'Mutation',
