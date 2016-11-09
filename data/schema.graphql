@@ -1,4 +1,7 @@
-type Activity {
+type Activity implements Node {
+  _id: ID!
+
+  # The ID of an object
   id: ID!
   disciplineId: ID
   disciplineName: String
@@ -29,30 +32,57 @@ type ActivityEdge {
 }
 
 input AddActivityInput {
-  disciplineId: ID
-  distance: Float
-  date: String
-  userId: ID
+  userId: String!
+  disciplineId: String!
+  distance: Float!
+  date: String!
   clientMutationId: String
 }
 
 type AddActivityPayload {
   activityEdge: ActivityEdge
+  user: User
   clientMutationId: String
 }
 
 scalar DateTime
 
-type Discipline {
+type Discipline implements Node {
+  _id: ID!
+
+  # The ID of an object
   id: ID!
   name: String
   score: Float
   unit: String
 }
 
+# A connection to a list of items.
+type DisciplineConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [DisciplineEdge]
+}
+
+# An edge in a connection.
+type DisciplineEdge {
+  # The item at the end of the edge
+  node: Discipline
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 type Mutation {
   addActivity(input: AddActivityInput!): AddActivityPayload
-  removeActivity(_id: ID!): Activity
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
 }
 
 # Information about pagination in a connection.
@@ -71,18 +101,49 @@ type PageInfo {
 }
 
 type Query {
-  activity(id: ID!): Activity
-  activities: [Activity]
-  activitiesByUser(userId: ID!): [Activity]
-  discipline(id: ID!): Discipline
-  disciplines: [Discipline]
-  user(id: ID!): User
-  users: [User]
+  store: Store
+  user(id: String!): User
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
 }
 
-type User {
+type Store implements Node {
+  # The ID of an object
+  id: ID!
+  echo: String
+  disciplines(after: String, first: Int, before: String, last: Int): DisciplineConnection
+  users(after: String, first: Int, before: String, last: Int): UserConnection
+}
+
+type User implements Node {
+  _id: ID!
+
+  # The ID of an object
   id: ID!
   name: String
   facebookId: String
-  activityConnection(after: String, first: Int, before: String, last: Int): ActivityConnection
+  active: Boolean
+  activities(after: String, first: Int, before: String, last: Int): ActivityConnection
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge
+  node: User
+
+  # A cursor for use in pagination
+  cursor: String!
 }

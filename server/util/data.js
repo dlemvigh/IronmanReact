@@ -10,11 +10,9 @@ const disciplines = [
 ];
 
 const users = [
-    { name: "Alice" },
-    { name: "Bob" },
-    { name: "Charlie" },
-    { name: "Eve" },
-    { name: "Oscar" },
+    { name: "David" },
+    { name: "Mads" },
+    { name: "Sidsel" }
 ];
 
 export function populate(){

@@ -1,18 +1,20 @@
 import React from "react"
+import Relay from "react-relay"
 import { Table } from "react-bootstrap"
 
 import LeaderboardItem from "./LeaderboardItem"
 
 const data = [
-    {pos: 1, name: "Alice", points: 250},
+    {pos: 1, name: "Alice", points: 250, id: "5810e4e99425c73cdc9beb0b"},
     {pos: 2, name: "Charlie", points: 225},
     {pos: 3, name: "Eve", points: 212},
     {pos: 4, name: "Bob", points: 179},
     {pos: 5, name: "Oscar", points: 37},
 ]
 
-export default class LeaderboardList extends React.Component {
+class LeaderboardList extends React.Component {
     render() {
+        console.log("props", this.props)
         return (
             <Table>
                 <thead>
@@ -23,11 +25,30 @@ export default class LeaderboardList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index) =>
-                        <LeaderboardItem key={index} pos={item.pos} name={item.name} points={item.points} />
+                    {this.props.store.users.edges.map(edge =>
+                        <LeaderboardItem key={edge.node._id} user={edge.node} />
                     )}
                 </tbody>
             </Table>
         );
     }
 }
+
+LeaderboardList = Relay.createContainer(LeaderboardList, {
+    fragments: {
+        store: () => Relay.QL`
+            fragment on Store {
+                users(first: 10) {
+                    edges {
+                        node {
+                            _id
+                            ${LeaderboardItem.getFragment('user')}
+                        }
+                    }
+                }
+            }
+        `
+    }
+})
+
+export default LeaderboardList

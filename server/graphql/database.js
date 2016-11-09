@@ -21,8 +21,9 @@ function getActivity(id) {
     return ActivityModel.findById(id).exec(); 
 }
 
-function getActivities() {
-    return ActivityModel.find({}).sort({date: -1}).exec();
+function getActivities(args) {
+    args = args || {};
+    return ActivityModel.find(args).sort({date: -1}).exec();
 }
 
 function getDiscipline(id) {
@@ -33,30 +34,35 @@ function getDisciplines() {
     return DisciplineModel.find({}).exec()
 }
 
-async function addActivity(userId, disciplineId, distance, date) {
+async function addActivity(userId, disciplineId, distance, date, id) {
     const [discipline, user] = await Promise.all([
        DisciplineModel.findById(disciplineId).select({name: 1, score: 1, unit: 1}).exec(),
        UserModel.findById(userId).select({name: 1}).exec()
-     ]);
+     ]).catch((reason) => {
+        throw new Error(reason)     
+     });
      date = Moment(date).startOf("date")
- 
-     const activity = new ActivityModel({
-       disciplineId,
-       disciplineName: discipline.name,
+     ActivityModel.findByIdAndUpdate(id, {
        userId,
        userName: user.name,
+       disciplineId,
+       disciplineName: discipline.name,
+       distance,
        unit: discipline.unit,
        score: discipline.score * distance,
        date
-     });
-     console.log("add act", activity)
- 
+     }, {upsert: true});
+
      const newActivity = await activity.save();
      if (!newActivity){
        throw new Error('Error adding new activity');
      }
  
      return newActivity;  
+ }
+
+ function removeActivity(activityId) {
+     return ActivityModel.findByIdAndRemove(activityId).exec();
  }
 
 export default {
@@ -71,5 +77,6 @@ export default {
     getUser,
     getUsers,
     getStore,
-    addActivity
+    addActivity,
+    removeActivity
 };

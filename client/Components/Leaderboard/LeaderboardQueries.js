@@ -6,9 +6,4 @@ export default {
             store    
         }
     `,
-    user: () => Relay.QL`
-        query User {
-            user (id: $userId)
-        }
-    `
 }
