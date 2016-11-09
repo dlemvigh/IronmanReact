@@ -14,7 +14,7 @@ class Sandbox extends React.Component {
         );
     }
 }
-
+/*  
 Sandbox = Relay.createContainer(Sandbox, {
     fragments: {
         activity: () => Relay.QL`
@@ -82,4 +82,5 @@ class SandboxRoot extends React.Component {
         );
     }
 }
-export default SandboxRoot;
+*/
+export default Sandbox;
