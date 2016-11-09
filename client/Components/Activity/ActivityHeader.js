@@ -11,6 +11,7 @@ class ActivityHeader extends React.Component {
                 <th>Distance</th>
                 <th>Score</th>
                 <th>Date</th>
+                <th></th>
             </tr>
         );
     }

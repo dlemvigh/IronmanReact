@@ -17,7 +17,6 @@ class TimelogLabel extends React.Component {
   }
 
   delete = () => {
-    console.log("delete")
     this.props.onDelete();
   }
 

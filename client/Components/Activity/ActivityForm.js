@@ -61,9 +61,8 @@ class ActivityForm extends React.Component {
             Relay.Store.commitUpdate(
                 new AddActivityMutation({
                     ...activity,
-                    storeId: this.props.store.id
                 }), {
-                    onFailure: (resp) => {debugger; console.log("fail", resp)},
+                    onFailure: (resp) => console.log("fail", resp),
                     onSuccess: (resp) => console.log("success", resp)
                 }
             )

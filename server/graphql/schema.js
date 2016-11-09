@@ -14,6 +14,7 @@ import {
   cursorForObjectInConnection,
   offsetToCursor,
   fromGlobalId,
+  toGlobalId,
   globalIdField,
   mutationWithClientMutationId,
   nodeDefinitions,
@@ -221,8 +222,9 @@ const removeActivityMutation = mutationWithClientMutationId({
         removedActivityId: {
             type: GraphQLString,
             resolve: (obj) => {
-                return obj._id;
-            }
+                const globalId = toGlobalId("Activity", obj._id);
+                return globalId;
+            } 
         },
         user: {
             type: userType,
@@ -231,17 +233,16 @@ const removeActivityMutation = mutationWithClientMutationId({
             }
         }
     },
-    mutateAndGetPayload: async ({activityId}) => {
-        console.log("delete", activityId);
-        await database.removeActivity(activityId);
-        return activityId;
+    mutateAndGetPayload: ({id}) => {
+        return database.removeActivity(id);
     }
 })
 
 const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    addActivity: addActivityMutation
+    addActivity: addActivityMutation,
+    removeActivity: removeActivityMutation
   })
 });
 

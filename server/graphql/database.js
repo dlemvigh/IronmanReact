@@ -34,7 +34,7 @@ function getDisciplines() {
     return DisciplineModel.find({}).exec()
 }
 
-async function addActivity(userId, disciplineId, distance, date, id) {
+async function addActivity(userId, disciplineId, distance, date) {
     const [discipline, user] = await Promise.all([
        DisciplineModel.findById(disciplineId).select({name: 1, score: 1, unit: 1}).exec(),
        UserModel.findById(userId).select({name: 1}).exec()
@@ -42,7 +42,8 @@ async function addActivity(userId, disciplineId, distance, date, id) {
         throw new Error(reason)     
      });
      date = Moment(date).startOf("date")
-     ActivityModel.findByIdAndUpdate(id, {
+
+     const activity = new ActivityModel({
        userId,
        userName: user.name,
        disciplineId,
@@ -51,7 +52,7 @@ async function addActivity(userId, disciplineId, distance, date, id) {
        unit: discipline.unit,
        score: discipline.score * distance,
        date
-     }, {upsert: true});
+     });
 
      const newActivity = await activity.save();
      if (!newActivity){
@@ -61,8 +62,13 @@ async function addActivity(userId, disciplineId, distance, date, id) {
      return newActivity;  
  }
 
- function removeActivity(activityId) {
-     return ActivityModel.findByIdAndRemove(activityId).exec();
+ async function removeActivity(activityId) {
+     const activity = await ActivityModel.findById(activityId);
+     if (!activity){
+       throw new Error('Error removing activity');
+     }
+     await activity.remove();
+     return activity;
  }
 
 export default {

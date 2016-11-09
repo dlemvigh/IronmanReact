@@ -77,6 +77,7 @@ type DisciplineEdge {
 
 type Mutation {
   addActivity(input: AddActivityInput!): AddActivityPayload
+  removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
 }
 
 # An object with an ID
@@ -109,6 +110,17 @@ type Query {
     # The ID of an object
     id: ID!
   ): Node
+}
+
+input RemoveActivityInput {
+  id: String!
+  clientMutationId: String
+}
+
+type RemoveActivityPayload {
+  removedActivityId: String
+  user: User
+  clientMutationId: String
 }
 
 type Store implements Node {

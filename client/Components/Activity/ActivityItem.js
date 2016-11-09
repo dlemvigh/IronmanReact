@@ -4,6 +4,7 @@ import CSSModules from "react-css-modules"
 
 import Date from "../Common/Date"
 import styles from "./ActivityItem.scss"
+import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation"
 
 class ActivityItem extends React.Component {
     // static propTypes = {
@@ -13,6 +14,18 @@ class ActivityItem extends React.Component {
     //     score: React.PropTypes.number.isRequired,
     //     date: React.PropTypes.object.isRequired
     // }
+    onDelete = () => {
+        const mutation = new RemoveActivityMutation({
+            id: this.props.activity._id,
+            nodeId: this.props.user.id
+        })
+        Relay.Store.commitUpdate(
+            mutation, {
+                onFailure: (resp) => console.log("fail", resp),
+                onSuccess: (resp) => console.log("success", resp)
+            }
+        )
+    }
 
     render() {
         return (
@@ -21,6 +34,7 @@ class ActivityItem extends React.Component {
                 <td>{this.props.activity.distance} {this.props.unit}</td>
                 <td>{this.props.activity.score}</td>
                 <td><Date value={this.props.activity.date} /></td>
+                <td><a href="javascript:void 0" onClick={this.onDelete}>delete</a></td>
             </tr>
         );
     }
@@ -28,8 +42,14 @@ class ActivityItem extends React.Component {
 
 ActivityItem = Relay.createContainer(ActivityItem, {
     fragments: {
+        user: () => Relay.QL`
+            fragment on User {
+                id
+            }
+        `,
         activity: () => Relay.QL`
             fragment on Activity {
+                _id
                 disciplineName, 
                 distance,
                 unit,
