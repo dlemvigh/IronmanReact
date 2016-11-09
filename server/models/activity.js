@@ -1,6 +1,14 @@
 import mongoose from "mongoose"
 
 const activitySchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true        
+    },
+    userName: {
+        type: String,
+        required: true
+    },
     disciplineId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
@@ -23,14 +31,6 @@ const activitySchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true        
-    },
-    userName: {
-        type: String,
-        required: true
     }
 });
 

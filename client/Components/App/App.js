@@ -8,6 +8,7 @@ import Activity from '../Activity/Activity'
 import ActivityQueries from '../Activity/ActivityQueries'
 import Leaderboard from '../Leaderboard/Leaderboard'
 import Sandbox from '../Sandbox/Sandbox'
+import Timelog from '../Timelog/Timelog'
 
 export default class App extends React.Component {
   render(){
@@ -29,6 +30,7 @@ export default class App extends React.Component {
             />
           <Route path='/leaderboard' component={Leaderboard} />
           <Route path='/sandbox' component={Sandbox} />
+          <Route path='/timelog' component={Timelog} />
         </Route>
       </Router>
     );    

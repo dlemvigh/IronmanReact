@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 
-export default class Header extends React.Component {
+class Header extends React.Component {
     render() {
         return (
             <header>
@@ -25,11 +25,15 @@ export default class Header extends React.Component {
                             <LinkContainer to="/sandbox">
                                 <NavItem eventKey={3}>Sandbox</NavItem>
                             </LinkContainer>
+                            <LinkContainer to="/timelog">
+                                <NavItem eventKey={4}>Timelog</NavItem>
+                            </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
             </header>
         );
-    }
-    
+    }    
 }
+
+export default Header
