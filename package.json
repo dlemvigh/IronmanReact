@@ -57,6 +57,7 @@
     "css-loader": "^0.25.0",
     "http-server": "^0.9.0",
     "node-sass": "^3.10.1",
+    "nodemon": "^1.11.0",
     "react-css-modules": "^3.7.10",
     "react-hot-loader": "^3.0.0-beta.6",
     "resolve-url": "^0.2.1",
