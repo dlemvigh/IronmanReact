@@ -1,4 +1,5 @@
 import React from "react"
+import Relay from "react-relay"
 import { Link } from 'react-router'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
@@ -17,8 +18,13 @@ class Header extends React.Component {
                     <Navbar.Collapse>
                         <Nav>
                             <LinkContainer to="/leaderboard">
-                                <NavItem eventKey={1}>Leaderboard</NavItem>
+                                <NavItem>Leaderboard</NavItem>
                             </LinkContainer>
+                            {
+                                this.props.store.users.edges.map(edge => <LinkContainer key={edge.node._id} to={`/activity/${edge.node._id}`}>
+                                    <NavItem>{edge.node.name}</NavItem>
+                                </LinkContainer>)
+                            }
                             {/*
                             <LinkContainer to="/activity/5810e4e99425c73cdc9beb0b">
                                 <NavItem eventKey={2}>Activity</NavItem>
@@ -37,5 +43,22 @@ class Header extends React.Component {
         );
     }    
 }
+
+Header = Relay.createContainer(Header, {
+    fragments: {
+        store: () => Relay.QL`
+            fragment on Store {
+                users(first: 100) {
+                    edges {
+                        node {
+                            _id
+                            name
+                        }
+                    }
+                }
+            }
+        `
+    }
+})
 
 export default Header

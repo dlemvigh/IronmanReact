@@ -4,14 +4,6 @@ import { Table } from "react-bootstrap"
 
 import LeaderboardItem from "./LeaderboardItem"
 
-// const data = [
-//     {pos: 1, name: "Alice", points: 250, id: "5810e4e99425c73cdc9beb0b"},
-//     {pos: 2, name: "Charlie", points: 225},
-//     {pos: 3, name: "Eve", points: 212},
-//     {pos: 4, name: "Bob", points: 179},
-//     {pos: 5, name: "Oscar", points: 37},
-// ]
-
 class LeaderboardList extends React.Component {
     render() {
         return (

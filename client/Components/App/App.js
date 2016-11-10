@@ -4,6 +4,7 @@ import { Router, Route, IndexRedirect, browserHistory, hashHistory, applyRouterM
 import useRelay from 'react-router-relay';
 
 import Main from '../Main/Main'
+import MainQueries from '../Main/MainQueries'
 import Activity from '../Activity/Activity'
 import ActivityQueries from '../Activity/ActivityQueries'
 import Leaderboard from '../Leaderboard/Leaderboard'
@@ -19,7 +20,7 @@ export default class App extends React.Component {
         render={applyRouterMiddleware(useRelay)}
         environment={Relay.Store}
       >
-        <Route path='/' component={Main}>
+        <Route path='/' component={Main} queries={MainQueries}>
           <IndexRedirect to="/leaderboard" />
           <Route 
             path='/activity/:userId' 
