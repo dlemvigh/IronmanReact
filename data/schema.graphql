@@ -131,6 +131,18 @@ type Store implements Node {
   users(after: String, first: Int, before: String, last: Int): UserConnection
 }
 
+type Summary implements Node {
+  _id: ID!
+
+  # The ID of an object
+  id: ID!
+  userId: ID
+  userName: String
+  score: Float
+  week: Int
+  year: Int
+}
+
 type User implements Node {
   _id: ID!
 
@@ -140,6 +152,7 @@ type User implements Node {
   facebookId: String
   active: Boolean
   activities(after: String, first: Int, before: String, last: Int): ActivityConnection
+  summary(week: Int, year: Int): Summary
 }
 
 # A connection to a list of items.

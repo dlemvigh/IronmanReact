@@ -26,7 +26,6 @@ class Timelog extends React.Component {
   } 
 
   deleteItem = (item) => {
-    console.log("delet item", item)
     const newItems = this.state.items.filter(x => x !== item);
     this.setState({items: newItems});
   }
@@ -55,12 +54,10 @@ class Timelog extends React.Component {
   }
 
   onSave = () => {
-    console.log("save");
     this.saveState(this.state);
   }
 
   onLoad = () => {
-    console.log("load");
     const newState = this.loadState();
     this.setState(newState);
   }

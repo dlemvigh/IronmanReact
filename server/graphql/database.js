@@ -60,6 +60,7 @@ async function addActivity(userId, disciplineId, distance, date) {
        throw new Error('Error adding new activity');
      }
  
+     await clearCachedSummary(newActivity.userId, newActivity.date);
      return newActivity;  
  }
 
@@ -68,25 +69,17 @@ async function addActivity(userId, disciplineId, distance, date) {
      if (!activity){
        throw new Error('Error removing activity');
      }
-     await Promise.all([activity.remove().exec(), clearCachedSummary(activity.userId, activity.date)]);
+     await activity.remove();
+     await clearCachedSummary(activity.userId, activity.date);
      return activity;
  }
 
 function getSummary(id) {
-    console.log("get", id);
-    var model = new SummaryModel({
-        userId: id,
-        userName: "bar",
-        score: 13,
-    });
-
-    console.log("model", model)
-    return model;
+    return SummaryModel.findById(id).exec();
 }
 
 async function getCachedSummary(userId, week, year) {
-    
-    let cached = await SummaryModel.find({ userId, week, year }).exec();
+    let cached = await SummaryModel.findOne({ userId, week, year }).exec();
     if (!cached) {
         cached = await calcSummary(userId, week, year);
     }
@@ -96,9 +89,9 @@ async function getCachedSummary(userId, week, year) {
 async function calcSummary(userId, week, year) {
     const query = { userId };
     if (week && year) {
-        const m = Moment().isoWeek(week).year(year);
-        const start = m.startOf("isoWeek");
-        const end = m.endOf("isoWeek");
+        const m = new Moment().isoWeek(week).year(year);
+        const start = m.startOf("isoWeek").toDate();
+        const end = m.endOf("isoWeek").toDate();
         query.date = {
             $gte: start,
             $lte: end
@@ -108,13 +101,20 @@ async function calcSummary(userId, week, year) {
     const score = activities.reduce((sum, act) => sum + act.score, 0);
 
     const user = await getUser(userId);
-    const newSummary = new SummaryModel({
+    const summary = new SummaryModel({
         userId,
         userName: user.name,
         score,
         week,
         year
-    }).save();
+    });
+
+    const newSummary = await summary.save();
+     if (!newSummary){
+       throw new Error('Error adding new summary');
+     }
+ 
+     return newSummary;  
 }
 
 async function clearCachedSummary(userId, date) {

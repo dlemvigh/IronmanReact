@@ -12,7 +12,6 @@ class TimelogLabel extends React.Component {
 
   onChangeBillable = (event) => {
     const billable = event.target.checked;
-    console.log("bill", billable);
     this.props.onChange(this.props.id, this.props.time, this.props.text, billable);
   }
 
