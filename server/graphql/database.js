@@ -68,7 +68,7 @@ async function addActivity(userId, disciplineId, distance, date) {
      if (!activity){
        throw new Error('Error removing activity');
      }
-     await activity.remove();
+     await Promise.all([activity.remove().exec(), clearCachedSummary(activity.userId, activity.date)]);
      return activity;
  }
 
@@ -84,21 +84,47 @@ function getSummary(id) {
     return model;
 }
 
-function getCachedSummary(userId, week, year) {
-    return new SummaryModel({
+async function getCachedSummary(userId, week, year) {
+    
+    let cached = await SummaryModel.find({ userId, week, year }).exec();
+    if (!cached) {
+        cached = await calcSummary(userId, week, year);
+    }
+    return cached;
+}
+
+async function calcSummary(userId, week, year) {
+    const query = { userId };
+    if (week && year) {
+        const m = Moment().isoWeek(week).year(year);
+        const start = m.startOf("isoWeek");
+        const end = m.endOf("isoWeek");
+        query.date = {
+            $gte: start,
+            $lte: end
+        }
+    }
+    const activities = await ActivityModel.find(query).select({score: 1});
+    const score = activities.reduce((sum, act) => sum + act.score, 0);
+
+    const user = await getUser(userId);
+    const newSummary = new SummaryModel({
         userId,
-        userName: "foo",
-        score: 42,
+        userName: user.name,
+        score,
         week,
         year
-    });
+    }).save();
 }
 
-function calcSummary(userId, week, year) {
-}
-
-function clearCachedSummary(userId, week, year) {
-
+async function clearCachedSummary(userId, date) {
+    const m = Moment(date);
+    const week = m.isoWeek();
+    const year = m.year();
+    return await Promise.all([
+        SummaryModel.findOneAndRemove({userId, week, year}).exec(),
+        SummaryModel.findOneAndRemove({userId, week: null, year: null}).exec()
+    ]);
 }
 
 export default {
