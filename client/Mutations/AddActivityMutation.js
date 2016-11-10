@@ -21,7 +21,12 @@ class AddActivityMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on AddActivityPayload {
                 activityEdge,
-                user { activities }
+                user { 
+                    activities
+                    summary {
+                        score
+                    }
+                }
             }
         `
     }

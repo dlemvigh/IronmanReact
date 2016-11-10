@@ -18,7 +18,12 @@ class AddActivityMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on RemoveActivityPayload {
                 removedActivityId
-                user { activities }
+                user { 
+                    activities
+                    summary {
+                        score
+                    } 
+                }
             }
         `
     }

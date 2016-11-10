@@ -3,6 +3,7 @@ import Relay from "react-relay"
 import { Link, Navigation } from "react-router";
 import CSSModules from "react-css-modules"
 
+import Pos from "../Common/Pos";
 import styles from "./LeaderboardItem.scss"
 
 class LeaderboardItem extends React.Component {
@@ -21,10 +22,9 @@ class LeaderboardItem extends React.Component {
     }
 
     render() {
-        console.log("item", this.props);
         return (
             <tr styleName="row" onClick={this.onClick}>
-                <td>{this.props.index + 1}</td>
+                <td><Pos value={this.props.index + 1} /></td>
                 <td>{this.props.user.name}</td>
                 <td>{this.props.user.summary.score} points</td>
             </tr>
