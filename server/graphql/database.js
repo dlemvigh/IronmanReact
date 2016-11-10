@@ -2,6 +2,7 @@ import ActivityModel from '../models/activity'
 import DisciplineModel from '../models/discipline'
 import UserModel from '../models/user'
 import StoreModel from '../models/store'
+import SummaryModel from '../models/summary'
 import Moment from 'moment'
 
 const staticStore = new StoreModel(42);
@@ -71,11 +72,41 @@ async function addActivity(userId, disciplineId, distance, date) {
      return activity;
  }
 
+function getSummary(id) {
+    console.log("get", id);
+    var model = new SummaryModel({
+        userId: id,
+        userName: "bar",
+        score: 13,
+    });
+
+    console.log("model", model)
+    return model;
+}
+
+function getCachedSummary(userId, week, year) {
+    return new SummaryModel({
+        userId,
+        userName: "foo",
+        score: 42,
+        week,
+        year
+    });
+}
+
+function calcSummary(userId, week, year) {
+}
+
+function clearCachedSummary(userId, week, year) {
+
+}
+
 export default {
     ActivityModel,
     DisciplineModel,
     UserModel,
     StoreModel,
+    SummaryModel,
     getActivity,
     getActivities,
     getDiscipline,
@@ -84,5 +115,7 @@ export default {
     getUsers,
     getStore,
     addActivity,
-    removeActivity
+    removeActivity,
+    getSummary,
+    getCachedSummary    
 };

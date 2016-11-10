@@ -17,6 +17,7 @@ class Timelog extends React.Component {
       { id: 0, time: "0:30", text: "frokost", billable: false},
       { id: 1, time: "", text: "", billable: true}
     ],
+    end: "",
     counter: 2
   }
 

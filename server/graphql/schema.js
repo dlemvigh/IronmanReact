@@ -4,6 +4,7 @@ import {
   GraphQLNonNull,
   GraphQLString,
   GraphQLFloat,
+  GraphQLInt,
   GraphQLBoolean,
   GraphQLID
 } from 'graphql';
@@ -35,6 +36,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return database.getActivity(id);
     } else if (type === 'Discipline') {
       return database.getDiscipline(id);
+    } else if (type === 'Summary') {
+      return database.getSummary(id)
     }
     return null;
   },
@@ -47,10 +50,39 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return activityType;
     } else if (obj instanceof database.DisciplineModel) {
       return disciplineType;
+    } else if (obj instanceof database.SummaryModel) {
+        return summaryType;
     }
     return null;
   }
 );
+
+const summaryType = new GraphQLObjectType({
+    name: 'Summary',
+    fields: () => ({
+        _id: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
+        id: globalIdField('Summary'),
+        userId: {
+            type: GraphQLID
+        },
+        userName: {
+            type: GraphQLString
+        },
+        score: {
+            type: GraphQLFloat
+        },
+        week: {
+            type: GraphQLInt
+        },
+        year: {
+            type: GraphQLInt
+
+        }
+    }),
+    interfaces: [nodeInterface]
+})
 
 const activityType = new GraphQLObjectType({
     name: 'Activity',
@@ -131,6 +163,22 @@ const userType = new GraphQLObjectType({
             type: activityConnection,
             args: connectionArgs,
             resolve: (root, args) => connectionFromPromisedArray(database.getActivities({userId: root._id}), args)
+        },
+        summary: {
+            type: summaryType,
+            args: {
+                week: {
+                    name: "week",
+                    type: GraphQLInt
+                },        
+                year: {
+                    name: "year",
+                    type: GraphQLInt
+                }        
+            },
+            resolve: (root, args) => {
+                return database.getCachedSummary(root._id, args.week, args.year);
+            }
         }
     }),
     interfaces: [nodeInterface]
