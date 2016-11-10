@@ -21,11 +21,12 @@ class LeaderboardItem extends React.Component {
     }
 
     render() {
+        console.log("item", this.props);
         return (
             <tr styleName="row" onClick={this.onClick}>
-                <td>{this.props.pos}</td>
+                <td>{this.props.index + 1}</td>
                 <td>{this.props.user.name}</td>
-                <td>{this.props.points} points</td>
+                <td>{this.props.user.summary.score} points</td>
             </tr>
         );
     }
@@ -39,6 +40,9 @@ LeaderboardItem = Relay.createContainer(LeaderboardItem, {
             fragment on User {
                 _id
                 name
+                summary {
+                    score
+                }
             }
         `
     }
