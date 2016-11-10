@@ -8,7 +8,7 @@ class Timelog extends React.Component {
   constructor(...args){
     super(...args);
     const localState = this.loadState();
-    this.state = localState || defaultState;
+    this.state = localState || this.defaultState;
   }
 
   defaultState = {
