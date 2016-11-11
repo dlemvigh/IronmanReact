@@ -6,6 +6,10 @@ import Header from "./Header"
 import Footer from "./Footer"
 import styles from "./App.scss"
 
+import '!style!css!bootstrap/dist/css/bootstrap.min.css';
+import '!style!css!bootstrap/dist/css/bootstrap-theme.min.css';
+import '!style!css!react-datetime/css/react-datetime.css';
+
 class App extends React.Component {
 
     render() {

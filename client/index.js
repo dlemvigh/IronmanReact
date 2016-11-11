@@ -4,10 +4,6 @@ import Relay from 'react-relay'
 import { browserHistory, hashHistory, applyRouterMiddleware } from 'react-router'
 import useRelay from 'react-router-relay';
 
-import '!style!css!bootstrap/dist/css/bootstrap.min.css';
-import '!style!css!bootstrap/dist/css/bootstrap-theme.min.css';
-import '!style!css!react-datetime/css/react-datetime.css';
-
 import Routes from './routes';
 
 Relay.injectNetworkLayer(
@@ -18,7 +14,7 @@ Relay.injectNetworkLayer(
 
 render(
     <Routes 
-        history={hashHistory}
+        history={browserHistory}
         render={applyRouterMiddleware(useRelay)}
         environment={Relay.Store}
     />, 
