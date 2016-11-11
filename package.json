@@ -12,7 +12,9 @@
     "postserver": "start http://localhost:4000/graphql",
     "update-schema": "babel-node ./server/util/update-schema.js",
     "prebuild": "rimraf build/",
-    "build": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js"
+    "build": "npm-run-all --parallel build:client build:server",
+    "build:client": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js",
+    "build:server": "babel server -d build/server"
   },
   "author": "david lemvigh",
   "license": "MIT",

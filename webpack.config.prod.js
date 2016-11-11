@@ -15,7 +15,7 @@ module.exports = {
   ],
   devtool: 'source-map',
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'build/client'),
     publicPath: '/',
     filename: 'static/js/[name].[chunkhash:8].js',
     chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
