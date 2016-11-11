@@ -14,11 +14,19 @@ import schema from "./graphql/schema";
 
 var app = express();
 app.use(cors());
+
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   pretty: true,
   graphiql: true,
 }));
+
+app.use(express.static(path.join(__dirname, "..", "client")));
+
+app.get("*", function(req, res) {
+  res.sendFile(path.join(__dirname, "..", "client", "index.html"));
+});
+
 
 mongoose.connect('mongodb://localhost/ironman');
 
