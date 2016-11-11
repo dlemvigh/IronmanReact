@@ -1,7 +1,14 @@
 import React from 'react'
-import Relay from 'react-relay'
 import { render } from 'react-dom'
-import App from './Components/App/App'
+import Relay from 'react-relay'
+import { browserHistory, hashHistory, applyRouterMiddleware } from 'react-router'
+import useRelay from 'react-router-relay';
+
+import '!style!css!bootstrap/dist/css/bootstrap.min.css';
+import '!style!css!bootstrap/dist/css/bootstrap-theme.min.css';
+import '!style!css!react-datetime/css/react-datetime.css';
+
+import Routes from './routes';
 
 Relay.injectNetworkLayer(
     new Relay.DefaultNetworkLayer('http://localhost:4000/graphql', {
@@ -9,4 +16,11 @@ Relay.injectNetworkLayer(
     })
 );
 
-render(<App/>, document.getElementById('app'))
+render(
+    <Routes 
+        history={hashHistory}
+        render={applyRouterMiddleware(useRelay)}
+        environment={Relay.Store}
+    />, 
+    document.getElementById('app')
+);
