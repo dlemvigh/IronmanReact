@@ -13,7 +13,7 @@
     "update-schema": "babel-node ./server/util/update-schema.js",
     "prebuild": "rimraf build/",
     "build": "npm-run-all --parallel build:client build:server",
-    "build:client": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js",
+    "build:client": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js --progress",
     "build:server": "babel server -d build/server"
   },
   "author": "david lemvigh",

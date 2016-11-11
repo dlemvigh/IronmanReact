@@ -1,8 +1,11 @@
 import React from "react"
 import Relay from "react-relay"
 import CSSModules from "react-css-modules"
+import { Glyphicon } from "react-bootstrap"
 
 import Date from "../Common/Date"
+import Week from "../Common/Week"
+import Year from "../Common/Year"
 import styles from "./ActivityItem.scss"
 import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation"
 
@@ -31,10 +34,14 @@ class ActivityItem extends React.Component {
         return (
             <tr>
                 <td>{this.props.activity.disciplineName}</td>
-                <td>{this.props.activity.distance} {this.props.unit}</td>
+                <td>{this.props.activity.distance} {this.props.activity.unit}</td>
                 <td>{this.props.activity.score}</td>
                 <td><Date value={this.props.activity.date} /></td>
-                <td><a href="javascript:void 0" onClick={this.onDelete}>delete</a></td>
+                <td className="hidden-xs"><Week value={this.props.activity.date} /></td>
+                <td className="hidden-xs"><Year value={this.props.activity.date} /></td>
+                <td>
+                    <a href="javascript:void 0" onClick={this.onDelete}><Glyphicon glyph="trash"/></a>
+                </td>
             </tr>
         );
     }

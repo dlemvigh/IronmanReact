@@ -3,7 +3,7 @@ import Moment from "moment"
 
 export default class Date extends React.Component {
     getDate(){
-        return Moment(this.props.value).format("DD/MM-YYYY");
+        return Moment(this.props.value).format("D/M");
     }
 
     render() {
