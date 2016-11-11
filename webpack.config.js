@@ -20,7 +20,13 @@ module.exports = {
         presets: ['react', 'es2015', 'stage-0'],
         plugins: ['./babelRelayPlugin'].map(require.resolve)
       }   
-    },{
+    }, {
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
+        loader: 'url-loader?limit=10000',
+    }, {
+        test: /\.(eot|ttf|wav|mp3)$/,
+        loader: 'file-loader',
+    }, {
     test: /\.scss$/,
     loaders: [
         'style',

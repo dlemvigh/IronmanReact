@@ -10,6 +10,10 @@ import ActivityQueries from '../Activity/ActivityQueries'
 import Leaderboard from '../Leaderboard/Leaderboard'
 import LeaderboardQueries from '../Leaderboard/LeaderboardQueries'
 
+import '!style!css!bootstrap/dist/css/bootstrap.min.css';
+import '!style!css!bootstrap/dist/css/bootstrap-theme.min.css';
+import '!style!css!react-datetime/css/react-datetime.css';
+
 export default class App extends React.Component {
   render(){
     return (
