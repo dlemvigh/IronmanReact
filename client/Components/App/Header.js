@@ -21,7 +21,7 @@ class Header extends React.Component {
                                 <NavItem>Leaderboard</NavItem>
                             </LinkContainer>
                             {
-                                this.props.store.users.edges.map(edge => <LinkContainer key={edge.node._id} to={`/activity/${edge.node._id}`}>
+                                this.props.store.users.edges.map(edge => <LinkContainer key={edge.node.username} to={`/activity/${edge.node.username}`}>
                                     <NavItem>{edge.node.name}</NavItem>
                                 </LinkContainer>)
                             }
@@ -51,8 +51,8 @@ Header = Relay.createContainer(Header, {
                 users(first: 100) {
                     edges {
                         node {
-                            _id
                             name
+                            username                        
                         }
                     }
                 }

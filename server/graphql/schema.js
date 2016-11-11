@@ -153,6 +153,9 @@ const userType = new GraphQLObjectType({
         name: {
             type: GraphQLString
         },
+        username: {
+            type: GraphQLString
+        },
         facebookId: {
             type: GraphQLString
         },
@@ -218,12 +221,12 @@ const queryType = new GraphQLObjectType({
     user: {
         type: userType,
         args: {
-            id: {
-                name: "id",
+            username: {
+                name: "username",
                 type:new GraphQLNonNull(GraphQLString)
             }        
         },
-        resolve (root, params, options) { return database.getUser(params.id) }
+        resolve (root, params, options) { return database.getUserByUsername(params.username) }
     },
     node: nodeField
   })

@@ -8,7 +8,7 @@ export default {
     `,
     user: () => Relay.QL`
         query User {
-            user (id: $userId)
+            user (username: $username)
         }
     `
 }

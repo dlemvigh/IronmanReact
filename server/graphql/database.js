@@ -14,6 +14,10 @@ function getUser(id) {
     return UserModel.findById(id).exec()
 }
 
+function getUserByUsername(username) {
+    return UserModel.findOne({username}).exec()
+}
+
 function getUsers() {
     return UserModel.find({}).exec();
 }
@@ -138,6 +142,7 @@ export default {
     getDiscipline,
     getDisciplines,
     getUser,
+    getUserByUsername,
     getUsers,
     getStore,
     addActivity,

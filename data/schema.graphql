@@ -103,7 +103,7 @@ type PageInfo {
 
 type Query {
   store: Store
-  user(id: String!): User
+  user(username: String!): User
 
   # Fetches an object given its ID
   node(
@@ -149,6 +149,7 @@ type User implements Node {
   # The ID of an object
   id: ID!
   name: String
+  username: String
   facebookId: String
   active: Boolean
   activities(after: String, first: Int, before: String, last: Int): ActivityConnection

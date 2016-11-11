@@ -13,7 +13,7 @@ const Routes = (props) => (
     <Route path='/' component={App} queries={AppQueries}>
       <IndexRedirect to="/leaderboard" />
       <Route 
-        path='/activity/:userId' 
+        path='/activity/:username' 
         component={Activity} 
         queries={ActivityQueries}
         render={({props}) => props && <Activity {...props} />} />  

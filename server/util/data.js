@@ -10,9 +10,9 @@ const disciplines = [
 ];
 
 const users = [
-    { name: "David" },
-    { name: "Mads" },
-    { name: "Sidsel" }
+    { name: "David", username: "david" },
+    { name: "Mads", username: "mads" },
+    { name: "Sidsel", username: "sidsel" }
 ];
 
 export function populate(){
