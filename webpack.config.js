@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -37,6 +38,10 @@ module.exports = {
 }]
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: 'public/index.html',
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]
