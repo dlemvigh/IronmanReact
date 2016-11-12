@@ -87,7 +87,7 @@ class ActivityForm extends React.Component {
     render() {
         const act = this.getActivity();
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} noValidate>
                 <Row>
                     <Col sm={3}>
                         <ControlDiscipline ref="discipline" value={this.state.disciplineId} onChange={this.handleChangeDiscipline} store={this.props.store} />

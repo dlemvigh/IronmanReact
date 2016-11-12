@@ -21,10 +21,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
-    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(globalId);
-
-    var type = _fromGlobalId.type;
-    var id = _fromGlobalId.id;
+    var _fromGlobalId = (0, _graphqlRelay.fromGlobalId)(globalId),
+        type = _fromGlobalId.type,
+        id = _fromGlobalId.id;
 
     if (type == 'Store') {
         return _database2.default.getStore();
@@ -51,11 +50,9 @@ var _nodeDefinitions = (0, _graphqlRelay.nodeDefinitions)(function (globalId) {
         return summaryType;
     }
     return null;
-});
-
-var nodeInterface = _nodeDefinitions.nodeInterface;
-var nodeField = _nodeDefinitions.nodeField;
-
+}),
+    nodeInterface = _nodeDefinitions.nodeInterface,
+    nodeField = _nodeDefinitions.nodeField;
 
 var summaryType = new _graphql.GraphQLObjectType({
     name: 'Summary',
@@ -123,11 +120,9 @@ var activityType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var _connectionDefinition = (0, _graphqlRelay.connectionDefinitions)({ name: 'Activity', nodeType: activityType });
-
-var activityConnection = _connectionDefinition.connectionType;
-var activityEdge = _connectionDefinition.edgeType;
-
+var _connectionDefinition = (0, _graphqlRelay.connectionDefinitions)({ name: 'Activity', nodeType: activityType }),
+    activityConnection = _connectionDefinition.connectionType,
+    activityEdge = _connectionDefinition.edgeType;
 
 var disciplineType = new _graphql.GraphQLObjectType({
     name: 'Discipline',
@@ -151,11 +146,9 @@ var disciplineType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({ name: 'Discipline', nodeType: disciplineType });
-
-var disciplineConnection = _connectionDefinition2.connectionType;
-var disciplineEdge = _connectionDefinition2.edgeType;
-
+var _connectionDefinition2 = (0, _graphqlRelay.connectionDefinitions)({ name: 'Discipline', nodeType: disciplineType }),
+    disciplineConnection = _connectionDefinition2.connectionType,
+    disciplineEdge = _connectionDefinition2.edgeType;
 
 var userType = new _graphql.GraphQLObjectType({
     name: 'User',
@@ -205,11 +198,9 @@ var userType = new _graphql.GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-var _connectionDefinition3 = (0, _graphqlRelay.connectionDefinitions)({ name: 'User', nodeType: userType });
-
-var userConnection = _connectionDefinition3.connectionType;
-var userEdge = _connectionDefinition3.edgeType;
-
+var _connectionDefinition3 = (0, _graphqlRelay.connectionDefinitions)({ name: 'User', nodeType: userType }),
+    userConnection = _connectionDefinition3.connectionType,
+    userEdge = _connectionDefinition3.edgeType;
 
 var storeType = new _graphql.GraphQLObjectType({
     name: 'Store',
@@ -341,10 +332,10 @@ var addActivityMutation = (0, _graphqlRelay.mutationWithClientMutationId)({
     },
 
     mutateAndGetPayload: function mutateAndGetPayload(_ref3) {
-        var userId = _ref3.userId;
-        var disciplineId = _ref3.disciplineId;
-        var distance = _ref3.distance;
-        var date = _ref3.date;
+        var userId = _ref3.userId,
+            disciplineId = _ref3.disciplineId,
+            distance = _ref3.distance,
+            date = _ref3.date;
 
         return _database2.default.addActivity(userId, disciplineId, distance, date);
     }

@@ -17,9 +17,8 @@ var express = require('express');
 var cors = require('cors');
 var graphqlHTTP = require('express-graphql');
 
-var _require = require('graphql');
-
-var buildSchema = _require.buildSchema;
+var _require = require('graphql'),
+    buildSchema = _require.buildSchema;
 
 _mongoose2.default.Promise = global.Promise;
 

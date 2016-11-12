@@ -36,6 +36,7 @@ class ControlDiscipline extends React.Component {
                     defaultValue={this.props.value || ""} 
                     placeholder="distance" 
                     onChange={this.onChange} 
+                    onBlur={this.onChange}
                     componentClass="select">
                     <option disabled value="">Choose...</option>
                     { this.props.store.disciplines.edges.map(edge => 

@@ -32,7 +32,9 @@ export default class ControlDistance extends React.Component {
                 <ControlLabel>Distance</ControlLabel>
                 <InputGroup>
                     <FormControl 
-                        type="text" 
+                        type="number" 
+                        min="0"
+                        step="0.1"
                         value={this.props.value}
                         placeholder="4.7" 
                         onChange={this.onChange}  />
