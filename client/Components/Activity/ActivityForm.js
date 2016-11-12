@@ -105,6 +105,9 @@ class ActivityForm extends React.Component {
                         <Button type="submit" bsStyle="primary" styleName="form-noncontrol-offset">Log</Button>
                     </Col>
                 </Row>
+                <pre>
+                    {JSON.stringify(this.state, null, 2)}
+                </pre>
             </form>
         );
     }

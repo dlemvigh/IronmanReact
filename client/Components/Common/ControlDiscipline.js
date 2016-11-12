@@ -35,7 +35,6 @@ class ControlDiscipline extends React.Component {
                 <FormControl
                     defaultValue={this.props.value || ""} 
                     placeholder="distance" 
-                    onChange={this.onChange} 
                     onBlur={this.onChange}
                     componentClass="select">
                     <option disabled value="">Choose...</option>
