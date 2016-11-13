@@ -8,7 +8,7 @@ class Header extends React.Component {
     render() {
         return (
             <header>
-                <Navbar>
+                <Navbar collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <Link to="/">Ironman 70.3 Club</Link>
