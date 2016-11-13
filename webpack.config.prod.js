@@ -3,7 +3,6 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var nodeExternals = require('webpack-node-externals');
 
 if (process.env.NODE_ENV !== 'production') {
   throw new Error('Production builds must have NODE_ENV=production.');
