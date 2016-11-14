@@ -66,8 +66,7 @@ async function addActivity(userId, disciplineId, distance, date) {
      if (!newActivity){
        throw new Error('Error adding new activity');
      }
- 
-     await clearCachedSummary(newActivity.userId, newActivity.date);
+     await update(userId, date);
      return newActivity;  
  }
 
@@ -77,7 +76,8 @@ async function addActivity(userId, disciplineId, distance, date) {
        throw new Error('Error removing activity');
      }
      await activity.remove();
-     await clearCachedSummary(activity.userId, activity.date);
+     console.log("foo", activity);
+     await update(activity.userId, activity.date);
      return activity;
  }
 
@@ -97,49 +97,63 @@ async function getCachedSummaries(users, week, year) {
     return Promise.all(users.map(userId => getCachedSummary(userId, week, year)));
 }
 
-async function calcSummary(userId, week, year) {
-    const query = { userId };
-    if (week && year) {
-        const m = new Moment().isoWeek(week).year(year);
-        const start = m.startOf("isoWeek").toDate();
-        const end = m.endOf("isoWeek").toDate();
-        query.date = {
-            $gte: start,
-            $lte: end
-        }
-    }
-    const activities = await ActivityModel.find(query).select({score: 1});
-    const score = activities.reduce((sum, act) => sum + act.score, 0);
-
-    const summary = {
-        userId,
-        score
-    };
-    const summaryQuery = { userId };
-    if (week && year) {
-        Object.assign(summary, {week, year});
-        Object.assign(summaryQuery, {week, year});
-    }
-    console.log("find and update")
-    await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec()
-    const newSummary = await SummaryModel.findOne(query);
-
-     if (!newSummary){
-       throw new Error('Error adding new summary');
-     }
- 
-     return newSummary;  
+async function update(userId, date) {
+    await Promise.all([
+        calcSummaryTotal(userId),
+        calcSummary(userId, date)
+    ]);
+    await calcMedals();
 }
 
-async function clearCachedSummary(userId, date) {
-    const m = Moment(date);
-    const week = m.isoWeek();
-    const year = m.year();
-    return await Promise.all([
-        SummaryModel.findOneAndRemove({userId, week, year}).exec(),
-        SummaryModel.findOneAndRemove({userId, week: null, year: null}).exec(),
-        clearCachedMedals()
-    ]);
+async function calcSummaryTotal(userId) {
+    try {
+        const query = { userId };
+        
+        const activities = await ActivityModel.find(query).select({score: 1});
+        const score = activities.reduce((sum, act) => sum + act.score, 0);
+
+        const summary = { userId, score };
+        const summaryQuery = { userId, week: { $exists: false }, year: { $exists: false } };
+
+        await SummaryModel.findOneAndUpdate(summaryQuery, summary, {upsert: true}).exec()
+        const newSummary = await SummaryModel.findOne(summaryQuery);
+
+        if (!newSummary){
+        throw new Error('Error adding new summary');
+        }
+    
+        return newSummary;
+    } catch(error) {
+        console.error("error", error)
+    }  
+}
+
+async function calcSummary(userId, date) {
+    try {
+        const m = new Moment(date);
+        const start = m.startOf("isoWeek").toDate();
+        const end = m.endOf("isoWeek").toDate();
+        const query = { userId, date: { $gte: start, $lte: end } };
+
+        const activities = await ActivityModel.find(query).select({score: 1});
+        const score = activities.reduce((sum, act) => sum + act.score, 0);
+
+        const week = m.isoWeek();
+        const year = m.year();
+        const summary = { userId, score, week, year };
+        const summaryQuery = { userId, week, year };
+
+        await SummaryModel.findOneAndUpdate(summaryQuery, summary, {upsert: true}).exec()
+        const newSummary = await SummaryModel.findOne(summaryQuery);
+
+        if (!newSummary){
+        throw new Error('Error adding new summary');
+        }
+    
+        return newSummary;  
+    } catch(error) {
+        console.error("error", error)
+    }  
 }
 
 function getMedals(id) {
@@ -149,12 +163,12 @@ function getMedals(id) {
 async function getCachedMedals(userId) {
     let cached = await MedalsModel.findOne({ userId }).exec();    
     if (!cached) {
-        cached = await calcMedals(userId);
+        cached = {_id: userId, userId, gold: 0, silver: 0, bronze: 0};
     }
     return cached;
 }
 
-async function calcMedals(userId) {
+async function calcMedals() {
     const medals = {};
     const users = await UserModel.find().distinct('_id').exec();
     users.map(userId => medals[userId] = {userId, gold: 0, silver: 0, bronze: 0});
@@ -178,24 +192,17 @@ async function calcMedals(userId) {
         m.add(7, 'days');
     }
     await Promise.all( users.map(userId => saveMedal(medals[userId])));
-    return medals[userId];
 }
 
 async function saveMedal(medal){
-    const newMedal = await MedalsModel.findOneAndUpdate(
-        { userId: medal.userId },
-        medal,
-        {upsert: true}
-    ).exec();
-        
+    const query = { userId: medal.userId }; 
+    await MedalsModel.findOneAndUpdate(query, medal, {upsert: true}).exec();
+    const newMedal = await MedalsModel.findOne(query).exec();
+
     if (!newMedal){
         throw new Error('Error adding new medal');
     }
     return newMedal;
-}
-
-async function clearCachedMedals() {
-    return await MedalsModel.remove({}).exec();
 }
 
 export default {
