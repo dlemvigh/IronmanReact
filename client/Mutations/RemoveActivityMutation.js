@@ -23,13 +23,18 @@ class AddActivityMutation extends Relay.Mutation {
                     summary {
                         score
                     } 
-                    medals
+                    medals {
+                        gold
+                        silver
+                        bronze
+                    }
                 }
             }
         `
     }
 
   getConfigs() {
+      debugger;
     return [{
       type: 'NODE_DELETE',
       parentName: 'user',

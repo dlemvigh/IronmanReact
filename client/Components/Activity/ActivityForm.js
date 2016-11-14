@@ -30,6 +30,10 @@ class ActivityForm extends React.Component {
         });
     }
 
+    getMedalIds() {
+        return this.props.store.users.edges.map(edge => edge.node.medals.id);
+    }
+
     handleChangeDiscipline = (discipline) => {
         this.setState({
             disciplineId: discipline.id,
@@ -57,7 +61,7 @@ class ActivityForm extends React.Component {
         event.preventDefault();
         if (this.isValid()) {
             const activity = this.getActivity();
-
+            debugger;
             Relay.Store.commitUpdate(
                 new AddActivityMutation({
                     ...activity,
@@ -75,6 +79,7 @@ class ActivityForm extends React.Component {
         const activity = {
             userId: this.props.user._id,
             nodeId: this.props.user.id,
+            medalIds: this.getMedalIds(),
             disciplineId: this.state.disciplineId,
             distance: parseFloat(this.state.distance),
             unit: this.state.unit,
@@ -117,6 +122,15 @@ ActivityForm = Relay.createContainer(ActivityForm, {
         store: () => Relay.QL`
             fragment on Store {
                 id
+                users(first: 100) {
+                    edges {
+                        node {
+                            medals {
+                                id
+                            }
+                        }
+                    }
+                }
                 ${ControlDiscipline.getFragment('store')}
             }
         `,

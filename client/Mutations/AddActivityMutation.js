@@ -26,12 +26,18 @@ class AddActivityMutation extends Relay.Mutation {
                     summary {
                         score
                     }
+                    medals {
+                        gold
+                        silver
+                        bronze
+                    }
                 }
             }
         `
     }
 
   getConfigs() {
+      debugger; 
     return [{
       type: 'RANGE_ADD',
       parentName: 'user',
@@ -41,6 +47,11 @@ class AddActivityMutation extends Relay.Mutation {
       rangeBehaviors: {
         '': 'prepend',
       },
+    // },{
+    //   type: 'FIELDS_CHANGE',
+    //   fieldIDs: {
+    //       medals: this.props.medalIds
+    //   } 
     }];
   }
 }
