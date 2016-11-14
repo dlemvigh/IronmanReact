@@ -286,7 +286,12 @@ const addActivityMutation = mutationWithClientMutationId({
         resolve: async (obj) => {
             return await database.getUser(obj.userId)
         }
-    }
+    },
+    users: {
+        type: userConnection,
+        args: connectionArgs,
+        resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
+    },
   },
 
   mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {
@@ -312,7 +317,12 @@ const removeActivityMutation = mutationWithClientMutationId({
             resolve: async (obj) => {
                 return await database.getUser(obj.userId)
             }
-        }
+        },
+        users: {
+            type: userConnection,
+            args: connectionArgs,
+            resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
+        },
     },
     mutateAndGetPayload: ({id}) => {
         return database.removeActivity(id);
