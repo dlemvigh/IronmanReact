@@ -1,4 +1,5 @@
 import DisciplineModel from "../models/discipline";
+import MedalsModel from "../models/medals";
 import UserModel from "../models/user";
 
 const disciplines = [
@@ -15,30 +16,53 @@ const users = [
     { name: "Sidsel", username: "sidsel" }
 ];
 
+function populateMedals(userId, name){
+    MedalsModel.findOne({ userId }, (err, result) => {
+        if (err) {
+            console.log("error", err);
+        } else if (!result) {
+            console.log("creating medals", name);
+            new MedalsModel({
+                userId,
+                gold: 0,
+                silver: 0,
+                bronze: 0
+            }).save();        
+        }
+    });
+}
+
 export function populate(){
     disciplines.forEach(disc => {
         DisciplineModel.findOne({
             name: disc.name
         }, (err, result) => {
-            if (err || result) {
-                // console.log("discipline found")
-            }else{
+            if (err) {
+                console.log("error", err);
+            } else if (!result) {
                 console.log("creating", disc.name)
                 new DisciplineModel(disc).save();
             }
         })
     });
 
-    users.forEach(user => {
+    users.forEach(user => {        
         UserModel.findOne({
             name: user.name
         }, (err, result) => {
-            if (err || result) {
-                // console.log("user found")
+            if (err) {
+                console.log("error", err);
+            } else if (result) {
+                populateMedals(result._id, user.name);
             }else{
                 console.log("creating", user.name)
-                new UserModel(user).save();
+                new UserModel(user).save((err, newUser) => {
+                    if (!err && newUser) {
+                        populateMedals(newUser._id, user.name);
+                    }
+                });
             }
+            
         })
     });
 };

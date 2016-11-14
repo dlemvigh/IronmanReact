@@ -180,6 +180,7 @@ async function calcMedals(userId) {
 }
 
 async function saveMedal(medal){
+    try {
     const newMedal = await MedalsModel.findOneAndUpdate(
         { userId: medal.userId },
         medal,
@@ -187,9 +188,12 @@ async function saveMedal(medal){
     ).exec();
         
     if (!newMedal){
-        throw new Error('Error adding new medal');
+        throw new Error('Error adding new medal', newMedal);
     }
     return newMedal;
+    }catch(error){
+        console.log("error", error)
+    }
 }
 
 async function clearCachedMedals() {
