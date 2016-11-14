@@ -23,6 +23,7 @@ class AddActivityMutation extends Relay.Mutation {
                     summary {
                         score
                     } 
+                    medals
                 }
             }
         `

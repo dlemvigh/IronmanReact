@@ -1,11 +1,12 @@
+import Moment from 'moment'
+import _ from 'lodash'
+
 import ActivityModel from '../models/activity'
 import DisciplineModel from '../models/discipline'
 import UserModel from '../models/user'
 import StoreModel from '../models/store'
 import SummaryModel from '../models/summary'
 import MedalsModel from '../models/medals'
-import Moment from 'moment'
-import _ from 'lodash'
 
 const staticStore = new StoreModel(42);
 function getStore() {
@@ -141,14 +142,17 @@ function getMedals(id) {
 }
 
 async function getCachedMedals(userId) {
-    let cached = await MedalsModel.findOne({ userId }).exec();
+    console.log("get", userId);
+    let cached = await MedalsModel.findOne({ userId }).exec();    
     if (!cached) {
         cached = await calcMedals(userId);
     }
+    console.log("done", userId);
     return cached;
 }
 
 async function calcMedals(userId) {
+    console.log("calc", userId)
     const medals = {};
     const users = await ActivityModel.find().distinct('userId').exec();
     users.map(userId => medals[userId] = {userId, gold: 0, silver: 0, bronze: 0});
@@ -176,8 +180,12 @@ async function calcMedals(userId) {
 }
 
 async function saveMedal(medal){
-    const model = new MedalsModel(medal);
-    const newMedal = await model.save();
+    const newMedal = await MedalsModel.findOneAndUpdate(
+        { userId: medal.userId },
+        medal,
+        {upsert: true}
+    ).exec();
+        
     if (!newMedal){
         throw new Error('Error adding new medal');
     }
@@ -185,8 +193,7 @@ async function saveMedal(medal){
 }
 
 async function clearCachedMedals() {
-    const medals = await MedalsModel.find().exec();
-    return await medals.remove();
+    return await MedalsModel.remove({}).exec();
 }
 
 export default {

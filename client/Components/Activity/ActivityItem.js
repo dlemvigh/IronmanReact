@@ -1,4 +1,5 @@
 import React from "react"
+import ReactDom from "react-dom"
 import Relay from "react-relay"
 import CSSModules from "react-css-modules"
 import { Glyphicon } from "react-bootstrap"
@@ -10,13 +11,7 @@ import styles from "./ActivityItem.scss"
 import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation"
 
 class ActivityItem extends React.Component {
-    // static propTypes = {
-    //     discipline: React.PropTypes.string.isRequired,
-    //     distance: React.PropTypes.number.isRequired,
-    //     unit: React.PropTypes.string.isRequired,
-    //     score: React.PropTypes.number.isRequired,
-    //     date: React.PropTypes.object.isRequired
-    // }
+
     onDelete = () => {
         const mutation = new RemoveActivityMutation({
             id: this.props.activity._id,

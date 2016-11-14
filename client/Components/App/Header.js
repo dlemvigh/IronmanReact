@@ -8,7 +8,7 @@ class Header extends React.Component {
     render() {
         return (
             <header>
-                <Navbar collapseOnSelect>
+                <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <Link to="/">Ironman 70.3 Club</Link>
@@ -17,11 +17,8 @@ class Header extends React.Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav>
-                            <LinkContainer to="/leaderboard">
-                                <NavItem>Leaderboard</NavItem>
-                            </LinkContainer>
                             {
-                                this.props.store.users.edges.map(edge => <LinkContainer key={edge.node.username} to={`/activity/${edge.node.username}`}>
+                                this.props.store.users.edges.map(edge => <LinkContainer key={edge.node.username} to={`/${edge.node.username}`}>
                                     <NavItem>{edge.node.name}</NavItem>
                                 </LinkContainer>)
                             }

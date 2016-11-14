@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRedirect } from 'react-router'
+import { Router, Route, IndexRoute, IndexRedirect } from 'react-router'
 
 import App from './Components/App/App'
 import AppQueries from './Components/App/AppQueries'
@@ -11,17 +11,15 @@ import LeaderboardQueries from './Components/Leaderboard/LeaderboardQueries'
 const Routes = (props) => ( 
   <Router {...props}>
     <Route path='/' component={App} queries={AppQueries}>
-      <IndexRedirect to="/leaderboard" />
-      <Route 
-        path='/activity/:username' 
-        component={Activity} 
-        queries={ActivityQueries}
-        render={({props}) => props && <Activity {...props} />} />  
-      <Route 
-        path='/leaderboard' 
+      <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}
         render={({props}) => props && <Leaderboard {...props} /> } />
+      <Route 
+        path='/:username' 
+        component={Activity} 
+        queries={ActivityQueries}
+        render={({props}) => props && <Activity {...props} />} />  
     </Route>
   </Router>
 );

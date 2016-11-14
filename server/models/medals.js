@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 const medalsSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true        
+        required: true,
     },
     gold: {
       type: Number,

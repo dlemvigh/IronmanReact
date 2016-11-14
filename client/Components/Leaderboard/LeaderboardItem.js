@@ -18,7 +18,7 @@ class LeaderboardItem extends React.Component {
     }
 
     onClick = () => {
-        this.context.router.push(`/activity/${this.props.user.username}`);
+        this.context.router.push(`/${this.props.user.username}`);
     }
 
     render() {
