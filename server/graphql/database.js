@@ -111,14 +111,19 @@ async function calcSummary(userId, week, year) {
     const activities = await ActivityModel.find(query).select({score: 1});
     const score = activities.reduce((sum, act) => sum + act.score, 0);
 
-    const summary = new SummaryModel({
+    const summary = {
         userId,
-        score,
-        week,
-        year
-    });
+        score
+    };
+    const summaryQuery = { userId };
+    if (week && year) {
+        Object.assign(summary, {week, year});
+        Object.assign(summaryQuery, {week, year});
+    }
+    console.log("find and update")
+    await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec()
+    const newSummary = await SummaryModel.findOne(query);
 
-    const newSummary = await summary.save();
      if (!newSummary){
        throw new Error('Error adding new summary');
      }
@@ -142,19 +147,16 @@ function getMedals(id) {
 }
 
 async function getCachedMedals(userId) {
-    console.log("get", userId);
     let cached = await MedalsModel.findOne({ userId }).exec();    
     if (!cached) {
         cached = await calcMedals(userId);
     }
-    console.log("done", userId);
     return cached;
 }
 
 async function calcMedals(userId) {
-    console.log("calc", userId)
     const medals = {};
-    const users = await ActivityModel.find().distinct('userId').exec();
+    const users = await UserModel.find().distinct('_id').exec();
     users.map(userId => medals[userId] = {userId, gold: 0, silver: 0, bronze: 0});
 
     const [first, last] = await Promise.all([
