@@ -9,6 +9,8 @@ type Activity implements Node {
   unit: String
   score: Float
   date: DateTime
+  week: Int
+  year: Int
   userId: ID
   userName: String
 }
@@ -75,6 +77,16 @@ type DisciplineEdge {
   cursor: String!
 }
 
+type Medals {
+  _id: ID!
+
+  # The ID of an object
+  id: ID!
+  gold: Int
+  silver: Int
+  bronze: Int
+}
+
 type Mutation {
   addActivity(input: AddActivityInput!): AddActivityPayload
   removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
@@ -136,8 +148,6 @@ type Summary implements Node {
 
   # The ID of an object
   id: ID!
-  userId: ID
-  userName: String
   score: Float
   week: Int
   year: Int
@@ -154,6 +164,7 @@ type User implements Node {
   active: Boolean
   activities(after: String, first: Int, before: String, last: Int): ActivityConnection
   summary(week: Int, year: Int): Summary
+  medals: Medals
 }
 
 # A connection to a list of items.

@@ -38,6 +38,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return database.getDiscipline(id);
     } else if (type === 'Summary') {
       return database.getSummary(id)
+    } else if (type === 'Medals') {
+      return database.getMedals(id)
     }
     return null;
   },
@@ -52,10 +54,32 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return disciplineType;
     } else if (obj instanceof database.SummaryModel) {
         return summaryType;
+    } else if (obj instanceof database.MedalsModel) {
+        //TODO medals model
+        return medalsType;
     }
     return null;
   }
 );
+
+const medalsType = new GraphQLObjectType({
+    name: 'Medals',
+    fields: () => ({
+        _id: {
+            type: new GraphQLNonNull(GraphQLID)
+        },
+        id: globalIdField('Medals'),
+        gold: {
+            type: GraphQLInt
+        },
+        silver: {
+            type: GraphQLInt
+        },
+        bronze: {
+            type: GraphQLInt
+        }
+    })
+}) 
 
 const summaryType = new GraphQLObjectType({
     name: 'Summary',
@@ -64,12 +88,6 @@ const summaryType = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLID),
         },
         id: globalIdField('Summary'),
-        userId: {
-            type: GraphQLID
-        },
-        userName: {
-            type: GraphQLString
-        },
         score: {
             type: GraphQLFloat
         },
@@ -108,6 +126,12 @@ const activityType = new GraphQLObjectType({
         },
         date: {
             type: CustomGraphQLDateType  
+        },
+        week: {
+            type: GraphQLInt
+        },
+        year: {
+            type: GraphQLInt
         },
         userId: {
             type: GraphQLID
@@ -181,6 +205,12 @@ const userType = new GraphQLObjectType({
             },
             resolve: (root, args) => {
                 return database.getCachedSummary(root._id, args.week, args.year);
+            }
+        },
+        medals: {
+            type: medalsType,
+            resolve: (root) => {
+                return database.getCachedMedals(root._id);
             }
         }
     }),

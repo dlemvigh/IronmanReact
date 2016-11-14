@@ -38,9 +38,10 @@ module.exports = {
 }]
   },
   plugins: [
+    
     new HtmlWebpackPlugin({
       inject: true,
-      template: 'public/index.html',
+      template: 'client/index.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()

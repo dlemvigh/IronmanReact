@@ -3,7 +3,9 @@ import DisciplineModel from '../models/discipline'
 import UserModel from '../models/user'
 import StoreModel from '../models/store'
 import SummaryModel from '../models/summary'
+import MedalsModel from '../models/medals'
 import Moment from 'moment'
+import _ from 'lodash'
 
 const staticStore = new StoreModel(42);
 function getStore() {
@@ -90,6 +92,10 @@ async function getCachedSummary(userId, week, year) {
     return cached;
 }
 
+async function getCachedSummaries(users, week, year) {
+    return Promise.all(users.map(userId => getCachedSummary(userId, week, year)));
+}
+
 async function calcSummary(userId, week, year) {
     const query = { userId };
     if (week && year) {
@@ -104,10 +110,8 @@ async function calcSummary(userId, week, year) {
     const activities = await ActivityModel.find(query).select({score: 1});
     const score = activities.reduce((sum, act) => sum + act.score, 0);
 
-    const user = await getUser(userId);
     const summary = new SummaryModel({
         userId,
-        userName: user.name,
         score,
         week,
         year
@@ -127,8 +131,62 @@ async function clearCachedSummary(userId, date) {
     const year = m.year();
     return await Promise.all([
         SummaryModel.findOneAndRemove({userId, week, year}).exec(),
-        SummaryModel.findOneAndRemove({userId, week: null, year: null}).exec()
+        SummaryModel.findOneAndRemove({userId, week: null, year: null}).exec(),
+        clearCachedMedals()
     ]);
+}
+
+function getMedals(id) {
+    return MedalsModel.findById(id).exec();
+}
+
+async function getCachedMedals(userId) {
+    let cached = await MedalsModel.findOne({ userId }).exec();
+    if (!cached) {
+        cached = await calcMedals(userId);
+    }
+    return cached;
+}
+
+async function calcMedals(userId) {
+    const medals = {};
+    const users = await ActivityModel.find().distinct('userId').exec();
+    users.map(userId => medals[userId] = {userId, gold: 0, silver: 0, bronze: 0});
+
+    const [first, last] = await Promise.all([
+        ActivityModel.findOne().sort({date: 1}).exec(),
+        ActivityModel.findOne().sort({date: -1}).exec()
+    ]);
+    const m = Moment().isoWeek(first.week).year(first.year);    
+    while(m.year() < last.year || m.year() <= last.year && m.isoWeek() <= last.week) {
+        const summaries = await getCachedSummaries(users, m.isoWeek(), m.year());
+        const sorted = _(summaries)
+            .filter(x => x.score > 0)
+            .sortBy('score')
+            .reverse()
+            .value();
+
+        sorted[0] && medals[sorted[0].userId].gold++;        
+        sorted[1] && medals[sorted[1].userId].silver++;
+        sorted[2] && medals[sorted[2].userId].bronze++;
+        m.add(7, 'days');
+    }
+    await Promise.all( users.map(userId => saveMedal(medals[userId])));
+    return medals[userId];
+}
+
+async function saveMedal(medal){
+    const model = new MedalsModel(medal);
+    const newMedal = await model.save();
+    if (!newMedal){
+        throw new Error('Error adding new medal');
+    }
+    return newMedal;
+}
+
+async function clearCachedMedals() {
+    const medals = await MedalsModel.find().exec();
+    return await medals.remove();
 }
 
 export default {
@@ -148,5 +206,7 @@ export default {
     addActivity,
     removeActivity,
     getSummary,
-    getCachedSummary    
+    getCachedSummary,
+    getMedals,
+    getCachedMedals 
 };
