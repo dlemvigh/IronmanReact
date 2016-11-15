@@ -34,7 +34,6 @@ class AddActivityMutation extends Relay.Mutation {
     }
 
   getConfigs() {
-      debugger;
     return [{
       type: 'NODE_DELETE',
       parentName: 'user',

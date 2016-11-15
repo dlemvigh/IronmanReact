@@ -30,8 +30,8 @@ class ActivityForm extends React.Component {
         });
     }
 
-    getMedalIds() {
-        return this.props.store.users.edges.map(edge => edge.node.medals.id);
+    getUserIds() {
+        return this.props.store.users.edges.map(edge => edge.node.id);
     }
 
     handleChangeDiscipline = (discipline) => {
@@ -61,7 +61,6 @@ class ActivityForm extends React.Component {
         event.preventDefault();
         if (this.isValid()) {
             const activity = this.getActivity();
-            debugger;
             Relay.Store.commitUpdate(
                 new AddActivityMutation({
                     ...activity,
@@ -79,7 +78,7 @@ class ActivityForm extends React.Component {
         const activity = {
             userId: this.props.user._id,
             nodeId: this.props.user.id,
-            medalIds: this.getMedalIds(),
+            userIds: this.getUserIds(),
             disciplineId: this.state.disciplineId,
             distance: parseFloat(this.state.distance),
             unit: this.state.unit,

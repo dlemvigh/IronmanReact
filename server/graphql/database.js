@@ -76,7 +76,6 @@ async function addActivity(userId, disciplineId, distance, date) {
        throw new Error('Error removing activity');
      }
      await activity.remove();
-     console.log("foo", activity);
      await update(activity.userId, activity.date);
      return activity;
  }

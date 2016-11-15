@@ -1,6 +1,7 @@
 import {
   GraphQLSchema,
   GraphQLObjectType,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLString,
   GraphQLFloat,
@@ -286,7 +287,12 @@ const addActivityMutation = mutationWithClientMutationId({
         resolve: async (obj) => {
             return await database.getUser(obj.userId)
         }
-    }
+    },
+    users: {
+        type: userConnection,
+        args: connectionArgs,
+        resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
+    },
   },
 
   mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {
