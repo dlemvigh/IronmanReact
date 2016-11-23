@@ -46,17 +46,13 @@ MedalsList = Relay.createContainer(MedalsList, {
   fragments: {
     store: () => Relay.QL`
       fragment on Store {
-        users(first: 100) {
-          edges {
-            node {
-              ${MedalsItem.getFragment('user')}
-              _id
-              medals {
-                gold
-                silver
-                bronze
-              }
-            }
+        users {
+          ${MedalsItem.getFragment('user')}
+          _id
+          medals {
+            gold
+            silver
+            bronze
           }
         }
       }

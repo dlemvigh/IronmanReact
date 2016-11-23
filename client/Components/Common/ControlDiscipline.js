@@ -38,14 +38,14 @@ class ControlDiscipline extends React.Component {
                     onBlur={this.onChange}
                     componentClass="select">
                     <option disabled value="">Choose...</option>
-                    { this.props.store.disciplines.edges.map(edge => 
+                    { this.props.store.disciplines.map(discipline => 
                         <option 
-                            key={edge.node.id} 
-                            value={edge.node.id}
-                            data-id={edge.node._id}
-                            data-name={edge.node.name}
-                            data-unit={edge.node.unit}
-                            data-score={edge.node.score}>{edge.node.name}</option>) }
+                            key={discipline.id} 
+                            value={discipline.id}
+                            data-id={discipline._id}
+                            data-name={discipline.name}
+                            data-unit={discipline.unit}
+                            data-score={discipline.score}>{discipline.name}</option>) }
                 </FormControl>
             </FormGroup>
         );
@@ -56,16 +56,12 @@ ControlDiscipline = Relay.createContainer(ControlDiscipline, {
     fragments: {
         store: () => Relay.QL`
             fragment on Store {
-                disciplines(first: 100) {
-                    edges {
-                        node {
-                            _id
-                            id
-                            name
-                            unit
-                            score
-                        }
-                    }
+                disciplines {
+                    _id
+                    id
+                    name
+                    unit
+                    score
                 }
             }
         `

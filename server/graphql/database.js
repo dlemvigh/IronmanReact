@@ -66,7 +66,6 @@ async function addActivity(userId, disciplineId, distance, date) {
      if (!newActivity){
        throw new Error('Error adding new activity');
      }
-     await update(userId, date);
      return newActivity;  
  }
 
@@ -76,133 +75,9 @@ async function addActivity(userId, disciplineId, distance, date) {
        throw new Error('Error removing activity');
      }
      await activity.remove();
-     await update(activity.userId, activity.date);
      return activity;
  }
 
-function getSummary(id) {
-    return SummaryModel.findById(id).exec();
-}
-
-async function getCachedSummary(userId, week, year) {
-    let cached = await SummaryModel.findOne({ userId, week, year }).exec();
-    if (!cached) {
-        cached = await calcSummary(userId, week, year);
-    }
-    return cached;
-}
-
-async function getCachedSummaries(users, week, year) {
-    return Promise.all(users.map(userId => getCachedSummary(userId, week, year)));
-}
-
-async function update(userId, date) {
-    await Promise.all([
-        calcSummaryTotal(userId),
-        calcSummary(userId, date)
-    ]);
-    await calcMedals();
-}
-
-async function calcSummaryTotal(userId) {
-    try {
-        const query = { userId };
-        
-        const activities = await ActivityModel.find(query).select({score: 1});
-        const score = activities.reduce((sum, act) => sum + act.score, 0);
-
-        const summary = { userId, score };
-        const summaryQuery = { userId, week: { $exists: false }, year: { $exists: false } };
-
-        await SummaryModel.findOneAndUpdate(summaryQuery, summary, {upsert: true}).exec()
-        const newSummary = await SummaryModel.findOne(summaryQuery);
-
-        if (!newSummary){
-        throw new Error('Error adding new summary');
-        }
-    
-        return newSummary;
-    } catch(error) {
-        console.error("error", error)
-    }  
-}
-
-async function calcSummary(userId, date) {
-    try {
-        const m = new Moment(date);
-        const start = m.startOf("isoWeek").toDate();
-        const end = m.endOf("isoWeek").toDate();
-        const query = { userId, date: { $gte: start, $lte: end } };
-
-        const activities = await ActivityModel.find(query).select({score: 1});
-        const score = activities.reduce((sum, act) => sum + act.score, 0);
-
-        const week = m.isoWeek();
-        const year = m.year();
-        const summary = { userId, score, week, year };
-        const summaryQuery = { userId, week, year };
-
-        await SummaryModel.findOneAndUpdate(summaryQuery, summary, {upsert: true}).exec()
-        const newSummary = await SummaryModel.findOne(summaryQuery);
-
-        if (!newSummary){
-        throw new Error('Error adding new summary');
-        }
-    
-        return newSummary;  
-    } catch(error) {
-        console.error("error", error)
-    }  
-}
-
-function getMedals(id) {
-    return MedalsModel.findById(id).exec();
-}
-
-async function getCachedMedals(userId) {
-    let cached = await MedalsModel.findOne({ userId }).exec();    
-    if (!cached) {
-        cached = {_id: userId, userId, gold: 0, silver: 0, bronze: 0};
-    }
-    return cached;
-}
-
-async function calcMedals() {
-    const medals = {};
-    const users = await UserModel.find().distinct('_id').exec();
-    users.map(userId => medals[userId] = {userId, gold: 0, silver: 0, bronze: 0});
-
-    const [first, last] = await Promise.all([
-        ActivityModel.findOne().sort({date: 1}).exec(),
-        ActivityModel.findOne().sort({date: -1}).exec()
-    ]);
-    const m = Moment().isoWeek(first.week).year(first.year);    
-    while(m.year() < last.year || m.year() <= last.year && m.isoWeek() <= last.week) {
-        const summaries = await getCachedSummaries(users, m.isoWeek(), m.year());
-        const sorted = _(summaries)
-            .filter(x => x.score > 0)
-            .sortBy('score')
-            .reverse()
-            .value();
-
-        sorted[0] && medals[sorted[0].userId].gold++;        
-        sorted[1] && medals[sorted[1].userId].silver++;
-        sorted[2] && medals[sorted[2].userId].bronze++;
-        m.add(7, 'days');
-    }
-    await Promise.all( users.map(userId => saveMedal(medals[userId])));
-}
-
-async function saveMedal(medal){
-    const query = { userId: medal.userId }; 
-    await MedalsModel.findOneAndUpdate(query, medal, {upsert: true}).exec();
-    const newMedal = await MedalsModel.findOne(query).exec();
-
-    if (!newMedal){
-        throw new Error('Error adding new medal');
-    }
-    return newMedal;
-}
 
 export default {
     ActivityModel,
@@ -219,9 +94,5 @@ export default {
     getUsers,
     getStore,
     addActivity,
-    removeActivity,
-    getSummary,
-    getCachedSummary,
-    getMedals,
-    getCachedMedals 
+    removeActivity
 };

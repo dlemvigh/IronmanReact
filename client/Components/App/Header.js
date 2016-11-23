@@ -18,8 +18,8 @@ class Header extends React.Component {
                     <Navbar.Collapse>
                         <Nav>
                             {
-                                this.props.store.users.edges.map(edge => <LinkContainer key={edge.node.username} to={`/${edge.node.username}`}>
-                                    <NavItem>{edge.node.name}</NavItem>
+                                this.props.store.users.map(user => <LinkContainer key={user.username} to={`/${user.username}`}>
+                                    <NavItem>{user.name}</NavItem>
                                 </LinkContainer>)
                             }
                             {/*
@@ -45,13 +45,9 @@ Header = Relay.createContainer(Header, {
     fragments: {
         store: () => Relay.QL`
             fragment on Store {
-                users(first: 100) {
-                    edges {
-                        node {
-                            name
-                            username                        
-                        }
-                    }
+                users {
+                    name
+                    username                        
                 }
             }
         `

@@ -16,10 +16,10 @@ class LeaderboardList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.store.users.edges
-                        .sort((a,b) => b.node.summary.score - a.node.summary.score)
-                        .map((edge, index) =>
-                        <LeaderboardItem key={edge.node._id} user={edge.node} index={index} />
+                    {this.props.store.users
+                        .sort((a,b) => a.summary && b.summary && b.summary.score - a.summary.score)
+                        .map((user, index) =>
+                        <LeaderboardItem key={user._id} user={user} index={index} />
                     )}
                 </tbody>
             </Table>
@@ -31,16 +31,12 @@ LeaderboardList = Relay.createContainer(LeaderboardList, {
     fragments: {
         store: () => Relay.QL`
             fragment on Store {
-                users(first: 10) {
-                    edges {
-                        node {
-                            _id
-                            summary {
-                                score
-                            }
-                            ${LeaderboardItem.getFragment('user')}
-                        }
+                users {
+                    _id
+                    summary {
+                        score
                     }
+                    ${LeaderboardItem.getFragment('user')}
                 }
             }
         `

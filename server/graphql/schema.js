@@ -166,8 +166,6 @@ const disciplineType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-const { connectionType: disciplineConnection, edgeType: disciplineEdge } = connectionDefinitions({ name: 'Discipline', nodeType: disciplineType });
-
 const userType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
@@ -205,20 +203,18 @@ const userType = new GraphQLObjectType({
                 }        
             },
             resolve: (root, args) => {
-                return database.getCachedSummary(root._id, args.week, args.year);
+                return null;
             }
         },
         medals: {
             type: medalsType,
             resolve: (root) => {
-                return database.getCachedMedals(root._id);
+                return null;
             }
         }
     }),
     interfaces: [nodeInterface]
 });
-
-const { connectionType: userConnection, edgeType: userEdge } = connectionDefinitions({ name: 'User', nodeType: userType });
 
 const storeType = new GraphQLObjectType({
     name: 'Store',
@@ -229,14 +225,12 @@ const storeType = new GraphQLObjectType({
             resolve: () => 'hello'
         },
         disciplines: {
-            type: disciplineConnection,
-            args: connectionArgs,
-            resolve: (_, args) => connectionFromPromisedArray(database.getDisciplines(), args)
+            type: new GraphQLList(disciplineType),
+            resolve: () => database.getDisciplines()
         },
         users: {
-            type: userConnection,
-            args: connectionArgs,
-            resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
+            type: new GraphQLList(userType),
+            resolve: () => database.getUsers()
         },
     }),
     interfaces: [nodeInterface]
@@ -287,11 +281,6 @@ const addActivityMutation = mutationWithClientMutationId({
         resolve: async (obj) => {
             return await database.getUser(obj.userId)
         }
-    },
-    users: {
-        type: userConnection,
-        args: connectionArgs,
-        resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
     },
   },
 

@@ -27,17 +27,6 @@ class AddActivityMutation extends Relay.Mutation {
                         score
                     }
                 }
-                users(first: 100) {
-                    edges {
-                        node {
-                            medals {
-                                gold
-                                silver
-                                bronze
-                            }
-                        }
-                    }
-                }
             }
         `
     }
@@ -52,11 +41,6 @@ class AddActivityMutation extends Relay.Mutation {
       rangeBehaviors: {
         '': 'prepend',
       },
-    },{
-      type: 'FIELDS_CHANGE',
-      fieldIDs: {
-          users: this.props.userIds
-      } 
     }];
   }
 }

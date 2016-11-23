@@ -21,12 +21,16 @@ class LeaderboardItem extends React.Component {
         this.context.router.push(`/${this.props.user.username}`);
     }
 
+    getScore() {
+        return this.props.summary ? this.props.summary.score : 0;
+    }
+
     render() {
         return (
             <tr styleName="row" onClick={this.onClick}>
                 <td><Pos value={this.props.index + 1} /></td>
                 <td>{this.props.user.name}</td>
-                <td>{this.props.user.summary.score} points</td>
+                <td>{this.getScore()} points</td>
             </tr>
         );
     }
