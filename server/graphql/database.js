@@ -99,6 +99,7 @@ async function getCachedSummaries(users, week, year) {
 
 async function calcSummary(userId, week, year) {
     const query = { userId };
+    const summaryQuery = { userId };
     if (week && year) {
         const m = new Moment().isoWeek(week).year(year);
         const start = m.startOf("isoWeek").toDate();
@@ -107,20 +108,35 @@ async function calcSummary(userId, week, year) {
             $gte: start,
             $lte: end
         }
+        query.week = week;
+        query.year = year;
     }
-    const activities = await ActivityModel.find(query).select({score: 1});
+    const [user, activities] = await Promise.all([
+        UserModel.findById(userId).exec(),
+        ActivityModel.find(query).select({score: 1}).exec()
+    ]);
+    console.log("calc sum", user)
     const score = activities.reduce((sum, act) => sum + act.score, 0);
 
-    const summary = new SummaryModel({
+    const summary = {
         userId,
+        userName: user.name,
         score,
         week,
         year
-    });
+    };
 
-    const newSummary = await summary.save();
+    const newSummary = await SummaryModel.findOneAndUpdate(
+        summaryQuery,
+        summary,
+        {upsert: true}
+    ).exec();
+
+    // const newSummary = await summary.save();
      if (!newSummary){
        throw new Error('Error adding new summary');
+     }else{
+         console.log("calc summary", user.name, newSummary);
      }
  
      return newSummary;  
@@ -154,8 +170,9 @@ async function getCachedMedals(userId) {
 async function calcMedals(userId) {
     console.log("calc", userId)
     const medals = {};
-    const users = await ActivityModel.find().distinct('userId').exec();
-    users.map(userId => medals[userId] = {userId, gold: 0, silver: 0, bronze: 0});
+    const users = await UserModel.find().exec();
+    console.log("users", users)
+    users.map(user => medals[user._id] = {userId: user._id, userName: user.name, gold: 0, silver: 0, bronze: 0});
 
     const [first, last] = await Promise.all([
         ActivityModel.findOne().sort({date: 1}).exec(),
@@ -175,11 +192,12 @@ async function calcMedals(userId) {
         sorted[2] && medals[sorted[2].userId].bronze++;
         m.add(7, 'days');
     }
-    await Promise.all( users.map(userId => saveMedal(medals[userId])));
+    await Promise.all( users.map(user => saveMedal(medals[user._id])));
     return medals[userId];
 }
 
 async function saveMedal(medal){
+    console.log("save medal", medal)
     try {
     const newMedal = await MedalsModel.findOneAndUpdate(
         { userId: medal.userId },

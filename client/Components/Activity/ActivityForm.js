@@ -15,9 +15,9 @@ import AddActivityMutation from "../../Mutations/AddActivityMutation"
 class ActivityForm extends React.Component {
 
     state = {
-        disciplineId: "",
-        discipline: "",
-        distance: "",
+        disciplineId: this.props.store.disciplines[0]._id,
+        discipline: this.props.store.disciplines[0].name,
+        distance: "1",
         unit: 'km',
         score: "",
         date: Moment().startOf("date")
@@ -25,7 +25,7 @@ class ActivityForm extends React.Component {
 
     clearState() {
         this.setState({
-            distance: "",
+            distance: "1",
             date: Moment().startOf("date")
         });
     }
@@ -117,6 +117,11 @@ ActivityForm = Relay.createContainer(ActivityForm, {
         store: () => Relay.QL`
             fragment on Store {
                 id
+                disciplines {
+                    _id
+                    id
+                    name
+                }
                 ${ControlDiscipline.getFragment('store')}
             }
         `,

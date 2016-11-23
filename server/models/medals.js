@@ -5,6 +5,9 @@ const medalsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
+    userName: {
+      type: String
+    },
     gold: {
       type: Number,
       default: 0

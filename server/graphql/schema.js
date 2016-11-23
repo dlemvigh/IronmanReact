@@ -2,6 +2,7 @@ import {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLNonNull,
+  GraphQLList,
   GraphQLString,
   GraphQLFloat,
   GraphQLInt,
@@ -165,8 +166,6 @@ const disciplineType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-const { connectionType: disciplineConnection, edgeType: disciplineEdge } = connectionDefinitions({ name: 'Discipline', nodeType: disciplineType });
-
 const userType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
@@ -217,8 +216,6 @@ const userType = new GraphQLObjectType({
     interfaces: [nodeInterface]
 });
 
-const { connectionType: userConnection, edgeType: userEdge } = connectionDefinitions({ name: 'User', nodeType: userType });
-
 const storeType = new GraphQLObjectType({
     name: 'Store',
     fields: () => ({
@@ -228,14 +225,12 @@ const storeType = new GraphQLObjectType({
             resolve: () => 'hello'
         },
         disciplines: {
-            type: disciplineConnection,
-            args: connectionArgs,
-            resolve: (_, args) => connectionFromPromisedArray(database.getDisciplines(), args)
+            type: new GraphQLList(disciplineType),
+            resolve: () => database.getDisciplines()
         },
         users: {
-            type: userConnection,
-            args: connectionArgs,
-            resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
+            type: new GraphQLList(userType),
+            resolve: () => database.getUsers()
         },
     }),
     interfaces: [nodeInterface]
@@ -288,9 +283,8 @@ const addActivityMutation = mutationWithClientMutationId({
         }
     },
     users: {
-        type: userConnection,
-        args: connectionArgs,
-        resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
+        type: new GraphQLList(userType),
+        resolve: () => database.getUsers()
     },
   },
 
@@ -319,9 +313,8 @@ const removeActivityMutation = mutationWithClientMutationId({
             }
         },
         users: {
-            type: userConnection,
-            args: connectionArgs,
-            resolve: (_, args) => connectionFromPromisedArray(database.getUsers(), args)
+            type: new GraphQLList(userType),
+            resolve: () => database.getUsers()
         },
     },
     mutateAndGetPayload: ({id}) => {

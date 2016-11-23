@@ -29,11 +29,7 @@ class AddActivityMutation extends Relay.Mutation {
                     medals
                 }
                 users {
-                    edges {
-                        node {
-                            medals
-                        }
-                    }
+                    medals
                 }
             }
         `

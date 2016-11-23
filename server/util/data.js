@@ -24,6 +24,7 @@ function populateMedals(userId, name){
             console.log("creating medals", name);
             new MedalsModel({
                 userId,
+                userName: name,
                 gold: 0,
                 silver: 0,
                 bronze: 0

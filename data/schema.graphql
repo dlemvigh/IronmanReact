@@ -44,7 +44,7 @@ input AddActivityInput {
 type AddActivityPayload {
   activityEdge: ActivityEdge
   user: User
-  users(after: String, first: Int, before: String, last: Int): UserConnection
+  users: [User]
   clientMutationId: String
 }
 
@@ -58,24 +58,6 @@ type Discipline implements Node {
   name: String
   score: Float
   unit: String
-}
-
-# A connection to a list of items.
-type DisciplineConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [DisciplineEdge]
-}
-
-# An edge in a connection.
-type DisciplineEdge {
-  # The item at the end of the edge
-  node: Discipline
-
-  # A cursor for use in pagination
-  cursor: String!
 }
 
 type Medals {
@@ -133,7 +115,7 @@ input RemoveActivityInput {
 type RemoveActivityPayload {
   removedActivityId: String
   user: User
-  users(after: String, first: Int, before: String, last: Int): UserConnection
+  users: [User]
   clientMutationId: String
 }
 
@@ -141,8 +123,8 @@ type Store implements Node {
   # The ID of an object
   id: ID!
   echo: String
-  disciplines(after: String, first: Int, before: String, last: Int): DisciplineConnection
-  users(after: String, first: Int, before: String, last: Int): UserConnection
+  disciplines: [Discipline]
+  users: [User]
 }
 
 type Summary implements Node {
@@ -167,22 +149,4 @@ type User implements Node {
   activities(after: String, first: Int, before: String, last: Int): ActivityConnection
   summary(week: Int, year: Int): Summary
   medals: Medals
-}
-
-# A connection to a list of items.
-type UserConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [UserEdge]
-}
-
-# An edge in a connection.
-type UserEdge {
-  # The item at the end of the edge
-  node: User
-
-  # A cursor for use in pagination
-  cursor: String!
 }
