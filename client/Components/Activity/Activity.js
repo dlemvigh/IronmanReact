@@ -7,13 +7,26 @@ import ActivityList from './ActivityList'
 
 class Activity extends React.Component {
 
+    state = {
+        editing: null
+    }
+
+    onBeginEdit = (activity) => {
+        this.setState({editing: activity});
+    }
+
+    onEndEdit = () => {
+        this.setState({editing: null})
+    }
+
     render() {
         return (
             <div>
-                <h1>{this.props.user.name}</h1>
-                <ActivityForm {...this.props} />
+                <h1>{this.props.user.name}</h1>                
+                <ActivityForm {...this.props} show={this.state.editing === null} activity={null} />
+                <ActivityForm {...this.props} show={this.state.editing !== null} activity={this.state.editing} onEditDone={this.onEndEdit} />
                 <h3>Activities</h3>
-                <ActivityList {...this.props} />
+                <ActivityList {...this.props} onEdit={this.onBeginEdit} />
             </div>
         )
     }

@@ -14,13 +14,30 @@ import AddActivityMutation from "../../Mutations/AddActivityMutation"
 
 class ActivityForm extends React.Component {
 
+    componentWillReceiveProps(newProps) {
+        if (newProps.activity != null) {
+            this.setState({
+                disciplineId: newProps.activity.disciplineId,
+                disciplineName: newProps.activity.disciplineName,
+                distance: newProps.activity.distance,
+                unit: newProps.activity.unit,
+                score: newProps.activity.score / newProps.activity.distance,
+                date: new Date(newProps.activity.date),
+            })
+        }
+    }
+
     state = {
         disciplineId: "" || this.props.store.disciplines[0]._id,
-        discipline: "" || this.props.store.disciplines[0].name,
+        disciplineName: "" || this.props.store.disciplines[0].name,
         distance: "" || "1",
         unit: 'km',
         score: "",
         date: Moment().startOf("date")
+    }
+
+    isEditing() {
+        return this.props.activity != null;
     }
 
     clearState() {
@@ -37,7 +54,7 @@ class ActivityForm extends React.Component {
     handleChangeDiscipline = (discipline) => {
         this.setState({
             disciplineId: discipline.id,
-            discipline: discipline.name,
+            disciplineName: discipline.name,
             unit: discipline.unit,
             score: discipline.score
         });
@@ -88,7 +105,12 @@ class ActivityForm extends React.Component {
         return activity;
     }
 
+    onCancelEdit = () => {
+        this.props.onEditDone();
+    }
+
     render() {
+        if (!this.props.show) { return null; }
         const act = this.getActivity();
         return (
             <form onSubmit={this.handleSubmit} noValidate>
@@ -106,9 +128,10 @@ class ActivityForm extends React.Component {
                         <ControlDate ref="date" value={this.state.date} onChange={this.handleChangeDate} />
                     </Col>
                     <Col sm={1} xs={4}>
-                        <Button type="submit" bsStyle="primary" styleName="form-noncontrol-offset">Log</Button>
+                        <Button type="submit" bsStyle="primary" styleName="form-noncontrol-offset">{this.isEditing() ? "Update" : "Log"}</Button>
                     </Col>
                 </Row>
+                {this.isEditing() && <a href="javascript: void 0" onClick={this.onCancelEdit}>cancel</a>}
             </form>
         );
     }

@@ -4,11 +4,6 @@ import { ControlLabel, Form, FormGroup, FormControl, InputGroup } from "react-bo
 const regex = /^((\d+\.?\d*)|(\d*\.?\d+))$/;
 
 export default class ControlDistance extends React.Component {
-    static propTypes = {
-        value: React.PropTypes.string,
-        onChange: React.PropTypes.func,
-        unit: React.PropTypes.string
-    }
 
     onChange = (event) => {
         const distance = event.target.value;

@@ -6,6 +6,7 @@ import ActivityHeader from './ActivityHeader'
 import ActivityItem from './ActivityItem'
 
 class ActivityList extends React.Component {
+
     render() {
         return (
             <Table>
@@ -15,7 +16,7 @@ class ActivityList extends React.Component {
                 <tbody>
                     {
                         this.props.user.activities.edges.map(edge => 
-                            <ActivityItem key={edge.node.id} activity={edge.node} user={this.props.user} />)
+                            <ActivityItem key={edge.node.id} activity={edge.node} user={this.props.user} onEdit={this.props.onEdit} />)
                     }
                 </tbody>
             </Table>

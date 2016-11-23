@@ -4,14 +4,6 @@ import DateTime from "react-datetime"
 
 export default class ControlDate extends React.Component {
 
-    static propTypes = {
-        value: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.object
-  ]),
-        onChange: React.PropTypes.func
-    }
-
     isValid(){
         return this.getValidationState() === "success";
     }

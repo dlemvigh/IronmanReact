@@ -69,6 +69,31 @@ async function addActivity(userId, disciplineId, distance, date) {
      return newActivity;  
  }
 
+async function editActivity(id, disciplineId, distance, date) {
+    const [activity, discipline] = await Promise.all([
+        ActivityModel.findById(id).exec(),
+        DisciplineModel.findById(disciplineId).select({name: 1, score: 1, unit: 1}).exec()
+     ]).catch((reason) => {
+        throw new Error(reason)     
+     });
+     date = Moment(date).startOf("date")
+
+     Object.assign(activity, {
+       disciplineId,
+       disciplineName: discipline.name,
+       distance,
+       unit: discipline.unit,
+       score: discipline.score * distance,
+       date
+     });
+
+     const newActivity = await activity.save();
+     if (!newActivity){
+       throw new Error('Error adding new activity');
+     }
+     return newActivity;  
+ }
+
  async function removeActivity(activityId) {
      const activity = await ActivityModel.findById(activityId);
      if (!activity){

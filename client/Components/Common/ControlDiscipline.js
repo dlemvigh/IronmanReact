@@ -3,10 +3,6 @@ import Relay from "react-relay"
 import { ControlLabel, Form, FormGroup, FormControl } from "react-bootstrap"
 
 class ControlDiscipline extends React.Component {
-    static propTypes = {
-        value: React.PropTypes.string,
-        onChange: React.PropTypes.func,
-    }
 
     isValid(){
         return this.getValidationState() === "success";
@@ -35,13 +31,14 @@ class ControlDiscipline extends React.Component {
                 <FormControl
                     defaultValue={this.props.value || ""} 
                     placeholder="distance" 
+                    onChange={this.onChange}
                     onBlur={this.onChange}
                     componentClass="select">
                     <option disabled value="">Choose...</option>
                     { this.props.store.disciplines.map(discipline => 
                         <option 
-                            key={discipline.id} 
-                            value={discipline.id}
+                            key={discipline._id} 
+                            value={discipline._id}
                             data-id={discipline._id}
                             data-name={discipline.name}
                             data-unit={discipline.unit}
@@ -58,7 +55,6 @@ ControlDiscipline = Relay.createContainer(ControlDiscipline, {
             fragment on Store {
                 disciplines {
                     _id
-                    id
                     name
                     unit
                     score

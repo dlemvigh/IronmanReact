@@ -2,11 +2,6 @@ import React from "react";
 import { ControlLabel, Form, FormGroup, FormControl, InputGroup } from "react-bootstrap"
 
 export default class ControlScore extends React.Component {
-    static propTypes = {
-        value: React.PropTypes.number,
-        onChange: React.PropTypes.func,
-        readonly: React.PropTypes.bool
-    }
 
     onChange = (event) => {
         const score = event.target.value;

@@ -11,6 +11,9 @@ import styles from "./ActivityItem.scss"
 import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation"
 
 class ActivityItem extends React.Component {
+    onEdit = () => {
+        this.props.onEdit(this.props.activity)
+    }
 
     onDelete = () => {
         const mutation = new RemoveActivityMutation({
@@ -35,6 +38,8 @@ class ActivityItem extends React.Component {
                 <td className="hidden-xs"><Week value={this.props.activity.date} /></td>
                 <td className="hidden-xs"><Year value={this.props.activity.date} /></td>
                 <td>
+                    <a href="javascript:void 0" onClick={this.onEdit}><Glyphicon glyph="pencil"/></a>
+                    {" "}
                     <a href="javascript:void 0" onClick={this.onDelete}><Glyphicon glyph="trash"/></a>
                 </td>
             </tr>
@@ -52,6 +57,7 @@ ActivityItem = Relay.createContainer(ActivityItem, {
         activity: () => Relay.QL`
             fragment on Activity {
                 _id
+                disciplineId, 
                 disciplineName, 
                 distance,
                 unit,
