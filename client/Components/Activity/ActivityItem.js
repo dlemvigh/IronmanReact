@@ -57,6 +57,7 @@ ActivityItem = Relay.createContainer(ActivityItem, {
         activity: () => Relay.QL`
             fragment on Activity {
                 _id
+                id
                 disciplineId, 
                 disciplineName, 
                 distance,

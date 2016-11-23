@@ -59,6 +59,22 @@ type Discipline implements Node {
   unit: String
 }
 
+input EditActivityInput {
+  id: String!
+  userId: String!
+  disciplineId: String!
+  distance: Float!
+  date: String!
+  clientMutationId: String
+}
+
+type EditActivityPayload {
+  activity: Activity
+  activityEdge: ActivityEdge
+  user: User
+  clientMutationId: String
+}
+
 type Medals {
   _id: ID!
 
@@ -71,6 +87,7 @@ type Medals {
 
 type Mutation {
   addActivity(input: AddActivityInput!): AddActivityPayload
+  editActivity(input: EditActivityInput!): EditActivityPayload
   removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
 }
 

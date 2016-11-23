@@ -289,6 +289,34 @@ const addActivityMutation = mutationWithClientMutationId({
     }
 });
 
+const editActivityMutation = mutationWithClientMutationId({
+  name: 'EditActivity',
+  inputFields: {
+    id: { type: new GraphQLNonNull(GraphQLString) },
+    userId: { type: new GraphQLNonNull(GraphQLString) },
+    disciplineId: { type: new GraphQLNonNull(GraphQLString) },
+    distance: { type: new GraphQLNonNull(GraphQLFloat) },
+    date: { type: new GraphQLNonNull(GraphQLString) },
+  },
+
+  outputFields: {
+    activity: {
+        type: activityType,
+        resolve: async (obj) => obj
+    },
+    user: {
+        type: userType,
+        resolve: async (obj) => {
+            return await database.getUser(obj.userId)
+        }
+    },
+  },
+
+  mutateAndGetPayload: ({ id, userId, disciplineId, distance, date }) => {
+      return database.editActivity(id, userId, disciplineId, distance, date); 
+    }
+});
+
 const removeActivityMutation = mutationWithClientMutationId({
     name: 'RemoveActivity',
     inputFields: {
@@ -318,6 +346,7 @@ const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
     addActivity: addActivityMutation,
+    editActivity: editActivityMutation,
     removeActivity: removeActivityMutation
   })
 });

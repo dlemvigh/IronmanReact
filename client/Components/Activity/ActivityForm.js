@@ -11,6 +11,7 @@ import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
 import AddActivityMutation from "../../Mutations/AddActivityMutation"
+import EditActivityMutation from "../../Mutations/EditActivityMutation"
 
 class ActivityForm extends React.Component {
 
@@ -78,15 +79,29 @@ class ActivityForm extends React.Component {
         event.preventDefault();
         if (this.isValid()) {
             const activity = this.getActivity();
-            Relay.Store.commitUpdate(
-                new AddActivityMutation({
-                    ...activity,
-                }), {
-                    onFailure: (resp) => console.log("fail", resp),
-                    onSuccess: (resp) => console.log("success", resp)
-                }
-            )
-            this.clearState();
+            if (this.isEditing()) {
+                Relay.Store.commitUpdate(
+                    new EditActivityMutation({
+                        _id: this.props.activity._id,
+                        id: this.props.activity.id,                        
+                        ...activity
+                    }), {
+                        onFailure: (resp) => console.log("fail", resp),
+                        onSuccess: (resp) => console.log("success", resp)
+                    }
+                )
+                this.props.onEditDone();
+            } else {
+                Relay.Store.commitUpdate(
+                    new AddActivityMutation({
+                        ...activity,
+                    }), {
+                        onFailure: (resp) => console.log("fail", resp),
+                        onSuccess: (resp) => console.log("success", resp)
+                    }
+                )
+                this.clearState();
+            }
         }
     }
 
