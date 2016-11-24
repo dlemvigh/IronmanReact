@@ -1,6 +1,6 @@
 import Relay from "react-relay"
 
-class AddActivityMutation extends Relay.Mutation {
+class RemoveActivityMutation extends Relay.Mutation {
 
     getMutation() {
         return Relay.QL`
@@ -18,16 +18,12 @@ class AddActivityMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on RemoveActivityPayload {
                 removedActivityId
+                medals
                 user { 
                     activities
                     summary {
                         score
                     } 
-                    medals {
-                        gold
-                        silver
-                        bronze
-                    }
                 }
             }
         `
@@ -40,15 +36,13 @@ class AddActivityMutation extends Relay.Mutation {
       parentID: this.props.nodeId,
       connectionName: 'activities',
       deletedIDFieldName: 'removedActivityId',
-    // },{
-    //   type: 'RANGE_DELETE',
-    //   parentName: 'user',
-    //   parentID: this.props.nodeId,
-    //   connectionName: 'activities',
-    //   deletedIDFieldName: 'removedActivityId',
-    //   pathToConnection: ['user', 'activities', 'edges', 'node']        
+    },{
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {
+            medals: this.props.medals
+        }
     }];
   }
 }
 
-export default AddActivityMutation;
+export default RemoveActivityMutation;

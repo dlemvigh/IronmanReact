@@ -252,8 +252,12 @@ async function updateMedals(user) {
     const newMedal = await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec()
 }
 
+function getAllMedals() {
+    return MedalsModel.find({}).exec()
+}
+
 function getMedalsByUserId(userId) {
-    return MedalsModel.findOne({userId});
+    return MedalsModel.findOne({userId}).exec();
 }   
  
 export default {
@@ -277,5 +281,6 @@ export default {
     getAllSummaries,
     getWeekSummary,
     getMedals,
-    getMedalsByUserId
+    getAllMedals,
+    getMedalsByUserId,
 };

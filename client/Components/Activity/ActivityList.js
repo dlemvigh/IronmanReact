@@ -16,7 +16,7 @@ class ActivityList extends React.Component {
                 <tbody>
                     {
                         this.props.user.activities.edges.map(edge => 
-                            <ActivityItem key={edge.node.id} activity={edge.node} user={this.props.user} onEdit={this.props.onEdit} />)
+                            <ActivityItem key={edge.node.id} activity={edge.node} onEdit={this.props.onEdit} {...this.props} />)
                     }
                 </tbody>
             </Table>
@@ -26,6 +26,11 @@ class ActivityList extends React.Component {
 
 ActivityList = Relay.createContainer(ActivityList, {
     fragments: {
+        store: () => Relay.QL`
+            fragment on Store {
+                ${ActivityItem.getFragment('store')}
+            }
+        `,
         user: () => Relay.QL`
             fragment on User {
                 ${ActivityItem.getFragment('user')}

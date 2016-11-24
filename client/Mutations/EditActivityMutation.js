@@ -22,6 +22,7 @@ class EditActivityMutation extends Relay.Mutation {
         return Relay.QL`
             fragment on EditActivityPayload {
                 activity
+                medals
                 user { 
                     summary {
                         score
@@ -36,6 +37,7 @@ class EditActivityMutation extends Relay.Mutation {
       type: 'FIELDS_CHANGE',
       fieldIDs: {
         activity: this.props.id,
+        medals: this.props.medals
       },
     }];
   }

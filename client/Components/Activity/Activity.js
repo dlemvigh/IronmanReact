@@ -37,6 +37,7 @@ Activity = Relay.createContainer(Activity, {
         store: () => Relay.QL`
             fragment on Store {
                 ${ActivityForm.getFragment('store')}
+                ${ActivityList.getFragment('store')}
             }`,
         user: () => Relay.QL`
             fragment on User {

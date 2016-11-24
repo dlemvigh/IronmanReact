@@ -20,7 +20,8 @@ class AddActivityMutation extends Relay.Mutation {
     getFatQuery() {
         return Relay.QL`
             fragment on AddActivityPayload {
-                activityEdge,
+                activityEdge
+                medals
                 user { 
                     activities
                     summary {
@@ -41,6 +42,11 @@ class AddActivityMutation extends Relay.Mutation {
       rangeBehaviors: {
         '': 'prepend',
       },
+    },{
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {
+            medals: this.props.medals
+        }
     }];
   }
 }

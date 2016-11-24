@@ -44,6 +44,7 @@ input AddActivityInput {
 type AddActivityPayload {
   activityEdge: ActivityEdge
   user: User
+  medals: [Medals]
   clientMutationId: String
 }
 
@@ -71,6 +72,7 @@ input EditActivityInput {
 type EditActivityPayload {
   activity: Activity
   user: User
+  medals: [Medals]
   clientMutationId: String
 }
 
@@ -114,7 +116,6 @@ type PageInfo {
 type Query {
   store: Store
   user(username: String!): User
-  summary(week: Int, year: Int): [Summary]
 
   # Fetches an object given its ID
   node(
@@ -131,6 +132,7 @@ input RemoveActivityInput {
 type RemoveActivityPayload {
   removedActivityId: String
   user: User
+  medals: [Medals]
   clientMutationId: String
 }
 
@@ -140,6 +142,7 @@ type Store implements Node {
   echo: String
   disciplines: [Discipline]
   users: [User]
+  summary(week: Int, year: Int): [Summary]
 }
 
 type Summary implements Node {

@@ -18,7 +18,8 @@ class ActivityItem extends React.Component {
     onDelete = () => {
         const mutation = new RemoveActivityMutation({
             id: this.props.activity._id,
-            nodeId: this.props.user.id
+            nodeId: this.props.user.id,
+            medals: this.getMedals()
         })
         Relay.Store.commitUpdate(
             mutation, {
@@ -26,6 +27,10 @@ class ActivityItem extends React.Component {
                 onSuccess: (resp) => console.log("success", resp)
             }
         )
+    }
+
+    getMedals() {
+        return this.props.store.users.map(user => user.medals.id);
     }
 
     render() {
@@ -50,6 +55,15 @@ class ActivityItem extends React.Component {
 
 ActivityItem = Relay.createContainer(ActivityItem, {
     fragments: {
+        store: () => Relay.QL`
+            fragment on Store {
+                users {
+                    medals {
+                        id
+                    }
+                }
+            }
+        `,
         user: () => Relay.QL`
             fragment on User {
                 id

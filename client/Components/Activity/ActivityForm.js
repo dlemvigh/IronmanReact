@@ -31,7 +31,7 @@ class ActivityForm extends React.Component {
     state = {
         disciplineId: "" || this.props.store.disciplines[0]._id,
         disciplineName: "" || this.props.store.disciplines[0].name,
-        distance: "",
+        distance: "" || "1",
         unit: 'km',
         score: "" || 5,
         date: Moment().startOf("date")
@@ -43,7 +43,7 @@ class ActivityForm extends React.Component {
 
     clearState() {
         this.setState({
-            distance: "",
+            distance: "" || "1",
             date: Moment().startOf("date")
         });
     }
@@ -106,8 +106,8 @@ class ActivityForm extends React.Component {
     }
 
     getActivity() {
-
         const activity = {
+            medals: this.getMedals(),
             userId: this.props.user._id,
             nodeId: this.props.user.id,
             userIds: this.getUserIds(),
@@ -118,6 +118,10 @@ class ActivityForm extends React.Component {
             date: this.state.date.toISOString()
         }
         return activity;
+    }
+
+    getMedals() {
+        return this.props.store.users.map(user => user.medals.id);
     }
 
     onCancelEdit = () => {

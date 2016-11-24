@@ -303,6 +303,12 @@ const addActivityMutation = mutationWithClientMutationId({
             return await database.getUser(obj.userId)
         }
     },
+    medals: {
+        type: new GraphQLList(medalsType),
+        resolve: async () => {
+            return await database.getAllMedals();
+        }
+    }
   },
 
   mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {
@@ -331,6 +337,12 @@ const editActivityMutation = mutationWithClientMutationId({
             return await database.getUser(obj.userId)
         }
     },
+    medals: {
+        type: new GraphQLList(medalsType),
+        resolve: async () => {
+            return await database.getAllMedals();
+        }
+    }
   },
 
   mutateAndGetPayload: ({ id, userId, disciplineId, distance, date }) => {
@@ -355,6 +367,12 @@ const removeActivityMutation = mutationWithClientMutationId({
             type: userType,
             resolve: async (obj) => {
                 return await database.getUser(obj.userId)
+            }
+        },
+        medals: {
+            type: new GraphQLList(medalsType),
+            resolve: async () => {
+                return await database.getAllMedals();
             }
         }
     },
