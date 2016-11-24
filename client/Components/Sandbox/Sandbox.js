@@ -3,6 +3,7 @@ import Relay from 'react-relay'
 
 import Activity from '../Activity/Activity'
 import Leaderboard from '../Leaderboard/Leaderboard'
+import Medals from '../Medals/Medals'
 
 class Sandbox extends React.Component {
     render() {
@@ -10,6 +11,7 @@ class Sandbox extends React.Component {
             <div>
                 Sandbox
                 <Leaderboard store={this.props.store} />
+                <Medals store={this.props.store} />
                 <Activity store={this.props.store} user={this.props.user} />
             </div>
         );
@@ -22,6 +24,7 @@ Sandbox = Relay.createContainer(Sandbox, {
             fragment on Store {
                 ${Leaderboard.getFragment('store')}
                 ${Activity.getFragment('store')}
+                ${Medals.getFragment('store')}
             }
         `,
         user: () => Relay.QL`

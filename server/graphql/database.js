@@ -143,12 +143,12 @@ async function editActivity(id, userId, disciplineId, distance, date) {
        throw new Error('Error removing activity');
      }
      await activity.remove();
-     await updateSummary(activity.userId, activity.userName, activity.date);
+     await updateSummary(activity.userId, activity.userName, Moment(activity.date));
      return activity;
  }
 
 async function updateSummary(userId, userName, date) {
-    return await Promise.all([
+    await Promise.all([
         updateSummaryWeek(userId, userName, date),
         updateSummaryTotal(userId, userName)
     ]);
@@ -179,13 +179,13 @@ async function updateSummaryWeek(userId, userName, date) {
         };
 
         if (result.length == 0) {
-            return await SummaryModel.findOneAndRemove(query);
+            await SummaryModel.findOneAndRemove(query);
+        }else{
+            const score = result[0].score;
+            const summary = Object.assign({}, query, {score, userName});
+
+            const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
         }
-
-        const score = result[0].score;
-        const summary = Object.assign({}, query, {score, userName});
-
-        const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
         await updateSummaryLeader(query.week, query.year);
     }catch(error){
         console.log("error", error)
@@ -245,11 +245,11 @@ async function updateMedals(user) {
     const medals = {
         userId: user._id,
         userName: user.name,
-        gold: summaries.filter(x => x.position === 1).length,
-        silver: summaries.filter(x => x.position === 2).length,
-        bronze: summaries.filter(x => x.position === 3).length
+        gold: summaries.filter(x => x.position == 1).length,
+        silver: summaries.filter(x => x.position == 2).length,
+        bronze: summaries.filter(x => x.position == 3).length
     }
-    const newMedal = await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {upsert: true}).exec()
+    const newMedal = await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec()
 }
 
 function getMedalsByUserId(userId) {

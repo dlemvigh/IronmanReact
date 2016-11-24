@@ -8,11 +8,11 @@ import MedalsItem from "./MedalsItem";
 class MedalsList extends React.Component {
 
   getSortedUsers() {
-    const sorted = _(this.props.store.users.edges)
+    const sorted = _(this.props.store.users)
       .sortBy([
-        edge => edge.node.medals.gold,
-        edge => edge.node.medals.silver,
-        edge => edge.node.medals.bronze
+        user => user.medals.gold,
+        user => user.medals.silver,
+        user => user.medals.bronze
       ])
       .reverse()
       .value();
@@ -32,8 +32,8 @@ class MedalsList extends React.Component {
         </thead>
         <tbody>
           {
-            this.getSortedUsers().map((edge, index) => {
-              return <MedalsItem key={edge.node._id} user={edge.node} pos={index + 1} />;
+            this.getSortedUsers().map((user, index) => {
+              return <MedalsItem key={user._id} user={user} pos={index + 1} />;
             })
           }
         </tbody>
