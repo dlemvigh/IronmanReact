@@ -1,10 +1,18 @@
 import React from "react"
 import Relay from "react-relay"
 import { Table } from "react-bootstrap"
+import _ from "lodash"
 
 import LeaderboardItem from "./LeaderboardItem"
 
 class LeaderboardList extends React.Component {
+
+    getSortedUsers() {
+        const sorted = _(this.props.store.users)
+            .sortBy([user => user.summary ? user.summary.score : 0])
+            .reverse().value();
+        return sorted;
+    }
     render() {
         return (
             <Table>
@@ -16,9 +24,7 @@ class LeaderboardList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.props.store.users
-                        .sort((a,b) => a.summary && b.summary && b.summary.score - a.summary.score)
-                        .map((user, index) =>
+                    {this.getSortedUsers() .map((user, index) =>
                         <LeaderboardItem key={user._id} user={user} index={index} />
                     )}
                 </tbody>
