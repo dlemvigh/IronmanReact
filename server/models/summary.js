@@ -5,6 +5,9 @@ const summarySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true        
     },
+    userName: {
+      type: String
+    },
     score: {
       type: Number,
       default: 0

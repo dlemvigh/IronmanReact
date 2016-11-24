@@ -33,7 +33,7 @@ class ActivityForm extends React.Component {
         disciplineName: "" || this.props.store.disciplines[0].name,
         distance: "" || "1",
         unit: 'km',
-        score: "",
+        score: "" || 5,
         date: Moment().startOf("date")
     }
 

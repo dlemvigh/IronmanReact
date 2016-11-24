@@ -39,7 +39,8 @@ class ActivityItem extends React.Component {
                 <td className="hidden-xs"><Year value={this.props.activity.date} /></td>
                 <td>
                     <a href="javascript:void 0" onClick={this.onEdit}><Glyphicon glyph="pencil"/></a>
-                    {" "}
+                </td>
+                <td>
                     <a href="javascript:void 0" onClick={this.onDelete}><Glyphicon glyph="trash"/></a>
                 </td>
             </tr>

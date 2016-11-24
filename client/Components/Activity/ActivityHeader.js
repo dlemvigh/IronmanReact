@@ -14,6 +14,7 @@ class ActivityHeader extends React.Component {
                 <th className="hidden-xs">Week</th>
                 <th className="hidden-xs">Year</th>
                 <th></th>
+                <th></th>
             </tr>
         );
     }

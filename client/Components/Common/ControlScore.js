@@ -11,7 +11,7 @@ export default class ControlScore extends React.Component {
     }
 
     round(){
-        return Math.round(this.props.value * 100) / 100;
+        return Math.round(this.props.value * 100) / 100 || 0;
     }
 
     render() {

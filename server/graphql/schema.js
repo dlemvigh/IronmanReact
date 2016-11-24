@@ -202,8 +202,8 @@ const userType = new GraphQLObjectType({
                     type: GraphQLInt
                 }        
             },
-            resolve: (root, args) => {
-                return null;
+            resolve: (root, args) => {                
+                return database.getWeekSummary(root._id, args.week, args.year);
             }
         },
         medals: {
