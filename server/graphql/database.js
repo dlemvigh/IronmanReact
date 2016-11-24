@@ -47,6 +47,10 @@ function getSummary(id) {
     return SummaryModel.findById(id).exec();
 }
 
+function getMedals(id) {
+    return SummaryModel.findById(id).exec();
+}
+
 function getAllSummaries(week, year) {
     if (week && year) {
         return SummaryModel.find({week, year}).exec()
@@ -182,6 +186,7 @@ async function updateSummaryWeek(userId, userName, date) {
         const summary = Object.assign({}, query, {score, userName});
 
         const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
+        await updateSummaryLeader(query.week, query.year);
     }catch(error){
         console.log("error", error)
     }
@@ -223,6 +228,34 @@ async function updateSummaryTotal(userId, userName) {
     }
 }
 
+async function updateSummaryLeader(week, year) {
+    const summaries = await SummaryModel.find({week, year}).sort({score: -1}).exec();
+    summaries.map((summary, index) => summary.position = index + 1);
+    await Promise.all(summaries.map(summary => summary.save()));
+    await updateAllMedals();
+}
+
+async function updateAllMedals() {
+    const users = await UserModel.find({}).exec();
+    await Promise.all(users.map(user => updateMedals(user)));
+}
+
+async function updateMedals(user) {
+    const summaries = await SummaryModel.find({userId: user._id, position: { $lte: 3 }}).exec();
+    const medals = {
+        userId: user._id,
+        userName: user.name,
+        gold: summaries.filter(x => x.position === 1).length,
+        silver: summaries.filter(x => x.position === 2).length,
+        bronze: summaries.filter(x => x.position === 3).length
+    }
+    const newMedal = await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {upsert: true}).exec()
+}
+
+function getMedalsByUserId(userId) {
+    return MedalsModel.findOne({userId});
+}   
+ 
 export default {
     ActivityModel,
     DisciplineModel,
@@ -242,5 +275,7 @@ export default {
     removeActivity,
     getSummary,
     getAllSummaries,
-    getWeekSummary
+    getWeekSummary,
+    getMedals,
+    getMedalsByUserId
 };

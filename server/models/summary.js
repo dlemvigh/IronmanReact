@@ -12,6 +12,10 @@ const summarySchema = new mongoose.Schema({
       type: Number,
       default: 0
     },
+    position: {
+      type: Number,
+      default: 0
+    },
     week: {
       type: Number
     },

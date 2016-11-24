@@ -56,7 +56,6 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     } else if (obj instanceof database.SummaryModel) {
         return summaryType;
     } else if (obj instanceof database.MedalsModel) {
-        //TODO medals model
         return medalsType;
     }
     return null;
@@ -215,7 +214,7 @@ const userType = new GraphQLObjectType({
         medals: {
             type: medalsType,
             resolve: (root) => {
-                return null;
+                return database.getMedalsByUserId(root._id);
             }
         }
     }),

@@ -70,7 +70,6 @@ input EditActivityInput {
 
 type EditActivityPayload {
   activity: Activity
-  activityEdge: ActivityEdge
   user: User
   clientMutationId: String
 }
@@ -115,6 +114,7 @@ type PageInfo {
 type Query {
   store: Store
   user(username: String!): User
+  summary(week: Int, year: Int): [Summary]
 
   # Fetches an object given its ID
   node(
@@ -147,6 +147,8 @@ type Summary implements Node {
 
   # The ID of an object
   id: ID!
+  userId: ID
+  userName: String
   score: Float
   week: Int
   year: Int
