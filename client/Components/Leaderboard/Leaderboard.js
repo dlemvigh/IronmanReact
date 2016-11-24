@@ -12,7 +12,7 @@ class Leaderboard extends React.Component {
                 <h2>Leaderboard</h2>
                 <LeaderboardList store={this.props.store} />
                 {/*<Catchup score={225} target={250} />*/}
-                <Medals store={this.props.store} />
+                {/*<Medals store={this.props.store} />*/}
             </div>
         );
     }
