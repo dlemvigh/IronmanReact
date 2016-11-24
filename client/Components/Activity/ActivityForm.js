@@ -31,7 +31,7 @@ class ActivityForm extends React.Component {
     state = {
         disciplineId: "" || this.props.store.disciplines[0]._id,
         disciplineName: "" || this.props.store.disciplines[0].name,
-        distance: "" || "1",
+        distance: "" || "",
         unit: 'km',
         score: "" || 5,
         date: Moment().startOf("date")
@@ -43,7 +43,7 @@ class ActivityForm extends React.Component {
 
     clearState() {
         this.setState({
-            distance: "" || "1",
+            distance: "" || "",
             date: Moment().startOf("date")
         });
     }
