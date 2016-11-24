@@ -1,4 +1,5 @@
 import DisciplineModel from "../models/discipline";
+import MedalsModel from "../models/medals";
 import UserModel from "../models/user";
 
 const disciplines = [
@@ -15,30 +16,69 @@ const users = [
     { name: "Sidsel", username: "sidsel" }
 ];
 
-export function populate(){
+
+function populateDisciplines(){
     disciplines.forEach(disc => {
         DisciplineModel.findOne({
             name: disc.name
         }, (err, result) => {
-            if (err || result) {
-                // console.log("discipline found")
-            }else{
-                // console.log("creating", disc.name)
+            if (err) {
+                console.log("error finding discipline", disc.name)
+            }else if (!result) {
+                console.log("creating", disc.name)
                 new DisciplineModel(disc).save();
             }
         })
-    });
+    });    
+}
 
+function populateUsers() {
     users.forEach(user => {
         UserModel.findOne({
             name: user.name
         }, (err, result) => {
-            if (err || result) {
-                // console.log("user found")
-            }else{
+            if (err){
+                console.log("error finding user", user.name);
+            } else if (!result) {
                 console.log("creating", user.name)
-                new UserModel(user).save();
+                new UserModel(user).save((err2, result2) => {
+                    if (err2) {
+                        console.log("error adding user", user.name)
+                    }else{
+                        populateMedals(result2);
+                    }
+                });
+            }else{
+                populateMedals(result);
             }
         })
     });
+}
+
+function populateMedals(user) {
+    MedalsModel.findOne({
+        userId: user._id,
+    }, (err, result) => {
+        if (err) {
+            console.log("error finding medal")
+        } else if (!result) {
+            const medal = {
+                userId: user._id,
+                userName: user.name,
+                gold: 0,
+                silver: 0,
+                bronze: 0                
+            };
+            new MedalsModel(medal).save((err2, result2) => {
+                if (err2) {
+                    console.log("error saving medal", err2)
+                }
+            });
+        }
+    });
+}
+
+export function populate(){
+    populateDisciplines();
+    populateUsers();
 };
