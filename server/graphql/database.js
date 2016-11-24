@@ -47,6 +47,18 @@ function getSummary(id) {
     return SummaryModel.findById(id).exec();
 }
 
+function getAllSummaries(week, year) {
+    if (week && year) {
+        return SummaryModel.find({week, year}).exec()
+    }else{
+        const query = {
+            week: { $exists: false },
+            year: { $exists: false }
+        };
+        return SummaryModel.find(query).exec();
+    }
+}
+
 function getWeekSummary(userId, week, year) {
     if (week && year) {
         return SummaryModel.findOne({userId, week, year}).exec()
@@ -229,5 +241,6 @@ export default {
     editActivity,
     removeActivity,
     getSummary,
+    getAllSummaries,
     getWeekSummary
 };

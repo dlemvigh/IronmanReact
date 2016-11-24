@@ -89,6 +89,12 @@ const summaryType = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLID),
         },
         id: globalIdField('Summary'),
+        userId: {
+            type: GraphQLID
+        },
+        userName: {
+            type: GraphQLString
+        },
         score: {
             type: GraphQLFloat
         },
@@ -231,6 +237,22 @@ const storeType = new GraphQLObjectType({
         users: {
             type: new GraphQLList(userType),
             resolve: () => database.getUsers()
+        },
+        summary: {
+            type: new GraphQLList(summaryType),
+            args: {
+                week: {
+                    name: "week",
+                    type: GraphQLInt
+                },        
+                year: {
+                    name: "year",
+                    type: GraphQLInt
+                }        
+            },
+            resolve: (root, args) => {                
+                return database.getAllSummaries(args.week, args.year);
+            },
         },
     }),
     interfaces: [nodeInterface]
