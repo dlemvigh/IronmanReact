@@ -97,7 +97,6 @@ async function editActivity(id, userId, disciplineId, distance, date) {
         throw new Error(reason)     
      });
      const beforeDate = Moment(activity.date).startOf("date").toDate();
-     console.log("before", beforeDate)
      date = Moment(date).startOf("date")
 
      Object.assign(activity, {
@@ -156,19 +155,21 @@ async function updateSummaryWeek(userId, userName, date) {
                 score: { $sum: "$score" }
             }
         }]).exec(); 
-        console.log("res", result)
-        const score = result[0].score;
-        console.log("score", score)
 
         const query = {
             userId,
             week: m.isoWeek(),
             year: m.year()
         };
+
+        if (result.length == 0) {
+            return await SummaryModel.findOneAndRemove(query);
+        }
+
+        const score = result[0].score;
         const summary = Object.assign({}, query, {score, userName});
 
         const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
-        console.log("summary", summary, newSummary)
     }catch(error){
         console.log("error", error)
     }
@@ -187,13 +188,17 @@ async function updateSummaryTotal(userId, userName) {
             }
         }]).exec(); 
 
-        const score = result[0].score;
-
         const query = {
             userId,
             week: { $exists: false },
             year: { $exists: false }
         };
+
+        if (result.length == 0) {
+            return await SummaryModel.findOneAndRemove(query);
+        }
+
+        const score = result[0].score;
         const summary = {
             userId,
             userName,
@@ -201,7 +206,6 @@ async function updateSummaryTotal(userId, userName) {
         };
 
         const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
-        console.log("summary", summary, newSummary)
     }catch(error){
         console.log("error", error)
     }

@@ -23,7 +23,7 @@ export function populate(){
             if (err || result) {
                 // console.log("discipline found")
             }else{
-                console.log("creating", disc.name)
+                // console.log("creating", disc.name)
                 new DisciplineModel(disc).save();
             }
         })
