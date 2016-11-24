@@ -22,7 +22,7 @@ class LeaderboardItem extends React.Component {
     }
 
     getScore() {
-        return this.props.summary ? this.props.summary.score : 0;
+        return this.props.user.summary ? this.props.user.summary.score : 0;
     }
 
     render() {

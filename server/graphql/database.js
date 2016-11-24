@@ -47,25 +47,17 @@ function getSummary(id) {
     return SummaryModel.findById(id).exec();
 }
 
-async function getWeekSummary(userId, week, year) {
+function getWeekSummary(userId, week, year) {
     if (week && year) {
-        return await SummaryModel.findOne({userId, week, year}).exec()
+        return SummaryModel.findOne({userId, week, year}).exec()
+    }else{
+        const query = {
+            userId,
+            week: { $exists: false },
+            year: { $exists: false }
+        };
+        return SummaryModel.findOne(query).exec();
     }
-    const result = await SummaryModel.aggregate([{
-        $match: { userId: { $eq: mongoose.Types.ObjectId(userId) } }
-    },{
-        $group: {
-            _id: "$userId",
-            userId: { $first: "$userId" },
-            userName: { $first: "$userName" },
-            score: { $sum: "$score" }
-        }
-    }]).exec();
-    return result[0];
-}
-
-function getTotalSummary(userId) {
-
 }
 
 async function addActivity(userId, disciplineId, distance, date) {
@@ -141,7 +133,13 @@ async function editActivity(id, userId, disciplineId, distance, date) {
  }
 
 async function updateSummary(userId, userName, date) {
-    console.log("update", userId, date, arguments)
+    return await Promise.all([
+        updateSummaryWeek(userId, userName, date),
+        updateSummaryTotal(userId, userName)
+    ]);
+}
+
+async function updateSummaryWeek(userId, userName, date) {
     try {
         const m = Moment(date);
         const start = m.startOf("isoWeek").toDate();
@@ -176,6 +174,38 @@ async function updateSummary(userId, userName, date) {
     }
 }
 
+async function updateSummaryTotal(userId, userName) {
+    try {
+        const result = await ActivityModel.aggregate([{   
+            $match: { 
+                userId: { $eq: mongoose.Types.ObjectId(userId) }
+            }
+        }, {
+            $group: {
+                _id: "$userId",
+                score: { $sum: "$score" }
+            }
+        }]).exec(); 
+
+        const score = result[0].score;
+
+        const query = {
+            userId,
+            week: { $exists: false },
+            year: { $exists: false }
+        };
+        const summary = {
+            userId,
+            userName,
+            score
+        };
+
+        const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
+        console.log("summary", summary, newSummary)
+    }catch(error){
+        console.log("error", error)
+    }
+}
 
 export default {
     ActivityModel,
