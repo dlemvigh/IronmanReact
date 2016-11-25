@@ -15,8 +15,6 @@ class Leaderboard extends React.Component {
                 <LeaderboardList summary={this.props.store.current} />
                 <h3>Last week</h3>
                 <LeaderboardList summary={this.props.store.last} />
-                <h3>Total</h3>
-                <LeaderboardList summary={this.props.store.total} />
                 <Medals store={this.props.store} />
             </div>
         );
@@ -39,9 +37,6 @@ Leaderboard = Relay.createContainer(Leaderboard, {
                     ${LeaderboardList.getFragment('summary')}
                 }
                 last: summary(week: $lastWeekNo, year: $lastWeekYear) {
-                    ${LeaderboardList.getFragment('summary')}
-                }
-                total: summary {
                     ${LeaderboardList.getFragment('summary')}
                 }
             }

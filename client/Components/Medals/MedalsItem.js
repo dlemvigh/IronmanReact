@@ -18,11 +18,11 @@ class MedalsItem extends React.Component {
 
   render() {
     return (
-      <tr styleName={this.getStyleName()}>
+      <tr>
         <td styleName="name">{this.props.user.name}</td>
-        <td>{this.props.user.medals && this.props.user.medals.gold}</td>
-        <td>{this.props.user.medals && this.props.user.medals.silver}</td>
-        <td>{this.props.user.medals && this.props.user.medals.bronze}</td>
+        <td styleName="gold">{this.props.user.medals && this.props.user.medals.gold}</td>
+        <td styleName="silver">{this.props.user.medals && this.props.user.medals.silver}</td>
+        <td styleName="bronze">{this.props.user.medals && this.props.user.medals.bronze}</td>
       </tr>
     )
   }
