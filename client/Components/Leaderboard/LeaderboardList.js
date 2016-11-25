@@ -7,9 +7,9 @@ import LeaderboardItem from "./LeaderboardItem"
 
 class LeaderboardList extends React.Component {
 
-    getSortedUsers() {
-        const sorted = _(this.props.store.users)
-            .sortBy([user => user.summary ? user.summary.score : 0])
+    sorted() {
+        const sorted = _(this.props.summary)
+            .sortBy([summary => summary.score    || 0])
             .reverse().value();
         return sorted;
     }
@@ -24,8 +24,8 @@ class LeaderboardList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.getSortedUsers() .map((user, index) =>
-                        <LeaderboardItem key={user._id} user={user} index={index} />
+                    {this.sorted() .map((summary, index) =>
+                        <LeaderboardItem key={summary._id} summary={summary} index={index} />
                     )}
                 </tbody>
             </Table>
@@ -35,15 +35,11 @@ class LeaderboardList extends React.Component {
 
 LeaderboardList = Relay.createContainer(LeaderboardList, {
     fragments: {
-        store: () => Relay.QL`
-            fragment on Store {
-                users {
-                    _id
-                    summary {
-                        score
-                    }
-                    ${LeaderboardItem.getFragment('user')}
-                }
+        summary: () => Relay.QL`
+            fragment on Summary @relay(plural: true) {
+                _id
+                score
+                ${LeaderboardItem.getFragment('summary')}
             }
         `
     }
