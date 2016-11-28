@@ -28,6 +28,7 @@ class EditActivityMutation extends Relay.Mutation {
                         score
                     }
                 }
+                store
             }
         `
     }
@@ -37,7 +38,8 @@ class EditActivityMutation extends Relay.Mutation {
       type: 'FIELDS_CHANGE',
       fieldIDs: {
         activity: this.props.id,
-        medals: this.props.medals
+        medals: this.props.medals,
+        store: this.props.store
       },
     }];
   }
