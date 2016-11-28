@@ -25,9 +25,15 @@ const Routes = (props) => (
         render={({props}) => props && <Sandbox {...props} />}
         />
       <Route 
+        path='/user/:id' 
+        component={Activity} 
+        queries={ActivityQueries.byId}
+        render={({props}) => props && <Activity {...props} />} 
+        />  
+      <Route 
         path='/:username' 
         component={Activity} 
-        queries={ActivityQueries}
+        queries={ActivityQueries.byUsername}
         render={({props}) => props && <Activity {...props} />} 
         />  
     </Route>

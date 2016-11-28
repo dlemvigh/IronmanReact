@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import Moment from 'moment'
+import moment from 'moment'
 import _ from 'lodash'
 
 import ActivityModel from '../models/activity'
@@ -83,7 +83,7 @@ async function addActivity(userId, disciplineId, distance, date) {
      ]).catch((reason) => {
         throw new Error(reason)     
      });
-     date = Moment(date).startOf("date")
+     date = moment.utc(date).startOf("date")
 
      const activity = new ActivityModel({
        userId,
@@ -112,8 +112,8 @@ async function editActivity(id, userId, disciplineId, distance, date) {
      ]).catch((reason) => {
         throw new Error(reason)     
      });
-     const beforeDate = Moment(activity.date).startOf("date").toDate();
-     date = Moment(date).startOf("date")
+     const beforeDate = moment(activity.date).startOf("date").toDate();
+     date = moment.utc(date).startOf("date")
 
      Object.assign(activity, {
        userId,
@@ -143,7 +143,7 @@ async function editActivity(id, userId, disciplineId, distance, date) {
        throw new Error('Error removing activity');
      }
      await activity.remove();
-     await updateSummary(activity.userId, activity.userName, Moment(activity.date));
+     await updateSummary(activity.userId, activity.userName, moment(activity.date));
      return activity;
  }
 
@@ -156,7 +156,7 @@ async function updateSummary(userId, userName, date) {
 
 async function updateSummaryWeek(userId, userName, date) {
     try {
-        const m = Moment(date);
+        const m = moment(date);
         const start = m.startOf("isoWeek").toDate();
         const end = m.endOf("isoWeek").toDate();
 
