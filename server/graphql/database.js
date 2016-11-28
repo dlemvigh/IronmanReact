@@ -83,7 +83,7 @@ async function addActivity(userId, disciplineId, distance, date) {
      ]).catch((reason) => {
         throw new Error(reason)     
      });
-     date = Moment(date).startOf("date")
+     date = Moment.utc(date).startOf("date")
 
      const activity = new ActivityModel({
        userId,
@@ -113,7 +113,7 @@ async function editActivity(id, userId, disciplineId, distance, date) {
         throw new Error(reason)     
      });
      const beforeDate = Moment(activity.date).startOf("date").toDate();
-     date = Moment(date).startOf("date")
+     date = Moment.utc(date).startOf("date")
 
      Object.assign(activity, {
        userId,

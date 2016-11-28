@@ -1,6 +1,7 @@
 import React from "react"
 import { ControlLabel, FormGroup, FormControl } from "react-bootstrap"
 import DateTime from "react-datetime"
+import Moment from "moment"
 
 export default class ControlDate extends React.Component {
 
@@ -32,7 +33,7 @@ export default class ControlDate extends React.Component {
                 <DateTime
                     dateFormat="D/M-YYYY"
                     timeFormat={false}
-                    defaultValue={new Date()}
+                    defaultValue={Moment.utc()}
                     value={this.props.value}
                     onChange={this.onChange} 
                     />

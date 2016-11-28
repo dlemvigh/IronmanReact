@@ -34,7 +34,7 @@ class ActivityForm extends React.Component {
         distance: "" || "",
         unit: 'km',
         score: "" || 5,
-        date: Moment().startOf("date")
+        date: Moment.utc().startOf("date")
     }
 
     isEditing() {

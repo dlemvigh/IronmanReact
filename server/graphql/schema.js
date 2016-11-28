@@ -267,12 +267,24 @@ const queryType = new GraphQLObjectType({
     user: {
         type: userType,
         args: {
+            id: {
+                name: "id",
+                type: GraphQLString
+            },
             username: {
                 name: "username",
-                type:new GraphQLNonNull(GraphQLString)
+                type: GraphQLString
             }        
         },
-        resolve (root, params, options) { return database.getUserByUsername(params.username) }
+        resolve (root, params, options) {
+            if (params.id) {
+                return database.getUser(params.id);
+            }
+            if (params.username) {
+                return database.getUserByUsername(params.username);
+            }              
+            throw new Error("No arguments supplied to get user"); 
+        }
     },
     node: nodeField
   })
