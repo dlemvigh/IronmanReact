@@ -20,8 +20,9 @@ class ActivityItem extends React.Component {
         const mutation = new RemoveActivityMutation({
             id: this.props.activity._id,
             nodeId: this.props.user.id,
-            medals: this.getMedals()
-        })
+            medals: this.getMedals(),
+            store: this.props.store.id
+        })    
         Relay.Store.commitUpdate(
             mutation, {
                         onFailure: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed") },
@@ -58,6 +59,7 @@ ActivityItem = Relay.createContainer(ActivityItem, {
     fragments: {
         store: () => Relay.QL`
             fragment on Store {
+                id  
                 users {
                     medals {
                         id
