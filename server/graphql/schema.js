@@ -320,6 +320,12 @@ const addActivityMutation = mutationWithClientMutationId({
         resolve: async () => {
             return await database.getAllMedals();
         }
+    },
+    store: {
+        type: storeType,
+        resolve: () => {
+            return  database.getStore()
+        }
     }
   },
 
@@ -354,6 +360,12 @@ const editActivityMutation = mutationWithClientMutationId({
         resolve: async () => {
             return await database.getAllMedals();
         }
+    },
+    store: {
+        type: storeType,
+        resolve: () => {
+            return  database.getStore()
+        }
     }
   },
 
@@ -385,6 +397,12 @@ const removeActivityMutation = mutationWithClientMutationId({
             type: new GraphQLList(medalsType),
             resolve: async () => {
                 return await database.getAllMedals();
+            }
+        },
+        store: {
+            type: storeType,
+            resolve: () => {
+                return  database.getStore()
             }
         }
     },

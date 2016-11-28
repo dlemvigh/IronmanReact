@@ -45,6 +45,7 @@ type AddActivityPayload {
   activityEdge: ActivityEdge
   user: User
   medals: [Medals]
+  store: Store
   clientMutationId: String
 }
 
@@ -73,6 +74,7 @@ type EditActivityPayload {
   activity: Activity
   user: User
   medals: [Medals]
+  store: Store
   clientMutationId: String
 }
 
@@ -133,6 +135,7 @@ type RemoveActivityPayload {
   removedActivityId: String
   user: User
   medals: [Medals]
+  store: Store
   clientMutationId: String
 }
 
