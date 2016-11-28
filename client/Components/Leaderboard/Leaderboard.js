@@ -10,13 +10,11 @@ class Leaderboard extends React.Component {
     render() {
         return (
             <div>
-                <h2>Leaderboard</h2>
+                <h2>Leaderboard</h2>                
                 <h3>This week</h3>
                 <LeaderboardList summary={this.props.store.current} />
-                <h3>Last week</h3>
-                <LeaderboardList summary={this.props.store.last} />
-                <h3>Total</h3>
-                <LeaderboardList summary={this.props.store.total} />
+                {this.props.store.last.length > 0 && <h3>Last week</h3>}
+                {this.props.store.last.length > 0 && <LeaderboardList summary={this.props.store.last} />}
                 <Medals store={this.props.store} />
             </div>
         );
