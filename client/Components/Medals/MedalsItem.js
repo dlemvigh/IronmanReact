@@ -4,8 +4,15 @@ import CSSModules from "react-css-modules";
 
 import styles from "./MedalsItem.scss";
 
-
 class MedalsItem extends React.Component {
+
+  static contextTypes = {
+      router: React.PropTypes.object
+  }
+
+  onClick = () => {
+      this.context.router.push(`/${this.props.user.username}`);
+  }
 
   getStyleName() {
     switch(this.props.pos) {
@@ -18,7 +25,7 @@ class MedalsItem extends React.Component {
 
   render() {
     return (
-      <tr>
+      <tr onClick={this.onClick} styleName="row">
         <td>{this.props.user.name}</td>
         <td styleName="gold">{this.props.user.medals && this.props.user.medals.gold}</td>
         <td styleName="silver">{this.props.user.medals && this.props.user.medals.silver}</td>
@@ -34,6 +41,7 @@ MedalsItem = Relay.createContainer(MedalsItem, {
   fragments: {
     user: () => Relay.QL`
       fragment on User {
+        username
         name
         medals {
           gold
