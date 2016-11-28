@@ -13,7 +13,7 @@ class LeaderboardItem extends React.Component {
     }
 
     onClick = () => {
-        this.context.router.push(`/${this.props.summary.username}`);
+        this.context.router.push(`/user/${this.props.summary.userId}`);
     }
 
     getScore() {
@@ -37,6 +37,7 @@ LeaderboardItem = Relay.createContainer(LeaderboardItem, {
     fragments: {
         summary: () => Relay.QL`
             fragment on Summary {
+                userId
                 userName
                 score
             }
