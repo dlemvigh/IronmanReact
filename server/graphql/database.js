@@ -241,22 +241,7 @@ async function updateAllMedals() {
 }
 
 async function updateMedals(user) {
-    const m = moment();
-    const week = m.isoWeek();
-    const year = m.year();
-
-    const summaries = await SummaryModel.find({
-        userId: user._id, 
-        position: { $lte: 3 },
-        $or: [
-            { 
-                year: { $lt: year } 
-            }, {
-                year: { $eq: year },
-                week: { $lt: week }
-            }
-        ]
-    }).exec();
+    const summaries = await SummaryModel.find({userId: user._id, position: { $lte: 3 }}).exec();
     const medals = {
         userId: user._id,
         userName: user.name,
