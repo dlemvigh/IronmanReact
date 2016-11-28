@@ -2,7 +2,8 @@ import React from 'react'
 import Relay from 'react-relay'
 import { Button, Col, ControlLabel, Form, FormGroup, Row } from "react-bootstrap"
 import CSSModules from "react-css-modules";
-import Moment from "moment"
+import moment from "moment"
+import toastr from "toastr"
 import _ from "lodash";
 
 import styles from "./ActivityForm.scss";
@@ -34,7 +35,7 @@ class ActivityForm extends React.Component {
         distance: "" || "",
         unit: 'km',
         score: "" || 5,
-        date: Moment.utc().startOf("date")
+        date: moment.utc().startOf("date")
     }
 
     isEditing() {
@@ -44,7 +45,7 @@ class ActivityForm extends React.Component {
     clearState() {
         this.setState({
             distance: "" || "",
-            date: Moment().startOf("date")
+            date: moment().startOf("date")
         });
     }
 
@@ -86,8 +87,8 @@ class ActivityForm extends React.Component {
                         id: this.props.activity.id,                        
                         ...activity
                     }), {
-                        onFailure: (resp) => console.log("fail", resp),
-                        onSuccess: (resp) => console.log("success", resp)
+                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Update activity failed") },
+                        onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity updated"); }
                     }
                 )
                 this.props.onEditDone();
@@ -96,8 +97,8 @@ class ActivityForm extends React.Component {
                     new AddActivityMutation({
                         ...activity,
                     }), {
-                        onFailure: (resp) => console.log("fail", resp),
-                        onSuccess: (resp) => console.log("success", resp)
+                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Add activity failed") },
+                        onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity added"); }
                     }
                 )
                 this.clearState();

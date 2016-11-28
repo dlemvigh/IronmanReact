@@ -3,6 +3,7 @@ import ReactDom from "react-dom"
 import Relay from "react-relay"
 import CSSModules from "react-css-modules"
 import { Glyphicon } from "react-bootstrap"
+import toastr from "toastr"
 
 import Date from "../Common/Date"
 import Week from "../Common/Week"
@@ -23,8 +24,8 @@ class ActivityItem extends React.Component {
         })
         Relay.Store.commitUpdate(
             mutation, {
-                onFailure: (resp) => console.log("fail", resp),
-                onSuccess: (resp) => console.log("success", resp)
+                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed") },
+                        onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity removed"); }
             }
         )
     }

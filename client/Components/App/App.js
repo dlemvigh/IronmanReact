@@ -1,6 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 import CSSModules from 'react-css-modules'
+import toastr from 'toastr'
 
 import Header from "./Header"
 import Footer from "./Footer"
@@ -9,8 +10,17 @@ import styles from "./App.scss"
 import '!style!css!bootstrap/dist/css/bootstrap.min.css';
 import '!style!css!bootstrap/dist/css/bootstrap-theme.min.css';
 import '!style!css!react-datetime/css/react-datetime.css';
+import '!style!css!toastr/build/toastr.min.css';
 
 class App extends React.Component {
+
+    componentWillMount(){
+        toastr.options = {
+            newestOnTop: true,
+            positionClass: styles.toastr,
+            progressBar: true,
+        };
+    }
 
     render() {
         return (
