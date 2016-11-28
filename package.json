@@ -13,7 +13,8 @@
     "build": "npm-run-all --parallel build:client build:server",
     "build:client": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js --progress",
     "build:server": "babel server -d build/server",
-    "deploy": "rimraf deploy && mv build deploy && pm2 restart ironman",
+    "deploy": "rimraf backup && mv deploy backup && mv build deploy && pm2 restart ironman",
+    "deploy:undo": "rimraf deploy && cp backup deploy -rf && pm2 restart ironman",
     "publish": "npm run build && npm run deploy"
   },
   "author": "david lemvigh",
