@@ -62,7 +62,7 @@ class ActivityForm extends React.Component {
         });
     }
 
-    handleChangeDistance = (distance) => {
+    handleChangeDistance = (distance) => {        
         this.setState({ distance });        
     }
 
