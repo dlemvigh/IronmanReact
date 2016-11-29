@@ -15,25 +15,19 @@ class ControlDiscipline extends React.Component {
     onChange = (event) => {
         const options = event.target.selectedOptions;
         if (options.length == 1 && this.props.onChange) {
-
-            const [selected] = options;
-            this.props.onChange({
-                ...selected.dataset
-            });
+            this.props.onChange(options[0].dataset);
         }
-        const discipline = event.target.value;
     }
 
     render() {
         return (
             <FormGroup validationState={this.getValidationState()}>
                 <ControlLabel>Discipline</ControlLabel>
-                <FormControl
+                <select className="form-control"
                     defaultValue={this.props.value || ""} 
                     placeholder="distance" 
                     onChange={this.onChange}
-                    onBlur={this.onChange}
-                    componentClass="select">
+                    onBlur={this.onChange}>
                     <option disabled value="">Choose...</option>
                     { this.props.store.disciplines.map(discipline => 
                         <option 
@@ -43,7 +37,7 @@ class ControlDiscipline extends React.Component {
                             data-name={discipline.name}
                             data-unit={discipline.unit}
                             data-score={discipline.score}>{discipline.name}</option>) }
-                </FormControl>
+                </select>
             </FormGroup>
         );
     }

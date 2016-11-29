@@ -10,7 +10,7 @@ class RemoveActivityMutation extends Relay.Mutation {
 
     getVariables() {
         return {
-            id: this.props.id
+            id: this.props.id  
         }
     }
 
@@ -25,6 +25,7 @@ class RemoveActivityMutation extends Relay.Mutation {
                         score
                     } 
                 }
+                store
             }
         `
     }
@@ -39,7 +40,8 @@ class RemoveActivityMutation extends Relay.Mutation {
     },{
         type: 'FIELDS_CHANGE',
         fieldIDs: {
-            medals: this.props.medals
+            medals: this.props.medals,
+            store: this.props.store
         }
     }];
   }

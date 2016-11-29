@@ -41,9 +41,6 @@ Leaderboard = Relay.createContainer(Leaderboard, {
                 last: summary(week: $lastWeekNo, year: $lastWeekYear) {
                     ${LeaderboardList.getFragment('summary')}
                 }
-                total: summary {
-                    ${LeaderboardList.getFragment('summary')}
-                }
             }
         `
     }

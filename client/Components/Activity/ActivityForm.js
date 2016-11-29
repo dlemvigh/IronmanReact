@@ -62,7 +62,7 @@ class ActivityForm extends React.Component {
         });
     }
 
-    handleChangeDistance = (distance) => {
+    handleChangeDistance = (distance) => {        
         this.setState({ distance });        
     }
 
@@ -109,6 +109,7 @@ class ActivityForm extends React.Component {
     getActivity() {
         const activity = {
             medals: this.getMedals(),
+            store: this.props.store.id,
             userId: this.props.user._id,
             nodeId: this.props.user.id,
             userIds: this.getUserIds(),
