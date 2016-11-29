@@ -20,6 +20,10 @@ class App extends React.Component {
             positionClass: styles.toastr,
             progressBar: true,
         };
+
+        window.onerror = (message, file, line, col, error) => {
+            toastr.error(message);
+        }
     }
 
     render() {

@@ -1,7 +1,6 @@
 import React from "react"
 import Relay from "react-relay"
 import { ControlLabel, Form, FormGroup, FormControl } from "react-bootstrap"
-import toastr from "toastr"
 
 class ControlDiscipline extends React.Component {
 
@@ -14,17 +13,9 @@ class ControlDiscipline extends React.Component {
     }
 
     onChange = (event) => {
-        try{
         const options = event.target.selectedOptions;
-        toastr.info(options[0].dataset.name, "on change 1")        
         if (options.length == 1 && this.props.onChange) {
-            toastr.info(options[0].dataset.name, "on change 2")
-            const selected = options[0];
-            toastr.info(JSON.stringify(selected.dataset, null, 2), "on change 3")
-            this.props.onChange(selected.dataset);
-        }
-        }catch(error){
-            toastr.error(error, "error")
+            this.props.onChange(options[0].dataset);
         }
     }
 

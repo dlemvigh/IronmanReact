@@ -54,7 +54,6 @@ class ActivityForm extends React.Component {
     }
 
     handleChangeDiscipline = (discipline) => {
-        toastr.info(discipline.name, "on change 4")
         this.setState({
             disciplineId: discipline.id,
             disciplineName: discipline.name,
@@ -63,7 +62,7 @@ class ActivityForm extends React.Component {
         });
     }
 
-    handleChangeDistance = (distance) => {
+    handleChangeDistance = (distance) => {        
         this.setState({ distance });        
     }
 
@@ -153,9 +152,6 @@ class ActivityForm extends React.Component {
                         <Button type="submit" bsStyle="primary" styleName="form-noncontrol-offset">{this.isEditing() ? "Update" : "Log"}</Button>
                     </Col>
                 </Row>
-                <pre>
-                    {JSON.stringify(this.state, null, 2)}
-                </pre>
                 {this.isEditing() && <a href="javascript: void 0" onClick={this.onCancelEdit}>cancel</a>}
             </form>
         );
