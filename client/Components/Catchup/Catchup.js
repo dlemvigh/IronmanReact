@@ -9,7 +9,7 @@ class Catchup extends React.Component {
     render() {
         return (
             <div>
-                <h3>Catchup</h3>
+                <h3>Catch-up</h3>
                 <CatchupList store={this.props.store} />
             </div>
         )

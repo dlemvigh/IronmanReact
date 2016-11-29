@@ -19,11 +19,11 @@ class CatchupItemTriathlon extends React.Component {
         if (this.getDiff() < 12) {
             return "-";
         }
-        return `${this.getPart(swim)} - ${this.getPart(bike)} - ${this.getPart(run)} km`;
+        return `${this.getPart(swim, 1)} - ${this.getPart(bike, 0)} - ${this.getPart(run, 1)} km`;
     }
 
-    getPart(disc) {
-        const dist = _.round(disc.dist * this.getDiff() / total, 1)
+    getPart(disc, decimals) {
+        const dist = _.round(disc.dist * this.getDiff() / total, decimals)
         return dist;
     }
 

@@ -55,7 +55,7 @@ class CatchupList extends React.Component {
                                 return <th key={disc._id} className={getClassName(disc.name)}>{titleCase(disc.name)}</th>
                             })
                         }
-                        <th className="hidden-xs">Tri</th>
+                        <th className="hidden-xs">Triathlon</th>
                     </tr>
                 </thead>
                 <tbody>
