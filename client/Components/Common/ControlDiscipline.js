@@ -19,10 +19,9 @@ class ControlDiscipline extends React.Component {
         toastr.info(options[0].dataset.name, "on change 1")        
         if (options.length == 1 && this.props.onChange) {
             toastr.info(options[0].dataset.name, "on change 2")
-            toastr.info(options[0].dataset.name, "on change 3")
-            this.props.onChange({
-                ...options[0].dataset
-            });
+            const selected = options[0];
+            toastr.info(JSON.stringify(selected.dataset, null, 2), "on change 3")
+            this.props.onChange(selected.dataset);
         }
         }catch(error){
             toastr.error(error, "error")
