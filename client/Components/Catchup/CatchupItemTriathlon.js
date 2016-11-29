@@ -1,29 +1,37 @@
 import React from "react"
 import _ from "lodash"
 
-const swim = { score: 25, dist: .4, part: 10/48 }
-const bike = { score: 1, dist: 18, part: 18/48 }
-const run = { score: 5, dist: 4, part: 20/48 }
+const swim = { score: 25, dist: .4 }
+const bike = { score: 1, dist: 18 }
+const run = { score: 5, dist: 4 }
+const total = swim.score * swim.dist + bike.score * bike.dist + run.score * run.dist;
 
-export default class CatchupItemTriathlon extends React.Component {
+class CatchupItemTriathlon extends React.Component {
     static propTypes = {
         score: React.PropTypes.number.isRequired
     }
 
-    getDistance() {
-        return `${this.getPart(swim)} - ${this.getPart(bike)} - ${this.getPart(run)} km`;
+    getDiff() {
+        return this.props.highscore - this.props.score;
     }
 
-    getPart(disc) {
-        return Math.round(10 * this.props.score * disc.part / disc.score) / 10;
+    getDistance() {
+        if (this.getDiff() < 12) {
+            return "-";
+        }
+        return `${this.getPart(swim, 1)} - ${this.getPart(bike, 0)} - ${this.getPart(run, 1)} km`;
+    }
+
+    getPart(disc, decimals) {
+        const dist = _.round(disc.dist * this.getDiff() / total, decimals)
+        return dist;
     }
 
     render() {
         return (
-            <tr>
-            <td>triathlon</td>
-            <td>{this.getDistance()}</td>
-        </tr>
-    );
+            <td className="hidden-xs">{this.getDistance()}</td>
+        );
     }
 }
+
+export default CatchupItemTriathlon
