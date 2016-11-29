@@ -14,6 +14,7 @@ class ControlDiscipline extends React.Component {
     }
 
     onChange = (event) => {
+        try{
         const options = event.target.selectedOptions;
         toastr.info(options[0].dataset.name, "on change 1")        
         if (options.length == 1 && this.props.onChange) {
@@ -23,6 +24,9 @@ class ControlDiscipline extends React.Component {
             this.props.onChange({
                 ...selected.dataset
             });
+        }
+        }catch(error){
+            toastr.error(error, "error")
         }
     }
 
