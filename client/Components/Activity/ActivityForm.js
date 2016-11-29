@@ -152,6 +152,9 @@ class ActivityForm extends React.Component {
                         <Button type="submit" bsStyle="primary" styleName="form-noncontrol-offset">{this.isEditing() ? "Update" : "Log"}</Button>
                     </Col>
                 </Row>
+                <pre>
+                    {JSON.stringify(this.state, null, 2)}
+                </pre>
                 {this.isEditing() && <a href="javascript: void 0" onClick={this.onCancelEdit}>cancel</a>}
             </form>
         );
