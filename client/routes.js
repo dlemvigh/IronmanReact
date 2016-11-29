@@ -1,5 +1,4 @@
 import React from 'react';
-import { Router, Route, IndexRoute, IndexRedirect } from 'react-router'
 
 import App from './Components/App/App'
 import AppQueries from './Components/App/AppQueries'
