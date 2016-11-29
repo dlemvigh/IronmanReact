@@ -1,6 +1,7 @@
 import React from "react"
 import Relay from "react-relay"
 import { ControlLabel, Form, FormGroup, FormControl } from "react-bootstrap"
+import toastr from "toastr"
 
 class ControlDiscipline extends React.Component {
 
@@ -14,6 +15,7 @@ class ControlDiscipline extends React.Component {
 
     onChange = (event) => {
         const options = event.target.selectedOptions;
+        toastr.info(options[0].dataset.name, "on change")
         if (options.length == 1 && this.props.onChange) {
 
             const [selected] = options;
@@ -32,8 +34,7 @@ class ControlDiscipline extends React.Component {
                     defaultValue={this.props.value || ""} 
                     placeholder="distance" 
                     onChange={this.onChange}
-                    onBlur={this.onChange}
-                    componentClass="select">
+                    onBlur={this.onChange}>
                     <option disabled value="">Choose...</option>
                     { this.props.store.disciplines.map(discipline => 
                         <option 
