@@ -17,7 +17,7 @@ class CatchupItemTriathlon extends React.Component {
 
     getDistance() {
         if (this.getDiff() < 12) {
-            return "";
+            return "-";
         }
         return `${this.getPart(swim)} - ${this.getPart(bike)} - ${this.getPart(run)} km`;
     }
@@ -29,7 +29,7 @@ class CatchupItemTriathlon extends React.Component {
 
     render() {
         return (
-            <td>{this.getDistance()}</td>
+            <td className="hidden-xs">{this.getDistance()}</td>
         );
     }
 }

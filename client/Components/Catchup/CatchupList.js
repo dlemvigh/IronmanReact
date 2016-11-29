@@ -3,7 +3,9 @@ import Relay from "react-relay"
 import { Table } from "react-bootstrap"
 import moment from "moment"
 import _ from "lodash";
+import titleCase from "title-case";
 
+import { mapFilter, getClassName } from "./CatchupFilter" 
 import CatchupItem from "./CatchupItem"
 import CatchupItemTriathlon from "./CatchupItemTriathlon"
 
@@ -18,7 +20,8 @@ import CatchupItemTriathlon from "./CatchupItemTriathlon"
 class CatchupList extends React.Component {
 
     getDisciplines() {
-        return this.props.store.disciplines;
+        const filtered = mapFilter(this.props.store.disciplines)
+        return filtered;
     }
 
     getScore(user) {
@@ -39,6 +42,7 @@ class CatchupList extends React.Component {
         return max;
     }
 
+
     render() {
         const highscore = this.getHighestScore();
         return (
@@ -47,14 +51,21 @@ class CatchupList extends React.Component {
                     <tr>
                         <th>Name</th>
                         {
-                            this.getDisciplines().map(x => <th key={x._id}>{x.name}</th>)
+                            this.getDisciplines().map(disc => {
+                                return <th key={disc._id} className={getClassName(disc.name)}>{titleCase(disc.name)}</th>
+                            })
                         }
-                        <th>tri</th>
+                        <th className="hidden-xs">Tri</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        this.getSortedUser().map(user => <CatchupItem key={user._id} user={user} summary={user.summary} disciplines={this.props.store.disciplines} highscore={highscore} />)                                                
+                        this.getSortedUser().map(user => <CatchupItem 
+                            key={user._id} 
+                            user={user} 
+                            summary={user.summary} 
+                            disciplines={this.props.store.disciplines} 
+                            highscore={highscore} />)                                                
                     }
                 </tbody>
             </Table>
