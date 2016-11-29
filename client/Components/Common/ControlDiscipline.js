@@ -28,7 +28,7 @@ class ControlDiscipline extends React.Component {
         return (
             <FormGroup validationState={this.getValidationState()}>
                 <ControlLabel>Discipline</ControlLabel>
-                <FormControl
+                <select className="form-control"
                     defaultValue={this.props.value || ""} 
                     placeholder="distance" 
                     onChange={this.onChange}
@@ -43,7 +43,7 @@ class ControlDiscipline extends React.Component {
                             data-name={discipline.name}
                             data-unit={discipline.unit}
                             data-score={discipline.score}>{discipline.name}</option>) }
-                </FormControl>
+                </select>
             </FormGroup>
         );
     }
