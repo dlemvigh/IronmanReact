@@ -1,7 +1,7 @@
 import React from "react"
 import Relay from "react-relay"
-import { Link, Navigation } from "react-router";
 import CSSModules from "react-css-modules"
+import _ from "lodash";
 
 import Pos from "../Common/Pos";
 import styles from "./LeaderboardItem.scss"
@@ -17,7 +17,7 @@ class LeaderboardItem extends React.Component {
     }
 
     getScore() {
-        return this.props.summary ? this.props.summary.score : 0;
+        return _.round(this.props.summary ? this.props.summary.score : 0, 1);
     }
 
     render() {
