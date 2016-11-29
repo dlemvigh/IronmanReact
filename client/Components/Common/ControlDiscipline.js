@@ -15,15 +15,15 @@ class ControlDiscipline extends React.Component {
 
     onChange = (event) => {
         const options = event.target.selectedOptions;
-        toastr.info(options[0].dataset.name, "on change")
+        toastr.info(options[0].dataset.name, "on change 1")        
         if (options.length == 1 && this.props.onChange) {
-
+            toastr.info(options[0].dataset.name, "on change 2")
             const [selected] = options;
+            toastr.info(options[0].dataset.name, "on change 3")
             this.props.onChange({
                 ...selected.dataset
             });
         }
-        const discipline = event.target.value;
     }
 
     render() {

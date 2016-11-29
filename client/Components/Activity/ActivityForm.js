@@ -54,6 +54,7 @@ class ActivityForm extends React.Component {
     }
 
     handleChangeDiscipline = (discipline) => {
+        toastr.info(discipline.name, "on change 4")
         this.setState({
             disciplineId: discipline.id,
             disciplineName: discipline.name,
