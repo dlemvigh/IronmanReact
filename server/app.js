@@ -2,7 +2,6 @@ var path = require('path');
 var express = require('express');
 var cors = require('cors')
 var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
 
 import mongoose from "mongoose"
 mongoose.Promise = global.Promise;

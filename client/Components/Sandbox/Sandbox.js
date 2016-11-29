@@ -3,7 +3,6 @@ import Relay from 'react-relay'
 
 import Activity from '../Activity/Activity'
 import Leaderboard from '../Leaderboard/Leaderboard'
-import Medals from '../Medals/Medals'
 
 class Sandbox extends React.Component {
     render() {

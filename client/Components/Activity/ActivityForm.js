@@ -1,10 +1,9 @@
 import React from 'react'
 import Relay from 'react-relay'
-import { Button, Col, ControlLabel, Form, FormGroup, Row } from "react-bootstrap"
+import { Button, Col, Row } from "react-bootstrap"
 import CSSModules from "react-css-modules";
 import moment from "moment"
 import toastr from "toastr"
-import _ from "lodash";
 
 import styles from "./ActivityForm.scss";
 import ControlDate from "../Common/ControlDate";
@@ -132,7 +131,6 @@ class ActivityForm extends React.Component {
 
     render() {
         if (!this.props.show) { return null; }
-        const act = this.getActivity();
         return (
             <form onSubmit={this.handleSubmit} noValidate>
                 <Row>

@@ -1,6 +1,6 @@
 import React from "react"
 import Relay from "react-relay"
-import { ControlLabel, Form, FormGroup, FormControl } from "react-bootstrap"
+import { ControlLabel, FormGroup } from "react-bootstrap"
 
 class ControlDiscipline extends React.Component {
 

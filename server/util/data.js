@@ -69,7 +69,7 @@ function populateMedals(user) {
                 silver: 0,
                 bronze: 0                
             };
-            new MedalsModel(medal).save((err2, result2) => {
+            new MedalsModel(medal).save((err2) => {
                 if (err2) {
                     console.log("error saving medal", err2)
                 }

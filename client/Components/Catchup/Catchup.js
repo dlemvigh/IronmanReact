@@ -1,6 +1,5 @@
 import React from "react"
 import Relay from "react-relay"
-import moment from 'moment'
 
 import CatchupList from "../Catchup/CatchupList"
 

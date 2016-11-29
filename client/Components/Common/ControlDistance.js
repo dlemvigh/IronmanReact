@@ -1,5 +1,5 @@
 import React from "react";
-import { ControlLabel, Form, FormGroup, FormControl, InputGroup } from "react-bootstrap"
+import { ControlLabel, FormGroup, FormControl, InputGroup } from "react-bootstrap"
 
 const regex = /^((\d+\.?\d*)|(\d*\.?\d+))$/;
 

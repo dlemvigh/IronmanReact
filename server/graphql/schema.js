@@ -13,7 +13,6 @@ import {
   connectionArgs,
   connectionDefinitions,
   connectionFromPromisedArray,
-  cursorForObjectInConnection,
   offsetToCursor,
   fromGlobalId,
   toGlobalId,
@@ -276,7 +275,7 @@ const queryType = new GraphQLObjectType({
                 type: GraphQLString
             }        
         },
-        resolve (root, params, options) {
+        resolve (root, params) {
             if (params.id) {
                 return database.getUser(params.id);
             }

@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import moment from 'moment'
-import _ from 'lodash'
 
 import ActivityModel from '../models/activity'
 import DisciplineModel from '../models/discipline'
@@ -184,7 +183,7 @@ async function updateSummaryWeek(userId, userName, date) {
             const score = result[0].score;
             const summary = Object.assign({}, query, {score, userName});
 
-            const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
+            await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
         }
         await updateSummaryLeader(query.week, query.year);
     }catch(error){
@@ -222,7 +221,7 @@ async function updateSummaryTotal(userId, userName) {
             score
         };
 
-        const newSummary = await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
+        await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
     }catch(error){
         console.log("error", error)
     }
@@ -249,7 +248,7 @@ async function updateMedals(user) {
         silver: summaries.filter(x => x.position == 2).length,
         bronze: summaries.filter(x => x.position == 3).length
     }
-    const newMedal = await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec()
+    await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec()
 }
 
 function getAllMedals() {

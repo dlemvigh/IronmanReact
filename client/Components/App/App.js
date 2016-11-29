@@ -21,7 +21,7 @@ class App extends React.Component {
             progressBar: true,
         };
 
-        window.onerror = (message, file, line, col, error) => {
+        window.onerror = (message) => {
             toastr.error(message);
         }
     }
