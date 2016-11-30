@@ -59,6 +59,7 @@
         "react/require-render-return": "warn",
         "react/sort-comp": "warn",
         "max-len": ["warn", {"code": 120}],
+        "newline-per-chained-call": "warn",
         /* nice to have */
         "curly": 1,
         "eqeqeq": 0,

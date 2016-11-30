@@ -10,7 +10,8 @@ class LeaderboardList extends React.Component {
   sorted() {
     const sorted = _(this.props.summary)
             .sortBy([summary => summary.score || 0])
-            .reverse().value();
+            .reverse()
+            .value();
     return sorted;
   }
   render() {

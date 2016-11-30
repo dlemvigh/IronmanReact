@@ -31,7 +31,9 @@ function getActivity(id) {
 
 function getActivities(args) {
   args = args || {};
-  return ActivityModel.find(args).sort({date: -1}).exec();
+  return ActivityModel.find(args)
+    .sort({date: -1})
+    .exec();
 }
 
 function getDiscipline(id) {
@@ -77,8 +79,12 @@ function getWeekSummary(userId, week, year) {
 
 async function addActivity(userId, disciplineId, distance, date) {
   const [discipline, user] = await Promise.all([
-    DisciplineModel.findById(disciplineId).select({name: 1, score: 1, unit: 1}).exec(),
-    UserModel.findById(userId).select({name: 1}).exec()
+    DisciplineModel.findById(disciplineId)
+                   .select({name: 1, score: 1, unit: 1})
+                   .exec(),
+    UserModel.findById(userId)
+             .select({name: 1})
+             .exec()
   ]).catch((reason) => {
     throw new Error(reason);     
   });
@@ -105,13 +111,19 @@ async function addActivity(userId, disciplineId, distance, date) {
 
 async function editActivity(id, userId, disciplineId, distance, date) {
   const [activity, discipline, user] = await Promise.all([
-    ActivityModel.findById(id).exec(),
-    DisciplineModel.findById(disciplineId).select({name: 1, score: 1, unit: 1}).exec(),
-    UserModel.findById(userId).select({name: 1}).exec()
+    ActivityModel.findById(id)
+                 .exec(),
+    DisciplineModel.findById(disciplineId)
+                   .select({name: 1, score: 1, unit: 1})
+                   .exec(),
+    UserModel.findById(userId)
+             .select({name: 1})
+             .exec()
   ]).catch((reason) => {
     throw new Error(reason);     
   });
-  const beforeDate = moment(activity.date).startOf("date").toDate();
+  const beforeDate = moment(activity.date).startOf("date")
+                                          .toDate();
   date = moment.utc(date).startOf("date");
 
   Object.assign(activity, {
@@ -228,7 +240,9 @@ async function updateSummaryTotal(userId, userName) {
 }
 
 async function updateSummaryLeader(week, year) {
-  const summaries = await SummaryModel.find({week, year}).sort({score: -1}).exec();
+  const summaries = await SummaryModel.find({week, year})
+                                      .sort({score: -1})
+                                      .exec();
   summaries.map((summary, index) => summary.position = index + 1);
   await Promise.all(summaries.map(summary => summary.save()));
   await updateAllMedals();
