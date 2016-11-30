@@ -24,7 +24,7 @@ class ControlDiscipline extends React.Component {
       <FormGroup validationState={this.getValidationState()}>
         <ControlLabel>Discipline</ControlLabel>
         <select className="form-control"
-          defaultValue={this.props.value || ""} 
+          value={this.props.value || ""} 
           placeholder="distance" 
           onChange={this.onChange}
           onBlur={this.onChange}
