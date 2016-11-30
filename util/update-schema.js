@@ -1,11 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import {graphql}  from 'graphql';
-import {introspectionQuery, printSchema} from 'graphql/utilities';
+import fs from "fs";
+import path from "path";
+import {graphql} from "graphql";
+import {introspectionQuery, printSchema} from "graphql/utilities";
 
 // Assume your schema is in ../data/schema
 import schema from "../server/graphql/schema";
-const yourSchemaPath = path.join(__dirname, '../data/schema');
+const yourSchemaPath = path.join(__dirname, "../data/schema");
 
 // Save JSON of full schema introspection for Babel Relay Plugin to use
 graphql(schema, introspectionQuery).then(result => {
