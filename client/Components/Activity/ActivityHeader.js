@@ -11,6 +11,7 @@ class ActivityHeader extends React.Component {
         <th>Distance</th>
         <th>Score</th>
         <th>Date</th>
+        <th className="hidden-xs">Day</th>
         <th className="hidden-xs">Week</th>
         <th className="hidden-xs">Year</th>
         <th></th>
