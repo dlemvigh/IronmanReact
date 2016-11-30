@@ -11,7 +11,6 @@ app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-
 app.listen(port, function(){
   console.log("Timelog app listening on port: " + port);
-})
+});

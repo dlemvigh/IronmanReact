@@ -1,9 +1,9 @@
-import React from 'react'
-import Relay from 'react-relay'
-import { Table } from "react-bootstrap"
+import React from "react";
+import Relay from "react-relay";
+import { Table } from "react-bootstrap";
 
-import ActivityHeader from './ActivityHeader'
-import ActivityItem from './ActivityItem'
+import ActivityHeader from "./ActivityHeader";
+import ActivityItem from "./ActivityItem";
 
 class ActivityList extends React.Component {
 
@@ -28,23 +28,23 @@ ActivityList = Relay.createContainer(ActivityList, {
     fragments: {
         store: () => Relay.QL`
             fragment on Store {
-                ${ActivityItem.getFragment('store')}
+                ${ActivityItem.getFragment("store")}
             }
         `,
         user: () => Relay.QL`
             fragment on User {
-                ${ActivityItem.getFragment('user')}
+                ${ActivityItem.getFragment("user")}
                 activities(first: 100) {
                     edges {
                         node {
                             id
-                            ${ActivityItem.getFragment('activity')}
+                            ${ActivityItem.getFragment("activity")}
                         }
                     }
                 }
             }
         `
     }
-})
+});
 
-export default ActivityList
+export default ActivityList;

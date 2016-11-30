@@ -1,7 +1,7 @@
-import React from "react"
-import CSSModules from "react-css-modules"
+import React from "react";
+import CSSModules from "react-css-modules";
 
-import styles from "./ActivityHeader.scss"
+import styles from "./ActivityHeader.scss";
 
 class ActivityHeader extends React.Component {
     render() {

@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const disciplineSchema = new mongoose.Schema({
     name: {
@@ -15,6 +15,6 @@ const disciplineSchema = new mongoose.Schema({
     },
 });
 
-disciplineSchema.virtual('id').get(function() { return this._id; })
+disciplineSchema.virtual("id").get(function() { return this._id; });
 
 export default mongoose.model("Discipline", disciplineSchema);

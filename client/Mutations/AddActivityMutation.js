@@ -1,11 +1,11 @@
-import Relay from "react-relay"
+import Relay from "react-relay";
 
 class AddActivityMutation extends Relay.Mutation {
 
     getMutation() {
         return Relay.QL`
             mutation { addActivity }
-        `
+        `;
     }
 
     getVariables() {
@@ -14,7 +14,7 @@ class AddActivityMutation extends Relay.Mutation {
             userId: this.props.userId,
             distance: this.props.distance,
             date: this.props.date
-        }
+        };
     }
 
     getFatQuery() {
@@ -30,21 +30,21 @@ class AddActivityMutation extends Relay.Mutation {
                 }
                 store
             }
-        `
+        `;
     }
 
   getConfigs() {
     return [{
-      type: 'RANGE_ADD',
-      parentName: 'user',
+      type: "RANGE_ADD",
+      parentName: "user",
       parentID: this.props.nodeId,
-      connectionName: 'activities',
-      edgeName: 'activityEdge',
+      connectionName: "activities",
+      edgeName: "activityEdge",
       rangeBehaviors: {
-        '': 'prepend',
+        "": "prepend",
       },
     },{
-        type: 'FIELDS_CHANGE',
+        type: "FIELDS_CHANGE",
         fieldIDs: {
             medals: this.props.medals,
             store: this.props.store

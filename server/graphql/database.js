@@ -1,24 +1,24 @@
-import mongoose from 'mongoose'
-import moment from 'moment'
+import mongoose from "mongoose";
+import moment from "moment";
 
-import ActivityModel from '../models/activity'
-import DisciplineModel from '../models/discipline'
-import UserModel from '../models/user'
-import StoreModel from '../models/store'
-import SummaryModel from '../models/summary'
-import MedalsModel from '../models/medals'
+import ActivityModel from "../models/activity";
+import DisciplineModel from "../models/discipline";
+import UserModel from "../models/user";
+import StoreModel from "../models/store";
+import SummaryModel from "../models/summary";
+import MedalsModel from "../models/medals";
 
 const staticStore = new StoreModel(42);
 function getStore() {
-    return staticStore
+    return staticStore;
 }
 
 function getUser(id) {
-    return UserModel.findById(id).exec()
+    return UserModel.findById(id).exec();
 }
 
 function getUserByUsername(username) {
-    return UserModel.findOne({username}).exec()
+    return UserModel.findOne({username}).exec();
 }
 
 function getUsers() {
@@ -39,7 +39,7 @@ function getDiscipline(id) {
 }
 
 function getDisciplines() {
-    return DisciplineModel.find({}).exec()
+    return DisciplineModel.find({}).exec();
 }
 
 function getSummary(id) {
@@ -52,7 +52,7 @@ function getMedals(id) {
 
 function getAllSummaries(week, year) {
     if (week && year) {
-        return SummaryModel.find({week, year}).exec()
+        return SummaryModel.find({week, year}).exec();
     }else{
         const query = {
             week: { $exists: false },
@@ -64,7 +64,7 @@ function getAllSummaries(week, year) {
 
 function getWeekSummary(userId, week, year) {
     if (week && year) {
-        return SummaryModel.findOne({userId, week, year}).exec()
+        return SummaryModel.findOne({userId, week, year}).exec();
     }else{
         const query = {
             userId,
@@ -80,9 +80,9 @@ async function addActivity(userId, disciplineId, distance, date) {
        DisciplineModel.findById(disciplineId).select({name: 1, score: 1, unit: 1}).exec(),
        UserModel.findById(userId).select({name: 1}).exec()
      ]).catch((reason) => {
-        throw new Error(reason)     
+        throw new Error(reason);     
      });
-     date = moment.utc(date).startOf("date")
+     date = moment.utc(date).startOf("date");
 
      const activity = new ActivityModel({
        userId,
@@ -97,7 +97,7 @@ async function addActivity(userId, disciplineId, distance, date) {
 
      const newActivity = await activity.save();
      if (!newActivity){
-       throw new Error('Error adding new activity');
+       throw new Error("Error adding new activity");
      }
      await updateSummary(userId, user.name, date);
      return newActivity;  
@@ -109,10 +109,10 @@ async function editActivity(id, userId, disciplineId, distance, date) {
         DisciplineModel.findById(disciplineId).select({name: 1, score: 1, unit: 1}).exec(),
         UserModel.findById(userId).select({name: 1}).exec()
      ]).catch((reason) => {
-        throw new Error(reason)     
+        throw new Error(reason);     
      });
      const beforeDate = moment(activity.date).startOf("date").toDate();
-     date = moment.utc(date).startOf("date")
+     date = moment.utc(date).startOf("date");
 
      Object.assign(activity, {
        userId,
@@ -127,10 +127,10 @@ async function editActivity(id, userId, disciplineId, distance, date) {
 
      const newActivity = await activity.save();
      if (!newActivity){
-       throw new Error('Error updating activity');
+       throw new Error("Error updating activity");
      }     
      await updateSummary(userId, user.name, date);
-     if (date.diff(beforeDate, 'days') != 0) {
+     if (date.diff(beforeDate, "days") != 0) {
          await updateSummary(userId, user.name, beforeDate);
      }
      return newActivity;  
@@ -139,7 +139,7 @@ async function editActivity(id, userId, disciplineId, distance, date) {
  async function removeActivity(activityId) {
      const activity = await ActivityModel.findById(activityId);
      if (!activity){
-       throw new Error('Error removing activity');
+       throw new Error("Error removing activity");
      }
      await activity.remove();
      await updateSummary(activity.userId, activity.userName, moment(activity.date));
@@ -187,7 +187,7 @@ async function updateSummaryWeek(userId, userName, date) {
         }
         await updateSummaryLeader(query.week, query.year);
     }catch(error){
-        console.log("error", error)
+        console.log("error", error);
     }
 }
 
@@ -223,7 +223,7 @@ async function updateSummaryTotal(userId, userName) {
 
         await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
     }catch(error){
-        console.log("error", error)
+        console.log("error", error);
     }
 }
 
@@ -247,12 +247,12 @@ async function updateMedals(user) {
         gold: summaries.filter(x => x.position == 1).length,
         silver: summaries.filter(x => x.position == 2).length,
         bronze: summaries.filter(x => x.position == 3).length
-    }
-    await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec()
+    };
+    await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec();
 }
 
 function getAllMedals() {
-    return MedalsModel.find({}).exec()
+    return MedalsModel.find({}).exec();
 }
 
 function getMedalsByUserId(userId) {

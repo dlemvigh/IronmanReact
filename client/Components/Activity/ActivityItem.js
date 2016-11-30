@@ -1,16 +1,16 @@
-import React from "react"
-import Relay from "react-relay"
-import { Glyphicon } from "react-bootstrap"
-import toastr from "toastr"
+import React from "react";
+import Relay from "react-relay";
+import { Glyphicon } from "react-bootstrap";
+import toastr from "toastr";
 
-import Date from "../Common/Date"
-import Week from "../Common/Week"
-import Year from "../Common/Year"
-import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation"
+import Date from "../Common/Date";
+import Week from "../Common/Week";
+import Year from "../Common/Year";
+import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation";
 
 class ActivityItem extends React.Component {
     onEdit = () => {
-        this.props.onEdit(this.props.activity)
+        this.props.onEdit(this.props.activity);
     }
 
     onDelete = () => {
@@ -19,13 +19,13 @@ class ActivityItem extends React.Component {
             nodeId: this.props.user.id,
             medals: this.getMedals(),
             store: this.props.store.id
-        })    
+        });    
         Relay.Store.commitUpdate(
             mutation, {
-                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed") },
+                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed"); },
                         onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity removed"); }
             }
-        )
+        );
     }
 
     getMedals() {
@@ -81,6 +81,6 @@ ActivityItem = Relay.createContainer(ActivityItem, {
                 date
             }`
     }
-})
+});
 
 export default ActivityItem;

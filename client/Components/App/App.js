@@ -1,16 +1,16 @@
-import React from 'react'
-import Relay from 'react-relay'
-import CSSModules from 'react-css-modules'
-import toastr from 'toastr'
+import React from "react";
+import Relay from "react-relay";
+import CSSModules from "react-css-modules";
+import toastr from "toastr";
 
-import Header from "./Header"
-import Footer from "./Footer"
-import styles from "./App.scss"
+import Header from "./Header";
+import Footer from "./Footer";
+import styles from "./App.scss";
 
-import '!style!css!bootstrap/dist/css/bootstrap.min.css';
-import '!style!css!bootstrap/dist/css/bootstrap-theme.min.css';
-import '!style!css!react-datetime/css/react-datetime.css';
-import '!style!css!toastr/build/toastr.min.css';
+import "!style!css!bootstrap/dist/css/bootstrap.min.css";
+import "!style!css!bootstrap/dist/css/bootstrap-theme.min.css";
+import "!style!css!react-datetime/css/react-datetime.css";
+import "!style!css!toastr/build/toastr.min.css";
 
 class App extends React.Component {
 
@@ -23,7 +23,7 @@ class App extends React.Component {
 
         window.onerror = (message) => {
             toastr.error(message);
-        }
+        };
     }
 
     render() {
@@ -48,7 +48,7 @@ App = Relay.createContainer(App, {
         store: () => Relay.QL`
             fragment on Store {
                 id
-                ${Header.getFragment('store')}
+                ${Header.getFragment("store")}
             }
         `
     }

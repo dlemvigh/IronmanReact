@@ -1,17 +1,17 @@
-import React from "react"
-import Relay from "react-relay"
-import { Table } from "react-bootstrap"
-import moment from "moment"
+import React from "react";
+import Relay from "react-relay";
+import { Table } from "react-bootstrap";
+import moment from "moment";
 import _ from "lodash";
 import titleCase from "title-case";
 
-import { mapFilter, getClassName } from "./CatchupFilter" 
-import CatchupItem from "./CatchupItem"
+import { mapFilter, getClassName } from "./CatchupFilter"; 
+import CatchupItem from "./CatchupItem";
 
 class CatchupList extends React.Component {
 
     getDisciplines() {
-        const filtered = mapFilter(this.props.store.disciplines)
+        const filtered = mapFilter(this.props.store.disciplines);
         return filtered;
     }
 
@@ -29,7 +29,7 @@ class CatchupList extends React.Component {
     }
 
     getHighestScore() {
-        const max = _.max(this.props.store.users.map(this.getScore))
+        const max = _.max(this.props.store.users.map(this.getScore));
         return max;
     }
 
@@ -43,7 +43,7 @@ class CatchupList extends React.Component {
                         <th>Name</th>
                         {
                             this.getDisciplines().map(disc => {
-                                return <th key={disc._id} className={getClassName(disc.name)}>{titleCase(disc.name)}</th>
+                                return <th key={disc._id} className={getClassName(disc.name)}>{titleCase(disc.name)}</th>;
                             })
                         }
                         <th className="hidden-xs">Triathlon</th>
@@ -56,7 +56,8 @@ class CatchupList extends React.Component {
                             user={user} 
                             summary={user.summary} 
                             disciplines={this.props.store.disciplines} 
-                            highscore={highscore} />)                                                
+                            highscore={highscore} 
+                        />)                                                
                     }
                 </tbody>
             </Table>
@@ -75,19 +76,19 @@ CatchupList = Relay.createContainer(CatchupList, {
                 disciplines {
                     _id
                     name
-                    ${CatchupItem.getFragment('disciplines')}
+                    ${CatchupItem.getFragment("disciplines")}
                 }
                 users {
                     _id
-                    ${CatchupItem.getFragment('user')}
+                    ${CatchupItem.getFragment("user")}
                     summary(week: $week, year: $year) {
                         score
-                        ${CatchupItem.getFragment('summary')}
+                        ${CatchupItem.getFragment("summary")}
                     }
                 }
             }
         `
     }
-})
+});
 
-export default CatchupList
+export default CatchupList;

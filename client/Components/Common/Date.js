@@ -1,5 +1,5 @@
-import React from "react"
-import Moment from "moment"
+import React from "react";
+import Moment from "moment";
 
 export default class Date extends React.Component {
     getDate(){

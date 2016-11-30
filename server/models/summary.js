@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const summarySchema = new mongoose.Schema({
     userId: {

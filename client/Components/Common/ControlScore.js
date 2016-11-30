@@ -1,5 +1,5 @@
 import React from "react";
-import { ControlLabel, FormGroup, FormControl } from "react-bootstrap"
+import { ControlLabel, FormGroup, FormControl } from "react-bootstrap";
 
 export default class ControlScore extends React.Component {
 
@@ -12,9 +12,10 @@ export default class ControlScore extends React.Component {
             <FormGroup>
                 <ControlLabel>Score</ControlLabel>
                 <FormControl
-                type="text"
-                value={this.round()}
-                disabled={this.props.readonly} />
+                    type="text"
+                    value={this.round()}
+                    disabled={this.props.readonly} 
+                />
         </FormGroup>
         );
     }

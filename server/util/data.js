@@ -23,12 +23,12 @@ function populateDisciplines(){
             name: disc.name
         }, (err, result) => {
             if (err) {
-                console.log("error finding discipline", disc.name)
+                console.log("error finding discipline", disc.name);
             }else if (!result) {
-                console.log("creating", disc.name)
+                console.log("creating", disc.name);
                 new DisciplineModel(disc).save();
             }
-        })
+        });
     });    
 }
 
@@ -40,10 +40,10 @@ function populateUsers() {
             if (err){
                 console.log("error finding user", user.name);
             } else if (!result) {
-                console.log("creating", user.name)
+                console.log("creating", user.name);
                 new UserModel(user).save((err2, result2) => {
                     if (err2) {
-                        console.log("error adding user", user.name)
+                        console.log("error adding user", user.name);
                     }else{
                         populateMedals(result2);
                     }
@@ -51,7 +51,7 @@ function populateUsers() {
             }else{
                 populateMedals(result);
             }
-        })
+        });
     });
 }
 
@@ -60,7 +60,7 @@ function populateMedals(user) {
         userId: user._id,
     }, (err, result) => {
         if (err) {
-            console.log("error finding medal")
+            console.log("error finding medal");
         } else if (!result) {
             const medal = {
                 userId: user._id,
@@ -71,7 +71,7 @@ function populateMedals(user) {
             };
             new MedalsModel(medal).save((err2) => {
                 if (err2) {
-                    console.log("error saving medal", err2)
+                    console.log("error saving medal", err2);
                 }
             });
         }

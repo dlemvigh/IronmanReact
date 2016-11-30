@@ -1,8 +1,8 @@
-import React from "react"
-import Relay from "react-relay"
-import { Link } from 'react-router'
-import { Navbar, Nav, NavItem } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import React from "react";
+import Relay from "react-relay";
+import { Link } from "react-router";
+import { Navbar, Nav, NavItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 class Header extends React.Component {
     render() {
@@ -41,6 +41,6 @@ Header = Relay.createContainer(Header, {
             }
         `
     }
-})
+});
 
-export default Header
+export default Header;

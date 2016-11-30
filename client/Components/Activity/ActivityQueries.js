@@ -1,4 +1,4 @@
-import Relay from 'react-relay'
+import Relay from "react-relay";
 
 export default { 
     byUsername: {
@@ -25,4 +25,4 @@ export default {
             }
         `
     }
-}
+};

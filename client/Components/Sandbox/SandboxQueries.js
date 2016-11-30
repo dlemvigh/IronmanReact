@@ -1,4 +1,4 @@
-import Relay from 'react-relay'
+import Relay from "react-relay";
 
 export default {
     store: () => Relay.QL`
@@ -11,4 +11,4 @@ export default {
             user (username: "david")
         }
     `
-}
+};

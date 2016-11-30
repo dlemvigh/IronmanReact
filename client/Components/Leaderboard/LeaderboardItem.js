@@ -1,10 +1,10 @@
-import React from "react"
-import Relay from "react-relay"
-import CSSModules from "react-css-modules"
+import React from "react";
+import Relay from "react-relay";
+import CSSModules from "react-css-modules";
 import _ from "lodash";
 
 import Pos from "../Common/Pos";
-import styles from "./LeaderboardItem.scss"
+import styles from "./LeaderboardItem.scss";
 
 class LeaderboardItem extends React.Component {
 
@@ -31,7 +31,7 @@ class LeaderboardItem extends React.Component {
     }
 }
 
-LeaderboardItem = CSSModules(LeaderboardItem, styles)
+LeaderboardItem = CSSModules(LeaderboardItem, styles);
 
 LeaderboardItem = Relay.createContainer(LeaderboardItem, {
     fragments: {

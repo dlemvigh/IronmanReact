@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-import CSSModules from 'react-css-modules';
-import styles from './Footer.scss'
+import CSSModules from "react-css-modules";
+import styles from "./Footer.scss";
 
 class Footer extends React.Component {
     render() {

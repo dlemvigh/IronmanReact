@@ -1,8 +1,8 @@
-import React from 'react'
-import Relay from 'react-relay'
+import React from "react";
+import Relay from "react-relay";
 
-import ActivityForm from './ActivityForm'
-import ActivityList from './ActivityList'
+import ActivityForm from "./ActivityForm";
+import ActivityList from "./ActivityList";
 
 
 class Activity extends React.Component {
@@ -16,7 +16,7 @@ class Activity extends React.Component {
     }
 
     onEndEdit = () => {
-        this.setState({editing: null})
+        this.setState({editing: null});
     }
 
     render() {
@@ -28,7 +28,7 @@ class Activity extends React.Component {
                 <h3>Activities</h3>
                 <ActivityList {...this.props} onEdit={this.onBeginEdit} />
             </div>
-        )
+        );
     }
 }
 
@@ -36,17 +36,17 @@ Activity = Relay.createContainer(Activity, {
     fragments: {
         store: () => Relay.QL`
             fragment on Store {
-                ${ActivityForm.getFragment('store')}
-                ${ActivityList.getFragment('store')}
+                ${ActivityForm.getFragment("store")}
+                ${ActivityList.getFragment("store")}
             }`,
         user: () => Relay.QL`
             fragment on User {
                 name
-                ${ActivityForm.getFragment('user')}
-                ${ActivityList.getFragment('user')}
+                ${ActivityForm.getFragment("user")}
+                ${ActivityList.getFragment("user")}
             }
         `
     }
-})
+});
 
-export default Activity
+export default Activity;

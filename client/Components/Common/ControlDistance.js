@@ -1,5 +1,5 @@
 import React from "react";
-import { ControlLabel, FormGroup, FormControl, InputGroup } from "react-bootstrap"
+import { ControlLabel, FormGroup, FormControl, InputGroup } from "react-bootstrap";
 
 const regex = /^((\d+\.?\d*)|(\d*\.?\d+))$/;
 
@@ -30,7 +30,8 @@ export default class ControlDistance extends React.Component {
                         type="text" 
                         value={this.props.value}
                         placeholder="4.7" 
-                        onChange={this.onChange}  />
+                        onChange={this.onChange} 
+                    />
                     <InputGroup.Addon>{this.props.unit}</InputGroup.Addon>
                 </InputGroup>                    
             </FormGroup>

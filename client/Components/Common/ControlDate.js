@@ -1,7 +1,7 @@
-import React from "react"
-import { ControlLabel, FormGroup } from "react-bootstrap"
-import DateTime from "react-datetime"
-import moment from "moment"
+import React from "react";
+import { ControlLabel, FormGroup } from "react-bootstrap";
+import DateTime from "react-datetime";
+import moment from "moment";
 
 export default class ControlDate extends React.Component {
 
@@ -11,9 +11,9 @@ export default class ControlDate extends React.Component {
 
     getValidationState() {
         if (typeof this.props.value === "string") {
-            if (this.props.value.length > 0) return "error"
+            if (this.props.value.length > 0) return "error";
         }else{
-            return "success"
+            return "success";
         }
     }
 
@@ -36,7 +36,7 @@ export default class ControlDate extends React.Component {
                     defaultValue={moment.utc()}
                     value={this.props.value}
                     onChange={this.onChange} 
-                    />
+                />
             </FormGroup>
         );
     }

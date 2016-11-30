@@ -1,8 +1,8 @@
-import React from 'react'
-import Relay from 'react-relay'
+import React from "react";
+import Relay from "react-relay";
 
-import Activity from '../Activity/Activity'
-import Leaderboard from '../Leaderboard/Leaderboard'
+import Activity from "../Activity/Activity";
+import Leaderboard from "../Leaderboard/Leaderboard";
 
 class Sandbox extends React.Component {
     render() {
@@ -20,13 +20,13 @@ Sandbox = Relay.createContainer(Sandbox, {
     fragments: {
         store: () => Relay.QL`
             fragment on Store {
-                ${Leaderboard.getFragment('store')}
-                ${Activity.getFragment('store')}
+                ${Leaderboard.getFragment("store")}
+                ${Activity.getFragment("store")}
             }
         `,
         user: () => Relay.QL`
             fragment on User {
-                ${Activity.getFragment('user')}
+                ${Activity.getFragment("user")}
             }
         `
     }

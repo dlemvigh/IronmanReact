@@ -1,10 +1,10 @@
-import React from "react"
-import Relay from "react-relay"
-import CSSModules from "react-css-modules"
-import _ from "lodash"
+import React from "react";
+import Relay from "react-relay";
+import CSSModules from "react-css-modules";
+import _ from "lodash";
 
-import { mapFilter, getClassName } from "./CatchupFilter" 
-import CatchupItemTriathlon from "./CatchupItemTriathlon"
+import { mapFilter, getClassName } from "./CatchupFilter"; 
+import CatchupItemTriathlon from "./CatchupItemTriathlon";
 
 import styles from "./CatchupItem.scss";
 
@@ -37,7 +37,7 @@ class CatchupItem extends React.Component {
                 <td>{this.props.user.name}</td>
                 {
                     this.getDisciplines().map(disc => {
-                        return <td key={disc._id} className={getClassName(disc.name)}>{this.getCatchupDistance(disc)}</td>
+                        return <td key={disc._id} className={getClassName(disc.name)}>{this.getCatchupDistance(disc)}</td>;
                     })
                 }
                 <CatchupItemTriathlon score={this.getScore()} highscore={this.props.highscore} />
@@ -70,6 +70,6 @@ CatchupItem = Relay.createContainer(CatchupItem, {
             }
         `
     }
-})
+});
 
-export default CatchupItem
+export default CatchupItem;

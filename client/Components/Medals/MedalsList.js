@@ -38,7 +38,7 @@ class MedalsList extends React.Component {
           }
         </tbody>
       </Table>
-    )
+    );
   }
 }
 
@@ -47,7 +47,7 @@ MedalsList = Relay.createContainer(MedalsList, {
     store: () => Relay.QL`
       fragment on Store {
         users {
-          ${MedalsItem.getFragment('user')}
+          ${MedalsItem.getFragment("user")}
           _id
           medals {
             gold
@@ -58,6 +58,6 @@ MedalsList = Relay.createContainer(MedalsList, {
       }
     `
   }
-})
+});
 
 export default MedalsList;

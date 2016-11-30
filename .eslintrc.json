@@ -17,6 +17,8 @@
     },
     "rules": {
         "strict": 0,
+        "quotes": "warn",
+        "semi": "warn",
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
         "no-undef": "warn",
@@ -24,7 +26,11 @@
         "no-unused-vars": "warn",
         "constructor-super": "warn",
         "valid-typeof": "warn",
-        "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error"
+        "jsx-quotes": ["warn", "prefer-double"],
+        "react/jsx-uses-react": "warn",
+        "react/jsx-uses-vars": "warn",
+        "react/jsx-boolean-value": ["warn", "never"],    
+        "react/jsx-closing-bracket-location": ["warn", "line-aligned"],
+        "react/jsx-curly-spacing": ["warn", "never", { "allowMultiline": true }]
     }
 }

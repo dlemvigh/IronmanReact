@@ -4,4 +4,4 @@ class StoreModel {
     }
 }
 
-export default StoreModel
+export default StoreModel;

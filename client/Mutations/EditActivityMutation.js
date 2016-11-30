@@ -1,11 +1,11 @@
-import Relay from "react-relay"
+import Relay from "react-relay";
 
 class EditActivityMutation extends Relay.Mutation {
 
     getMutation() {
         return Relay.QL`
             mutation { editActivity }
-        `
+        `;
     }
 
     getVariables() {
@@ -15,7 +15,7 @@ class EditActivityMutation extends Relay.Mutation {
             userId: this.props.userId,
             distance: this.props.distance,
             date: this.props.date
-        }
+        };
     }
 
     getFatQuery() {
@@ -30,12 +30,12 @@ class EditActivityMutation extends Relay.Mutation {
                 }
                 store
             }
-        `
+        `;
     }
 
   getConfigs() {
     return [{
-      type: 'FIELDS_CHANGE',
+      type: "FIELDS_CHANGE",
       fieldIDs: {
         activity: this.props.id,
         medals: this.props.medals,

@@ -1,17 +1,17 @@
-import Relay from "react-relay"
+import Relay from "react-relay";
 
 class RemoveActivityMutation extends Relay.Mutation {
 
     getMutation() {
         return Relay.QL`
             mutation { removeActivity }
-        `
+        `;
     }
 
     getVariables() {
         return {
             id: this.props.id  
-        }
+        };
     }
 
     getFatQuery() {
@@ -27,18 +27,18 @@ class RemoveActivityMutation extends Relay.Mutation {
                 }
                 store
             }
-        `
+        `;
     }
 
   getConfigs() {
     return [{
-      type: 'NODE_DELETE',
-      parentName: 'user',
+      type: "NODE_DELETE",
+      parentName: "user",
       parentID: this.props.nodeId,
-      connectionName: 'activities',
-      deletedIDFieldName: 'removedActivityId',
+      connectionName: "activities",
+      deletedIDFieldName: "removedActivityId",
     },{
-        type: 'FIELDS_CHANGE',
+        type: "FIELDS_CHANGE",
         fieldIDs: {
             medals: this.props.medals,
             store: this.props.store

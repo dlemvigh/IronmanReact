@@ -1,5 +1,5 @@
-import mongoose from "mongoose"
-import moment from "moment"
+import mongoose from "mongoose";
+import moment from "moment";
 
 const activitySchema = new mongoose.Schema({
     userId: {
@@ -35,12 +35,12 @@ const activitySchema = new mongoose.Schema({
     }
 });
 
-activitySchema.virtual('week').get(function(){
+activitySchema.virtual("week").get(function(){
     return moment(this.date).isoWeek();
-})
+});
 
-activitySchema.virtual('year').get(function(){
+activitySchema.virtual("year").get(function(){
     return moment(this.date).year();
-})
+});
 
 export default mongoose.model("Activity", activitySchema);

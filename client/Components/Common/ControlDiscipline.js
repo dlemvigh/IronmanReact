@@ -1,6 +1,6 @@
-import React from "react"
-import Relay from "react-relay"
-import { ControlLabel, FormGroup } from "react-bootstrap"
+import React from "react";
+import Relay from "react-relay";
+import { ControlLabel, FormGroup } from "react-bootstrap";
 
 class ControlDiscipline extends React.Component {
 
@@ -27,7 +27,8 @@ class ControlDiscipline extends React.Component {
                     defaultValue={this.props.value || ""} 
                     placeholder="distance" 
                     onChange={this.onChange}
-                    onBlur={this.onChange}>
+                    onBlur={this.onChange}
+                >
                     <option disabled value="">Choose...</option>
                     { this.props.store.disciplines.map(discipline => 
                         <option 
@@ -36,7 +37,8 @@ class ControlDiscipline extends React.Component {
                             data-id={discipline._id}
                             data-name={discipline.name}
                             data-unit={discipline.unit}
-                            data-score={discipline.score}>{discipline.name}</option>) }
+                            data-score={discipline.score}
+                        >{discipline.name}</option>) }
                 </select>
             </FormGroup>
         );
@@ -56,6 +58,6 @@ ControlDiscipline = Relay.createContainer(ControlDiscipline, {
             }
         `
     }
-})
+});
 
-export default ControlDiscipline
+export default ControlDiscipline;

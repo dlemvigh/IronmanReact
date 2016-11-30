@@ -1,12 +1,12 @@
-var path = require('path');
-var express = require('express');
-var cors = require('cors')
-var graphqlHTTP = require('express-graphql');
+var path = require("path");
+var express = require("express");
+var cors = require("cors");
+var graphqlHTTP = require("express-graphql");
 
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 mongoose.Promise = global.Promise;
 
-import { populate } from "./util/data.js"
+import { populate } from "./util/data.js";
 populate();
 
 import schema from "./graphql/schema";
@@ -14,7 +14,7 @@ import schema from "./graphql/schema";
 var app = express();
 app.use(cors());
 
-app.use('/graphql', graphqlHTTP({
+app.use("/graphql", graphqlHTTP({
   schema: schema,
   pretty: true,
   graphiql: true,
@@ -27,7 +27,7 @@ app.get("*", function(req, res) {
 });
 
 
-mongoose.connect('mongodb://localhost/ironman');
+mongoose.connect("mongodb://localhost/ironman");
 
 app.listen(4000);
-console.log('Running a GraphQL API server at localhost:4000/graphql');
+console.log("Running a GraphQL API server at localhost:4000/graphql");

@@ -1,9 +1,9 @@
-import React from "react"
-import _ from "lodash"
+import React from "react";
+import _ from "lodash";
 
-const swim = { score: 25, dist: .4 }
-const bike = { score: 1, dist: 18 }
-const run = { score: 5, dist: 4 }
+const swim = { score: 25, dist: .4 };
+const bike = { score: 1, dist: 18 };
+const run = { score: 5, dist: 4 };
 const total = swim.score * swim.dist + bike.score * bike.dist + run.score * run.dist;
 
 class CatchupItemTriathlon extends React.Component {
@@ -23,7 +23,7 @@ class CatchupItemTriathlon extends React.Component {
     }
 
     getPart(disc, decimals) {
-        const dist = _.round(disc.dist * this.getDiff() / total, decimals)
+        const dist = _.round(disc.dist * this.getDiff() / total, decimals);
         return dist;
     }
 
@@ -34,4 +34,4 @@ class CatchupItemTriathlon extends React.Component {
     }
 }
 
-export default CatchupItemTriathlon
+export default CatchupItemTriathlon;

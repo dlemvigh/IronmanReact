@@ -1,9 +1,9 @@
-import React from "react"
-import Relay from "react-relay"
-import { Table } from "react-bootstrap"
-import _ from "lodash"
+import React from "react";
+import Relay from "react-relay";
+import { Table } from "react-bootstrap";
+import _ from "lodash";
 
-import LeaderboardItem from "./LeaderboardItem"
+import LeaderboardItem from "./LeaderboardItem";
 
 class LeaderboardList extends React.Component {
 
@@ -39,10 +39,10 @@ LeaderboardList = Relay.createContainer(LeaderboardList, {
             fragment on Summary @relay(plural: true) {
                 _id
                 score
-                ${LeaderboardItem.getFragment('summary')}
+                ${LeaderboardItem.getFragment("summary")}
             }
         `
     }
-})
+});
 
-export default LeaderboardList
+export default LeaderboardList;

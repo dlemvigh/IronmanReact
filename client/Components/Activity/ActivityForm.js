@@ -1,17 +1,17 @@
-import React from 'react'
-import Relay from 'react-relay'
-import { Button, Col, Row } from "react-bootstrap"
+import React from "react";
+import Relay from "react-relay";
+import { Button, Col, Row } from "react-bootstrap";
 import CSSModules from "react-css-modules";
-import moment from "moment"
-import toastr from "toastr"
+import moment from "moment";
+import toastr from "toastr";
 
 import styles from "./ActivityForm.scss";
 import ControlDate from "../Common/ControlDate";
 import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
-import AddActivityMutation from "../../Mutations/AddActivityMutation"
-import EditActivityMutation from "../../Mutations/EditActivityMutation"
+import AddActivityMutation from "../../Mutations/AddActivityMutation";
+import EditActivityMutation from "../../Mutations/EditActivityMutation";
 
 class ActivityForm extends React.Component {
 
@@ -24,7 +24,7 @@ class ActivityForm extends React.Component {
                 unit: newProps.activity.unit,
                 score: newProps.activity.score / newProps.activity.distance,
                 date: new Date(newProps.activity.date),
-            })
+            });
         }
     }
 
@@ -32,7 +32,7 @@ class ActivityForm extends React.Component {
         disciplineId: "" || this.props.store.disciplines[0]._id,
         disciplineName: "" || this.props.store.disciplines[0].name,
         distance: "" || "",
-        unit: 'km',
+        unit: "km",
         score: "" || 5,
         date: moment.utc().startOf("date")
     }
@@ -86,20 +86,20 @@ class ActivityForm extends React.Component {
                         id: this.props.activity.id,                        
                         ...activity
                     }), {
-                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Update activity failed") },
+                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Update activity failed"); },
                         onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity updated"); }
                     }
-                )
+                );
                 this.props.onEditDone();
             } else {
                 Relay.Store.commitUpdate(
                     new AddActivityMutation({
                         ...activity,
                     }), {
-                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Add activity failed") },
+                        onFailure: (resp) => { console.log("fail", resp); toastr.error("Add activity failed"); },
                         onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity added"); }
                     }
-                )
+                );
                 this.clearState();
             }
         }
@@ -117,7 +117,7 @@ class ActivityForm extends React.Component {
             unit: this.state.unit,
             score: this.state.score * this.state.distance,
             date: this.state.date.toISOString()
-        }
+        };
         return activity;
     }
 
@@ -156,7 +156,7 @@ class ActivityForm extends React.Component {
     }
 }
 
-ActivityForm = CSSModules(ActivityForm, styles)
+ActivityForm = CSSModules(ActivityForm, styles);
 
 ActivityForm = Relay.createContainer(ActivityForm, {
     fragments: {
@@ -172,7 +172,7 @@ ActivityForm = Relay.createContainer(ActivityForm, {
                     _id
                     name
                 }
-                ${ControlDiscipline.getFragment('store')}
+                ${ControlDiscipline.getFragment("store")}
             }
         `,
         user: () => Relay.QL`
@@ -182,6 +182,6 @@ ActivityForm = Relay.createContainer(ActivityForm, {
             }
         `
     }
-})
+});
 
-export default ActivityForm
+export default ActivityForm;

@@ -31,7 +31,7 @@ class MedalsItem extends React.Component {
         <td styleName="silver">{this.props.user.medals && this.props.user.medals.silver}</td>
         <td styleName="bronze">{this.props.user.medals && this.props.user.medals.bronze}</td>
       </tr>
-    )
+    );
   }
 }
 
@@ -51,6 +51,6 @@ MedalsItem = Relay.createContainer(MedalsItem, {
       }
     `
   }
-})
+});
 
 export default MedalsItem;
