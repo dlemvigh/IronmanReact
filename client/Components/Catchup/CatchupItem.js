@@ -51,24 +51,24 @@ CatchupItem = CSSModules(CatchupItem, styles);
 CatchupItem = Relay.createContainer(CatchupItem, {
   fragments: {
     user: () => Relay.QL`
-            fragment on User {
-                name
-                username
-            }
-        `,
+      fragment on User {
+        name
+        username
+      }
+    `,
     disciplines: () => Relay.QL`
-            fragment on Discipline @relay(plural: true) {
-                _id
-                name
-                score
-                unit
-            }
-        `,
+      fragment on Discipline @relay(plural: true) {
+        _id
+        name
+        score
+        unit
+      }
+    `,
     summary: () => Relay.QL`
-            fragment on Summary {
-                score
-            }
-        `
+      fragment on Summary {
+        score
+      }
+    `
   }
 });
 

@@ -20,7 +20,15 @@
         "strict": 0,
         "no-console": 0,
         "no-class-assign": 0,
-        "indent": ["warn", 2, {"SwitchCase": 1, "MemberExpression": 1}],
+        "indent": ["warn", 2, {
+            "SwitchCase": 1, 
+            "MemberExpression": 1, 
+            "FunctionExpression": {
+                "parameters": "first", 
+                "body": 1
+            },
+            "CallExpression": {"arguments": "first"}
+        }],
         "react/jsx-indent": ["warn", 2],
         "react/jsx-indent-props": ["warn", 2],
         "no-mixed-spaces-and-tabs": "warn",

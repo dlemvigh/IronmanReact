@@ -36,12 +36,12 @@ class LeaderboardList extends React.Component {
 LeaderboardList = Relay.createContainer(LeaderboardList, {
   fragments: {
     summary: () => Relay.QL`
-            fragment on Summary @relay(plural: true) {
-                _id
-                score
-                ${LeaderboardItem.getFragment("summary")}
-            }
-        `
+      fragment on Summary @relay(plural: true) {
+        _id
+        score
+        ${LeaderboardItem.getFragment("summary")}
+      }
+    `
   }
 });
 

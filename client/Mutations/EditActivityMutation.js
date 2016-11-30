@@ -4,8 +4,8 @@ class EditActivityMutation extends Relay.Mutation {
 
   getMutation() {
     return Relay.QL`
-            mutation { editActivity }
-        `;
+      mutation { editActivity }
+    `;
   }
 
   getVariables() {
@@ -20,17 +20,17 @@ class EditActivityMutation extends Relay.Mutation {
 
   getFatQuery() {
     return Relay.QL`
-            fragment on EditActivityPayload {
-                activity
-                medals
-                user { 
-                    summary {
-                        score
-                    }
-                }
-                store
-            }
-        `;
+      fragment on EditActivityPayload {
+        activity
+        medals
+        user { 
+          summary {
+            score
+          }
+        }
+        store
+      }
+    `;
   }
 
   getConfigs() {

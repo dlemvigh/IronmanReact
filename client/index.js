@@ -20,5 +20,5 @@ render(
     render={applyRouterMiddleware(useRelay)}
     environment={Relay.Store}
   />, 
-    document.getElementById("app")
+  document.getElementById("app")
 );

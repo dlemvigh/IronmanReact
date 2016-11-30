@@ -36,12 +36,12 @@ LeaderboardItem = CSSModules(LeaderboardItem, styles);
 LeaderboardItem = Relay.createContainer(LeaderboardItem, {
   fragments: {
     summary: () => Relay.QL`
-            fragment on Summary {
-                userId
-                userName
-                score
-            }
-        `
+      fragment on Summary {
+        userId
+        userName
+        score
+      }
+    `
   }
 });
 

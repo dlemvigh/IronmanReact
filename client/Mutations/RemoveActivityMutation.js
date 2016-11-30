@@ -4,8 +4,8 @@ class RemoveActivityMutation extends Relay.Mutation {
 
   getMutation() {
     return Relay.QL`
-            mutation { removeActivity }
-        `;
+      mutation { removeActivity }
+    `;
   }
 
   getVariables() {
@@ -16,18 +16,18 @@ class RemoveActivityMutation extends Relay.Mutation {
 
   getFatQuery() {
     return Relay.QL`
-            fragment on RemoveActivityPayload {
-                removedActivityId
-                medals
-                user { 
-                    activities
-                    summary {
-                        score
-                    } 
-                }
-                store
-            }
-        `;
+      fragment on RemoveActivityPayload {
+        removedActivityId
+        medals
+        user { 
+          activities
+          summary {
+            score
+          } 
+        }
+        store
+      }
+    `;
   }
 
   getConfigs() {

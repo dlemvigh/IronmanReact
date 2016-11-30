@@ -33,13 +33,13 @@ class Header extends React.Component {
 Header = Relay.createContainer(Header, {
   fragments: {
     store: () => Relay.QL`
-            fragment on Store {
-                users {
-                    name
-                    username                        
-                }
-            }
-        `
+      fragment on Store {
+        users {
+          name
+          username                        
+        }
+      }
+    `
   }
 });
 

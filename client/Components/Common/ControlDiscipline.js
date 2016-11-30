@@ -48,15 +48,15 @@ class ControlDiscipline extends React.Component {
 ControlDiscipline = Relay.createContainer(ControlDiscipline, {
   fragments: {
     store: () => Relay.QL`
-            fragment on Store {
-                disciplines {
-                    _id
-                    name
-                    unit
-                    score
-                }
-            }
-        `
+      fragment on Store {
+        disciplines {
+          _id
+          name
+          unit
+          score
+        }
+      }
+    `
   }
 });
 

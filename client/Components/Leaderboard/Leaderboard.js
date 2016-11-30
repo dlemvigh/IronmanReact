@@ -31,18 +31,18 @@ Leaderboard = Relay.createContainer(Leaderboard, {
   },
   fragments: {
     store: () => Relay.QL`
-            fragment on Store {
-                id
-                ${Medals.getFragment("store")}
-                ${Catchup.getFragment("store")}
-                current: summary(week: $currentWeekNo, year: $currentWeekYear) {
-                    ${LeaderboardList.getFragment("summary")}
-                }
-                last: summary(week: $lastWeekNo, year: $lastWeekYear) {
-                    ${LeaderboardList.getFragment("summary")}
-                }
-            }
-        `
+    fragment on Store {
+        id
+        ${Medals.getFragment("store")}
+        ${Catchup.getFragment("store")}
+        current: summary(week: $currentWeekNo, year: $currentWeekYear) {
+          ${LeaderboardList.getFragment("summary")}
+        }
+        last: summary(week: $lastWeekNo, year: $lastWeekYear) {
+          ${LeaderboardList.getFragment("summary")}
+        }
+      }
+    `
   }
 });
 

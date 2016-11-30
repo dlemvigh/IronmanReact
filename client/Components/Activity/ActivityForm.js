@@ -81,25 +81,25 @@ class ActivityForm extends React.Component {
       const activity = this.getActivity();
       if (this.isEditing()) {
         Relay.Store.commitUpdate(
-                    new EditActivityMutation({
-                      _id: this.props.activity._id,
-                      id: this.props.activity.id,                        
-                      ...activity
-                    }), {
-                      onFailure: (resp) => { console.log("fail", resp); toastr.error("Update activity failed"); },
-                      onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity updated"); }
-                    }
-                );
+          new EditActivityMutation({
+            _id: this.props.activity._id,
+            id: this.props.activity.id,                        
+            ...activity
+          }), {
+            onFailure: (resp) => { console.log("fail", resp); toastr.error("Update activity failed"); },
+            onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity updated"); }
+          }
+        );
         this.props.onEditDone();
       } else {
         Relay.Store.commitUpdate(
-                    new AddActivityMutation({
-                      ...activity,
-                    }), {
-                      onFailure: (resp) => { console.log("fail", resp); toastr.error("Add activity failed"); },
-                      onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity added"); }
-                    }
-                );
+          new AddActivityMutation({
+            ...activity,
+          }), {
+            onFailure: (resp) => { console.log("fail", resp); toastr.error("Add activity failed"); },
+            onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity added"); }
+          }
+        );
         this.clearState();
       }
     }

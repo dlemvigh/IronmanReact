@@ -19,16 +19,16 @@ class Sandbox extends React.Component {
 Sandbox = Relay.createContainer(Sandbox, {
   fragments: {
     store: () => Relay.QL`
-            fragment on Store {
-                ${Leaderboard.getFragment("store")}
-                ${Activity.getFragment("store")}
-            }
-        `,
+      fragment on Store {
+        ${Leaderboard.getFragment("store")}
+        ${Activity.getFragment("store")}
+      }
+    `,
     user: () => Relay.QL`
-            fragment on User {
-                ${Activity.getFragment("user")}
-            }
-        `
+      fragment on User {
+        ${Activity.getFragment("user")}
+      }
+    `
   }
 });
 

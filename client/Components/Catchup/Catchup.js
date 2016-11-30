@@ -18,10 +18,10 @@ class Catchup extends React.Component {
 Catchup = Relay.createContainer(Catchup, {
   fragments: {
     store: () => Relay.QL`
-            fragment on Store {
-                ${CatchupList.getFragment("store")}
-            }
-        `
+      fragment on Store {
+        ${CatchupList.getFragment("store")}
+      }
+    `
   }
 });
 
