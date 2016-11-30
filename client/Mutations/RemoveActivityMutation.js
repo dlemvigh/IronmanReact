@@ -2,20 +2,20 @@ import Relay from "react-relay";
 
 class RemoveActivityMutation extends Relay.Mutation {
 
-    getMutation() {
-        return Relay.QL`
+  getMutation() {
+    return Relay.QL`
             mutation { removeActivity }
         `;
-    }
+  }
 
-    getVariables() {
-        return {
-            id: this.props.id  
-        };
-    }
+  getVariables() {
+    return {
+      id: this.props.id  
+    };
+  }
 
-    getFatQuery() {
-        return Relay.QL`
+  getFatQuery() {
+    return Relay.QL`
             fragment on RemoveActivityPayload {
                 removedActivityId
                 medals
@@ -28,7 +28,7 @@ class RemoveActivityMutation extends Relay.Mutation {
                 store
             }
         `;
-    }
+  }
 
   getConfigs() {
     return [{
@@ -38,11 +38,11 @@ class RemoveActivityMutation extends Relay.Mutation {
       connectionName: "activities",
       deletedIDFieldName: "removedActivityId",
     },{
-        type: "FIELDS_CHANGE",
-        fieldIDs: {
-            medals: this.props.medals,
-            store: this.props.store
-        }
+      type: "FIELDS_CHANGE",
+      fieldIDs: {
+        medals: this.props.medals,
+        store: this.props.store
+      }
     }];
   }
 }

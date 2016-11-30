@@ -7,30 +7,30 @@ import Catchup from "../Catchup/Catchup";
 import Medals from "../Medals/Medals";
 
 class Leaderboard extends React.Component {
-    render() {
-        return (
-            <div>
-                <h2>Leaderboard</h2>                
-                <h3>This week</h3>
-                <LeaderboardList summary={this.props.store.current} />
-                {this.props.store.current.length >= 1 && <Catchup store={this.props.store} />}
-                {this.props.store.last.length > 0 && <h3>Last week</h3>}
-                {this.props.store.last.length > 0 && <LeaderboardList summary={this.props.store.last} />}
-                <Medals store={this.props.store} />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <h2>Leaderboard</h2>                
+        <h3>This week</h3>
+        <LeaderboardList summary={this.props.store.current} />
+        {this.props.store.current.length >= 1 && <Catchup store={this.props.store} />}
+        {this.props.store.last.length > 0 && <h3>Last week</h3>}
+        {this.props.store.last.length > 0 && <LeaderboardList summary={this.props.store.last} />}
+        <Medals store={this.props.store} />
+      </div>
+    );
+  }
 }
 
 Leaderboard = Relay.createContainer(Leaderboard, {
-    initialVariables: {
-        currentWeekNo: moment().isoWeek(),
-        currentWeekYear: moment().year(),
-        lastWeekNo: moment().add(-7, "days").isoWeek(),
-        lastWeekYear: moment().add(-7, "days").year()
-    },
-    fragments: {
-        store: () => Relay.QL`
+  initialVariables: {
+    currentWeekNo: moment().isoWeek(),
+    currentWeekYear: moment().year(),
+    lastWeekNo: moment().add(-7, "days").isoWeek(),
+    lastWeekYear: moment().add(-7, "days").year()
+  },
+  fragments: {
+    store: () => Relay.QL`
             fragment on Store {
                 id
                 ${Medals.getFragment("store")}
@@ -43,7 +43,7 @@ Leaderboard = Relay.createContainer(Leaderboard, {
                 }
             }
         `
-    }
+  }
 });
 
 export default Leaderboard;

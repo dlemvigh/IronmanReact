@@ -1,4 +1,5 @@
 {
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parser": "babel-eslint",
     "plugins": [
         "react"
@@ -17,6 +18,15 @@
     },
     "rules": {
         "strict": 0,
+        "no-console": 0,
+        "no-class-assign": 0,
+        "indent": ["warn", 2, {"SwitchCase": 1, "MemberExpression": 1}],
+        "react/jsx-indent": ["warn", 2],
+        "react/jsx-indent-props": ["warn", 2],
+        "no-mixed-spaces-and-tabs": "warn",
+        "block-spacing": ["warn", "always"],
+        "dot-location": ["warn", "property"],   
+        "no-debugger": "error",
         "quotes": "warn",
         "semi": "warn",
         "no-const-assign": "warn",
@@ -31,6 +41,18 @@
         "react/jsx-uses-vars": "warn",
         "react/jsx-boolean-value": ["warn", "never"],    
         "react/jsx-closing-bracket-location": ["warn", "line-aligned"],
-        "react/jsx-curly-spacing": ["warn", "never", { "allowMultiline": true }]
+        "react/jsx-curly-spacing": ["warn", "never", { "allowMultiline": false }],
+        "react/jsx-equals-spacing": "warn", 
+        "react/prop-types": 0,
+        "no-multiple-empty-lines": ["warn", {"max": 1}],
+        "no-multi-spaces": "warn",
+        "react/jsx-space-before-closing": "warn",
+        "react/jsx-wrap-multilines": "warn",
+        "react/require-render-return": "warn",
+        "react/sort-comp": "warn",
+        /* nice to have */
+        "curly": 1,
+        "eqeqeq": 0,
+        "react/prefer-stateless-function": 0
     }
 }

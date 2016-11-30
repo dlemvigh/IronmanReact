@@ -29,7 +29,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
     if (type == "Store") {
-        return database.getStore();
+      return database.getStore();
     } else if (type === "User") {
       return database.getUser(id);
     } else if (type === "Activity") {
@@ -53,207 +53,207 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     } else if (obj instanceof database.DisciplineModel) {
       return disciplineType;
     } else if (obj instanceof database.SummaryModel) {
-        return summaryType;
+      return summaryType;
     } else if (obj instanceof database.MedalsModel) {
-        return medalsType;
+      return medalsType;
     }
     return null;
   }
 );
 
 const medalsType = new GraphQLObjectType({
-    name: "Medals",
-    fields: () => ({
-        _id: {
-            type: new GraphQLNonNull(GraphQLID)
-        },
-        id: globalIdField("Medals"),
-        gold: {
-            type: GraphQLInt
-        },
-        silver: {
-            type: GraphQLInt
-        },
-        bronze: {
-            type: GraphQLInt
-        }
-    })
+  name: "Medals",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID)
+    },
+    id: globalIdField("Medals"),
+    gold: {
+      type: GraphQLInt
+    },
+    silver: {
+      type: GraphQLInt
+    },
+    bronze: {
+      type: GraphQLInt
+    }
+  })
 }); 
 
 const summaryType = new GraphQLObjectType({
-    name: "Summary",
-    fields: () => ({
-        _id: {
-            type: new GraphQLNonNull(GraphQLID),
-        },
-        id: globalIdField("Summary"),
-        userId: {
-            type: GraphQLID
-        },
-        userName: {
-            type: GraphQLString
-        },
-        score: {
-            type: GraphQLFloat
-        },
-        week: {
-            type: GraphQLInt
-        },
-        year: {
-            type: GraphQLInt
+  name: "Summary",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    id: globalIdField("Summary"),
+    userId: {
+      type: GraphQLID
+    },
+    userName: {
+      type: GraphQLString
+    },
+    score: {
+      type: GraphQLFloat
+    },
+    week: {
+      type: GraphQLInt
+    },
+    year: {
+      type: GraphQLInt
 
-        }
-    }),
-    interfaces: [nodeInterface]
+    }
+  }),
+  interfaces: [nodeInterface]
 });
 
 const activityType = new GraphQLObjectType({
-    name: "Activity",
-    fields: () => ({
-        _id: {
-            type: new GraphQLNonNull(GraphQLID),
-        },
-        id: globalIdField("Activity"),
-        disciplineId: {
-            type: GraphQLID
-        },
-        disciplineName: {
-            type: GraphQLString
-        },
-        distance: {
-            type: GraphQLFloat
-        },
-        unit: {
-            type: GraphQLString
-        },
-        score: {
-            type: GraphQLFloat
-        },
-        date: {
-            type: CustomGraphQLDateType  
-        },
-        week: {
-            type: GraphQLInt
-        },
-        year: {
-            type: GraphQLInt
-        },
-        userId: {
-            type: GraphQLID
-        },
-        userName: {
-            type: GraphQLString
-        }
-    }),
-    interfaces: [nodeInterface]
+  name: "Activity",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    id: globalIdField("Activity"),
+    disciplineId: {
+      type: GraphQLID
+    },
+    disciplineName: {
+      type: GraphQLString
+    },
+    distance: {
+      type: GraphQLFloat
+    },
+    unit: {
+      type: GraphQLString
+    },
+    score: {
+      type: GraphQLFloat
+    },
+    date: {
+      type: CustomGraphQLDateType  
+    },
+    week: {
+      type: GraphQLInt
+    },
+    year: {
+      type: GraphQLInt
+    },
+    userId: {
+      type: GraphQLID
+    },
+    userName: {
+      type: GraphQLString
+    }
+  }),
+  interfaces: [nodeInterface]
 });
 
 const { connectionType: activityConnection, edgeType: activityEdge } = connectionDefinitions({ name: "Activity", nodeType: activityType });
 
 const disciplineType = new GraphQLObjectType({
-    name: "Discipline",
-    fields: () => ({
-        _id: {
-            type: new GraphQLNonNull(GraphQLID),
-        },
-        id: globalIdField("Discipline"),
-        name: {
-            type: GraphQLString
-        },
-        score: {
-            type: GraphQLFloat
-        },
-        unit: {
-            type: GraphQLString
-        },
-    }),
-    interfaces: [nodeInterface]
+  name: "Discipline",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    id: globalIdField("Discipline"),
+    name: {
+      type: GraphQLString
+    },
+    score: {
+      type: GraphQLFloat
+    },
+    unit: {
+      type: GraphQLString
+    },
+  }),
+  interfaces: [nodeInterface]
 });
 
 const userType = new GraphQLObjectType({
-    name: "User",
-    fields: () => ({
-        _id: {
-            type: new GraphQLNonNull(GraphQLID),
-        },
-        id: globalIdField("User"),
-        name: {
-            type: GraphQLString
-        },
-        username: {
-            type: GraphQLString
-        },
-        facebookId: {
-            type: GraphQLString
-        },
-        active: {
-            type: GraphQLBoolean
-        },
-        activities: {
-            type: activityConnection,
-            args: connectionArgs,
-            resolve: (root, args) => connectionFromPromisedArray(database.getActivities({userId: root._id}), args)
-        },
-        summary: {
-            type: summaryType,
-            args: {
-                week: {
-                    name: "week",
-                    type: GraphQLInt
-                },        
-                year: {
-                    name: "year",
-                    type: GraphQLInt
-                }        
-            },
-            resolve: (root, args) => {                
-                return database.getWeekSummary(root._id, args.week, args.year);
-            }
-        },
-        medals: {
-            type: medalsType,
-            resolve: (root) => {
-                return database.getMedalsByUserId(root._id);
-            }
-        }
-    }),
-    interfaces: [nodeInterface]
+  name: "User",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    id: globalIdField("User"),
+    name: {
+      type: GraphQLString
+    },
+    username: {
+      type: GraphQLString
+    },
+    facebookId: {
+      type: GraphQLString
+    },
+    active: {
+      type: GraphQLBoolean
+    },
+    activities: {
+      type: activityConnection,
+      args: connectionArgs,
+      resolve: (root, args) => connectionFromPromisedArray(database.getActivities({userId: root._id}), args)
+    },
+    summary: {
+      type: summaryType,
+      args: {
+        week: {
+          name: "week",
+          type: GraphQLInt
+        },        
+        year: {
+          name: "year",
+          type: GraphQLInt
+        }        
+      },
+      resolve: (root, args) => {                
+        return database.getWeekSummary(root._id, args.week, args.year);
+      }
+    },
+    medals: {
+      type: medalsType,
+      resolve: (root) => {
+        return database.getMedalsByUserId(root._id);
+      }
+    }
+  }),
+  interfaces: [nodeInterface]
 });
 
 const storeType = new GraphQLObjectType({
-    name: "Store",
-    fields: () => ({
-        id: globalIdField("Store"),
-        echo: {
-            type: GraphQLString,
-            resolve: () => "hello"
-        },
-        disciplines: {
-            type: new GraphQLList(disciplineType),
-            resolve: () => database.getDisciplines()
-        },
-        users: {
-            type: new GraphQLList(userType),
-            resolve: () => database.getUsers()
-        },
-        summary: {
-            type: new GraphQLList(summaryType),
-            args: {
-                week: {
-                    name: "week",
-                    type: GraphQLInt
-                },        
-                year: {
-                    name: "year",
-                    type: GraphQLInt
-                }        
-            },
-            resolve: (root, args) => {                
-                return database.getAllSummaries(args.week, args.year);
-            },
-        },
-    }),
-    interfaces: [nodeInterface]
+  name: "Store",
+  fields: () => ({
+    id: globalIdField("Store"),
+    echo: {
+      type: GraphQLString,
+      resolve: () => "hello"
+    },
+    disciplines: {
+      type: new GraphQLList(disciplineType),
+      resolve: () => database.getDisciplines()
+    },
+    users: {
+      type: new GraphQLList(userType),
+      resolve: () => database.getUsers()
+    },
+    summary: {
+      type: new GraphQLList(summaryType),
+      args: {
+        week: {
+          name: "week",
+          type: GraphQLInt
+        },        
+        year: {
+          name: "year",
+          type: GraphQLInt
+        }        
+      },
+      resolve: (root, args) => {                
+        return database.getAllSummaries(args.week, args.year);
+      },
+    },
+  }),
+  interfaces: [nodeInterface]
 });
 
 const queryType = new GraphQLObjectType({
@@ -264,26 +264,26 @@ const queryType = new GraphQLObjectType({
       resolve: () => database.getStore()
     },
     user: {
-        type: userType,
-        args: {
-            id: {
-                name: "id",
-                type: GraphQLString
-            },
-            username: {
-                name: "username",
-                type: GraphQLString
-            }        
+      type: userType,
+      args: {
+        id: {
+          name: "id",
+          type: GraphQLString
         },
-        resolve (root, params) {
-            if (params.id) {
-                return database.getUser(params.id);
-            }
-            if (params.username) {
-                return database.getUserByUsername(params.username);
-            }              
-            throw new Error("No arguments supplied to get user"); 
+        username: {
+          name: "username",
+          type: GraphQLString
+        }        
+      },
+      resolve (root, params) {
+        if (params.id) {
+          return database.getUser(params.id);
         }
+        if (params.username) {
+          return database.getUserByUsername(params.username);
+        }              
+        throw new Error("No arguments supplied to get user"); 
+      }
     },
     node: nodeField
   })
@@ -309,28 +309,28 @@ const addActivityMutation = mutationWithClientMutationId({
       }
     },
     user: {
-        type: userType,
-        resolve: async (obj) => {
-            return await database.getUser(obj.userId);
-        }
+      type: userType,
+      resolve: async (obj) => {
+        return await database.getUser(obj.userId);
+      }
     },
     medals: {
-        type: new GraphQLList(medalsType),
-        resolve: async () => {
-            return await database.getAllMedals();
-        }
+      type: new GraphQLList(medalsType),
+      resolve: async () => {
+        return await database.getAllMedals();
+      }
     },
     store: {
-        type: storeType,
-        resolve: () => {
-            return  database.getStore();
-        }
+      type: storeType,
+      resolve: () => {
+        return database.getStore();
+      }
     }
   },
 
   mutateAndGetPayload: ({ userId, disciplineId, distance, date }) => {
-      return database.addActivity(userId, disciplineId, distance, date); 
-    }
+    return database.addActivity(userId, disciplineId, distance, date); 
+  }
 });
 
 const editActivityMutation = mutationWithClientMutationId({
@@ -345,69 +345,69 @@ const editActivityMutation = mutationWithClientMutationId({
 
   outputFields: {
     activity: {
-        type: activityType,
-        resolve: async (obj) => obj
+      type: activityType,
+      resolve: async (obj) => obj
     },
     user: {
-        type: userType,
-        resolve: async (obj) => {
-            return await database.getUser(obj.userId);
-        }
+      type: userType,
+      resolve: async (obj) => {
+        return await database.getUser(obj.userId);
+      }
     },
     medals: {
-        type: new GraphQLList(medalsType),
-        resolve: async () => {
-            return await database.getAllMedals();
-        }
+      type: new GraphQLList(medalsType),
+      resolve: async () => {
+        return await database.getAllMedals();
+      }
     },
     store: {
-        type: storeType,
-        resolve: () => {
-            return  database.getStore();
-        }
+      type: storeType,
+      resolve: () => {
+        return database.getStore();
+      }
     }
   },
 
   mutateAndGetPayload: ({ id, userId, disciplineId, distance, date }) => {
-      return database.editActivity(id, userId, disciplineId, distance, date); 
-    }
+    return database.editActivity(id, userId, disciplineId, distance, date); 
+  }
 });
 
 const removeActivityMutation = mutationWithClientMutationId({
-    name: "RemoveActivity",
-    inputFields: {
-        id: { type: new GraphQLNonNull(GraphQLString) }
+  name: "RemoveActivity",
+  inputFields: {
+    id: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  outputFields: {
+    removedActivityId: {
+      type: GraphQLString,
+      resolve: (obj) => {
+        const globalId = toGlobalId("Activity", obj._id);
+        return globalId;
+      } 
     },
-    outputFields: {
-        removedActivityId: {
-            type: GraphQLString,
-            resolve: (obj) => {
-                const globalId = toGlobalId("Activity", obj._id);
-                return globalId;
-            } 
-        },
-        user: {
-            type: userType,
-            resolve: async (obj) => {
-                return await database.getUser(obj.userId);
-            }
-        },
-        medals: {
-            type: new GraphQLList(medalsType),
-            resolve: async () => {
-                return await database.getAllMedals();
-            }
-        },
-        store: {
-            type: storeType,
-            resolve: () => {
-                return  database.getStore();
-            }
-        }
+    user: {
+      type: userType,
+      resolve: async (obj) => {
+        return await database.getUser(obj.userId);
+      }
     },
-    mutateAndGetPayload: ({id}) => {
-        return database.removeActivity(id);
+    medals: {
+      type: new GraphQLList(medalsType),
+      resolve: async () => {
+        return await database.getAllMedals();
+      }
+    },
+    store: {
+      type: storeType,
+      resolve: () => {
+        return database.getStore();
+      }
     }
+  },
+  mutateAndGetPayload: ({id}) => {
+    return database.removeActivity(id);
+  }
 });
 
 const mutationType = new GraphQLObjectType({

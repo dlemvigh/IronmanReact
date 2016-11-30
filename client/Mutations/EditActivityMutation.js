@@ -2,24 +2,24 @@ import Relay from "react-relay";
 
 class EditActivityMutation extends Relay.Mutation {
 
-    getMutation() {
-        return Relay.QL`
+  getMutation() {
+    return Relay.QL`
             mutation { editActivity }
         `;
-    }
+  }
 
-    getVariables() {
-        return {
-            id: this.props._id,
-            disciplineId: this.props.disciplineId,
-            userId: this.props.userId,
-            distance: this.props.distance,
-            date: this.props.date
-        };
-    }
+  getVariables() {
+    return {
+      id: this.props._id,
+      disciplineId: this.props.disciplineId,
+      userId: this.props.userId,
+      distance: this.props.distance,
+      date: this.props.date
+    };
+  }
 
-    getFatQuery() {
-        return Relay.QL`
+  getFatQuery() {
+    return Relay.QL`
             fragment on EditActivityPayload {
                 activity
                 medals
@@ -31,7 +31,7 @@ class EditActivityMutation extends Relay.Mutation {
                 store
             }
         `;
-    }
+  }
 
   getConfigs() {
     return [{

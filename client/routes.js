@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Router, Route, IndexRoute } from "react-router";
 import App from "./Components/App/App";
 import AppQueries from "./Components/App/AppQueries";
 import Activity from "./Components/Activity/Activity";

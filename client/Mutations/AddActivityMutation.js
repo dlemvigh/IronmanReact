@@ -2,36 +2,36 @@ import Relay from "react-relay";
 
 class AddActivityMutation extends Relay.Mutation {
 
-    getMutation() {
-        return Relay.QL`
-            mutation { addActivity }
-        `;
-    }
+  getMutation() {
+    return Relay.QL`
+      mutation { addActivity }
+    `;
+  }
 
-    getVariables() {
-        return {
-            disciplineId: this.props.disciplineId,
-            userId: this.props.userId,
-            distance: this.props.distance,
-            date: this.props.date
-        };
-    }
+  getVariables() {
+    return {
+      disciplineId: this.props.disciplineId,
+      userId: this.props.userId,
+      distance: this.props.distance,
+      date: this.props.date
+    };
+  }
 
-    getFatQuery() {
-        return Relay.QL`
-            fragment on AddActivityPayload {
-                activityEdge
-                medals
-                user { 
-                    activities
-                    summary {
-                        score
-                    }
-                }
-                store
-            }
-        `;
-    }
+  getFatQuery() {
+    return Relay.QL`
+      fragment on AddActivityPayload {
+        activityEdge
+        medals
+        user { 
+          activities
+          summary {
+            score
+          }
+        }
+        store
+      }
+    `;
+  }
 
   getConfigs() {
     return [{
@@ -44,11 +44,11 @@ class AddActivityMutation extends Relay.Mutation {
         "": "prepend",
       },
     },{
-        type: "FIELDS_CHANGE",
-        fieldIDs: {
-            medals: this.props.medals,
-            store: this.props.store
-        }
+      type: "FIELDS_CHANGE",
+      fieldIDs: {
+        medals: this.props.medals,
+        store: this.props.store
+      }
     }];
   }
 }

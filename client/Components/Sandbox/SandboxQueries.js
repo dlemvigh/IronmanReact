@@ -1,12 +1,12 @@
 import Relay from "react-relay";
 
 export default {
-    store: () => Relay.QL`
+  store: () => Relay.QL`
         query Store {
             store    
         }
     `,
-    user: () => Relay.QL`
+  user: () => Relay.QL`
         query User {
             user (username: "david")
         }

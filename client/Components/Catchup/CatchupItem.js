@@ -9,54 +9,54 @@ import CatchupItemTriathlon from "./CatchupItemTriathlon";
 import styles from "./CatchupItem.scss";
 
 class CatchupItem extends React.Component {
-    static contextTypes = {
-        router: React.PropTypes.object
-    }
+  static contextTypes = {
+    router: React.PropTypes.object
+  }
 
-    onClick = () => {
-        this.context.router.push(`/${this.props.user.username}`);
-    }
+  onClick = () => {
+    this.context.router.push(`/${this.props.user.username}`);
+  }
 
-    getScore() {
-        return this.props.summary ? this.props.summary.score : 0;
-    }
+  getScore() {
+    return this.props.summary ? this.props.summary.score : 0;
+  }
 
-    getDisciplines(){
-        const filtered = mapFilter(this.props.disciplines);
-        return filtered;
-    }
+  getDisciplines(){
+    const filtered = mapFilter(this.props.disciplines);
+    return filtered;
+  }
 
-    getCatchupDistance(disc) {
-        const dist = _.round((this.props.highscore - this.getScore()) / disc.score, 1);
-        return `${dist} ${disc.unit}`;
-    }
+  getCatchupDistance(disc) {
+    const dist = _.round((this.props.highscore - this.getScore()) / disc.score, 1);
+    return `${dist} ${disc.unit}`;
+  }
 
-    render() {
-        return (
-            <tr onClick={this.onClick} styleName="row">
-                <td>{this.props.user.name}</td>
-                {
+  render() {
+    return (
+      <tr onClick={this.onClick} styleName="row">
+        <td>{this.props.user.name}</td>
+        {
                     this.getDisciplines().map(disc => {
-                        return <td key={disc._id} className={getClassName(disc.name)}>{this.getCatchupDistance(disc)}</td>;
+                      return <td key={disc._id} className={getClassName(disc.name)}>{this.getCatchupDistance(disc)}</td>;
                     })
                 }
-                <CatchupItemTriathlon score={this.getScore()} highscore={this.props.highscore} />
-            </tr>
-        );
-    }
+        <CatchupItemTriathlon score={this.getScore()} highscore={this.props.highscore} />
+      </tr>
+    );
+  }
 }
 
 CatchupItem = CSSModules(CatchupItem, styles);
 
 CatchupItem = Relay.createContainer(CatchupItem, {
-    fragments: {
-        user: () => Relay.QL`
+  fragments: {
+    user: () => Relay.QL`
             fragment on User {
                 name
                 username
             }
         `,
-        disciplines: () => Relay.QL`
+    disciplines: () => Relay.QL`
             fragment on Discipline @relay(plural: true) {
                 _id
                 name
@@ -64,12 +64,12 @@ CatchupItem = Relay.createContainer(CatchupItem, {
                 unit
             }
         `,
-        summary: () => Relay.QL`
+    summary: () => Relay.QL`
             fragment on Summary {
                 score
             }
         `
-    }
+  }
 });
 
 export default CatchupItem;

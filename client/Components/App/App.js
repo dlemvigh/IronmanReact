@@ -14,44 +14,44 @@ import "!style!css!toastr/build/toastr.min.css";
 
 class App extends React.Component {
 
-    componentWillMount(){
-        toastr.options = {
-            newestOnTop: true,
-            positionClass: styles.toastr,
-            progressBar: true,
-        };
+  componentWillMount(){
+    toastr.options = {
+      newestOnTop: true,
+      positionClass: styles.toastr,
+      progressBar: true,
+    };
 
-        window.onerror = (message) => {
-            toastr.error(message);
-        };
-    }
+    window.onerror = (message) => {
+      toastr.error(message);
+    };
+  }
 
-    render() {
-        return (
-            <div styleName="wrapper">
-                <Header store={this.props.store} />
-                <main styleName="content">
-                    <div className="container">
-                        {this.props.children}
-                    </div>
-                </main>
-                <Footer />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div styleName="wrapper">
+        <Header store={this.props.store} />
+        <main styleName="content">
+          <div className="container">
+            {this.props.children}
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 }
 
 App = CSSModules(App, styles);
 
 App = Relay.createContainer(App, {
-    fragments: {
-        store: () => Relay.QL`
-            fragment on Store {
-                id
-                ${Header.getFragment("store")}
-            }
-        `
-    }
+  fragments: {
+    store: () => Relay.QL`
+      fragment on Store {
+        id
+        ${Header.getFragment("store")}
+      }
+    `
+  }
 });
 
 export default App;

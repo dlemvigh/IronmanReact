@@ -7,11 +7,11 @@ import styles from "./MedalsItem.scss";
 class MedalsItem extends React.Component {
 
   static contextTypes = {
-      router: React.PropTypes.object
+    router: React.PropTypes.object
   }
 
   onClick = () => {
-      this.context.router.push(`/${this.props.user.username}`);
+    this.context.router.push(`/${this.props.user.username}`);
   }
 
   getStyleName() {

@@ -26,7 +26,6 @@ app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-
 mongoose.connect("mongodb://localhost/ironman");
 
 app.listen(4000);
