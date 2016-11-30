@@ -24,9 +24,10 @@ class LeaderboardList extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.sorted() .map((summary, index) =>
-            <LeaderboardItem key={summary._id} summary={summary} index={index} />
-                    )}
+          {
+            this.sorted().map((summary, index) => 
+              <LeaderboardItem key={summary._id} summary={summary} index={index} />)
+          }
         </tbody>
       </Table>
     );

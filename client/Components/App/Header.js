@@ -18,10 +18,10 @@ class Header extends React.Component {
           <Navbar.Collapse>
             <Nav>
               {
-                                this.props.store.users.map(user => <LinkContainer key={user.username} to={`/${user.username}`}>
-                                  <NavItem>{user.name}</NavItem>
-                                </LinkContainer>)
-                            }
+                this.props.store.users.map(user => <LinkContainer key={user.username} to={`/${user.username}`}>
+                  <NavItem>{user.name}</NavItem>
+                </LinkContainer>)
+              }
             </Nav>
           </Navbar.Collapse>
         </Navbar>

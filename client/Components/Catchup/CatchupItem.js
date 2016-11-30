@@ -36,10 +36,10 @@ class CatchupItem extends React.Component {
       <tr onClick={this.onClick} styleName="row">
         <td>{this.props.user.name}</td>
         {
-                    this.getDisciplines().map(disc => {
-                      return <td key={disc._id} className={getClassName(disc.name)}>{this.getCatchupDistance(disc)}</td>;
-                    })
-                }
+          this.getDisciplines().map(disc => {
+            return <td key={disc._id} className={getClassName(disc.name)}>{this.getCatchupDistance(disc)}</td>;
+          })
+        }
         <CatchupItemTriathlon score={this.getScore()} highscore={this.props.highscore} />
       </tr>
     );

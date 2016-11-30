@@ -148,7 +148,10 @@ const activityType = new GraphQLObjectType({
   interfaces: [nodeInterface]
 });
 
-const { connectionType: activityConnection, edgeType: activityEdge } = connectionDefinitions({ name: "Activity", nodeType: activityType });
+const { 
+  connectionType: activityConnection, 
+  edgeType: activityEdge 
+} = connectionDefinitions({ name: "Activity", nodeType: activityType });
 
 const disciplineType = new GraphQLObjectType({
   name: "Discipline",

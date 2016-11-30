@@ -135,10 +135,20 @@ class ActivityForm extends React.Component {
       <form onSubmit={this.handleSubmit} noValidate>
         <Row>
           <Col sm={3}>
-            <ControlDiscipline ref="discipline" value={this.state.disciplineId} onChange={this.handleChangeDiscipline} store={this.props.store} />
+            <ControlDiscipline 
+              ref="discipline" 
+              value={this.state.disciplineId} 
+              onChange={this.handleChangeDiscipline} 
+              store={this.props.store} 
+            />
           </Col>
           <Col sm={3} xs={8} >
-            <ControlDistance ref="distance" value={this.state.distance} unit={this.state.unit} onChange={this.handleChangeDistance} />
+            <ControlDistance 
+              ref="distance" 
+              value={this.state.distance} 
+              unit={this.state.unit} 
+              onChange={this.handleChangeDistance} 
+            />  
           </Col>
           <Col sm={2} xs={4}>
             <ControlScore value={this.state.score * this.state.distance} readonly />
@@ -147,7 +157,11 @@ class ActivityForm extends React.Component {
             <ControlDate ref="date" value={this.state.date} onChange={this.handleChangeDate} />
           </Col>
           <Col sm={1} xs={4}>
-            <Button type="submit" bsStyle="primary" styleName="form-noncontrol-offset">{this.isEditing() ? "Update" : "Log"}</Button>
+            <Button 
+              type="submit" 
+              bsStyle="primary" 
+              styleName="form-noncontrol-offset"
+            >{this.isEditing() ? "Update" : "Log"}</Button>
           </Col>
         </Row>
         {this.isEditing() && <a href="javascript: void 0" onClick={this.onCancelEdit}>cancel</a>}

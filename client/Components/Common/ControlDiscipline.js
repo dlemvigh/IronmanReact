@@ -30,15 +30,17 @@ class ControlDiscipline extends React.Component {
           onBlur={this.onChange}
         >
           <option disabled value="">Choose...</option>
-          { this.props.store.disciplines.map(discipline => 
-            <option 
-              key={discipline._id} 
-              value={discipline._id}
-              data-id={discipline._id}
-              data-name={discipline.name}
-              data-unit={discipline.unit}
-              data-score={discipline.score}
-            >{discipline.name}</option>) }
+          { 
+            this.props.store.disciplines.map(discipline => 
+              <option 
+                key={discipline._id} 
+                value={discipline._id}
+                data-id={discipline._id}
+                data-name={discipline.name}
+                data-unit={discipline.unit}
+                data-score={discipline.score}
+              >{discipline.name}</option>) 
+          }
         </select>
       </FormGroup>
     );

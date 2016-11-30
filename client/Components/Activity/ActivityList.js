@@ -15,9 +15,9 @@ class ActivityList extends React.Component {
         </thead>
         <tbody>
           {
-                        this.props.user.activities.edges.map(edge => 
-                          <ActivityItem key={edge.node.id} activity={edge.node} onEdit={this.props.onEdit} {...this.props} />)
-                    }
+            this.props.user.activities.edges.map(edge => 
+              <ActivityItem key={edge.node.id} activity={edge.node} onEdit={this.props.onEdit} {...this.props} />)
+          }
         </tbody>
       </Table>
     );
