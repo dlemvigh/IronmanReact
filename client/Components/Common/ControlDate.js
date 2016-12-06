@@ -1,9 +1,15 @@
 import React from "react";
 import { ControlLabel, FormGroup } from "react-bootstrap";
 import DateTime from "react-datetime";
+import MobileDetect from "mobile-detect";
 import moment from "moment";
 
 export default class ControlDate extends React.Component {
+
+  isMobile(){
+    const md = new MobileDetect(window.navigator.userAgent);
+    return !!md.mobile();
+  }
 
   isValid(){
     return this.getValidationState() === "success";
@@ -17,10 +23,20 @@ export default class ControlDate extends React.Component {
     }
   }
 
-  onChange = (value) => {
-    if (typeof value !== "string") {
-      value = value.startOf("day");
+  getValue = () => {
+    return moment(this.props.value).format("YYYY-MM-DD");
+  }
+
+  onChangeMobile = (event) => {
+    if (this.props.onChange) {
+      const m = moment.utc(event.target.value);
+      const value = m.startOf("day");
+      this.props.onChange(value);
     }
+  }
+
+  onChange = (value) => {
+    value = moment.utc(value).startOf("day");
     if (this.props.onChange) {
       this.props.onChange(value);
     }
@@ -30,13 +46,19 @@ export default class ControlDate extends React.Component {
     return (
       <FormGroup validationState={this.getValidationState()}>
         <ControlLabel>Date</ControlLabel>
-        <DateTime
-          dateFormat="D/M-YYYY"
-          timeFormat={false}
-          defaultValue={moment.utc()}
-          value={this.props.value}
-          onChange={this.onChange}
-        />
+        {
+          this.isMobile() 
+          ? 
+            <input type="date" className="form-control" value={this.getValue()} onChange={this.onChangeMobile} />
+          :
+            <DateTime
+              dateFormat="D/M-YYYY"
+              timeFormat={false}
+              defaultValue={moment.utc()}
+              value={this.props.value}
+              onChange={this.onChange}
+            />
+        }
       </FormGroup>
     );
   }
