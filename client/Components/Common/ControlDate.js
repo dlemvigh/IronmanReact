@@ -24,23 +24,19 @@ export default class ControlDate extends React.Component {
   }
 
   getValue = () => {
-    debugger;
-    return this.props.value.format("YYYY-MM-DD");
+    return moment(this.props.value).format("YYYY-MM-DD");
   }
 
   onChangeMobile = (event) => {
     if (this.props.onChange) {
-      const m = new moment(event.target.value);
+      const m = moment.utc(event.target.value);
       const value = m.startOf("day");
       this.props.onChange(value);
     }
   }
 
   onChange = (value) => {
-    debugger
-    if (typeof value !== "string") {
-      value = value.startOf("day");
-    }
+    value = moment.utc(value).startOf("day");
     if (this.props.onChange) {
       this.props.onChange(value);
     }
@@ -53,15 +49,15 @@ export default class ControlDate extends React.Component {
         {
           this.isMobile() 
           ? 
-          <input type="date" className="form-control" value={this.getValue()} onChange={this.onChangeMobile} />
+            <input type="date" className="form-control" value={this.getValue()} onChange={this.onChangeMobile} />
           :
-          <DateTime
-            dateFormat="D/M-YYYY"
-            timeFormat={false}
-            defaultValue={moment.utc()}
-            value={this.props.value}
-            onChange={this.onChange}
-          />
+            <DateTime
+              dateFormat="D/M-YYYY"
+              timeFormat={false}
+              defaultValue={moment.utc()}
+              value={this.props.value}
+              onChange={this.onChange}
+            />
         }
       </FormGroup>
     );
