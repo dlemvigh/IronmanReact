@@ -1,8 +1,11 @@
 import React from "react";
 import Relay from "react-relay";
+import ReactCSSTransitionReplace from "react-css-transition-replace";
 
 import ActivityForm from "./ActivityForm";
 import ActivityList from "./ActivityList";
+
+import styles from "./Activity.scss";
 
 class Activity extends React.Component {
 
@@ -19,20 +22,29 @@ class Activity extends React.Component {
   }
 
   render() {
+    const component = this.state.editing === null ? 
+          <ActivityForm 
+            {...this.props} 
+            show={this.state.editing === null} 
+            activity={null}
+          /> : 
+          <ActivityForm
+            {...this.props} 
+            key={this.state.editing._id}
+            show={this.state.editing !== null} 
+            activity={this.state.editing}
+            onEditDone={this.onEndEdit} 
+          />
     return (
       <div>
-        <h1>{this.props.user.name}</h1>                
-        <ActivityForm 
-          {...this.props} 
-          show={this.state.editing === null} 
-          activity={null} 
-        />
-        <ActivityForm 
-          {...this.props} 
-          show={this.state.editing !== null} 
-          activity={this.state.editing} 
-          onEditDone={this.onEndEdit} 
-        />
+        <h1>{this.props.user.name}</h1>
+        <ReactCSSTransitionReplace
+          transitionName={styles}
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={1000}
+        >
+          { component }
+        </ReactCSSTransitionReplace>
         <h3>Activities</h3>
         <ActivityList {...this.props} onEdit={this.onBeginEdit} />
       </div>
