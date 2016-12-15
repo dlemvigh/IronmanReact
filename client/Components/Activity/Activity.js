@@ -5,7 +5,7 @@ import ReactCSSTransitionReplace from "react-css-transition-replace";
 import ActivityForm from "./ActivityForm";
 import ActivityList from "./ActivityList";
 
-import styles from "./Activity.scss";
+import styles from "../../Styles/HorizontalCarousel.scss";
 
 class Activity extends React.Component {
 
