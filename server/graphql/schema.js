@@ -413,12 +413,38 @@ const removeActivityMutation = mutationWithClientMutationId({
   }
 });
 
+const addUser = mutationWithClientMutationId({
+  name: "AddUser",
+  inputFields: {
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    username: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  outputFields: {
+    user: {
+      type: userType,
+      resolve: async (obj) => {
+        return await database.getUser(obj.userId);
+      }
+    },
+    store: {
+      type: storeType,
+      resolve: () => {
+        return database.getStore();
+      }
+    }
+  },
+  mutateAndGetPayload: ({name, username}) => {
+    return database.addUser(name, username);
+  }
+});
+
 const mutationType = new GraphQLObjectType({
   name: "Mutation",
   fields: () => ({
     addActivity: addActivityMutation,
     editActivity: editActivityMutation,
-    removeActivity: removeActivityMutation
+    removeActivity: removeActivityMutation,
+    addUser: addUser
   })
 });
 

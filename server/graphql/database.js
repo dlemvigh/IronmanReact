@@ -272,6 +272,51 @@ function getAllMedals() {
 function getMedalsByUserId(userId) {
   return MedalsModel.findOne({userId}).exec();
 }   
+
+function addUser(name, username) {
+  const user = { name, username };
+  return UserModel.findOne({
+    name: username
+  }, (err, result) => {
+    if (err){
+      console.log("error finding user", username);
+    } else if (!result) {
+      console.log("creating", username);
+      new UserModel(user).save((err2, result2) => {
+        if (err2) {
+          console.log("error adding user", user.name);
+        }else{
+          populateMedals(result2);
+        }
+      });
+    }else{
+      populateMedals(result);
+    }
+  });  
+}
+
+function populateMedals(user) {
+  MedalsModel.findOne({
+    userId: user._id,
+  }, (err, result) => {
+    if (err) {
+      console.log("error finding medal");
+    } else if (!result) {
+      const medal = {
+        userId: user._id,
+        userName: user.name,
+        gold: 0,
+        silver: 0,
+        bronze: 0                
+      };
+      new MedalsModel(medal).save((err2) => {
+        if (err2) {
+          console.log("error saving medal", err2);
+        }
+      });
+    }
+  });
+}
  
 export default {
   ActivityModel,
@@ -296,4 +341,5 @@ export default {
   getMedals,
   getAllMedals,
   getMedalsByUserId,
+  addUser,
 };
