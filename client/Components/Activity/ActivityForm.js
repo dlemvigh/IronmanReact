@@ -15,10 +15,17 @@ import EditActivityMutation from "../../Mutations/EditActivityMutation";
 
 class ActivityForm extends React.Component {
 
+  constructor(props) {
+    super(props);
+    if (props.activity) {
+      this.state = this.onReceiveActivity(props.activity);
+    }
+  }
+
   state = {
     disciplineId: "" || this.props.store.disciplines[0]._id,
     disciplineName: "" || this.props.store.disciplines[0].name,
-    distance: "" || "",
+    distance: "",
     unit: "km",
     score: "" || 5,
     date: moment.utc().startOf("date")
@@ -26,15 +33,20 @@ class ActivityForm extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.activity != null) {
-      this.setState({
-        disciplineId: newProps.activity.disciplineId,
-        disciplineName: newProps.activity.disciplineName,
-        distance: newProps.activity.distance,
-        unit: newProps.activity.unit,
-        score: newProps.activity.score / newProps.activity.distance,
-        date: new Date(newProps.activity.date),
-      });
+      const newState = this.onReceiveActivity(newProps.activity);
+      this.setState(newState);
     }
+  }
+
+  onReceiveActivity(activity){
+    return {
+      disciplineId: activity.disciplineId,
+      disciplineName: activity.disciplineName,
+      distance: activity.distance,
+      unit: activity.unit,
+      score: activity.score / activity.distance,
+      date: new Date(activity.date),
+    };    
   }
 
   isEditing() {
