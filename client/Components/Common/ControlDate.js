@@ -3,8 +3,11 @@ import { ControlLabel, FormGroup } from "react-bootstrap";
 import DateTime from "react-datetime";
 import MobileDetect from "mobile-detect";
 import moment from "moment";
+import CSSModules from "react-css-modules";
 
-export default class ControlDate extends React.Component {
+import styles from "./ControlDate.scss";
+
+class ControlDate extends React.Component {
 
   isMobile(){
     const md = new MobileDetect(window.navigator.userAgent);
@@ -49,7 +52,7 @@ export default class ControlDate extends React.Component {
         {
           this.isMobile() 
           ? 
-            <input type="date" className="form-control" value={this.getValue()} onChange={this.onChangeMobile} />
+            <input type="date" className="form-control" styleName="mobile-input" value={this.getValue()} onChange={this.onChangeMobile} />
           :
             <DateTime
               dateFormat="D/M-YYYY"
@@ -63,3 +66,7 @@ export default class ControlDate extends React.Component {
     );
   }
 }   
+
+ControlDate = CSSModules(ControlDate, styles);
+
+export default ControlDate
