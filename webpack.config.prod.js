@@ -57,6 +57,8 @@ module.exports = {
   plugins: [
     new FaviconsWebpackPlugin({
       logo: path.join(__dirname, 'client', 'Media', 'ironman-logo.jpg'),
+      title: 'Ironman 70.3',
+      background: '#fff',
       inject: true
     }),
     new HtmlWebpackPlugin({
