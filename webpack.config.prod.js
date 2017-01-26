@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 if (process.env.NODE_ENV !== 'production') {
   throw new Error('Production builds must have NODE_ENV=production.');
@@ -54,6 +55,10 @@ module.exports = {
 }]
   },
   plugins: [
+    new FaviconsWebpackPlugin({
+      logo: path.join(__dirname, 'client', 'Media', 'ironman-logo.jpg'),
+      inject: true
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: 'client/index.html',
