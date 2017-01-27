@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = {
   entry: [
@@ -38,7 +39,12 @@ module.exports = {
 }]
   },
   plugins: [
-    
+    new FaviconsWebpackPlugin({
+      logo: path.join(__dirname, 'client', 'Media', 'ironman-logo.jpg'),
+      title: 'Ironman 70.3',
+      background: '#fff',
+      inject: true
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: 'client/index.html',

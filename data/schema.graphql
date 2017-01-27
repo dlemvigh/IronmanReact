@@ -49,6 +49,18 @@ type AddActivityPayload {
   clientMutationId: String
 }
 
+input AddUserInput {
+  name: String!
+  username: String!
+  clientMutationId: String
+}
+
+type AddUserPayload {
+  user: User
+  store: Store
+  clientMutationId: String
+}
+
 scalar DateTime
 
 type Discipline implements Node {
@@ -92,6 +104,7 @@ type Mutation {
   addActivity(input: AddActivityInput!): AddActivityPayload
   editActivity(input: EditActivityInput!): EditActivityPayload
   removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
+  addUser(input: AddUserInput!): AddUserPayload
 }
 
 # An object with an ID
