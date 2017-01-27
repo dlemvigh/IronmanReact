@@ -3,6 +3,7 @@ import Relay from "react-relay";
 import { Glyphicon } from "react-bootstrap";
 import toastr from "toastr";
 
+import Score from "../Common/Score";
 import Day from "../Common/Day";
 import Date from "../Common/Date";
 import Week from "../Common/Week";
@@ -38,7 +39,7 @@ class ActivityItem extends React.Component {
       <tr>
         <td>{this.props.activity.disciplineName}</td>
         <td>{this.props.activity.distance} {this.props.activity.unit}</td>
-        <td>{this.props.activity.score}</td>
+        <td><Score value={this.props.activity.score} /></td>
         <td><Date value={this.props.activity.date} /></td>
         <td className="hidden-xs"><Day value={this.props.activity.date} /></td>
         <td className="hidden-xs"><Week value={this.props.activity.date} /></td>

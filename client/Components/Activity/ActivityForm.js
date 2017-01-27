@@ -56,7 +56,7 @@ class ActivityForm extends React.Component {
   clearState() {
     this.setState({
       distance: "" || "",
-      date: moment().startOf("date")
+      date: moment.utc().startOf("date")
     });
   }
 
