@@ -239,6 +239,12 @@ const storeType = new GraphQLObjectType({
       type: new GraphQLList(userType),
       resolve: () => database.getUsers()
     },
+    allSummaries: {
+      type: new GraphQLList(summaryType),
+      resolve: () => {
+        return database.getAllWeekSummaries();
+      }
+    },
     summary: {
       type: new GraphQLList(summaryType),
       args: {

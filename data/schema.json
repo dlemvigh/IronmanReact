@@ -158,6 +158,22 @@
               "deprecationReason": null
             },
             {
+              "name": "allSummaries",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Summary",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "summary",
               "description": null,
               "args": [

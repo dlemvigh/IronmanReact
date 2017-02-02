@@ -14,7 +14,12 @@ import Loading from "./Components/Common/Loading";
 
 const Routes = (props) => ( 
   <Router {...props}>
-    <Route path="/" component={App} queries={AppQueries}>
+    <Route 
+      path="/" 
+      component={App} 
+      queries={AppQueries}
+      render={({props}) => props ? <App {...props} /> : <Loading show={true} />} 
+    >
       <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}

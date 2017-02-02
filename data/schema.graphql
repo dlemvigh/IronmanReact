@@ -158,6 +158,7 @@ type Store implements Node {
   echo: String
   disciplines: [Discipline]
   users: [User]
+  allSummaries: [Summary]
   summary(week: Int, year: Int): [Summary]
 }
 

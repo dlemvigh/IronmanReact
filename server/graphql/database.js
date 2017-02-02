@@ -64,6 +64,14 @@ function getAllSummaries(week, year) {
   }
 }
 
+function getAllWeekSummaries() {
+    const query = {
+      week: { $exists: true },
+      year: { $exists: true }
+    };
+  return SummaryModel.find(query).exec();
+}
+
 function getWeekSummary(userId, week, year) {
   if (week && year) {
     return SummaryModel.findOne({userId, week, year}).exec();
@@ -338,6 +346,7 @@ export default {
   getSummary,
   getAllSummaries,
   getWeekSummary,
+  getAllWeekSummaries,
   getMedals,
   getAllMedals,
   getMedalsByUserId,
