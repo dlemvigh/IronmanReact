@@ -1,6 +1,5 @@
 var path = require("path");
 var express = require("express");
-var expiry = require("static-expiry");
 var cors = require("cors");
 var graphqlHTTP = require("express-graphql");
 
@@ -21,9 +20,7 @@ app.use("/graphql", graphqlHTTP({
   graphiql: true,
 }));
 
-app.use(expiry(app, {dir: path.join(__dirname, "..", "client")}));
-
-app.use(express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000}));
+app.use(express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000000}));
 
 app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "..", "client", "index.html"));
