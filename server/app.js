@@ -20,7 +20,7 @@ app.use("/graphql", graphqlHTTP({
   graphiql: true,
 }));
 
-app.use(express.static(path.join(__dirname, "..", "client")));
+app.use(express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000}));
 
 app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "..", "client", "index.html"));
