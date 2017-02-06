@@ -36,7 +36,7 @@ class ActivityItem extends React.Component {
 
   render() {
     return (
-      <tr>
+      <tr className={this.props.striped && "active"}>
         <td>{this.props.activity.disciplineName}</td>
         <td>{this.props.activity.distance} {this.props.activity.unit}</td>
         <td><Score value={this.props.activity.score} /></td>
