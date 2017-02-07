@@ -9,6 +9,8 @@ import Leaderboard from "./Components/Leaderboard/Leaderboard";
 import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
 import Sandbox from "./Components/Sandbox/Sandbox";
 import SandboxQueries from "./Components/Sandbox/SandboxQueries";
+import Graphs from "./Components/Graphs";
+import GraphsQueries from "./Components/Graphs/GraphsQueries";
 
 import Loading from "./Components/Common/Loading";
 
@@ -30,6 +32,12 @@ const Routes = (props) => (
         component={Sandbox}
         queries={SandboxQueries}
         render={({props}) => props ? <Sandbox {...props} /> : <Loading show={true} />}
+      />
+      <Route
+        path="/graphs"
+        component={Graphs}
+        queries={GraphsQueries}
+        render={({props}) => props ? <Graphs {...props} /> : <Loading show={true} />}
       />
       <Route 
         path="/user/:id" 
