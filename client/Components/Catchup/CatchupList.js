@@ -39,7 +39,7 @@ class CatchupList extends React.Component {
       <Table>
         <thead>
           <tr>
-            <th>Name</th>
+            <th className="col-xs-3">Name</th>
             {
               this.getDisciplines().map(disc => {
                 return <th key={disc._id} className={getClassName(disc.name)}>{titleCase(disc.name)}</th>;

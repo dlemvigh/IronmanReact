@@ -10,12 +10,11 @@ class Leaderboard extends React.Component {
   render() {
     return (
       <div>
-        <h2>Leaderboard</h2>                
-        <h3>This week</h3>
+        <h3>This weeks leaderboard</h3>
         <LeaderboardList summary={this.props.store.current} />
-        {this.props.store.current.length >= 1 && <Catchup store={this.props.store} />}
-        {this.props.store.last.length > 0 && <h3>Last week</h3>}
+        {this.props.store.last.length > 0 && <h3>Last weeks leaderboard</h3>}
         {this.props.store.last.length > 0 && <LeaderboardList summary={this.props.store.last} />}
+        {this.props.store.current.length >= 1 && <Catchup store={this.props.store} />}
         <Medals store={this.props.store} />
       </div>
     );

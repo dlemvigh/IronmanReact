@@ -19,9 +19,9 @@ class LeaderboardList extends React.Component {
       <Table>
         <thead>
           <tr>
-            <th>Position</th>
-            <th>Name</th>
-            <th>Score</th>
+            <th className="col-xs-3">Position</th>
+            <th className="col-xs-4">Name</th>
+            <th className="col-xs-5">Score</th>
           </tr>
         </thead>
         <tbody>

@@ -21,6 +21,10 @@ class Activity extends React.Component {
     this.setState({editing: null});
   }
 
+  getName = () => {
+    return `${this.props.user.name}${this.props.user.name.endsWith('s') ? "'" : "'s"}`;
+  }
+
   render() {
     const component = this.state.editing === null ? 
           <ActivityForm 
@@ -37,7 +41,7 @@ class Activity extends React.Component {
           />
     return (
       <div>
-        <h1>{this.props.user.name}</h1>
+        <h2>{this.getName()} activities</h2>
         <ReactCSSTransitionReplace
           transitionName={styles}
           transitionEnterTimeout={1000}
@@ -45,7 +49,6 @@ class Activity extends React.Component {
         >
           { component }
         </ReactCSSTransitionReplace>
-        <h3>Activities</h3>
         <ActivityList {...this.props} onEdit={this.onBeginEdit} />
       </div>
     );
