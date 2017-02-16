@@ -21,7 +21,7 @@ class MedalsList extends React.Component {
 
   render() {
     return (
-      <Table>
+      <Table hover striped>
         <thead>
           <tr>
             <th className="col-xs-3">Name</th>
