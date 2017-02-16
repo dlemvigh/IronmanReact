@@ -41,7 +41,7 @@ class Activity extends React.Component {
           />
     return (
       <div>
-        <h2>{this.getName()} activities</h2>
+        <h3>{this.getName()} activities</h3>
         <ReactCSSTransitionReplace
           transitionName={styles}
           transitionEnterTimeout={1000}
