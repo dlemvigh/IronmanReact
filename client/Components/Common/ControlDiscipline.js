@@ -5,11 +5,11 @@ import { ControlLabel, FormGroup } from "react-bootstrap";
 class ControlDiscipline extends React.Component {
 
   isValid(){
-    return this.getValidationState() === "success";
+    return this.props.value.length > 0;
   }
 
   getValidationState() {
-    if (this.props.value.length > 0) { return "success"; }
+    return this.isValid() ? null : "error";
   }
 
   onChange = (event) => {
@@ -29,7 +29,6 @@ class ControlDiscipline extends React.Component {
           onChange={this.onChange}
           onBlur={this.onChange}
         >
-          <option disabled value="">Choose...</option>
           { 
             this.props.store.disciplines.map(discipline => 
               <option 
