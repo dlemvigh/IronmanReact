@@ -31,8 +31,8 @@ class LeaderboardItem extends React.Component {
         <td>{this.props.summary.userName}</td>
         <td>
           {this.getScore()} points
-          <div className="progress hidden-xs" styleName="progress">
-            <div className="progress-bar" style={{width: this.getProgressWidth()}} />
+          <div className="progress" styleName="progress">
+            <div className="progress-bar" styleName="progress-bar" style={{width: this.getProgressWidth()}} />
           </div>
         </td>
       </tr>
