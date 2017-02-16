@@ -14,7 +14,10 @@ class LeaderboardList extends React.Component {
             .value();
     return sorted;
   }
+
   render() {
+    const sorted = this.sorted();
+    const max = sorted[0].score;
     return (
       <Table hover striped>
         <thead>
@@ -26,8 +29,8 @@ class LeaderboardList extends React.Component {
         </thead>
         <tbody>
           {
-            this.sorted().map((summary, index) => 
-              <LeaderboardItem key={summary._id} summary={summary} index={index} />)
+            sorted.map((summary, index) => 
+              <LeaderboardItem key={summary._id} summary={summary} index={index} max={max} />)
           }
         </tbody>
       </Table>
