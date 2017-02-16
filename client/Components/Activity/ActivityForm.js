@@ -28,7 +28,8 @@ class ActivityForm extends React.Component {
     distance: "",
     unit: "km",
     score: "" || 5,
-    date: moment.utc().startOf("date")
+    date: moment.utc().startOf("date").format("D/M-YYYY"),
+    ensureValidation: false
   }
 
   componentWillReceiveProps(newProps) {
@@ -45,7 +46,7 @@ class ActivityForm extends React.Component {
       distance: activity.distance,
       unit: activity.unit,
       score: activity.score / activity.distance,
-      date: new Date(activity.date),
+      date: moment.utc(activity.date).format("D/M-YYYY"),
     };    
   }
 
@@ -56,7 +57,8 @@ class ActivityForm extends React.Component {
   clearState() {
     this.setState({
       distance: "" || "",
-      date: moment.utc().startOf("date")
+      date: moment.utc().startOf("date").format("D/M-YYYY"),
+      ensureValidation: false
     });
   }
 
@@ -114,6 +116,10 @@ class ActivityForm extends React.Component {
         );
         this.clearState();
       }
+    } else {
+      this.setState({
+        ensureValidation: true
+      });
     }
   }
 
@@ -128,7 +134,7 @@ class ActivityForm extends React.Component {
       distance: parseFloat(this.state.distance),
       unit: this.state.unit,
       score: this.state.score * this.state.distance,
-      date: this.state.date.toISOString()
+      date: moment.utc(this.state.date, "D/M-YYYY").toISOString()
     };
     return activity;
   }
@@ -152,6 +158,7 @@ class ActivityForm extends React.Component {
               value={this.state.disciplineId} 
               onChange={this.handleChangeDiscipline} 
               store={this.props.store} 
+              ensureValidation={this.state.ensureValidation}
             />
           </Col>
           <Col sm={3} xs={8} >
@@ -160,13 +167,19 @@ class ActivityForm extends React.Component {
               value={this.state.distance} 
               unit={this.state.unit} 
               onChange={this.handleChangeDistance} 
+              ensureValidation={this.state.ensureValidation}
             />  
           </Col>
           <Col sm={2} xs={4}>
             <ControlScore value={this.state.score * this.state.distance} readonly />
           </Col>
           <Col sm={3} xs={8}>
-            <ControlDate ref="date" value={this.state.date} onChange={this.handleChangeDate} />
+            <ControlDate 
+              ref="date" 
+              value={this.state.date} 
+              onChange={this.handleChangeDate} 
+              ensureValidation={this.state.ensureValidation}
+            />
           </Col>
           <Col sm={1} xs={4}>
             <Button 

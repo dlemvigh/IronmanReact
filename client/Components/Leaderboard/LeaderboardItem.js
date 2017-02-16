@@ -20,12 +20,21 @@ class LeaderboardItem extends React.Component {
     return _.round(this.props.summary ? this.props.summary.score : 0, 1);
   }
 
+  getProgressWidth = () => {
+    return (100 * this.props.summary.score / this.props.max) + "%";
+  }
+
   render() {
     return (
       <tr styleName="row" onClick={this.onClick}>
         <td><Pos value={this.props.index + 1} /></td>
         <td>{this.props.summary.userName}</td>
-        <td>{this.getScore()} points</td>
+        <td>
+          {this.getScore()} points
+          <div className="progress" styleName="progress">
+            <div className="progress-bar" styleName="progress-bar" style={{width: this.getProgressWidth()}} />
+          </div>
+        </td>
       </tr>
     );
   }

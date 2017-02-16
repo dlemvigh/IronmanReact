@@ -7,6 +7,8 @@ import CSSModules from "react-css-modules";
 
 import styles from "./ControlDate.scss";
 
+const regex = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])-20\d\d$/
+
 class ControlDate extends React.Component {
 
   isMobile(){
@@ -15,33 +17,41 @@ class ControlDate extends React.Component {
   }
 
   isValid(){
-    return this.getValidationState() === "success";
+    let value = this.props.value;
+    if (typeof value !== "string") {
+      value = value.format("D/M-YYYY");
+    }
+    const isValid = regex.test(this.props.value);
+    return isValid;
   }
 
   getValidationState() {
-    if (typeof this.props.value === "string") {
-      if (this.props.value.length > 0) { return "error"; }
-    }else{
-      return "success";
-    }
+    return this.isValid() ? null : "error";
   }
 
   getValue = () => {
-    return moment(this.props.value).format("YYYY-MM-DD");
+    const value =  this.props.value ? moment.utc(this.props.value, "D/M-YYYY").format("YYYY-MM-DD") : null;
+    return value;
   }
 
   onChangeMobile = (event) => {
     if (this.props.onChange) {
-      const m = moment.utc(event.target.value);
-      const value = m.startOf("day");
+      let value = event.target.value;
+      if (value) {
+        const m = moment.utc(event.target.value);
+        value = m.startOf("day").format("D/M-YYYY");
+      }
       this.props.onChange(value);
     }
   }
 
   onChange = (value) => {
-    value = moment.utc(value).startOf("day");
     if (this.props.onChange) {
-      this.props.onChange(value);
+      if (typeof value === "string") {
+        this.props.onChange(value);
+      }else{
+        this.props.onChange(value.format("D/M-YYYY"));
+      }
     }
   }
 
@@ -57,7 +67,6 @@ class ControlDate extends React.Component {
             <DateTime
               dateFormat="D/M-YYYY"
               timeFormat={false}
-              defaultValue={moment.utc()}
               value={this.props.value}
               onChange={this.onChange}
             />
