@@ -21,13 +21,13 @@ class MedalsList extends React.Component {
 
   render() {
     return (
-      <Table>
+      <Table hover striped>
         <thead>
           <tr>
-            <th></th>
-            <th>Gold</th>
-            <th>Silver</th>
-            <th>Bronze</th>
+            <th className="col-xs-3">Name</th>
+            <th className="col-xs-3">Gold</th>
+            <th className="col-xs-3">Silver</th>
+            <th className="col-xs-3">Bronze</th>
           </tr>
         </thead>
         <tbody>

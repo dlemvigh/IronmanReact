@@ -7,7 +7,7 @@ class Medals extends React.Component {
   render() {
     return (
       <div>
-        <h2>Medals</h2>
+        <h3>Medals</h3>
         <MedalsList store={this.props.store} />
       </div>
     );

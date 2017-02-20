@@ -13,12 +13,14 @@ export default class ControlDistance extends React.Component {
   }
     
   isValid(){
-    return this.getValidationState() === "success";
+    return regex.test(this.props.value) && Number(this.props.value) > 0;
   }
 
-  getValidationState() {                
-    if (regex.test(this.props.value)) { return "success"; }
-    if (this.props.value.length > 0) { return "error"; }
+  getValidationState() { 
+    if (String(this.props.value).length == 0) {
+      return this.props.ensureValidation ? "error" : null;
+    }
+    return this.isValid() ? null : "error";
   }
 
   render() {
@@ -31,6 +33,7 @@ export default class ControlDistance extends React.Component {
             value={this.props.value}
             placeholder="4.7" 
             onChange={this.onChange}
+            autoFocus
           />
           <InputGroup.Addon>{this.props.unit}</InputGroup.Addon>
         </InputGroup>                    
