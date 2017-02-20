@@ -14,20 +14,23 @@ class LeaderboardList extends React.Component {
             .value();
     return sorted;
   }
+
   render() {
+    const sorted = this.sorted();
+    const max = sorted.length > 0 ? sorted[0].score : 0;
     return (
-      <Table>
+      <Table hover striped>
         <thead>
           <tr>
-            <th>Position</th>
-            <th>Name</th>
-            <th>Score</th>
+            <th className="col-xs-3">Position</th>
+            <th className="col-xs-4">Name</th>
+            <th className="col-xs-5">Score</th>
           </tr>
         </thead>
         <tbody>
           {
-            this.sorted().map((summary, index) => 
-              <LeaderboardItem key={summary._id} summary={summary} index={index} />)
+            sorted.map((summary, index) => 
+              <LeaderboardItem key={summary._id} summary={summary} index={index} max={max} />)
           }
         </tbody>
       </Table>

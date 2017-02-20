@@ -36,10 +36,10 @@ class CatchupList extends React.Component {
   render() {
     const highscore = this.getHighestScore();
     return (
-      <Table>
+      <Table hover striped>
         <thead>
           <tr>
-            <th>Name</th>
+            <th className="col-xs-3">Name</th>
             {
               this.getDisciplines().map(disc => {
                 return <th key={disc._id} className={getClassName(disc.name)}>{titleCase(disc.name)}</th>;
