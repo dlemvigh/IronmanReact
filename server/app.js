@@ -2,6 +2,7 @@ var path = require("path");
 var express = require("express");
 var cors = require("cors");
 var graphqlHTTP = require("express-graphql");
+var compression = require("compression");
 
 import mongoose from "mongoose";
 mongoose.Promise = global.Promise;
@@ -12,6 +13,7 @@ populate();
 import schema from "./graphql/schema";
 
 var app = express();
+app.use(compression());
 app.use(cors());
 
 app.use("/graphql", graphqlHTTP({
