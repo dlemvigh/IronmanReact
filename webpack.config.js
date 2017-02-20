@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = {
@@ -48,6 +49,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: 'client/index.html',
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'async'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
