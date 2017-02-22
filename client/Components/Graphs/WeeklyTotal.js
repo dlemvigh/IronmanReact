@@ -10,10 +10,11 @@ class WeeklyTotal extends React.Component {
 
   formatData(summaries) {
     let data = {};
-    for(let summary of summaries) {
+
+    summaries.forEach(summary => {
       data[summary.week] = data[summary.week] || {};
-      data[summary.week][summary.userName] = summary.score;
-    }
+      data[summary.week][summary.userName] = summary.score;      
+    })
 
     return Object.keys(data).map(key => {
       data[key].name = `Uge ${key}`;
@@ -22,7 +23,6 @@ class WeeklyTotal extends React.Component {
   }
 
   render() {
-    console.log("test", this.props.store)
     const data = this.formatData(this.props.store.allSummaries);
 
     return (
