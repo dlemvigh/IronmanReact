@@ -24,10 +24,10 @@ module.exports = {
         plugins: ['./babelRelayPlugin'].map(require.resolve)
       }   
     }, {
-        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
         loader: 'url-loader?limit=10000',
     }, {
-        test: /\.(eot|ttf|wav|mp3)$/,
+        test: /\.(eot|ttf|wav|mp3|woff|woff2)$/,
         loader: 'file-loader',
     }, {
     test: /\.scss$/,
