@@ -12,13 +12,25 @@ const medalsSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  goldWeeks: {
+    type: [Number],
+    default: []
+  },
   silver: {
     type: Number,
     default: 0
   },
+  silverWeeks: {
+    type: [Number],
+    default: []
+  },
   bronze: {
     type: Number,
     default: 0
+  },
+  bronzeWeeks: {
+    type: [Number],
+    default: []
   },
 });
 

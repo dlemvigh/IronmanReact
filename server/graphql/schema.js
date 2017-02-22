@@ -71,11 +71,20 @@ const medalsType = new GraphQLObjectType({
     gold: {
       type: GraphQLInt
     },
+    goldWeeks: {
+      type: new GraphQLList(GraphQLInt)
+    },
     silver: {
       type: GraphQLInt
     },
+    silverWeeks: {
+      type: new GraphQLList(GraphQLInt)
+    },
     bronze: {
       type: GraphQLInt
+    },
+    bronzeWeeks: {
+      type: new GraphQLList(GraphQLInt)
     }
   })
 }); 
