@@ -47,7 +47,8 @@ class WeeklyTotal extends React.Component {
     const data = this.formatData(this.props.store.allSummaries);
     const firstWeek = this.getFirstWeek(data);
     const [alpha, beta, trendFunc] = this.calcTrendFunc(this.props.store.allSummaries, firstWeek);
-    const TrendKey = `Trend (${Math.round(beta)} + ${Math.round(alpha)} x)`
+    const TrendKey = "trend";
+    const TrendName = `Trend (${Math.round(beta)} + ${Math.round(alpha)} x)`
     data.forEach(item => item[TrendKey] = trendFunc(item.key));
 
     return (
@@ -66,7 +67,7 @@ class WeeklyTotal extends React.Component {
                 <Line key={x.name} dataKey={x.name} type="monotone" stroke={colors[index]} />                  
               )
             }
-            <Line dataKey={TrendKey} stroke="black" />                  
+            <Line dataKey={TrendKey} name={TrendName} stroke="black" dot={false} activeDot={false} strokeDasharray="10 5" />                  
            </LineChart>
         </ResponsiveContainer>
       </div>
