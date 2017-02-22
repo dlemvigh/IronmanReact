@@ -2,12 +2,14 @@ import React from "react";
 import Relay from "react-relay";
 
 import WeeklyTotal from "./WeeklyTotal";
+import Weekday from "./Weekday";
 
 class Graphs extends React.Component {
   render() {
     return (
-      <div>
+      <div style={{height: "105vh"}}>
         <WeeklyTotal store={this.props.store} />
+        <Weekday store={this.props.store} />
       </div>
     );
   }
@@ -18,6 +20,7 @@ Graphs = Relay.createContainer(Graphs, {
     store: () => Relay.QL`
       fragment on Store {
         ${WeeklyTotal.getFragment('store')},
+        ${Weekday.getFragment('store')}
         users {
           name
         }

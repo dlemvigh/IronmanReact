@@ -10,9 +10,9 @@ export const colors = [
 ];
 
 export const colorsDiscipline = {
-  "swim": "blue",
-  "bike": "yellow",
-  "run": "red",
-  "caloric": "green",
-  "misc": "grey"
+  "swim": "rgb(57, 106, 177)",
+  "bike": "rgb(218, 124, 48)",
+  "run": "#dc0026",
+  "caloric": "rgb(62, 150, 81)",
+  "misc": "rgb(83, 81, 84)"
 };
