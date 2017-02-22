@@ -13,7 +13,7 @@ class WeeklyTotal extends React.Component {
 
     summaries.forEach(summary => {
       data[summary.week] = data[summary.week] || {};
-      data[summary.week][summary.userName] = summary.score;      
+      data[summary.week][summary.userName] = Math.round(summary.score);
     })
 
     return Object.keys(data).map(key => {

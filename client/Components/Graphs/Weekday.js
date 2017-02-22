@@ -24,7 +24,7 @@ class Weekday extends React.Component {
     const weekdayNumber = moment(activity.date).weekday() || 7; // makes sunday index 7 instead of 0
     const weekday = moment(activity.date).format('dddd');
     data[weekdayNumber] = data[weekdayNumber] || { weekday: weekday };
-    data[weekdayNumber][activity.disciplineName] = (data[weekdayNumber][activity.disciplineName] || 0) + activity.score;
+    data[weekdayNumber][activity.disciplineName] = (data[weekdayNumber][activity.disciplineName] || 0) + Math.round(activity.score);
   }
 
   render() {
