@@ -38,7 +38,7 @@ class WeeklyTotal extends React.Component {
             <Legend />
             {
               this.props.store.users.map((x, index) => 
-                <Line key={x.name} dataKey={x.name} stroke={colors[index]} />                  
+                <Line key={x.name} dataKey={x.name} type="monotone" stroke={colors[index]} />                  
               )
             }
            </LineChart>
