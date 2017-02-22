@@ -1,5 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
+import moment from "moment";
 import _ from "lodash";
 
 import { colors } from "./Colors";
@@ -28,11 +29,13 @@ class WeeklyTotal extends React.Component {
   }
 
   calcTrendFunc(summaries, weekoffset) {
-    const n = summaries.length;
-    const sumXY = summaries.reduce((acc, summary) => acc + (summary.week - weekoffset) * summary.score, 0);
-    const sumX = summaries.reduce((acc, summary) => acc + (summary.week - weekoffset), 0);
-    const sumY = summaries.reduce((acc, summary) => acc + summary.score, 0);
-    const sumX2 = summaries.reduce((acc, summary) => acc + (summary.week - weekoffset) * (summary.week - weekoffset), 0);
+    const currentWeek = moment().week();
+    const filtered = summaries.filter(summary => summary.week < currentWeek);
+    const n = filtered.filter(summary => summary.week < currentWeek).length;
+    const sumXY = filtered.reduce((acc, summary) => acc + (summary.week - weekoffset) * summary.score, 0);
+    const sumX = filtered.reduce((acc, summary) => acc + (summary.week - weekoffset), 0);
+    const sumY = filtered.reduce((acc, summary) => acc + summary.score, 0);
+    const sumX2 = filtered.reduce((acc, summary) => acc + (summary.week - weekoffset) * (summary.week - weekoffset), 0);
 
     const alpha = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
     const beta = (sumY - alpha * sumX) / n;

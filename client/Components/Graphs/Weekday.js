@@ -15,7 +15,6 @@ class Weekday extends React.Component {
     store.users.forEach(user => {
       user.activities.edges.forEach(edge => this.addData(data, edge.node));
     });
-    console.log("data", data);
 
     return Object.values(data)
   }
