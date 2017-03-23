@@ -4,6 +4,7 @@ import moment from "moment";
 import _ from "lodash";
 
 import { colors } from "./Colors";
+import GraphContainer from "./GraphContainer";
 
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from "recharts";
 
@@ -52,24 +53,24 @@ class WeeklyTotal extends React.Component {
     data.forEach(item => item[TrendKey] = trendFunc(item.key));
 
     return (
-      <div style={{height: "50vh"}}>
+      <div>
         <h3>Points per week</h3>
-        <ResponsiveContainer>
-          <LineChart data={data}
-            margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
-            <Legend />
-            {
-              this.props.store.users.map((x, index) => 
-                <Line key={x.name} dataKey={x.name} type="monotone" stroke={colors[index]} />                  
-              )
-            }
-            <Line dataKey={TrendKey} name={TrendName} stroke="black" dot={false} activeDot={false} strokeDasharray="10 5" />                  
-           </LineChart>
-        </ResponsiveContainer>
+        <GraphContainer>
+        <LineChart data={data}
+          margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip />
+          <Legend />
+          {
+            this.props.store.users.map((x, index) => 
+              <Line key={x.name} dataKey={x.name} type="monotone" stroke={colors[index]} />                  
+            )
+          }
+          <Line dataKey={TrendKey} name={TrendName} stroke="black" dot={false} activeDot={false} strokeDasharray="10 5" />                  
+        </LineChart>
+        </GraphContainer>
       </div>
     );
   }

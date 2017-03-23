@@ -7,7 +7,7 @@ import Weekday from "./Weekday";
 class Graphs extends React.Component {
   render() {
     return (
-      <div style={{height: "105vh"}}>
+      <div>
         <WeeklyTotal store={this.props.store} />
         <Weekday store={this.props.store} />
       </div>

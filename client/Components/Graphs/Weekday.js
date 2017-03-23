@@ -4,8 +4,9 @@ import _ from "lodash";
 import moment from "moment";
 
 import { colorsDiscipline } from "./Colors";
+import GraphContainer from "./GraphContainer";
 
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from "recharts";
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 class Weekday extends React.Component {
 
@@ -28,11 +29,10 @@ class Weekday extends React.Component {
 
   render() {
     const data = this.formatData(this.props.store);
-
     return (
-      <div style={{height: "50vh"}}>
+      <div>
         <h3>Points by weekday</h3>
-        <ResponsiveContainer>
+        <GraphContainer>
           <BarChart  data={data}
             margin={{top: 10, right: 30, left: 0, bottom: 0}}>
             <XAxis dataKey="weekday" />
@@ -46,7 +46,7 @@ class Weekday extends React.Component {
               })
             }
           </BarChart >
-        </ResponsiveContainer>
+        </GraphContainer>
       </div>
     );
   }
