@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = {
@@ -23,10 +24,10 @@ module.exports = {
         plugins: ['./babelRelayPlugin'].map(require.resolve)
       }   
     }, {
-        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
         loader: 'url-loader?limit=10000',
     }, {
-        test: /\.(eot|ttf|wav|mp3)$/,
+        test: /\.(eot|ttf|wav|mp3|woff|woff2)$/,
         loader: 'file-loader',
     }, {
     test: /\.scss$/,
@@ -48,6 +49,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: 'client/index.html',
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'async'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
