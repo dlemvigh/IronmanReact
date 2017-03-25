@@ -17,7 +17,7 @@ class LeaderboardList extends React.Component {
 
   render() {
     const sorted = this.sorted();
-    const max = sorted[0].score;
+    const max = sorted.length > 0 ? sorted[0].score : 0;
     return (
       <Table hover striped>
         <thead>

@@ -19,7 +19,6 @@ class ActivityList extends React.Component {
 
   render() {
     const weeks = this.getWeeks();
-    console.log("weks", weeks);
     return (
       <Table hover>
         <thead>
