@@ -38,7 +38,6 @@ class WeeklyTotal extends React.Component {
       .values()
       .value()
       .map(group => _.maxBy(group, x => x.score))
-    console.log("win", winners)
     const n = winners.filter(summary => summary.week < currentWeek).length;
     const sumXY = winners.reduce((acc, summary) => acc + (summary.week - weekoffset) * summary.score, 0);
     const sumX = winners.reduce((acc, summary) => acc + (summary.week - weekoffset), 0);

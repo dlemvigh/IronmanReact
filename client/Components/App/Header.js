@@ -22,6 +22,8 @@ class Header extends React.Component {
                   <NavItem>{user.name}</NavItem>
                 </LinkContainer>)
               }
+            </Nav>
+            <Nav pullRight>
               <LinkContainer to="/graphs">
                 <NavItem>Graphs</NavItem>
               </LinkContainer>
