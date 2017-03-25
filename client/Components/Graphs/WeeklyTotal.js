@@ -29,6 +29,28 @@ class WeeklyTotal extends React.Component {
     return Math.min(...data.map(item => item.key));
   }
 
+  calcWinnerTrendFunc(summaries, weekoffset) {
+    const currentWeek = moment().week();
+    const filtered = summaries.filter(summary => summary.week < currentWeek);
+    const grouped = _.groupBy(filtered, x => x.week);
+    const winners = _(filtered)
+      .groupBy(x => x.week)
+      .values()
+      .value()
+      .map(group => _.maxBy(group, x => x.score))
+    console.log("win", winners)
+    const n = winners.filter(summary => summary.week < currentWeek).length;
+    const sumXY = winners.reduce((acc, summary) => acc + (summary.week - weekoffset) * summary.score, 0);
+    const sumX = winners.reduce((acc, summary) => acc + (summary.week - weekoffset), 0);
+    const sumY = winners.reduce((acc, summary) => acc + summary.score, 0);
+    const sumX2 = winners.reduce((acc, summary) => acc + (summary.week - weekoffset) * (summary.week - weekoffset), 0);
+
+    const alpha = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const beta = (sumY - alpha * sumX) / n;
+    const func = (week) => Math.round(alpha * (week - weekoffset) + beta);
+    return [alpha, beta, func];    
+  }
+
   calcTrendFunc(summaries, weekoffset) {
     const currentWeek = moment().week();
     const filtered = summaries.filter(summary => summary.week < currentWeek);
@@ -47,7 +69,7 @@ class WeeklyTotal extends React.Component {
   render() {
     const data = this.formatData(this.props.store.allSummaries);
     const firstWeek = this.getFirstWeek(data);
-    const [alpha, beta, trendFunc] = this.calcTrendFunc(this.props.store.allSummaries, firstWeek);
+    const [alpha, beta, trendFunc] = this.calcWinnerTrendFunc(this.props.store.allSummaries, firstWeek);
     const TrendKey = "trend";
     const TrendName = `Trend (${Math.round(beta)} + ${Math.round(alpha)} x)`
     data.forEach(item => item[TrendKey] = trendFunc(item.key));
