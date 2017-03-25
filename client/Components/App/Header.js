@@ -23,6 +23,11 @@ class Header extends React.Component {
                 </LinkContainer>)
               }
             </Nav>
+            <Nav pullRight>
+              <LinkContainer to="/graphs">
+                <NavItem>Graphs</NavItem>
+              </LinkContainer>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
       </header>
