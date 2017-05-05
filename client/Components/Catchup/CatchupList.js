@@ -10,6 +10,11 @@ import CatchupItem from "./CatchupItem";
 
 class CatchupList extends React.Component {
 
+  state = {
+    focusedScore: null,
+    focusedUserId: null
+  };
+
   getDisciplines() {
     const filtered = mapFilter(this.props.store.disciplines);
     return filtered;
@@ -28,9 +33,27 @@ class CatchupList extends React.Component {
     return sorted.slice(1);  
   }
 
+  getFocusScore() {
+    return this.state.focusedScore == null || getHighestScore()
+  }
+
   getHighestScore() {
     const max = _.max(this.props.store.users.map(this.getScore));
     return max;
+  }
+
+  setFocus(userId, score) {
+    if (userId === this.state.focusedUserId) {
+      this.setState({
+        focusedScore: null,
+        focusedUserId: null
+      });
+    }else {
+      this.setState({
+        focusedUserId: userId,
+        focusedScore: score
+      });
+    }
   }
 
   render() {
