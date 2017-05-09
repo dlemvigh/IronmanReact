@@ -69,8 +69,9 @@ class WeeklyTotal extends React.Component {
     const data = this.formatData(this.props.store.allSummaries);
     const firstWeek = this.getFirstWeek(data);
     const [alpha, beta, trendFunc] = this.calcWinnerTrendFunc(this.props.store.allSummaries, firstWeek);
+    const sign = alpha > 0 ? " + " : " ";
     const TrendKey = "trend";
-    const TrendName = `Trend (${Math.round(beta)} + ${Math.round(alpha)} x)`
+    const TrendName = `Trend (${Math.round(beta)}${sign}${Math.round(alpha)} x)`
     data.forEach(item => item[TrendKey] = trendFunc(item.key));
 
     return (
