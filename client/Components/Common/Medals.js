@@ -22,8 +22,8 @@ class Medals extends React.Component {
   }
 
   getValue() {
-    const currentWeek = moment().week();
-    return this.props.value || this.props.weeks.filter(x => x != currentWeek).length;
+    const currentWeek = moment().isoWeek();
+    return this.props.value || this.props.weeks.filter(x => x < currentWeek).length;
   }
 
   render() {
