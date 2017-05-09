@@ -48,6 +48,7 @@
     "react-datetime": "^2.6.0",
     "react-dom": "^15.3.2",
     "react-facebook-login": "^3.3.2",
+    "react-ga": "^2.2.0",
     "react-loading-bar": "0.0.3",
     "react-relay": "^0.9.3",
     "react-router": "^2.8.1",
