@@ -267,8 +267,11 @@ async function updateMedals(user) {
     userId: user._id,
     userName: user.name,
     gold: summaries.filter(x => x.position == 1).length,
+    goldWeeks: summaries.filter(x => x.position == 1).map(x => x.week),
     silver: summaries.filter(x => x.position == 2).length,
-    bronze: summaries.filter(x => x.position == 3).length
+    silverWeeks: summaries.filter(x => x.position == 2).map(x => x.week),
+    bronze: summaries.filter(x => x.position == 3).length,
+    bronzeWeeks: summaries.filter(x => x.position == 3).map(x => x.week)
   };
   await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec();
 }

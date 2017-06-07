@@ -96,8 +96,11 @@ type Medals {
   # The ID of an object
   id: ID!
   gold: Int
+  goldWeeks: [Int]
   silver: Int
+  silverWeeks: [Int]
   bronze: Int
+  bronzeWeeks: [Int]
 }
 
 type Mutation {

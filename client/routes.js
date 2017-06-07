@@ -1,5 +1,6 @@
 import React from "react";
 import { Router, Route, IndexRoute } from "react-router";
+import ReactGA from "react-ga";
 
 import App from "./Components/App/App";
 import AppQueries from "./Components/App/AppQueries";
@@ -9,11 +10,21 @@ import Leaderboard from "./Components/Leaderboard/Leaderboard";
 import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
 import Sandbox from "./Components/Sandbox/Sandbox";
 import SandboxQueries from "./Components/Sandbox/SandboxQueries";
+import Graphs from "./Components/Graphs";
+import GraphsQueries from "./Components/Graphs/GraphsQueries";
 
 import Loading from "./Components/Common/Loading";
 
+ReactGA.initialize("UA-98797876-1");
+
+function logPageView() {
+  debugger;
+  ReactGA.set({ page: window.location.pathname + window.location.search });
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
+
 const Routes = (props) => ( 
-  <Router {...props}>
+  <Router {...props} onUpdate={logPageView}>
     <Route 
       path="/" 
       component={App} 
@@ -30,6 +41,12 @@ const Routes = (props) => (
         component={Sandbox}
         queries={SandboxQueries}
         render={({props}) => props ? <Sandbox {...props} /> : <Loading show={true} />}
+      />
+      <Route
+        path="/graphs"
+        component={Graphs}
+        queries={GraphsQueries}
+        render={({props}) => props ? <Graphs {...props} /> : <Loading show={true} />}
       />
       <Route 
         path="/user/:id" 

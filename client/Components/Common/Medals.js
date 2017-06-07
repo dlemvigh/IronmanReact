@@ -1,4 +1,5 @@
 import React from "react"
+import moment from "moment";
 
 class Medals extends React.Component {
 
@@ -12,17 +13,22 @@ class Medals extends React.Component {
   }
 
   renderIndividual() {
-    let list = Array.apply(null, Array(this.props.value || 0));
+    let list = Array.apply(null, Array(this.getValue() || 0));
     return <span>{ list.map(() => this.getMedal())}</span>
   }
 
   renderSummary() {
-    return <span>{this.getMedal()} x{this.props.value}</span>;
+    return <span>{this.getMedal()} x{this.getValue()}</span>;
+  }
+
+  getValue() {
+    const currentWeek = moment().isoWeek();
+    return this.props.value || this.props.weeks.filter(x => x < currentWeek).length;
   }
 
   render() {
     return (
-      this.props.value < 5 ? this.renderIndividual() : this.renderSummary()
+      this.getValue() < 5 ? this.renderIndividual() : this.renderSummary()
     );
   }
 }

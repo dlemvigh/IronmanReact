@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 if (process.env.NODE_ENV !== 'production') {
@@ -76,6 +77,9 @@ module.exports = {
         minifyCSS: true,
         minifyURLs: true
       }
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'async'
     }),
     new webpack.DefinePlugin({
       "process.env": { 

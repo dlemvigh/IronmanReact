@@ -28,9 +28,9 @@ class MedalsItem extends React.Component {
     return (
       <tr onClick={this.onClick} styleName="row">
         <td>{this.props.user.name}</td>
-        <td styleName="">{this.props.user.medals && <Medals value={this.props.user.medals.gold} type="gold" />}</td>
-        <td styleName="">{this.props.user.medals && <Medals value={this.props.user.medals.silver} type="silver" />}</td>
-        <td styleName="">{this.props.user.medals && <Medals value={this.props.user.medals.bronze} type="bronze" />}</td>
+        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.goldWeeks} type="gold" />}</td>
+        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.silverWeeks} type="silver" />}</td>
+        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.bronzeWeeks} type="bronze" />}</td>
       </tr>
     );
   }
@@ -45,9 +45,9 @@ MedalsItem = Relay.createContainer(MedalsItem, {
         username
         name
         medals {
-          gold
-          silver
-          bronze
+          goldWeeks
+          silverWeeks
+          bronzeWeeks
         }
       }
     `

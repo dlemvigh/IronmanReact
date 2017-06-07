@@ -11,7 +11,16 @@ const colors = [
   "crimson",
   "purple",
   "orange"  
-]
+];
+
+const colorsDiscipline = {
+  "swim": "blue",
+  "bike": "yellow",
+  "run": "red",
+  "caloric": "green",
+  "misc": "grey"
+};
+
 class Sandbox extends React.Component {
 
   formatData(summaries) {
