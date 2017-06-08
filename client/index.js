@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 import { browserHistory, applyRouterMiddleware } from "react-router";
 import useRelay from "react-router-relay";
 
