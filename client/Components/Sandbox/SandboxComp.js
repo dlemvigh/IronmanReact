@@ -24,6 +24,7 @@ class Comp extends React.Component {
   render() {
     return (
       <pre>
+        test
         {JSON.stringify(this.props, null, 2)}
       </pre>
     );

@@ -89,4 +89,5 @@ Sandbox = Relay.createContainer(Sandbox, {
   }
 });
 
-export default Sandbox;
+// export default Sandbox;
+export default (props) => <div>Sandbox</div>

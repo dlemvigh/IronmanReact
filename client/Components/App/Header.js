@@ -1,8 +1,8 @@
 import React from "react";
 import Relay from 'react-relay/classic';
-import { Link } from "react-router";
+import Link from 'found/lib/Link';
 import { Navbar, Nav, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+// import { LinkContainer } from "react-router-bootstrap";
 
 class Header extends React.Component {
   render() {
@@ -18,16 +18,17 @@ class Header extends React.Component {
           <Navbar.Collapse>
             <Nav>
               {
-                this.props.store.users.map(user => <LinkContainer key={user.username} to={`/${user.username}`}>
-                  <NavItem>{user.name}</NavItem>
-                </LinkContainer>)
+                this.props.store.users.map(user => <NavItem>{user.name}</NavItem>)
+                  /*<LinkContainer key={user.username} to={`/${user.username}`}>
+                    <NavItem>{user.name}</NavItem>
+                  </LinkContainer>)*/
               }
             </Nav>
-            <Nav pullRight>
+            {/*<Nav pullRight>
               <LinkContainer to="/graphs">
                 <NavItem>Graphs</NavItem>
               </LinkContainer>
-            </Nav>
+            </Nav>*/}
           </Navbar.Collapse>
         </Navbar>
       </header>

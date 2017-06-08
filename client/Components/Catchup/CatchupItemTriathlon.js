@@ -7,9 +7,6 @@ const run = { score: 5, dist: 4 };
 const total = swim.score * swim.dist + bike.score * bike.dist + run.score * run.dist;
 
 class CatchupItemTriathlon extends React.Component {
-  static propTypes = {
-    score: React.PropTypes.number.isRequired
-  }
 
   getDiff() {
     return this.props.highscore - this.props.score;
