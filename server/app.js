@@ -22,8 +22,6 @@ app.use("/graphql", graphqlHTTP({
   graphiql: true,
 }));
 
-app.use(express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000000}));
-
 app.use(function noCacheForRoot(req, res, next) {
   if (req.url === "/") {
     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -32,6 +30,8 @@ app.use(function noCacheForRoot(req, res, next) {
   }
   next();
 });
+
+app.use(express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000000}));
 
 mongoose.connect("mongodb://localhost/ironman");
 
