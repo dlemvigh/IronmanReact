@@ -18,7 +18,6 @@ import Loading from "./Components/Common/Loading";
 ReactGA.initialize("UA-98797876-1");
 
 function logPageView() {
-  debugger;
   ReactGA.set({ page: window.location.pathname + window.location.search });
   ReactGA.pageview(window.location.pathname + window.location.search);
 }

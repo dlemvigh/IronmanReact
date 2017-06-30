@@ -8,6 +8,7 @@
     "start": "npm-run-all update-schema --parallel client server --parallel postclient postserver",
     "client": "webpack-dev-server --inline --content-base . --history-api-fallback",
     "server": "nodemon server/index.js --watch server",
+    "server:prod": "nodemon build/server/index.js --watch build",
     "lint": "eslint client server util devServer.js",
     "update-schema": "babel-node ./util/update-schema.js",
     "prebuild": "rimraf build/",
