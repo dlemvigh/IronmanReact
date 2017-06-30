@@ -3,6 +3,7 @@ import Relay from "react-relay";
 import CSSModules from "react-css-modules";
 
 import styles from "./MedalsItem.scss";
+import Medals from "../Common/Medals";
 
 class MedalsItem extends React.Component {
 
@@ -27,9 +28,9 @@ class MedalsItem extends React.Component {
     return (
       <tr onClick={this.onClick} styleName="row">
         <td>{this.props.user.name}</td>
-        <td styleName="gold">{this.props.user.medals && this.props.user.medals.gold}</td>
-        <td styleName="silver">{this.props.user.medals && this.props.user.medals.silver}</td>
-        <td styleName="bronze">{this.props.user.medals && this.props.user.medals.bronze}</td>
+        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.goldWeeks} type="gold" />}</td>
+        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.silverWeeks} type="silver" />}</td>
+        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.bronzeWeeks} type="bronze" />}</td>
       </tr>
     );
   }
@@ -44,9 +45,9 @@ MedalsItem = Relay.createContainer(MedalsItem, {
         username
         name
         medals {
-          gold
-          silver
-          bronze
+          goldWeeks
+          silverWeeks
+          bronzeWeeks
         }
       }
     `
