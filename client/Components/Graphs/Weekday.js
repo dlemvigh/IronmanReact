@@ -1,6 +1,5 @@
 import React from "react";
 import Relay from "react-relay";
-import _ from "lodash";
 import moment from "moment";
 
 import { colorsDiscipline } from "./Colors";
@@ -20,11 +19,16 @@ class Weekday extends React.Component {
     return Object.keys(data).map(key => data[key]);
   }
 
+  getName(disciplineName) {
+    return disciplineName[0].toUpperCase() + disciplineName.substr(1);
+  }
+
   addData(data, activity) {
     const weekdayNumber = moment(activity.date).weekday() || 7; // makes sunday index 7 instead of 0
     const weekday = moment(activity.date).format('dddd');
+    const disciplineName = this.getName(activity.disciplineName);
     data[weekdayNumber] = data[weekdayNumber] || { weekday: weekday };
-    data[weekdayNumber][activity.disciplineName] = (data[weekdayNumber][activity.disciplineName] || 0) + Math.round(activity.score);
+    data[weekdayNumber][disciplineName] = (data[weekdayNumber][disciplineName] || 0) + Math.round(activity.score);
   }
 
   render() {
@@ -33,8 +37,10 @@ class Weekday extends React.Component {
       <div>
         <h3>Points by weekday</h3>
         <GraphContainer>
-          <BarChart  data={data}
-            margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+          <BarChart 
+            data={data} 
+            margin={{top: 10, right: 30, left: 0, bottom: 0}}
+          >
             <XAxis dataKey="weekday" />
             <YAxis />
             <CartesianGrid strokeDasharray="3 3" />
@@ -42,7 +48,7 @@ class Weekday extends React.Component {
             <Legend />
             {
               Object.keys(colorsDiscipline).map(key => {
-                  return <Bar key={key} dataKey={key} stackId="a" fill={colorsDiscipline[key]} />;
+                return <Bar key={key} dataKey={this.getName(key)} stackId="a" fill={colorsDiscipline[key]} />;
               })
             }
           </BarChart >
@@ -74,6 +80,5 @@ Weekday = Relay.createContainer(Weekday, {
     `
   }
 });
-
 
 export default Weekday;
