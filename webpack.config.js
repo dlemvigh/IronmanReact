@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -15,29 +15,30 @@ module.exports = {
   },
   module: {
     loaders: [
-    { 
-      test: /\.js$/, 
-      exclude: /node_modules/, 
-      loader: 'babel', 
-      query: {
-        presets: ['react', 'es2015', 'stage-0'],
-        plugins: ['./babelRelayPlugin'].map(require.resolve)
-      }   
-    }, {
+      { 
+        test: /\.js$/, 
+        exclude: /node_modules/, 
+        loader: 'babel', 
+        query: {
+          presets: ['react', 'es2015', 'stage-0'],
+          plugins: ['./babelRelayPlugin'].map(require.resolve)
+        }   
+      }, {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
-        loader: 'url-loader?limit=10000',
-    }, {
+        loader: 'url-loader?limit=10000'
+      }, {
         test: /\.(eot|ttf|wav|mp3|woff|woff2)$/,
         loader: 'file-loader',
-    }, {
-    test: /\.scss$/,
-    loaders: [
-        'style',
-        'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-        'resolve-url',
-        'sass'
+      }, {
+        test: /\.scss$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          'resolve-url',
+          'sass'
+        ]
+      }
     ]
-}]
   },
   plugins: [
     new FaviconsWebpackPlugin({

@@ -3,9 +3,10 @@ import Relay from "react-relay";
 import { Glyphicon } from "react-bootstrap";
 import toastr from "toastr";
 
-import Score from "../Common/Score";
-import Day from "../Common/Day";
 import Date from "../Common/Date";
+import Day from "../Common/Day";
+import Discipline from "../Common/Discipline";
+import Score from "../Common/Score";
 import Week from "../Common/Week";
 import Year from "../Common/Year";
 import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation";
@@ -37,7 +38,7 @@ class ActivityItem extends React.Component {
   render() {
     return (
       <tr className={this.props.striped && "active"}>
-        <td>{this.props.activity.disciplineName}</td>
+        <td><Discipline value={this.props.activity.disciplineName} /></td>
         <td>{this.props.activity.distance} {this.props.activity.unit}</td>
         <td><Score value={this.props.activity.score} /></td>
         <td><Date value={this.props.activity.date} /></td>
