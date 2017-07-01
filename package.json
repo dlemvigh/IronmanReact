@@ -17,7 +17,7 @@
     "build:server": "babel server -d build/server",
     "deploy": "rimraf backup && mv deploy backup && mv build deploy && pm2 restart ironman",
     "deploy:undo": "rimraf deploy && cp backup deploy -rf && pm2 restart ironman",
-    "publish": "npm run build && npm run deploy",
+    "publish": "npm run build && npm run deploy"
   },
   "author": "david lemvigh",
   "license": "MIT",
