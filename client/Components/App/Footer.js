@@ -8,8 +8,13 @@ class Footer extends React.Component {
     return (
       <footer styleName="background">
         <div className="container">
-                    Powered by Enthusiasm
-                </div>
+          <div styleName="left">
+            <strong>Powered by Enthusiasm</strong>
+          </div>
+          <div styleName="right">
+            App icons by <a href="https://icons8.com/">Icons8</a>
+          </div>
+        </div>
       </footer>
     );        
   }

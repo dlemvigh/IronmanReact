@@ -5,4 +5,22 @@
     margin-top: 2rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
+
+    a, a:hover, a:focus {
+        color: white;
+    }
+    a {
+        text-decoration: underline;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
 }

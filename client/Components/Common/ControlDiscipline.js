@@ -19,6 +19,10 @@ class ControlDiscipline extends React.Component {
     }
   }
 
+  getName(disciplineName) {
+    return disciplineName[0].toUpperCase() + disciplineName.substr(1);
+  }
+
   render() {
     return (
       <FormGroup validationState={this.getValidationState()}>
@@ -38,7 +42,7 @@ class ControlDiscipline extends React.Component {
                 data-name={discipline.name}
                 data-unit={discipline.unit}
                 data-score={discipline.score}
-              >{discipline.name}</option>) 
+              >{this.getName(discipline.name)}</option>) 
           }
         </select>
       </FormGroup>
