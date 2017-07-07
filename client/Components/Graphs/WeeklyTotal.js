@@ -8,20 +8,25 @@ import GraphContainer from "./GraphContainer";
 
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from "recharts";
 
+const maxWeeks = 10;
+
 class WeeklyTotal extends React.Component {
 
   formatData(summaries) {
     let data = {};
-
     summaries.forEach(summary => {
       data[summary.week] = data[summary.week] || {};
       data[summary.week][summary.userName] = Math.round(summary.score);
     })
+    const weeks = _(Object.keys(data))
+      .sort((a,b) => a - b)
+      .takeRight(maxWeeks)
+      .value();
 
-    return Object.keys(data).map(key => {
-      data[key].key = key;
-      data[key].name = `Uge ${key}`;
-      return data[key];
+    return weeks.map(week => {
+      data[week].key = week;
+      data[week].name = `Uge ${week}`;
+      return data[week];
     });
   }
 
@@ -31,7 +36,7 @@ class WeeklyTotal extends React.Component {
 
   calcWinnerTrendFunc(summaries, weekoffset) {
     const currentWeek = moment().week();
-    const filtered = summaries.filter(summary => summary.week < currentWeek);
+    const filtered = summaries.filter(summary => summary.week < currentWeek && summary.week >= weekoffset);
     const grouped = _.groupBy(filtered, x => x.week);
     const winners = _(filtered)
       .groupBy(x => x.week)
@@ -52,7 +57,7 @@ class WeeklyTotal extends React.Component {
 
   calcTrendFunc(summaries, weekoffset) {
     const currentWeek = moment().week();
-    const filtered = summaries.filter(summary => summary.week < currentWeek);
+    const filtered = summaries.filter(summary => summary.week < currentWeek && summary.week >= weekoffset);
     const n = filtered.filter(summary => summary.week < currentWeek).length;
     const sumXY = filtered.reduce((acc, summary) => acc + (summary.week - weekoffset) * summary.score, 0);
     const sumX = filtered.reduce((acc, summary) => acc + (summary.week - weekoffset), 0);
