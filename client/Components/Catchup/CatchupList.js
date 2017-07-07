@@ -21,6 +21,7 @@ class CatchupList extends React.Component {
 
   getSortedUser() {
     const sorted = _(this.props.store.users)
+      .filter(x => this.getScore(x) > 0)
       .sortBy(this.getScore)
       .reverse()
       .value();
