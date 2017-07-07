@@ -33,7 +33,7 @@ app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-mongoose.connect("mongodb://localhost/ironman");
+mongoose.connect("mongodb://127.0.0.1/ironman");
 
 app.listen(4000);
 console.log("Running a GraphQL API server");
