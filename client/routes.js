@@ -12,6 +12,8 @@ import Sandbox from "./Components/Sandbox/Sandbox";
 import SandboxQueries from "./Components/Sandbox/SandboxQueries";
 import Graphs from "./Components/Graphs";
 import GraphsQueries from "./Components/Graphs/GraphsQueries";
+import Season from "./Components/Season/Season";
+import SeasonQueries from "./Components/Season/SeasonQueries";
 
 import Loading from "./Components/Common/Loading";
 
@@ -53,6 +55,12 @@ const Routes = (props) => (
         queries={ActivityQueries.byId}
         render={({props}) => props ? <Activity {...props} /> : <Loading show={true} />} 
       />  
+      <Route
+        path="/season/:id"
+        component={Season}
+        queries={SeasonQueries}
+        render={({props}) => props ? <Season {...props} /> : <Loading show={true} />}
+      />
       <Route 
         path="/:username" 
         component={Activity} 
