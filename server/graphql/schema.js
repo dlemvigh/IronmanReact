@@ -40,6 +40,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return database.getSummary(id);
     } else if (type === "Medals") {
       return database.getMedals(id);
+    } else if (type == "Season") {
+      return database.getSeason(id);
     }
     return null;
   },
@@ -56,6 +58,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return summaryType;
     } else if (obj instanceof database.MedalsModel) {
       return medalsType;
+    } else if (obj instanceof database.SeasonModel) {
+      return seasonType;
     }
     return null;
   }
@@ -88,6 +92,28 @@ const medalsType = new GraphQLObjectType({
     }
   })
 }); 
+
+const seasonType = new GraphQLObjectType({
+  name: "Season",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID)
+    },
+    id: globalIdField("Season"),
+    name: {
+      type: GraphQLString
+    },
+    url: {
+      type: GraphQLString
+    },
+    from: {
+      type: GraphQLInt
+    },
+    to: {
+      type: GraphQLInt
+    }
+  })
+})
 
 const summaryType = new GraphQLObjectType({
   name: "Summary",
@@ -247,6 +273,18 @@ const storeType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(userType),
       resolve: () => database.getUsers()
+    },
+    currentSeason: {
+      type: seasonType,
+      resolve: () => {
+        return database.getCurrentSeason()
+      }
+    },
+    allSeasons: {
+      type: new GraphQLList(seasonType),
+      resolve: () => {
+        return database.getSeasons()
+      }
     },
     allSummaries: {
       type: new GraphQLList(summaryType),
