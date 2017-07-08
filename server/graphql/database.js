@@ -48,8 +48,6 @@ async function getCurrentSeason() {
     SeasonModel.findOne({ from: { $gt: yearWeekId } }).sort({from: 1}).exec()
   ]);
 
-  console.log("off season results", seasonBefore, seasonAfter); 
-
   return {
     name: "Off-season",
     // TODO: use moment to get prev/next week

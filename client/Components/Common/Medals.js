@@ -1,6 +1,8 @@
 import React from "react"
 import moment from "moment";
 
+import { getYearWeekId } from "../../../shared/util";
+
 class Medals extends React.Component {
 
   getMedal = () => {
@@ -22,7 +24,7 @@ class Medals extends React.Component {
   }
 
   getValue() {
-    const currentWeek = moment().isoWeek();
+    const currentWeek = getYearWeekId(moment().year(), moment().isoWeek());
     return this.props.value || this.props.weeks.filter(x => x < currentWeek).length;
   }
 

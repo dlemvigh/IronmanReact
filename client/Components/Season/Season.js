@@ -8,7 +8,8 @@ class Season extends React.Component {
         return (
             <div>
                 <h3>Season</h3>
-                <Medals store={this.props.store} />
+                TODO - show old season
+                {/*<Medals store={this.props.store} />*/}
             </div>
         );
     }
