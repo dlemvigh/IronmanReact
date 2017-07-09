@@ -6,6 +6,7 @@ import { LinkContainer } from "react-router-bootstrap";
 
 import CSSModules from "react-css-modules";
 import styles from "./Header.scss";
+import { getYearWeekId } from "../../../shared/util";
 
 class Header extends React.Component {
 
@@ -34,6 +35,7 @@ class Header extends React.Component {
   }
 
   render() {
+    const currentWeek = getYearWeekId();
     return (
       <header>
         <Navbar collapseOnSelect>
@@ -50,7 +52,10 @@ class Header extends React.Component {
             <Nav pullRight>
               <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
                 {
-                  this.props.store.allSeasons.map(season => (
+                  this.props.store.allSeasons
+                    .filter(x => x.from <= currentWeek)
+                    .sort((a,b) => b.from - a.from)
+                    .map(season => (
                     <LinkContainer to={`/season/${season._id}`} key={season._id}>
                       <MenuItem>
                         {season.name}
@@ -88,6 +93,7 @@ Header = Relay.createContainer(Header, {
         allSeasons {
           _id
           name
+          from
         }
       }
     `

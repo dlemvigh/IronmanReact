@@ -5,14 +5,12 @@ import moment from "moment";
 import LeaderboardList from "./LeaderboardList";
 import Catchup from "../Catchup/Catchup";
 import Medals from "../Medals/Medals";
-import Season from "../Common/Season";
 
 class Leaderboard extends React.Component {
   render() {
     const season = this.props.store.currentSeason;
     return (
       <div>
-        <Season season={this.props.store.currentSeason} />
         <h3>This weeks leaderboard</h3>
         <LeaderboardList summary={this.props.store.current} />
         {this.props.store.current.length >= 2 && <Catchup store={this.props.store} />}
@@ -46,7 +44,6 @@ Leaderboard = Relay.createContainer(Leaderboard, {
           ${LeaderboardList.getFragment("summary")}
         }
         currentSeason {
-          ${Season.getFragment("season")}
           ${Medals.getFragment("season")}
         }
       }

@@ -6,8 +6,7 @@ import Medals from "../Medals/Medals";
 class Season extends React.Component {
     render() {
         return (
-            <div>
-                <h3>{this.props.season ? this.props.season.name : "All time"}</h3>                
+            <div>                
                 <Medals store={this.props.store} season={this.props.season || null} />
             </div>
         );
