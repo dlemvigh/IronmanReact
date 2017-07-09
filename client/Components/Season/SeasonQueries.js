@@ -6,4 +6,9 @@ export default {
             store    
         }
     `,
+    season: () => Relay.QL`
+        query Season {
+            season (id: $id)
+        }
+    `
 };

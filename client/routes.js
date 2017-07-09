@@ -56,10 +56,24 @@ const Routes = (props) => (
         render={({props}) => props ? <Activity {...props} /> : <Loading show={true} />} 
       />  
       <Route
-        path="/season/:id"
+        path="/season(/:id)"
         component={Season}
         queries={SeasonQueries}
-        render={({props}) => props ? <Season {...props} /> : <Loading show={true} />}
+        prepareParams={
+          (prev) => {
+            console.log("prev", prev);
+            const after = {
+              ...prev,
+              id: prev.id || null
+            }
+            console.log("after", after)
+            return after;
+          }
+        }
+        render={({props}) => {
+          console.log("render season", props)
+          return props ? <Season {...props} /> : <Loading show={true} />}
+        }
       />
       <Route 
         path="/:username" 

@@ -49,9 +49,18 @@ class Header extends React.Component {
             </Nav>
             <Nav pullRight>
               <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
-                <LinkContainer to="/season/spring-2017">
+                {
+                  this.props.store.allSeasons.map(season => (
+                    <LinkContainer to={`/season/${season._id}`} key={season._id}>
+                      <MenuItem>
+                        {season.name}
+                      </MenuItem>
+                    </LinkContainer>
+                  ))
+                }
+                <LinkContainer to="/season">
                   <MenuItem>
-                      Spring 2017
+                      All time
                   </MenuItem>
                 </LinkContainer>
               </NavDropdown>
@@ -75,6 +84,10 @@ Header = Relay.createContainer(Header, {
         users {
           name
           username                        
+        }
+        allSeasons {
+          _id
+          name
         }
       }
     `

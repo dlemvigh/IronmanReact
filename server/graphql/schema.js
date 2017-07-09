@@ -319,6 +319,18 @@ const queryType = new GraphQLObjectType({
       type: storeType,
       resolve: () => database.getStore()
     },
+    season: {
+      type: seasonType,
+      args: {
+        id: {
+          name: "id",
+          type: GraphQLString
+        }
+      },
+      resolve (root, params) {
+        return database.getSeason(params.id);
+      }
+    },
     user: {
       type: userType,
       args: {

@@ -7,9 +7,8 @@ class Season extends React.Component {
     render() {
         return (
             <div>
-                <h3>Season</h3>
-                TODO - show old season
-                {/*<Medals store={this.props.store} />*/}
+                <h3>{this.props.season ? this.props.season.name : "All time"}</h3>                
+                <Medals store={this.props.store} season={this.props.season || null} />
             </div>
         );
     }
@@ -20,6 +19,12 @@ Season = Relay.createContainer(Season, {
     store: () => Relay.QL`
       fragment on Store {
         ${Medals.getFragment("store")}
+      }
+    `,
+    season: () => Relay.QL`
+      fragment on Season {
+        name
+        ${Medals.getFragment("season")}
       }
     `
   }
