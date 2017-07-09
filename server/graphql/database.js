@@ -116,6 +116,11 @@ function getWeekSummary(userId, week, year) {
   }
 }
 
+async function addSeason(name, url, from, to) {
+  const season = new SeasonModel({ name, url, from, to });
+  return await season.save();
+}
+
 async function addActivity(userId, disciplineId, distance, date) {
   const [discipline, user] = await Promise.all([
     DisciplineModel.findById(disciplineId)
@@ -315,26 +320,33 @@ function getMedalsByUserId(userId) {
   return MedalsModel.findOne({userId}).exec();
 }   
 
-function addUser(name, username) {
+async function addUser(name, username) {
   const user = { name, username };
-  return UserModel.findOne({
-    name: username
-  }, (err, result) => {
-    if (err){
-      console.log("error finding user", username);
-    } else if (!result) {
-      console.log("creating", username);
-      new UserModel(user).save((err2, result2) => {
-        if (err2) {
-          console.log("error adding user", user.name);
-        }else{
-          populateMedals(result2);
-        }
-      });
-    }else{
-      populateMedals(result);
-    }
-  });  
+  const oldUser = await UserModel.findOne({name: username});
+  if (oldUser) {
+    throw "username already exists";
+  }
+  const newUser = await new UserModel(user).save();
+  await populateMedals(newUser);
+  return newUser;
+  // return UserModel.findOne({
+  //   name: username
+  // }, (err, result) => {
+  //   if (err){
+  //     console.log("error finding user", username);
+  //   } else if (!result) {
+  //     console.log("creating", username);
+  //     new UserModel(user).save((err2, result2) => {
+  //       if (err2) {
+  //         console.log("error adding user", user.name);
+  //       }else{
+  //         populateMedals(result2);
+  //       }
+  //     });
+  //   }else{
+  //     populateMedals(result);
+  //   }
+  // });  
 }
 
 function populateMedals(user) {
@@ -370,6 +382,7 @@ export default {
   getSeason,
   getSeasons,
   getCurrentSeason,
+  addSeason,
   getActivity,
   getActivities,
   getDiscipline,

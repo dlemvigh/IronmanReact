@@ -487,8 +487,8 @@ const addUser = mutationWithClientMutationId({
   outputFields: {
     user: {
       type: userType,
-      resolve: async (obj) => {
-        return await database.getUser(obj.userId);
+      resolve: (obj) => {
+        return obj;
       }
     },
     store: {
@@ -503,13 +503,35 @@ const addUser = mutationWithClientMutationId({
   }
 });
 
+const addSeason = mutationWithClientMutationId({
+  name: "AddSeason",
+  inputFields: {
+    name: { type: new GraphQLNonNull(GraphQLString)},
+    url: { type: new GraphQLNonNull(GraphQLString)},
+    from: { type: new GraphQLNonNull(GraphQLInt)},
+    to: { type: new GraphQLNonNull(GraphQLInt)}
+  },
+  outputFields: {
+    season: {
+      type: seasonType,
+      resolve: (obj) => {
+        return obj;
+      }
+    }
+  },
+  mutateAndGetPayload: ({name, url, from, to}) => {
+    return database.addSeason(name, url, from, to);
+  }
+})
+
 const mutationType = new GraphQLObjectType({
   name: "Mutation",
   fields: () => ({
     addActivity: addActivityMutation,
     editActivity: editActivityMutation,
     removeActivity: removeActivityMutation,
-    addUser: addUser
+    addUser: addUser,
+    addSeason: addSeason,
   })
 });
 

@@ -18,8 +18,8 @@ const users = [
 ];
 
 const seasons = [
-  { name: "Spring 2017", url: "spring2017", from: 201701, to: 201720 },
-  { name: "Fall 2017", url: "spring2017", from: 201730, to: 201750 }
+  // { name: "Spring 2017", url: "spring2017", from: 201701, to: 201720 },
+  // { name: "Fall 2017", url: "spring2017", from: 201730, to: 201750 }
 ];
 
 function populateDisciplines(){
