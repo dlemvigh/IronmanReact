@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm-run-all update-schema --parallel client server --parallel postclient postserver",
+    "start": "cross-env NODE_ENV='\"production\"' npm-run-all update-schema --parallel client server --parallel postclient postserver",
+    "start:test": "cross-env NODE_ENV='\"test\"' npm-run-all update-schema --parallel client server --parallel postclient postserver",
     "client": "webpack-dev-server --inline --content-base . --history-api-fallback",
     "server": "nodemon server/index.js --watch server",
     "server:prod": "nodemon build/server/index.js --watch build",

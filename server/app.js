@@ -11,6 +11,9 @@ import { populate } from "./util/data.js";
 populate();
 
 import schema from "./graphql/schema";
+import { config, getEnv } from "./config"
+const env = getEnv();
+console.log("config", process.env.NODE_ENV, config[env])
 
 var app = express();
 app.use(compression());
@@ -42,7 +45,8 @@ app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "..", "client", "index.html")); 
 });
 
-mongoose.connect("mongodb://127.0.0.1/ironman");
+const db = `mongodb://127.0.0.1/${config[env].db}`
+mongoose.connect(db);
 
-app.listen(4000);
+app.listen(config[env].port);
 console.log("Running a GraphQL API server");
