@@ -60,20 +60,12 @@ const Routes = (props) => (
         component={Season}
         queries={SeasonQueries}
         prepareParams={
-          (prev) => {
-            console.log("prev", prev);
-            const after = {
-              ...prev,
-              id: prev.id || null
-            }
-            console.log("after", after)
-            return after;
-          }
+          (prev) => ({
+            ...prev,
+            id: prev.id || null
+          })
         }
-        render={({props}) => {
-          console.log("render season", props)
-          return props ? <Season {...props} /> : <Loading show={true} />}
-        }
+        render={({props}) => props ? <Season {...props} /> : <Loading show={true} />}
       />
       <Route 
         path="/:username" 

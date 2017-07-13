@@ -11,7 +11,7 @@ import { populate } from "./util/data.js";
 populate();
 
 import schema from "./graphql/schema";
-import { config, getEnv } from "./config"
+import { config, getEnv } from "../shared/config"
 const env = getEnv();
 console.log("config", process.env.NODE_ENV, config[env])
 

@@ -10,6 +10,7 @@ coverage
 build
 deploy
 dist
+dump
 
 # misc
 .DS_Store

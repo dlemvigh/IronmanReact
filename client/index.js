@@ -6,9 +6,14 @@ import useRelay from "react-router-relay";
 
 import Routes from "./routes";
 
+import { getConfig } from "../shared/config";
+
+const config = getConfig();
+const endpoint = `http://localhost:${config.port}/graphql`;
+
 if (process.env.NODE_ENV !== "production") {
   Relay.injectNetworkLayer(
-        new Relay.DefaultNetworkLayer("http://localhost:4000/graphql", {
+        new Relay.DefaultNetworkLayer(endpoint, {
           credentials: "same-origin"
         })
     );

@@ -9,6 +9,7 @@ export const prod = {
 
 export const test = {
     ...base,
+    db: "test",
     port: 4001
 }
 
@@ -28,4 +29,9 @@ export function getEnv() {
         default:
             return "prod";
     }
+}
+
+export function getConfig() {
+    const env = getEnv();
+    return config[env];
 }
