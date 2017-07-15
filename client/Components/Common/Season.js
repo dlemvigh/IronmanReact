@@ -4,7 +4,7 @@ import moment from "moment";
 import { fromYearWeekId } from "../../../shared/util";
 
 class Season extends React.Component {
-    renderSpan() {
+    renderText() {
         if (this.props.season.from == null && this.props.season.to == null) return;
 
         const from = fromYearWeekId(this.props.season.from).startOf("isoWeek").format("MMMM D");
@@ -19,6 +19,10 @@ class Season extends React.Component {
         }
 
         return `(${from} - ${to})`;
+    }
+
+    renderSpan() {
+        return <span className="hidden-xs">{this.renderText()}</span>;
     }
 
     render() {
