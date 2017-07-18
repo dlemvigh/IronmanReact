@@ -1,0 +1,15 @@
+$grey: rgb(101, 110, 114);
+$dark-grey: rgb(70, 76, 79);
+
+.dropdown ul {
+    background-color: $grey;    
+    li {
+        a {
+            color: white;
+        }
+        a:hover, a:focus, a:active {
+            background-color: $dark-grey !important;
+            text-decoration: none;
+        }    
+    }
+}

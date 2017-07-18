@@ -4,17 +4,17 @@ import { Table } from "react-bootstrap";
 import moment from "moment";
 import _ from "lodash";
 
+import { filterMedals } from "../../../shared/util";
 import MedalsItem from "./MedalsItem";
 
 class MedalsList extends React.Component {
 
   getSortedUsers() {
-    const currentWeek = moment().week();
     const sorted = _(this.props.store.users)
       .sortBy([
-        user => user.medals.goldWeeks.filter(x => x != currentWeek).length,
-        user => user.medals.silverWeeks.filter(x => x != currentWeek).length,
-        user => user.medals.bronzeWeeks.filter(x => x != currentWeek).length
+        user => filterMedals(user.medals.goldWeeks, this.props.season).length,
+        user => filterMedals(user.medals.silverWeeks, this.props.season).length,
+        user => filterMedals(user.medals.bronzeWeeks, this.props.season).length
       ])
       .reverse()
       .value();
@@ -35,7 +35,7 @@ class MedalsList extends React.Component {
         <tbody>
           {
             this.getSortedUsers().map((user, index) => {
-              return <MedalsItem key={user._id} user={user} pos={index + 1} />;
+              return <MedalsItem key={user._id} user={user} pos={index + 1} season={this.props.season} />;
             })
           }
         </tbody>
@@ -57,6 +57,12 @@ MedalsList = Relay.createContainer(MedalsList, {
             bronzeWeeks
           }
         }
+      }
+    `,
+    season: () => Relay.QL`
+      fragment on Season {
+        from
+        to
       }
     `
   }

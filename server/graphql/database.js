@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 import moment from "moment";
+import { getYearWeekId } from "../../shared/util";
 
 import ActivityModel from "../models/activity";
 import DisciplineModel from "../models/discipline";
 import UserModel from "../models/user";
+import SeasonModel from "../models/season";
 import StoreModel from "../models/store";
 import SummaryModel from "../models/summary";
 import MedalsModel from "../models/medals";
@@ -23,6 +25,35 @@ function getUserByUsername(username) {
 
 function getUsers() {
   return UserModel.find({}).exec();
+}
+
+function getSeason(id) {
+  return SeasonModel.findById(id).exec();
+}
+
+function getSeasons() {
+  return SeasonModel.find({}).exec();
+}
+
+async function getCurrentSeason() {
+  const yearWeekId = getYearWeekId(moment().year(), moment().isoWeek());
+  const season = await SeasonModel.findOne({
+    from: { $lte: yearWeekId },
+    to: { $gte: yearWeekId }
+  });
+  if (season != null) return season;
+
+  const [seasonBefore, seasonAfter] = await Promise.all([
+    SeasonModel.findOne({ to: { $lt: yearWeekId } }).sort({to: 1}).exec(),
+    SeasonModel.findOne({ from: { $gt: yearWeekId } }).sort({from: 1}).exec()
+  ]);
+
+  return {
+    name: "Off-season",
+    // TODO: use moment to get prev/next week
+    from: seasonBefore && seasonBefore.to + 1,
+    to: seasonAfter && seasonAfter.from - 1
+  }
 }
 
 function getActivity(id) {
@@ -83,6 +114,11 @@ function getWeekSummary(userId, week, year) {
     };
     return SummaryModel.findOne(query).exec();
   }
+}
+
+async function addSeason(name, url, from, to) {
+  const season = new SeasonModel({ name, url, from, to });
+  return await season.save();
 }
 
 async function addActivity(userId, disciplineId, distance, date) {
@@ -267,11 +303,11 @@ async function updateMedals(user) {
     userId: user._id,
     userName: user.name,
     gold: summaries.filter(x => x.position == 1).length,
-    goldWeeks: summaries.filter(x => x.position == 1).map(x => x.week),
+    goldWeeks: summaries.filter(x => x.position == 1).map(x => getYearWeekId(x.year, x.week)),
     silver: summaries.filter(x => x.position == 2).length,
-    silverWeeks: summaries.filter(x => x.position == 2).map(x => x.week),
+    silverWeeks: summaries.filter(x => x.position == 2).map(x => getYearWeekId(x.year, x.week)),
     bronze: summaries.filter(x => x.position == 3).length,
-    bronzeWeeks: summaries.filter(x => x.position == 3).map(x => x.week)
+    bronzeWeeks: summaries.filter(x => x.position == 3).map(x => getYearWeekId(x.year, x.week))
   };
   await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec();
 }
@@ -284,26 +320,33 @@ function getMedalsByUserId(userId) {
   return MedalsModel.findOne({userId}).exec();
 }   
 
-function addUser(name, username) {
+async function addUser(name, username) {
   const user = { name, username };
-  return UserModel.findOne({
-    name: username
-  }, (err, result) => {
-    if (err){
-      console.log("error finding user", username);
-    } else if (!result) {
-      console.log("creating", username);
-      new UserModel(user).save((err2, result2) => {
-        if (err2) {
-          console.log("error adding user", user.name);
-        }else{
-          populateMedals(result2);
-        }
-      });
-    }else{
-      populateMedals(result);
-    }
-  });  
+  const oldUser = await UserModel.findOne({name: username});
+  if (oldUser) {
+    throw "username already exists";
+  }
+  const newUser = await new UserModel(user).save();
+  await populateMedals(newUser);
+  return newUser;
+  // return UserModel.findOne({
+  //   name: username
+  // }, (err, result) => {
+  //   if (err){
+  //     console.log("error finding user", username);
+  //   } else if (!result) {
+  //     console.log("creating", username);
+  //     new UserModel(user).save((err2, result2) => {
+  //       if (err2) {
+  //         console.log("error adding user", user.name);
+  //       }else{
+  //         populateMedals(result2);
+  //       }
+  //     });
+  //   }else{
+  //     populateMedals(result);
+  //   }
+  // });  
 }
 
 function populateMedals(user) {
@@ -333,8 +376,13 @@ export default {
   ActivityModel,
   DisciplineModel,
   UserModel,
+  SeasonModel,
   StoreModel,
   SummaryModel,
+  getSeason,
+  getSeasons,
+  getCurrentSeason,
+  addSeason,
   getActivity,
   getActivities,
   getDiscipline,
