@@ -1,6 +1,7 @@
 import DisciplineModel from "../models/discipline";
 import MedalsModel from "../models/medals";
 import UserModel from "../models/user";
+import SeasonModel from "../models/season";
 
 const disciplines = [
   { name: "run", score: 5, unit: "km" },
@@ -14,6 +15,11 @@ const users = [
   { name: "David", username: "david" },
   { name: "Mads", username: "mads" },
   { name: "Sidsel", username: "sidsel" }
+];
+
+const seasons = [
+  // { name: "Spring 2017", url: "spring2017", from: 201701, to: 201720 },
+  // { name: "Fall 2017", url: "spring2017", from: 201730, to: 201750 }
 ];
 
 function populateDisciplines(){
@@ -77,7 +83,23 @@ function populateMedals(user) {
   });
 }
 
+function populateSeasons(){
+  seasons.forEach(season => {
+    SeasonModel.findOne({
+      name: season.name
+    }, (err, result) => {
+      if (err) {
+        console.error("error finding season", season.name);
+      }else if (!result) {
+        console.log("creating", season.name);
+        new SeasonModel(season).save();
+      }
+    })
+  })
+}
+
 export function populate(){
   populateDisciplines();
   populateUsers();
+  populateSeasons();
 }

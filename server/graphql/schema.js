@@ -40,6 +40,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return database.getSummary(id);
     } else if (type === "Medals") {
       return database.getMedals(id);
+    } else if (type == "Season") {
+      return database.getSeason(id);
     }
     return null;
   },
@@ -56,6 +58,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return summaryType;
     } else if (obj instanceof database.MedalsModel) {
       return medalsType;
+    } else if (obj instanceof database.SeasonModel) {
+      return seasonType;
     }
     return null;
   }
@@ -88,6 +92,28 @@ const medalsType = new GraphQLObjectType({
     }
   })
 }); 
+
+const seasonType = new GraphQLObjectType({
+  name: "Season",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID)
+    },
+    id: globalIdField("Season"),
+    name: {
+      type: GraphQLString
+    },
+    url: {
+      type: GraphQLString
+    },
+    from: {
+      type: GraphQLInt
+    },
+    to: {
+      type: GraphQLInt
+    }
+  })
+})
 
 const summaryType = new GraphQLObjectType({
   name: "Summary",
@@ -248,6 +274,18 @@ const storeType = new GraphQLObjectType({
       type: new GraphQLList(userType),
       resolve: () => database.getUsers()
     },
+    currentSeason: {
+      type: seasonType,
+      resolve: () => {
+        return database.getCurrentSeason()
+      }
+    },
+    allSeasons: {
+      type: new GraphQLList(seasonType),
+      resolve: () => {
+        return database.getSeasons()
+      }
+    },
     allSummaries: {
       type: new GraphQLList(summaryType),
       resolve: () => {
@@ -280,6 +318,18 @@ const queryType = new GraphQLObjectType({
     store: {
       type: storeType,
       resolve: () => database.getStore()
+    },
+    season: {
+      type: seasonType,
+      args: {
+        id: {
+          name: "id",
+          type: GraphQLString
+        }
+      },
+      resolve (root, params) {
+        return database.getSeason(params.id);
+      }
     },
     user: {
       type: userType,
@@ -437,8 +487,8 @@ const addUser = mutationWithClientMutationId({
   outputFields: {
     user: {
       type: userType,
-      resolve: async (obj) => {
-        return await database.getUser(obj.userId);
+      resolve: (obj) => {
+        return obj;
       }
     },
     store: {
@@ -453,13 +503,35 @@ const addUser = mutationWithClientMutationId({
   }
 });
 
+const addSeason = mutationWithClientMutationId({
+  name: "AddSeason",
+  inputFields: {
+    name: { type: new GraphQLNonNull(GraphQLString)},
+    url: { type: new GraphQLNonNull(GraphQLString)},
+    from: { type: new GraphQLNonNull(GraphQLInt)},
+    to: { type: new GraphQLNonNull(GraphQLInt)}
+  },
+  outputFields: {
+    season: {
+      type: seasonType,
+      resolve: (obj) => {
+        return obj;
+      }
+    }
+  },
+  mutateAndGetPayload: ({name, url, from, to}) => {
+    return database.addSeason(name, url, from, to);
+  }
+})
+
 const mutationType = new GraphQLObjectType({
   name: "Mutation",
   fields: () => ({
     addActivity: addActivityMutation,
     editActivity: editActivityMutation,
     removeActivity: removeActivityMutation,
-    addUser: addUser
+    addUser: addUser,
+    addSeason: addSeason,
   })
 });
 

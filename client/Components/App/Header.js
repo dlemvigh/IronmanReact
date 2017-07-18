@@ -1,11 +1,41 @@
 import React from "react";
 import Relay from "react-relay";
 import { Link } from "react-router";
-import { Navbar, Nav, NavItem } from "react-bootstrap";
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
+import CSSModules from "react-css-modules";
+import styles from "./Header.scss";
+import { getYearWeekId } from "../../../shared/util";
+
 class Header extends React.Component {
+
+  renderAthletes(compactMode) {
+    return compactMode ? this.renderAthleteDropdown() : this.renderAthleteLinks();
+  }
+
+  renderAthleteLinks() {
+    return this.props.store.users.map(user => (
+      <LinkContainer key={user.username} to={`/${user.username}`}>
+        <NavItem>{user.name}</NavItem>
+      </LinkContainer>
+    ));
+  }
+
+  renderAthleteDropdown() {
+    return (
+      <NavDropdown title="Athletes" id="athletes">
+      {
+        this.props.store.users.map(user => <LinkContainer key={user.username} to={`/${user.username}`}>
+          <MenuItem>{user.name}</MenuItem>
+        </LinkContainer>)
+      }
+      </NavDropdown>
+    );
+  }
+
   render() {
+    const currentWeek = getYearWeekId();
     return (
       <header>
         <Navbar collapseOnSelect>
@@ -17,13 +47,28 @@ class Header extends React.Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              {
-                this.props.store.users.map(user => <LinkContainer key={user.username} to={`/${user.username}`}>
-                  <NavItem>{user.name}</NavItem>
-                </LinkContainer>)
-              }
+              { this.renderAthletes(this.props.store.users.length > 10) }
             </Nav>
             <Nav pullRight>
+              <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
+                {
+                  this.props.store.allSeasons
+                    .filter(x => x.from <= currentWeek)
+                    .sort((a,b) => b.from - a.from)
+                    .map(season => (
+                    <LinkContainer to={`/season/${season._id}`} key={season._id}>
+                      <MenuItem>
+                        {season.name}
+                      </MenuItem>
+                    </LinkContainer>
+                  ))
+                }
+                <LinkContainer to="/season">
+                  <MenuItem>
+                      All time
+                  </MenuItem>
+                </LinkContainer>
+              </NavDropdown>
               <LinkContainer to="/graphs">
                 <NavItem>Graphs</NavItem>
               </LinkContainer>
@@ -35,6 +80,8 @@ class Header extends React.Component {
   }    
 }
 
+Header = CSSModules(Header, styles);
+
 Header = Relay.createContainer(Header, {
   fragments: {
     store: () => Relay.QL`
@@ -42,6 +89,11 @@ Header = Relay.createContainer(Header, {
         users {
           name
           username                        
+        }
+        allSeasons {
+          _id
+          name
+          from
         }
       }
     `
