@@ -1,10 +1,10 @@
 const base = {
     db: "ironman",
-    port: 4000
 };
 
 export const prod = {
     ...base,
+    port: 4000
 }
 
 export const test = {
@@ -14,7 +14,8 @@ export const test = {
 }
 
 export const dev = {
-    ...base
+    ...base,
+    port: 8080
 }
 
 export const config = { prod, test, dev }

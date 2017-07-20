@@ -1,5 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
+import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 
 import styles from "./MedalsItem.scss";
@@ -8,7 +9,7 @@ import Medals from "../Common/Medals";
 class MedalsItem extends React.Component {
 
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object
   }
 
   onClick = () => {
