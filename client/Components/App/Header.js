@@ -43,6 +43,16 @@ class Header extends React.Component {
     );
   }
 
+  renderLogoutDropdown() {
+    const profile = this.props.auth.getProfile();
+
+    return (
+      <NavDropdown title={<strong><img src={profile.picture} style={{ marginRight: "1rem", width: "2rem", height: "2rem", borderRadius: "1rem"}}/>{profile.name}</strong>} id="seasons" styleName="dropdown">
+        <NavItem onClick={this.logout}>Sign out</NavItem>
+      </NavDropdown>
+    );
+  }
+
   render() {
     const isAuthenticated = this.props.auth.isAuthenticated();
     const currentWeek = getYearWeekId();
@@ -62,7 +72,7 @@ class Header extends React.Component {
             {
               !isAuthenticated &&
               <Nav pullRight>
-                <NavItem onClick={this.login}>Login</NavItem>
+                <NavItem onClick={this.login}><strong>Sign in</strong></NavItem>
               </Nav>
             }
             { isAuthenticated && 
@@ -89,7 +99,7 @@ class Header extends React.Component {
               <LinkContainer to="/graphs">
                 <NavItem>Graphs</NavItem>
               </LinkContainer>
-              <NavItem onClick={this.logout}>Logout</NavItem>
+              { this.renderLogoutDropdown() }
             </Nav>
             }
           </Navbar.Collapse>
