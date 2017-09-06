@@ -27,7 +27,6 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        history.replace('/');
       } else if (err) {
         history.replace('/');
         console.log(err);
@@ -43,10 +42,8 @@ export default class Auth {
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     localStorage.setItem('profile_name', authResult.idTokenPayload.given_name);
-    localStorage.setItem('profile_nickname', authResult.idTokenPayload.nickname);
     localStorage.setItem('profile_pic', authResult.idTokenPayload.picture);
     // navigate to the home route
-    history.replace('/');
   }
 
   logout() {
@@ -68,7 +65,7 @@ export default class Auth {
   getProfile() {
     return {
       name: localStorage.getItem('profile_name'),
-      nickname: localStorage.getItem('profile_nickname'),
+      username: localStorage.getItem('profile_name').toLowerCase(),
       picture: localStorage.getItem('profile_pic')
         
     }

@@ -43,11 +43,26 @@ class Header extends React.Component {
     );
   }
 
-  renderLogoutDropdown() {
+  renderLogoutTitle() {
     const profile = this.props.auth.getProfile();
+    const imgStyle = {
+      width: "4rem",
+      height: "4rem",
+      borderRadius: "2rem",
+      margin: "-12px",
+      marginRight: "1rem",
+    };
+    return (
+      <strong>
+        <img src={profile.picture} style={imgStyle}/>{profile.name}
+      </strong>
+    );
+  }
+
+  renderLogoutDropdown() {
 
     return (
-      <NavDropdown title={<strong><img src={profile.picture} style={{ marginRight: "1rem", width: "2rem", height: "2rem", borderRadius: "1rem"}}/>{profile.name}</strong>} id="seasons" styleName="dropdown">
+      <NavDropdown title={this.renderLogoutTitle()} id="logout" styleName="dropdown">
         <NavItem onClick={this.logout}>Sign out</NavItem>
       </NavDropdown>
     );
