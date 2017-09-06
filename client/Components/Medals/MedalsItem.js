@@ -1,5 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
+import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 
 import styles from "./MedalsItem.scss";
@@ -8,7 +9,7 @@ import Medals from "../Common/Medals";
 class MedalsItem extends React.Component {
 
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object
   }
 
   onClick = () => {
@@ -28,9 +29,9 @@ class MedalsItem extends React.Component {
     return (
       <tr onClick={this.onClick} styleName="row">
         <td>{this.props.user.name}</td>
-        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.goldWeeks} type="gold" />}</td>
-        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.silverWeeks} type="silver" />}</td>
-        <td styleName="">{this.props.user.medals && <Medals weeks={this.props.user.medals.bronzeWeeks} type="bronze" />}</td>
+        <td styleName="">{this.props.user.medals && <Medals season={this.props.season} weeks={this.props.user.medals.goldWeeks} type="gold" />}</td> 
+        <td styleName="">{this.props.user.medals && <Medals season={this.props.season} weeks={this.props.user.medals.silverWeeks} type="silver" />}</td> 
+        <td styleName="">{this.props.user.medals && <Medals season={this.props.season} weeks={this.props.user.medals.bronzeWeeks} type="bronze" />}</td> 
       </tr>
     );
   }
@@ -44,11 +45,11 @@ MedalsItem = Relay.createContainer(MedalsItem, {
       fragment on User {
         username
         name
-        medals {
-          goldWeeks
-          silverWeeks
-          bronzeWeeks
-        }
+        medals { 
+          goldWeeks 
+          silverWeeks 
+          bronzeWeeks 
+        } 
       }
     `
   }

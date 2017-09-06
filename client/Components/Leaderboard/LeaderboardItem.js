@@ -1,5 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
+import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 import _ from "lodash";
 
@@ -9,7 +10,7 @@ import styles from "./LeaderboardItem.scss";
 class LeaderboardItem extends React.Component {
 
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object
   }
 
   onClick = () => {

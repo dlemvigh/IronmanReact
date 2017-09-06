@@ -49,6 +49,19 @@ type AddActivityPayload {
   clientMutationId: String
 }
 
+input AddSeasonInput {
+  name: String!
+  url: String!
+  from: Int!
+  to: Int!
+  clientMutationId: String
+}
+
+type AddSeasonPayload {
+  season: Season
+  clientMutationId: String
+}
+
 input AddUserInput {
   name: String!
   username: String!
@@ -108,6 +121,7 @@ type Mutation {
   editActivity(input: EditActivityInput!): EditActivityPayload
   removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
   addUser(input: AddUserInput!): AddUserPayload
+  addSeason(input: AddSeasonInput!): AddSeasonPayload
 }
 
 # An object with an ID
@@ -133,6 +147,7 @@ type PageInfo {
 
 type Query {
   store: Store
+  season(id: String): Season
   user(id: String, username: String): User
 
   # Fetches an object given its ID
@@ -155,12 +170,25 @@ type RemoveActivityPayload {
   clientMutationId: String
 }
 
+type Season {
+  _id: ID!
+
+  # The ID of an object
+  id: ID!
+  name: String
+  url: String
+  from: Int
+  to: Int
+}
+
 type Store implements Node {
   # The ID of an object
   id: ID!
   echo: String
   disciplines: [Discipline]
   users: [User]
+  currentSeason: Season
+  allSeasons: [Season]
   allSummaries: [Summary]
   summary(week: Int, year: Int): [Summary]
 }
