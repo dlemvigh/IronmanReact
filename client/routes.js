@@ -12,16 +12,19 @@ import Sandbox from "./Components/Sandbox/Sandbox";
 import SandboxQueries from "./Components/Sandbox/SandboxQueries";
 import Graphs from "./Components/Graphs";
 import GraphsQueries from "./Components/Graphs/GraphsQueries";
+import Callback from './Components/Auth/Callback';
+import Auth from './Auth/Auth';
 
 import Loading from "./Components/Common/Loading";
 
 ReactGA.initialize("UA-98797876-1");
 
 function logPageView() {
-  debugger;
   ReactGA.set({ page: window.location.pathname + window.location.search });
   ReactGA.pageview(window.location.pathname + window.location.search);
 }
+
+const auth = new Auth();
 
 const Routes = (props) => ( 
   <Router {...props} onUpdate={logPageView}>
@@ -29,12 +32,16 @@ const Routes = (props) => (
       path="/" 
       component={App} 
       queries={AppQueries}
-      render={({props}) => props ? <App {...props} /> : <Loading show={true} />} 
+      render={({props}) => props ? <App {...props} auth={auth} /> : <Loading show={true} />} 
     >
       <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}
         render={({props}) => props ? <Leaderboard {...props} /> : <Loading show={true} />} 
+      />
+      <Route 
+        path="/callback"
+        component={(props) => <Callback {...props} auth={auth} />}
       />
       <Route
         path="/sandbox"

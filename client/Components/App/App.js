@@ -31,7 +31,7 @@ class App extends React.Component {
   render() {
     return (
       <div styleName="wrapper">
-        <Header store={this.props.store} />
+        <Header store={this.props.store} auth={this.props.auth} />
         <main styleName="content">
           <div className="container">
             {this.props.children}

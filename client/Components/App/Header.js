@@ -5,7 +5,17 @@ import { Navbar, Nav, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 class Header extends React.Component {
+
+  login = () => {
+    this.props.auth.login();
+  }
+
+  logout = () => {
+    this.props.auth.logout();
+  }
+
   render() {
+    const isAuthenticated = this.props.auth.isAuthenticated();
     return (
       <header>
         <Navbar collapseOnSelect>
@@ -23,11 +33,20 @@ class Header extends React.Component {
                 </LinkContainer>)
               }
             </Nav>
+            {
+              !isAuthenticated &&
+              <Nav pullRight>
+                <NavItem onClick={this.login}>Login</NavItem>
+              </Nav>
+            }
+            { isAuthenticated && 
             <Nav pullRight>
               <LinkContainer to="/graphs">
                 <NavItem>Graphs</NavItem>
               </LinkContainer>
+              <NavItem onClick={this.logout}>Logout</NavItem>
             </Nav>
+            }
           </Navbar.Collapse>
         </Navbar>
       </header>
