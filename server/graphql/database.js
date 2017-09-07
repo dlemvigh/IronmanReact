@@ -42,7 +42,7 @@ async function getCurrentSeason() {
     from: { $lte: yearWeekId },
     to: { $gte: yearWeekId }
   });
-  if (season != null) return season;
+  if (season != null) { return season; }
 
   const [seasonBefore, seasonAfter] = await Promise.all([
     SeasonModel.findOne({ to: { $lt: yearWeekId } }).sort({to: 1}).exec(),
@@ -54,7 +54,7 @@ async function getCurrentSeason() {
     // TODO: use moment to get prev/next week
     from: seasonBefore && seasonBefore.to + 1,
     to: seasonAfter && seasonAfter.from - 1
-  }
+  };
 }
 
 function getActivity(id) {
@@ -97,10 +97,10 @@ function getAllSummaries(week, year) {
 }
 
 function getAllWeekSummaries() {
-    const query = {
-      week: { $exists: true },
-      year: { $exists: true }
-    };
+  const query = {
+    week: { $exists: true },
+    year: { $exists: true }
+  };
   return SummaryModel.find(query).exec();
 }
 
@@ -377,7 +377,6 @@ function getLogin(id) {
   return LoginModel.findById(id).exec(); 
 }
 
-
 async function getUserByLogin(provider, providerUserId) {
   const login = await LoginModel.findOne({
     provider,
@@ -389,26 +388,28 @@ async function getUserByLogin(provider, providerUserId) {
 }
 
 async function ensureLogin(username, provider, providerUserId) {
-  const login = await LoginModel.findOne({
-    provider,
-    providerUserId
-  });
-
-  if (login) return;
-
-  const user= await UserModel.findOne({
+  const [login, user] = await Promise.all([
+    LoginModel.findOne({
+      provider,
+      providerUserId
+    }),
+    UserModel.findOne({
       username
-  });
+    })
+  ]);
 
-  if (!user) return;
+  if (login) { return user; }
+
+  if (!user) { return; }
 
   await new LoginModel({ 
     userId: user._id,
     provider,
     providerUserId
   }).save();
-}
 
+  return user;
+}
 
 export default {
   ActivityModel,

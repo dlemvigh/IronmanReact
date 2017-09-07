@@ -59,22 +59,6 @@ class Header extends React.Component {
 
   renderLogoutDropdown() {
     const profile = this.props.auth.getProfile();
-    const imgStyle = {
-      width: "4rem",
-      height: "4rem",
-      borderRadius: "2rem",
-      margin: "-12px",
-      marginRight: "1rem",
-    };
-    return (
-      <strong>
-        <img src={profile.picture} style={imgStyle}/>{profile.name}
-      </strong>
-    );
-  }
-
-  renderLogoutDropdown() {
-
     return (
       <NavDropdown title={this.renderLogoutTitle(profile)} id="logout" styleName="dropdown">
         <LinkContainer to={`/${profile.username}`}>

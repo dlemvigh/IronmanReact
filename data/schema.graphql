@@ -103,6 +103,18 @@ type EditActivityPayload {
   clientMutationId: String
 }
 
+input EnsureLoginInput {
+  username: String!
+  provider: String!
+  providerUserId: String!
+  clientMutationId: String
+}
+
+type EnsureLoginPayload {
+  user: User
+  clientMutationId: String
+}
+
 type Medals {
   _id: ID!
 
@@ -122,6 +134,7 @@ type Mutation {
   removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
   addUser(input: AddUserInput!): AddUserPayload
   addSeason(input: AddSeasonInput!): AddSeasonPayload
+  ensureLogin(input: EnsureLoginInput!): EnsureLoginPayload
 }
 
 # An object with an ID

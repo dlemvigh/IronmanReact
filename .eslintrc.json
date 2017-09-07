@@ -34,7 +34,7 @@
         "no-mixed-spaces-and-tabs": "warn",
         "block-spacing": ["warn", "always"],
         "dot-location": ["warn", "property"],   
-        "no-debugger": "error",
+        "no-debugger": "warn",
         "quotes": "off",
         "semi": "warn",
         "no-const-assign": "warn",

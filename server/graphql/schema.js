@@ -117,7 +117,7 @@ const seasonType = new GraphQLObjectType({
       type: GraphQLInt
     }
   })
-})
+});
 
 const summaryType = new GraphQLObjectType({
   name: "Summary",
@@ -276,7 +276,7 @@ const loginType = new GraphQLObjectType({
       type: GraphQLString
     }
   })
-})
+});
 
 const storeType = new GraphQLObjectType({
   name: "Store",
@@ -297,13 +297,13 @@ const storeType = new GraphQLObjectType({
     currentSeason: {
       type: seasonType,
       resolve: () => {
-        return database.getCurrentSeason()
+        return database.getCurrentSeason();
       }
     },
     allSeasons: {
       type: new GraphQLList(seasonType),
       resolve: () => {
-        return database.getSeasons()
+        return database.getSeasons();
       }
     },
     allSummaries: {
@@ -498,7 +498,7 @@ const removeActivityMutation = mutationWithClientMutationId({
   }
 });
 
-const addUser = mutationWithClientMutationId({
+const addUserMutation = mutationWithClientMutationId({
   name: "AddUser",
   inputFields: {
     name: { type: new GraphQLNonNull(GraphQLString) },
@@ -523,7 +523,7 @@ const addUser = mutationWithClientMutationId({
   }
 });
 
-const addSeason = mutationWithClientMutationId({
+const addSeasonMutation = mutationWithClientMutationId({
   name: "AddSeason",
   inputFields: {
     name: { type: new GraphQLNonNull(GraphQLString)},
@@ -542,7 +542,27 @@ const addSeason = mutationWithClientMutationId({
   mutateAndGetPayload: ({name, url, from, to}) => {
     return database.addSeason(name, url, from, to);
   }
-})
+});
+
+const ensureLoginMutation = mutationWithClientMutationId({
+  name: "EnsureLogin",
+  inputFields: {
+    username: { type: new GraphQLNonNull(GraphQLString)},
+    provider: { type: new GraphQLNonNull(GraphQLString)},
+    providerUserId: { type: new GraphQLNonNull(GraphQLString)}
+  },
+  outputFields: {
+    user: {
+      type: userType,
+      resolve: (obj) => {
+        return obj;
+      }
+    }
+  },
+  mutateAndGetPayload: ({username, provider, providerUserId}) => {
+    return database.ensureLogin(username, provider, providerUserId);
+  }
+});
 
 const mutationType = new GraphQLObjectType({
   name: "Mutation",
@@ -550,8 +570,9 @@ const mutationType = new GraphQLObjectType({
     addActivity: addActivityMutation,
     editActivity: editActivityMutation,
     removeActivity: removeActivityMutation,
-    addUser: addUser,
-    addSeason: addSeason,
+    addUser: addUserMutation,
+    addSeason: addSeasonMutation,
+    ensureLogin: ensureLoginMutation
   })
 });
 
