@@ -42,6 +42,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return database.getMedals(id);
     } else if (type == "Season") {
       return database.getSeason(id);
+    } else if (type == "Login") {
+      return database.getLogin(id);
     }
     return null;
   },
@@ -60,6 +62,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       return medalsType;
     } else if (obj instanceof database.SeasonModel) {
       return seasonType;
+    } else if (obj instanceof database.LoginModel) {
+      return loginType;
     }
     return null;
   }
@@ -221,9 +225,6 @@ const userType = new GraphQLObjectType({
     username: {
       type: GraphQLString
     },
-    facebookId: {
-      type: GraphQLString
-    },
     active: {
       type: GraphQLBoolean
     },
@@ -257,6 +258,25 @@ const userType = new GraphQLObjectType({
   }),
   interfaces: [nodeInterface]
 });
+
+const loginType = new GraphQLObjectType({
+  name: "Login",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    id: globalIdField("User"),
+    userId: {
+      type: GraphQLID
+    },
+    provider: {
+      type: GraphQLString
+    },
+    providerUserId: {
+      type: GraphQLString
+    }
+  })
+})
 
 const storeType = new GraphQLObjectType({
   name: "Store",

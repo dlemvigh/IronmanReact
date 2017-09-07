@@ -9,6 +9,7 @@ import SeasonModel from "../models/season";
 import StoreModel from "../models/store";
 import SummaryModel from "../models/summary";
 import MedalsModel from "../models/medals";
+import LoginModel from "../models/login";
 
 const staticStore = new StoreModel(42);
 function getStore() {
@@ -371,7 +372,44 @@ function populateMedals(user) {
     }
   });
 }
- 
+
+function getLogin(id) {
+  return LoginModel.findById(id).exec(); 
+}
+
+
+async function getUserByLogin(provider, providerUserId) {
+  const login = await LoginModel.findOne({
+    provider,
+    providerUserId
+  });
+  if (login) {
+    return await UserModel.findById(login.userId);
+  }
+}
+
+async function ensureLogin(username, provider, providerUserId) {
+  const login = await LoginModel.findOne({
+    provider,
+    providerUserId
+  });
+
+  if (login) return;
+
+  const user= await UserModel.findOne({
+      username
+  });
+
+  if (!user) return;
+
+  await new LoginModel({ 
+    userId: user._id,
+    provider,
+    providerUserId
+  }).save();
+}
+
+
 export default {
   ActivityModel,
   DisciplineModel,
@@ -379,6 +417,7 @@ export default {
   SeasonModel,
   StoreModel,
   SummaryModel,
+  LoginModel,
   getSeason,
   getSeasons,
   getCurrentSeason,
@@ -402,4 +441,7 @@ export default {
   getAllMedals,
   getMedalsByUserId,
   addUser,
+  getLogin,
+  getUserByLogin,
+  ensureLogin
 };
