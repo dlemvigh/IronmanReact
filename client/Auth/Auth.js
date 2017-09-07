@@ -44,6 +44,7 @@ export default class Auth {
     localStorage.setItem('profile_name', authResult.idTokenPayload.given_name);
     localStorage.setItem('profile_pic', authResult.idTokenPayload.picture);
     // navigate to the home route
+    history.replace('/'); 
   }
 
   logout() {

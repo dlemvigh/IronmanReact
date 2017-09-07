@@ -18,7 +18,6 @@ class Header extends React.Component {
     this.props.auth.logout();
   }
 
-
   renderAthletes(compactMode) {
     return compactMode ? this.renderAthleteDropdown() : this.renderAthleteLinks();
   }
@@ -43,7 +42,22 @@ class Header extends React.Component {
     );
   }
 
-  renderLogoutTitle() {
+  renderLogoutTitle(profile) {
+    const imgStyle = {
+      width: "4rem",
+      height: "4rem",
+      borderRadius: "2rem",
+      margin: "-12px",
+      marginRight: "1rem",
+    };
+    return (
+      <strong>
+        <img src={profile.picture} style={imgStyle}/>{profile.name}
+      </strong>
+    );
+  }
+
+  renderLogoutDropdown() {
     const profile = this.props.auth.getProfile();
     const imgStyle = {
       width: "4rem",
@@ -62,8 +76,11 @@ class Header extends React.Component {
   renderLogoutDropdown() {
 
     return (
-      <NavDropdown title={this.renderLogoutTitle()} id="logout" styleName="dropdown">
-        <NavItem onClick={this.logout}>Sign out</NavItem>
+      <NavDropdown title={this.renderLogoutTitle(profile)} id="logout" styleName="dropdown">
+        <LinkContainer to={`/${profile.username}`}>
+          <MenuItem>Activities</MenuItem>
+        </LinkContainer>
+        <MenuItem onClick={this.logout}>Sign out</MenuItem>
       </NavDropdown>
     );
   }
@@ -92,6 +109,9 @@ class Header extends React.Component {
             }
             { isAuthenticated && 
             <Nav pullRight>
+              <LinkContainer to="/graphs">
+                <NavItem>Graphs</NavItem>
+              </LinkContainer>
               <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
                 {
                   this.props.store.allSeasons
@@ -111,9 +131,6 @@ class Header extends React.Component {
                   </MenuItem>
                 </LinkContainer>
               </NavDropdown>
-              <LinkContainer to="/graphs">
-                <NavItem>Graphs</NavItem>
-              </LinkContainer>
               { this.renderLogoutDropdown() }
             </Nav>
             }
