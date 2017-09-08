@@ -9,7 +9,7 @@ export default class Auth {
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: `https://${AUTH_CONFIG.domain}/userinfo`,
     responseType: 'token id_token',
-    scope: 'openid profile'
+    scope: 'profile'
   });
 
   constructor() {
@@ -23,10 +23,14 @@ export default class Auth {
     this.auth0.authorize();
   }
 
-  handleAuthentication() {
+  handleAuthentication(callback) {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
+        if (callback) {
+          const profile = this.getProfile();
+          callback(profile);          
+        }
       } else if (err) {
         history.replace('/');
         console.log(err);
@@ -43,8 +47,14 @@ export default class Auth {
     localStorage.setItem('expires_at', expiresAt);
     localStorage.setItem('profile_name', authResult.idTokenPayload.given_name);
     localStorage.setItem('profile_pic', authResult.idTokenPayload.picture);
-    // navigate to the home route
-    history.replace('/'); 
+
+    const [provider, provider_user_id] = authResult.idTokenPayload.sub.split("|");
+    localStorage.setItem('provider', provider);
+    localStorage.setItem('provider_user_id', provider_user_id);
+  }
+
+  setActiveUser(user) {
+    localStorage.setItem('active_user', user);    
   }
 
   logout() {
@@ -52,6 +62,11 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('profile_name');
+    localStorage.removeItem('profile_pic');
+    localStorage.removeItem('provider');
+    localStorage.removeItem('provider_user_id');
+    localStorage.removeItem('active_user');
     // navigate to the home route
     history.replace('/');
   }
@@ -66,10 +81,12 @@ export default class Auth {
   getProfile() {
     return {
       name: localStorage.getItem('profile_name'),
-      username: localStorage.getItem('profile_name').toLowerCase(),
-      picture: localStorage.getItem('profile_pic')
-        
-    }
+      username: (localStorage.getItem('profile_name') || "").toLowerCase(),
+      picture: localStorage.getItem('profile_pic'),
+      provider: localStorage.getItem('provider'),
+      providerUserId: localStorage.getItem('provider_user_id'),
+      activeUser: localStorage.getItem('active_user'),
+    };
   }
 
 }

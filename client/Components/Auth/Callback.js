@@ -1,12 +1,31 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import loading from './loading.svg';
-
+import EnsureLoginMutation from "../../Mutations/EnsureLoginMutation";
+import history from '../../history';
 class Callback extends Component {
   constructor(props) {
     super(props);
 
     if (/access_token|id_token|error/.test(props.location.hash)) {
-      props.auth.handleAuthentication();
+      props.auth.handleAuthentication((profile) => {  
+        const login = {
+          username: profile.username,
+          provider: profile.provider,
+          providerUserId: profile.providerUserId
+        };
+
+        Relay.Store.commitUpdate(
+          new EnsureLoginMutation(login), {
+            onSuccess: (resp) => {
+              props.auth.setActiveUser(resp.ensureLogin.user.username);
+              history.replace('/');
+            }
+          }
+        );
+      });
+    } else {
+      history.replace('/');
     }
   }
 
@@ -22,11 +41,11 @@ class Callback extends Component {
       // left: 0,
       // right: 0,
       // backgroundColor: 'white',
-    }
+    };
 
     return (
       <div style={style}>
-        <img src={loading} alt="loading"/>
+        <img src={loading} alt="loading" />
       </div>
     );
   }

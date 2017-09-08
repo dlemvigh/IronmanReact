@@ -101,7 +101,7 @@ class ActivityForm extends React.Component {
             ...activity
           }), {
             onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
-            onSuccess: (resp) => { toastr.success("Activity updated"); }
+            onSuccess: () => { toastr.success("Activity updated"); }
           }
         );
         this.props.onEditDone();
@@ -111,7 +111,7 @@ class ActivityForm extends React.Component {
             ...activity,
           }), {
             onFailure: (resp) => { console.error("fail", resp); toastr.error("Add activity failed"); },
-            onSuccess: (resp) => { toastr.success("Activity added"); }
+            onSuccess: () => { toastr.success("Activity added"); }
           }
         );
         this.clearState();

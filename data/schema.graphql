@@ -103,6 +103,18 @@ type EditActivityPayload {
   clientMutationId: String
 }
 
+input EnsureLoginInput {
+  username: String!
+  provider: String!
+  providerUserId: String!
+  clientMutationId: String
+}
+
+type EnsureLoginPayload {
+  user: User
+  clientMutationId: String
+}
+
 type Medals {
   _id: ID!
 
@@ -122,6 +134,7 @@ type Mutation {
   removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
   addUser(input: AddUserInput!): AddUserPayload
   addSeason(input: AddSeasonInput!): AddSeasonPayload
+  ensureLogin(input: EnsureLoginInput!): EnsureLoginPayload
 }
 
 # An object with an ID
@@ -143,6 +156,20 @@ type PageInfo {
 
   # When paginating forwards, the cursor to continue.
   endCursor: String
+}
+
+type PersonalGoal {
+  _id: ID!
+
+  # The ID of an object
+  id: ID!
+  userId: ID
+  userName: String
+  disciplineId: ID
+  disciplineName: String
+  count: Int
+  dist: Float
+  score: Int
 }
 
 type Query {
@@ -216,4 +243,5 @@ type User implements Node {
   activities(after: String, first: Int, before: String, last: Int): ActivityConnection
   summary(week: Int, year: Int): Summary
   medals: Medals
+  personalGoals: [PersonalGoal]
 }
