@@ -27,18 +27,18 @@ class Activity extends React.Component {
 
   render() {
     const component = this.state.editing === null ? 
-          <ActivityForm 
+          (<ActivityForm 
             {...this.props} 
             show={this.state.editing === null} 
             activity={null}
-          /> : 
-          <ActivityForm
+          />) : 
+          (<ActivityForm
             {...this.props} 
             key={this.state.editing._id}
             show={this.state.editing !== null} 
             activity={this.state.editing}
             onEditDone={this.onEndEdit} 
-          />
+          />);
     return (
       <div>
         <h3>{this.getName()} activities</h3>

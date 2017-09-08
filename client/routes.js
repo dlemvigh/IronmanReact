@@ -41,7 +41,8 @@ const Routes = (props) => (
       <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}
-        render={({props}) => props ? <Leaderboard {...props} /> : <Loading show />} 
+        prepareParams={(params) => ({...params, activeUser: auth.getActiveUser(), isAuthenticated: auth.isAuthenticated()})}
+        render={({props}) => props ? <Leaderboard {...props} auth={auth} /> : <Loading show />} 
       />
       <Route 
         path="/callback"

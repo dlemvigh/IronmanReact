@@ -331,24 +331,6 @@ async function addUser(name, username) {
   const newUser = await new UserModel(user).save();
   await populateMedals(newUser);
   return newUser;
-  // return UserModel.findOne({
-  //   name: username
-  // }, (err, result) => {
-  //   if (err){
-  //     console.log("error finding user", username);
-  //   } else if (!result) {
-  //     console.log("creating", username);
-  //     new UserModel(user).save((err2, result2) => {
-  //       if (err2) {
-  //         console.log("error adding user", user.name);
-  //       }else{
-  //         populateMedals(result2);
-  //       }
-  //     });
-  //   }else{
-  //     populateMedals(result);
-  //   }
-  // });  
 }
 
 function populateMedals(user) {
@@ -424,7 +406,7 @@ async function setPersonalGoals(userId, goals) {
   const user = await UserModel.findById(userId).exec();
   const disciplineIds = goals.map(x => mongoose.Types.ObjectId(x.disciplineId));
   const disciplines = await DisciplineModel.find({ _id: { $in: disciplineIds } });
-  console.log(disciplines)
+
   await PersonalGoalModel.remove({userId});
 
   await Promise.all(goals.map((goal, index) => {

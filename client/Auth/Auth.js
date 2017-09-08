@@ -57,6 +57,10 @@ export default class Auth {
     localStorage.setItem('active_user', user);    
   }
 
+  getActiveUser() {
+    return localStorage.getItem('active_user');        
+  }
+
   logout() {
     // Clear access token and ID token from local storage
     localStorage.removeItem('access_token');

@@ -634,8 +634,6 @@ const setPersonalGoalsMutation = mutationWithClientMutationId({
     }
   },
   mutateAndGetPayload: ({userId, goals}) => {
-    // TODO setPersonalGoals;
-    console.log("set goals", userId, goals);
     return database.setPersonalGoals(userId, goals);
   }
 })

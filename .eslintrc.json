@@ -54,7 +54,7 @@
         "react/prop-types": 0,
         "no-multiple-empty-lines": ["warn", {"max": 1}],
         "no-multi-spaces": "warn",
-        "react/jsx-space-before-closing": "warn",
+        "react/jsx-tag-spacing": [ "warn", { "beforeSelfClosing": "always" }],
         "react/jsx-wrap-multilines": "warn",
         "react/require-render-return": "warn",
         "react/sort-comp": "warn",
