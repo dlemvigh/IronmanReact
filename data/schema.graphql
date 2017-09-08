@@ -135,6 +135,7 @@ type Mutation {
   addUser(input: AddUserInput!): AddUserPayload
   addSeason(input: AddSeasonInput!): AddSeasonPayload
   ensureLogin(input: EnsureLoginInput!): EnsureLoginPayload
+  setPersonalGoals(input: SetPersonalGoalInput!): SetPersonalGoalPayload
 }
 
 # An object with an ID
@@ -167,6 +168,14 @@ type PersonalGoal {
   userName: String
   disciplineId: ID
   disciplineName: String
+  count: Int
+  dist: Float
+  score: Int
+  priority: Int
+}
+
+input PersonalGoalInput {
+  disciplineId: String
   count: Int
   dist: Float
   score: Int
@@ -206,6 +215,17 @@ type Season {
   url: String
   from: Int
   to: Int
+}
+
+input SetPersonalGoalInput {
+  userId: ID!
+  goals: [PersonalGoalInput]
+  clientMutationId: String
+}
+
+type SetPersonalGoalPayload {
+  user: User
+  clientMutationId: String
 }
 
 type Store implements Node {

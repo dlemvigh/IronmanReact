@@ -417,7 +417,29 @@ function getPersonalGoal(id) {
 }
 
 function getPersonalGoalsByUser(userId) {
-  return PersonalGoalModel.find({userId}).exec(); 
+  return PersonalGoalModel.find({userId}).sort({priority: 1}).exec(); 
+}
+
+async function setPersonalGoals(userId, goals) {
+  const user = await UserModel.findById(userId).exec();
+  const disciplineIds = goals.map(x => mongoose.Types.ObjectId(x.disciplineId));
+  const disciplines = await DisciplineModel.find({ _id: { $in: disciplineIds } });
+  console.log(disciplines)
+  await PersonalGoalModel.remove({userId});
+
+  await Promise.all(goals.map((goal, index) => {
+    return new PersonalGoalModel({
+      userId,
+      userName: user.name,
+      disciplineId: goal.disciplineId,
+      disciplineName: disciplines.find(x => x._id == goal.disciplineId).name,
+      count: goal.count,
+      dist: goal.dist,
+      score: goal.score,
+      priority: index + 1
+    }).save();
+  }));
+  return user;
 }
 
 export default {
@@ -457,4 +479,5 @@ export default {
   ensureLogin,
   getPersonalGoal,
   getPersonalGoalsByUser,
+  setPersonalGoals
 };
