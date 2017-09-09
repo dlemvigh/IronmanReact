@@ -131,6 +131,10 @@ const summaryType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLID),
     },
     id: globalIdField("Summary"),
+    user: {
+      type: userType,
+      resolve: (obj) => database.getUser(obj.userId)
+    },
     userId: {
       type: GraphQLID
     },
@@ -158,6 +162,10 @@ const activityType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLID),
     },
     id: globalIdField("Activity"),
+    discipline: {
+      type: disciplineType,
+      resolve: (obj) => database.getDiscipline(obj.disciplineId)
+    },
     disciplineId: {
       type: GraphQLID
     },
@@ -181,6 +189,10 @@ const activityType = new GraphQLObjectType({
     },
     year: {
       type: GraphQLInt
+    },
+    user: {
+      type: userType,
+      resolve: (obj) => database.getUser(obj.userId)
     },
     userId: {
       type: GraphQLID
@@ -277,6 +289,10 @@ const loginType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLID),
     },
     id: globalIdField("User"),
+    user: {
+      type: userType,
+      resolve: (obj) => database.getUser(obj.userId)
+    },
     userId: {
       type: GraphQLID
     },
@@ -296,11 +312,19 @@ const personalGoalType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLID),
     },
     id: globalIdField("User"),
+    user: {
+      type: userType,
+      resolve: (obj) => database.getUser(obj.userId)
+    },
     userId: {
       type: GraphQLID
     },
     userName: {
       type: GraphQLString
+    },
+    discipline: {
+      type: disciplineType,
+      resolve: (obj) => database.getDiscipline(obj.disciplineId)
     },
     disciplineId: {
       type: GraphQLID
@@ -394,7 +418,7 @@ const queryType = new GraphQLObjectType({
       },
       resolve (root, params) {
         return database.getSeason(params.id);
-      }
+       }
     },
     user: {
       type: userType,
@@ -629,15 +653,14 @@ const setPersonalGoalsMutation = mutationWithClientMutationId({
     user: {
       type: userType,
       resolve: (obj) => {
-        return obj
+        return obj;
       }
     }
   },
   mutateAndGetPayload: ({userId, goals}) => {
     return database.setPersonalGoals(userId, goals);
   }
-})
-
+});
 
 const mutationType = new GraphQLObjectType({
   name: "Mutation",
