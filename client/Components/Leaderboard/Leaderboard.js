@@ -12,7 +12,7 @@ class Leaderboard extends React.Component {
     const isAuthenticated = this.props.auth.isAuthenticated();
     return (
       <div>
-        {isAuthenticated && <PersonalGoals auth={this.props.auth} activeUser={this.props.activeUser} />}
+        {isAuthenticated && <PersonalGoals auth={this.props.auth} user={this.props.activeUser} />}
         <h3>This weeks leaderboard</h3>
         <LeaderboardList summary={this.props.store.current} />
         {this.props.store.current.length >= 2 && <Catchup store={this.props.store} />}
@@ -27,16 +27,16 @@ class Leaderboard extends React.Component {
 Leaderboard = Relay.createContainer(Leaderboard, {
   initialVariables: {
     currentWeekNo: moment().isoWeek(),
-    currentWeekYear: moment().year(),
+    currentWeekYear: moment().weekYear(),
     lastWeekNo: moment().add(-7, "days")
                         .isoWeek(),
     lastWeekYear: moment().add(-7, "days")
-                          .year()
+                          .weekYear()
   },
   fragments: {
     activeUser: () =>Relay.QL`
       fragment on User {
-        ${PersonalGoals.getFragment("activeUser")}
+        ${PersonalGoals.getFragment("user")}
       }
     `,
     store: () => Relay.QL`

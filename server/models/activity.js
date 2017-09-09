@@ -40,7 +40,7 @@ activitySchema.virtual("week").get(function(){
 });
 
 activitySchema.virtual("year").get(function(){
-  return moment(this.date).year();
+  return moment(this.date).weekYear();
 });
 
 export default mongoose.model("Activity", activitySchema);

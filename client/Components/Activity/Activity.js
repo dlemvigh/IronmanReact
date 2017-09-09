@@ -4,7 +4,7 @@ import ReactCSSTransitionReplace from "react-css-transition-replace";
 
 import ActivityForm from "./ActivityForm";
 import ActivityList from "./ActivityList";
-
+import PersonalGoals from "../PersonalGoals/PersonalGoals";
 import styles from "../../Styles/HorizontalCarousel.scss";
 
 class Activity extends React.Component {
@@ -49,6 +49,7 @@ class Activity extends React.Component {
         >
           { component }
         </ReactCSSTransitionReplace>
+        <PersonalGoals user={this.props.user} />
         <ActivityList {...this.props} onEdit={this.onBeginEdit} />
       </div>
     );
@@ -68,6 +69,7 @@ Activity = Relay.createContainer(Activity, {
         name
         ${ActivityForm.getFragment("user")}
         ${ActivityList.getFragment("user")}
+        ${PersonalGoals.getFragment("user")}
       }
     `
   }

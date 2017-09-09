@@ -5,10 +5,12 @@ import PersonalGoalsList from "./PersonalGoalsList";
 
 class PersonalGoals extends React.Component {
   render() {
+    const goals = this.props.user.personalGoals;
+    if (!(goals && goals.length > 0)) { return null; }
     return (
       <div>
         <h3>Personal Goals</h3>
-        <PersonalGoalsList activeUser={this.props.activeUser} />
+        <PersonalGoalsList user={this.props.user} />
       </div>
     );
   }
@@ -16,9 +18,12 @@ class PersonalGoals extends React.Component {
 
 PersonalGoals = Relay.createContainer(PersonalGoals, {
   fragments: {
-    activeUser: () =>Relay.QL`
+    user: () =>Relay.QL`
       fragment on User {
-        ${PersonalGoalsList.getFragment("activeUser")}
+        personalGoals {
+          _id
+        }
+        ${PersonalGoalsList.getFragment("user")}
       }
     `,
   }

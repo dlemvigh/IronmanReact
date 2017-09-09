@@ -38,7 +38,7 @@ function getSeasons() {
 }
 
 async function getCurrentSeason() {
-  const yearWeekId = getYearWeekId(moment().year(), moment().isoWeek());
+  const yearWeekId = getYearWeekId(moment().weekYear(), moment().isoWeek());
   const season = await SeasonModel.findOne({
     from: { $lte: yearWeekId },
     to: { $gte: yearWeekId }
@@ -232,7 +232,7 @@ async function updateSummaryWeek(userId, userName, date) {
     const query = {
       userId,
       week: m.isoWeek(),
-      year: m.year()
+      year: m.weekYear()
     };
 
     if (result.length == 0) {

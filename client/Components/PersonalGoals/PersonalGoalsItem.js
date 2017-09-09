@@ -1,12 +1,13 @@
 import React from "react";
 import Relay from "react-relay";
+import moment from "moment";
 import CSSModules from "react-css-modules";
 
 import styles from "./PersonalGoalsItem.scss";
 
 class PersonalGoalItem extends React.Component {
   renderDiscipline() {
-    return <strong>{this.props.goal.disciplineName || "exercise"}</strong>;
+    return <strong>{this.props.goal.discipline ? this.props.goal.discipline.name : "exercise"}</strong>;
   }
 
   renderAmount() {
@@ -19,7 +20,7 @@ class PersonalGoalItem extends React.Component {
 
     if (this.props.goal.dist) {
       number = this.props.goal.dist;
-      unit = "todo";
+      unit = this.props.goal.discipline.unit;
     }
 
     if (this.props.goal.score) {
@@ -30,13 +31,40 @@ class PersonalGoalItem extends React.Component {
     return <strong>{number} {unit}</strong>;
   }
 
+  calcProgress() {
+    let progress, total;
+    const goal = this.props.goal;
+    const activities = goal.disciplineId ? 
+      this.props.activities.filter(edge => edge.node.disciplineId == goal.disciplineId) : 
+      this.props.activities;
+
+    if (goal.count) {
+      progress = activities.length;
+      total = goal.count;
+    }
+
+    if (goal.dist) {
+      progress = activities.reduce((sum, edge) => sum + edge.node.distance, 0);
+      total = goal.dist;
+    }
+
+    if (goal.score) {
+      progress = activities.reduce((sum, edge) => sum + edge.node.score, 0);
+      total = goal.score;
+    }
+
+    return [progress, total];
+  }
+
   render() {
+    const [progres, total] = this.calcProgress();
+    const width = 100 * progres / total;
     return (
       <tr>
         <td>
           I want to {this.renderDiscipline()} at least {this.renderAmount()} per week.
           <div className="progress" styleName="progress">
-            <div className="progress-bar" styleName="progress-bar" style={{width: 100 * Math.random() + "%"}} />
+            <div className="progress-bar" styleName="progress-bar" style={{width: width + "%"}} />
           </div>
         </td>
       </tr>
@@ -48,9 +76,23 @@ PersonalGoalItem = CSSModules(PersonalGoalItem, styles);
 
 PersonalGoalItem = Relay.createContainer(PersonalGoalItem, {
   fragments: {
+    activities: () => Relay.QL`
+      fragment on ActivityEdge @relay(plural: true) {
+        node {
+          disciplineId
+          disciplineName
+          distance
+          score
+        }
+      }
+    `,
     goal: () => Relay.QL`
       fragment on PersonalGoal {
-        disciplineName
+        disciplineId
+        discipline {
+          name
+          unit
+        }
         count
         dist
         score

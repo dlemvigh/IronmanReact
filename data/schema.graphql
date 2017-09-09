@@ -3,6 +3,7 @@ type Activity implements Node {
 
   # The ID of an object
   id: ID!
+  discipline: Discipline
   disciplineId: ID
   disciplineName: String
   distance: Float
@@ -11,6 +12,7 @@ type Activity implements Node {
   date: DateTime
   week: Int
   year: Int
+  user: User
   userId: ID
   userName: String
 }
@@ -164,8 +166,10 @@ type PersonalGoal {
 
   # The ID of an object
   id: ID!
+  user: User
   userId: ID
   userName: String
+  discipline: Discipline
   disciplineId: ID
   disciplineName: String
   count: Int
@@ -245,6 +249,7 @@ type Summary implements Node {
 
   # The ID of an object
   id: ID!
+  user: User
   userId: ID
   userName: String
   score: Float
