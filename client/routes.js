@@ -60,12 +60,6 @@ const Routes = (props) => (
         queries={GraphsQueries}
         render={({props}) => props ? <Graphs {...props} /> : <Loading show />}
       />
-      <Route 
-        path="/user/:id" 
-        component={Activity} 
-        queries={ActivityQueries.byId}
-        render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
-      />  
       <Route
         path="/season(/:id)"
         component={Season}
@@ -84,10 +78,13 @@ const Routes = (props) => (
       />
       <Route 
         path="/:username" 
-        component={Activity} 
-        queries={ActivityQueries.byUsername}
-        render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
-      />  
+      >
+        <IndexRoute
+          component={Activity} 
+          queries={ActivityQueries.byUsername}
+          render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
+        />
+      </Route>  
     </Route>
   </Router>
 );
