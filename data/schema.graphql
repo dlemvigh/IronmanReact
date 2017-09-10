@@ -3,6 +3,7 @@ type Activity implements Node {
 
   # The ID of an object
   id: ID!
+  discipline: Discipline
   disciplineId: ID
   disciplineName: String
   distance: Float
@@ -11,6 +12,7 @@ type Activity implements Node {
   date: DateTime
   week: Int
   year: Int
+  user: User
   userId: ID
   userName: String
 }
@@ -103,6 +105,18 @@ type EditActivityPayload {
   clientMutationId: String
 }
 
+input EnsureLoginInput {
+  username: String!
+  provider: String!
+  providerUserId: String!
+  clientMutationId: String
+}
+
+type EnsureLoginPayload {
+  user: User
+  clientMutationId: String
+}
+
 type Medals {
   _id: ID!
 
@@ -122,6 +136,8 @@ type Mutation {
   removeActivity(input: RemoveActivityInput!): RemoveActivityPayload
   addUser(input: AddUserInput!): AddUserPayload
   addSeason(input: AddSeasonInput!): AddSeasonPayload
+  ensureLogin(input: EnsureLoginInput!): EnsureLoginPayload
+  setPersonalGoals(input: SetPersonalGoalsInput!): SetPersonalGoalsPayload
 }
 
 # An object with an ID
@@ -143,6 +159,30 @@ type PageInfo {
 
   # When paginating forwards, the cursor to continue.
   endCursor: String
+}
+
+type PersonalGoal {
+  _id: ID!
+
+  # The ID of an object
+  id: ID!
+  user: User
+  userId: ID
+  userName: String
+  discipline: Discipline
+  disciplineId: ID
+  disciplineName: String
+  count: Int
+  dist: Float
+  score: Int
+  priority: Int
+}
+
+input PersonalGoalInput {
+  disciplineId: String
+  count: Int
+  dist: Float
+  score: Int
 }
 
 type Query {
@@ -181,6 +221,17 @@ type Season {
   to: Int
 }
 
+input SetPersonalGoalsInput {
+  userId: ID!
+  goals: [PersonalGoalInput]
+  clientMutationId: String
+}
+
+type SetPersonalGoalsPayload {
+  user: User
+  clientMutationId: String
+}
+
 type Store implements Node {
   # The ID of an object
   id: ID!
@@ -198,6 +249,7 @@ type Summary implements Node {
 
   # The ID of an object
   id: ID!
+  user: User
   userId: ID
   userName: String
   score: Float
@@ -212,9 +264,9 @@ type User implements Node {
   id: ID!
   name: String
   username: String
-  facebookId: String
   active: Boolean
   activities(after: String, first: Int, before: String, last: Int): ActivityConnection
   summary(week: Int, year: Int): Summary
   medals: Medals
+  personalGoals: [PersonalGoal]
 }

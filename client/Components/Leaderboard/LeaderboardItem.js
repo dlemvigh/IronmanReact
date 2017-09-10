@@ -1,5 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
+import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 import _ from "lodash";
 
@@ -9,11 +10,11 @@ import styles from "./LeaderboardItem.scss";
 class LeaderboardItem extends React.Component {
 
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object
   }
 
   onClick = () => {
-    this.context.router.push(`/user/${this.props.summary.userId}`);
+    this.context.router.push(`/${this.props.summary.user.username}`);
   }
 
   getScore() {
@@ -28,7 +29,7 @@ class LeaderboardItem extends React.Component {
     return (
       <tr styleName="row" onClick={this.onClick}>
         <td><Pos value={this.props.index + 1} /></td>
-        <td>{this.props.summary.userName}</td>
+        <td>{this.props.summary.user.name}</td>
         <td>
           {this.getScore()} points
           <div className="progress" styleName="progress">
@@ -46,8 +47,10 @@ LeaderboardItem = Relay.createContainer(LeaderboardItem, {
   fragments: {
     summary: () => Relay.QL`
       fragment on Summary {
-        userId
-        userName
+        user {
+          name
+          username
+        }
         score
       }
     `
