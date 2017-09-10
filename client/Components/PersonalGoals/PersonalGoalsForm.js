@@ -47,7 +47,7 @@ class PersonalGoalsForm extends React.Component {
       disc: null,
       type: "count",
       value: 1
-    }
+    };
   }
 
   updateGoal = (goal, index) => {
@@ -93,7 +93,7 @@ class PersonalGoalsForm extends React.Component {
       }), {
         onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
         onSuccess: () => { toastr.success("Personal Goals updated"); }
-  }
+      }
     );
   }
 

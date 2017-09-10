@@ -11,9 +11,9 @@ import { populate } from "./util/data.js";
 populate();
 
 import schema from "./graphql/schema";
-import { config, getEnv } from "../shared/config"
+import { config, getEnv } from "../shared/config";
 const env = getEnv();
-console.log("config", process.env.NODE_ENV, config[env])
+console.log("config", process.env.NODE_ENV, config[env]);
 
 var app = express();
 app.use(compression());
@@ -45,7 +45,7 @@ app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "..", "client", "index.html")); 
 });
 
-const db = `mongodb://127.0.0.1/${config[env].db}`
+const db = `mongodb://127.0.0.1/${config[env].db}`;
 mongoose.connect(db);
 
 app.listen(config[env].port);

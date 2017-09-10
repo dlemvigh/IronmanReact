@@ -1,6 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
-import { Button, ControlLabel, FormControl, FormGroup, Glyphicon, Row, Col } from "react-bootstrap";
+import { ControlLabel, FormControl, FormGroup, Glyphicon, Row, Col } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
 import styles from "./PersonalGoalsFormItem.scss";

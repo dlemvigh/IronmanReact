@@ -1,7 +1,6 @@
-import React from "react"
-import moment from "moment";
+import React from "react";
 
-import { getYearWeekId, filterMedals } from "../../../shared/util";
+import { filterMedals } from "../../../shared/util";
 
 class Medals extends React.Component {
 
@@ -16,7 +15,7 @@ class Medals extends React.Component {
 
   renderIndividual() {
     let list = Array.apply(null, Array(this.getValue() || 0));
-    return <span>{ list.map(() => this.getMedal())}</span>
+    return <span>{ list.map(() => this.getMedal())}</span>;
   }
 
   renderSummary() {

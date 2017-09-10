@@ -1,7 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
 import { Table } from "react-bootstrap";
-import moment from "moment";
 import _ from "lodash";
 
 import { filterMedals } from "../../../shared/util";

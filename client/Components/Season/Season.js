@@ -4,13 +4,13 @@ import Relay from "react-relay";
 import Medals from "../Medals/Medals";
 
 class Season extends React.Component {
-    render() {
-        return (
-            <div>                
-                <Medals store={this.props.store} season={this.props.season || null} />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>                
+        <Medals store={this.props.store} season={this.props.season || null} />
+      </div>
+    );
+  }
 }
 
 Season = Relay.createContainer(Season, {
@@ -27,6 +27,6 @@ Season = Relay.createContainer(Season, {
       }
     `
   }
-})
+});
 
 export default Season;

@@ -11,7 +11,7 @@ class Admin extends React.Component {
         <AddUser />
         <AddSeason />
       </div>
-    )
+    );
   }
 }
 
@@ -23,6 +23,6 @@ Admin = Relay.createContainer(Admin, {
       }
     `
   }
-})
+});
 
 export default Admin;
