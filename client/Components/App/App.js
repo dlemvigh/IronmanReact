@@ -31,7 +31,7 @@ class App extends React.Component {
   render() {
     return (
       <div styleName="wrapper">
-        <Header store={this.props.store} auth={this.props.auth} />
+        <Header store={this.props.store} activeUser={this.props.activeUser} auth={this.props.auth} />
         <main styleName="content">
           <div className="container">
             {this.props.children}
@@ -47,6 +47,11 @@ App = CSSModules(App, styles);
 
 App = Relay.createContainer(App, {
   fragments: {
+    activeUser: () => Relay.QL`
+      fragment on User {
+        ${Header.getFragment("activeUser")}
+      }
+    `,
     store: () => Relay.QL`
       fragment on Store {
         id

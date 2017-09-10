@@ -2,7 +2,7 @@ import React from "react";
 import Relay from "react-relay";
 import { Link } from "react-router";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
 import CSSModules from "react-css-modules";
 import styles from "./Header.scss";
@@ -16,6 +16,19 @@ class Header extends React.Component {
 
   logout = () => {
     this.props.auth.logout();
+  }
+
+  renderUserNav(profile) {
+    return (
+      <Nav>
+        <IndexLinkContainer to={`/${profile.username}`}>
+          <NavItem>Activities</NavItem>
+        </IndexLinkContainer>
+        <LinkContainer to={`/${profile.username}/goals`}>
+          <NavItem>Personal goals</NavItem>
+        </LinkContainer>
+      </Nav>
+    );
   }
 
   renderAthletes(compactMode) {
@@ -34,9 +47,10 @@ class Header extends React.Component {
     return (
       <NavDropdown title="Athletes" id="athletes">
       {
-        this.props.store.users.map(user => <LinkContainer key={user.username} to={`/${user.username}`}>
-          <MenuItem>{user.name}</MenuItem>
-        </LinkContainer>)
+        this.props.store.users.map(user => (
+          <LinkContainer key={user.username} to={`/${user.username}`}>
+            <MenuItem>{user.name}</MenuItem>
+          </LinkContainer>))
       }
       </NavDropdown>
     );
@@ -57,22 +71,16 @@ class Header extends React.Component {
     );
   }
 
-  renderLogoutDropdown() {
-    const profile = this.props.auth.getProfile();
+  renderLogoutDropdown(profile) {
     return (
       <NavDropdown title={this.renderLogoutTitle(profile)} id="logout" styleName="dropdown">
-        <LinkContainer to={`/${profile.username}`}>
-          <MenuItem>Activities</MenuItem>
-        </LinkContainer>
-        <LinkContainer to={`/${profile.username}/goals`}>
-          <MenuItem>Personal goals</MenuItem>
-        </LinkContainer>
         <MenuItem onClick={this.logout}>Sign out</MenuItem>
       </NavDropdown>
     );
   }
 
   render() {
+    const profile = this.props.auth.getProfile();
     const isAuthenticated = this.props.auth.isAuthenticated();
     const currentWeek = getYearWeekId();
     return (
@@ -85,9 +93,9 @@ class Header extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav>
-              { this.renderAthletes(this.props.store.users.length > 10) }
-            </Nav>
+            {
+              isAuthenticated && this.renderUserNav(profile)
+            }
             {
               !isAuthenticated &&
               <Nav pullRight>
@@ -99,6 +107,7 @@ class Header extends React.Component {
               <LinkContainer to="/graphs">
                 <NavItem>Graphs</NavItem>
               </LinkContainer>
+                { this.renderAthletes(true) }
               <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
                 {
                   this.props.store.allSeasons
@@ -118,7 +127,7 @@ class Header extends React.Component {
                   </MenuItem>
                 </LinkContainer>
               </NavDropdown>
-              { this.renderLogoutDropdown() }
+              { this.renderLogoutDropdown(profile) }
             </Nav>
             }
           </Navbar.Collapse>
@@ -132,6 +141,11 @@ Header = CSSModules(Header, styles);
 
 Header = Relay.createContainer(Header, {
   fragments: {
+    activeUser: () => Relay.QL`
+      fragment on User {
+        username
+      }
+    `,
     store: () => Relay.QL`
       fragment on Store {
         users {

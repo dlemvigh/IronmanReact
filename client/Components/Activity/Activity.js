@@ -26,6 +26,7 @@ class Activity extends React.Component {
   }
 
   render() {
+    const profile = this.props.auth.getProfile();
     const component = this.state.editing === null ? 
           (<ActivityForm 
             {...this.props} 
@@ -42,13 +43,13 @@ class Activity extends React.Component {
     return (
       <div>
         <h3>{this.getName()} activities</h3>
-        <ReactCSSTransitionReplace
+        {(profile.username == this.props.user.username) && <ReactCSSTransitionReplace
           transitionName={styles}
           transitionEnterTimeout={1000}
           transitionLeaveTimeout={1000}
         >
           { component }
-        </ReactCSSTransitionReplace>
+        </ReactCSSTransitionReplace>}
         <PersonalGoals user={this.props.user} />
         <ActivityList {...this.props} onEdit={this.onBeginEdit} />
       </div>
@@ -67,6 +68,7 @@ Activity = Relay.createContainer(Activity, {
     user: () => Relay.QL`
       fragment on User {
         name
+        username
         ${ActivityForm.getFragment("user")}
         ${ActivityList.getFragment("user")}
         ${PersonalGoals.getFragment("user")}

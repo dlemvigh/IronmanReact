@@ -32,7 +32,7 @@ function logPageView() {
 
 const auth = new Auth();
 
-const prepareParamsLeaderboard = (params) => ({
+const perpareParamsAuth = (params) => ({
   ...params, 
   activeUser: auth.getActiveUser(), 
   isAuthenticated: auth.isAuthenticated()
@@ -44,12 +44,13 @@ const Routes = (props) => (
       path="/" 
       component={App} 
       queries={AppQueries}
+      prepareParams={perpareParamsAuth}
       render={({props}) => props ? <App {...props} auth={auth} /> : <Loading show />} 
     >
       <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}
-        prepareParams={prepareParamsLeaderboard}
+        prepareParams={perpareParamsAuth}
         render={({props}) => props ? <Leaderboard {...props} auth={auth} /> : <Loading show />} 
       />
       <Route 
@@ -90,7 +91,7 @@ const Routes = (props) => (
         <IndexRoute
           component={Activity} 
           queries={ActivityQueries.byUsername}
-          render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
+          render={({props}) => props ? <Activity {...props} auth={auth} /> : <Loading show />} 
         />
         <Route
           path="goals"
