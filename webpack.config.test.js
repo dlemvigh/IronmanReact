@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -18,38 +18,38 @@ module.exports = {
   },
   module: {
     loaders: [
-    { 
-      test: /\.js$/, 
-      exclude: /node_modules/, 
-      loader: 'babel', 
-      query: {
-        presets: ['react', 'es2015', 'stage-0'],
-        plugins: ['./babelRelayPlugin'].map(require.resolve)
-      }   
-    }, {
+      { 
+        test: /\.js$/, 
+        exclude: /node_modules/, 
+        loader: 'babel', 
+        query: {
+          presets: ['react', 'es2015', 'stage-0'],
+          plugins: ['./babelRelayPlugin'].map(require.resolve)
+        }   
+      }, {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
         loader: 'url-loader?limit=10000',
         query: {
           name: 'static/media/[name].[hash:8].[ext]'
         }
-    }, {
+      }, {
         test: /\.(eot|ttf|wav|mp3)$/,
         loader: 'file-loader',
         query: {
           name: 'static/media/[name].[hash:8].[ext]'
         }
-    }, {
-      test: /\.css$/,
-      loader: ExtractTextPlugin.extract('style', 'css?importLoaders=1&-autoprefixer!postcss')
-    }, {
-    test: /\.scss$/,
-    loaders: [
-        'style',
-        'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-        'resolve-url',
-        'sass'
-    ]
-}]
+      }, {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style', 'css?importLoaders=1&-autoprefixer!postcss')
+      }, {
+        test: /\.scss$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          'resolve-url',
+          'sass'
+        ]
+      }]
   },
   plugins: [
     new FaviconsWebpackPlugin({
