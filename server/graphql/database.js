@@ -409,18 +409,20 @@ async function setPersonalGoals(userId, goals) {
 
   await PersonalGoalModel.remove({userId});
 
-  await Promise.all(goals.map((goal, index) => {
-    return new PersonalGoalModel({
+  await Promise.all(goals.map((goal, index) => 
+    new PersonalGoalModel({
       userId,
       userName: user.name,
       disciplineId: goal.disciplineId,
-      disciplineName: disciplines.find(x => x._id == goal.disciplineId).name,
+      disciplineName: goal.disciplineId ? 
+        disciplines.find(x => x._id == goal.disciplineId).name : null,
       count: goal.count,
       dist: goal.dist,
       score: goal.score,
       priority: index + 1
-    }).save();
-  }));
+    }).save()
+  ));
+
   return user;
 }
 

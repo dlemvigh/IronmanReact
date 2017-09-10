@@ -68,7 +68,7 @@ class PersonalGoalsFormItem extends React.Component {
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.props.save}>
         <Row>
           <Col xs={12} sm={4}>
             <FormGroup>

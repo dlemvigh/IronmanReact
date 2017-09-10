@@ -415,10 +415,10 @@ const queryType = new GraphQLObjectType({
           name: "id",
           type: GraphQLString
         }
-      },
+      },  
       resolve (root, params) {
         return database.getSeason(params.id);
-       }
+      }
     },
     user: {
       type: userType,
@@ -644,7 +644,7 @@ const personalGoalInputType = new GraphQLInputObjectType({
 });
 
 const setPersonalGoalsMutation = mutationWithClientMutationId({
-  name: "SetPersonalGoal",
+  name: "SetPersonalGoals",
   inputFields: {
     userId: { type: new GraphQLNonNull(GraphQLID) },
     goals: { type: new GraphQLList(personalGoalInputType) }

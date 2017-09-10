@@ -96,7 +96,7 @@ const Routes = (props) => (
           path="goals"
           component={PersonalGoalsForm}
           queries={PersonalGoalsFormQueries}
-          render={({props}) => props ? <PersonalGoalsForm {...props} /> : <Loading show />}
+          render={({props}) => props ? <PersonalGoalsForm {...props} auth={auth} /> : <Loading show />}
         />
       </Route>  
     </Route>

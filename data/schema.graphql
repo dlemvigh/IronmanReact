@@ -137,7 +137,7 @@ type Mutation {
   addUser(input: AddUserInput!): AddUserPayload
   addSeason(input: AddSeasonInput!): AddSeasonPayload
   ensureLogin(input: EnsureLoginInput!): EnsureLoginPayload
-  setPersonalGoals(input: SetPersonalGoalInput!): SetPersonalGoalPayload
+  setPersonalGoals(input: SetPersonalGoalsInput!): SetPersonalGoalsPayload
 }
 
 # An object with an ID
@@ -221,13 +221,13 @@ type Season {
   to: Int
 }
 
-input SetPersonalGoalInput {
+input SetPersonalGoalsInput {
   userId: ID!
   goals: [PersonalGoalInput]
   clientMutationId: String
 }
 
-type SetPersonalGoalPayload {
+type SetPersonalGoalsPayload {
   user: User
   clientMutationId: String
 }

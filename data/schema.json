@@ -1693,7 +1693,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "SetPersonalGoalInput",
+                      "name": "SetPersonalGoalsInput",
                       "ofType": null
                     }
                   },
@@ -1702,7 +1702,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "SetPersonalGoalPayload",
+                "name": "SetPersonalGoalsPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -2450,7 +2450,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "SetPersonalGoalInput",
+          "name": "SetPersonalGoalsInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -2550,7 +2550,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "SetPersonalGoalPayload",
+          "name": "SetPersonalGoalsPayload",
           "description": null,
           "fields": [
             {
