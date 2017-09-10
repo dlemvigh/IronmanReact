@@ -26,8 +26,15 @@ class ActivityList extends React.Component {
         </thead>
         <tbody>
           {
-            this.props.user.activities.edges.map((edge,index) => 
-              <ActivityItem key={edge.node.id} activity={edge.node} onEdit={this.props.onEdit} {...this.props} striped={this.isStriped(weeks, edge.node.week)} />)
+            this.props.user.activities.edges.map((edge) => (
+              <ActivityItem 
+                key={edge.node.id} 
+                activity={edge.node} 
+                onEdit={this.props.onEdit} 
+                {...this.props} 
+                striped={this.isStriped(weeks, edge.node.week)} 
+              />
+            ))
           }
         </tbody>
       </Table>

@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export function getYearWeekId(year, week) {
-  year = year || moment().year();
+  year = year || moment().weekYear();
   week = week || moment().isoWeek();
   return year * 100 + week;
 }
@@ -9,11 +9,11 @@ export function getYearWeekId(year, week) {
 export function fromYearWeekId(yearWeekId) {
   const year = yearWeekId / 100 | 0;
   const week = yearWeekId % 100;
-  return moment().year(year).isoWeek(week);
+  return moment().weekYear(year).isoWeek(week);
 }
 
 export function filterMedals(medals, season) {
-  const currentWeek = getYearWeekId(moment().year(), moment().isoWeek());
+  const currentWeek = getYearWeekId(moment().weekYear(), moment().isoWeek());
   medals = medals.filter(x => x < currentWeek);
 
   if (season == null) return medals;

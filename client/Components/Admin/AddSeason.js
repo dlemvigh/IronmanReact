@@ -125,7 +125,7 @@ class AddSeason extends React.Component {
           disabled={!this.state.isValid}
         >Submit</Button>
       </form>
-    )
+    );
   }
 }
 

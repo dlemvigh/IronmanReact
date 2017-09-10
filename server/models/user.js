@@ -10,9 +10,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     index: { unique: true }
   },
-  facebookId: {
-    type: String
-  },
   active: {
     type: Boolean,
     default: true

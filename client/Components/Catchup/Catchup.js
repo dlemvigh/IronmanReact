@@ -37,7 +37,7 @@ class Catchup extends React.Component {
 Catchup = Relay.createContainer(Catchup, {
   initialVariables: {
     week: moment().isoWeek(),
-    year: moment().year() 
+    year: moment().weekYear() 
   },
   fragments: {
     store: () => Relay.QL`

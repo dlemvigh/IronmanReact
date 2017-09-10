@@ -94,8 +94,8 @@ function populateSeasons(){
         console.log("creating", season.name);
         new SeasonModel(season).save();
       }
-    })
-  })
+    });
+  });
 }
 
 export function populate(){

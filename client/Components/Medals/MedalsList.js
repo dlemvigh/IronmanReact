@@ -1,7 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
 import { Table } from "react-bootstrap";
-import moment from "moment";
 import _ from "lodash";
 
 import { filterMedals } from "../../../shared/util";
@@ -18,6 +17,7 @@ class MedalsList extends React.Component {
       ])
       .reverse()
       .value();
+
     return sorted;
   }
 
@@ -34,9 +34,9 @@ class MedalsList extends React.Component {
         </thead>
         <tbody>
           {
-            this.getSortedUsers().map((user, index) => {
-              return <MedalsItem key={user._id} user={user} pos={index + 1} season={this.props.season} />;
-            })
+            this.getSortedUsers().map((user, index) => (
+              <MedalsItem key={user._id} user={user} pos={index + 1} season={this.props.season} />
+            ))
           }
         </tbody>
       </Table>

@@ -29,9 +29,36 @@ class MedalsItem extends React.Component {
     return (
       <tr onClick={this.onClick} styleName="row">
         <td>{this.props.user.name}</td>
-        <td styleName="">{this.props.user.medals && <Medals season={this.props.season} weeks={this.props.user.medals.goldWeeks} type="gold" />}</td> 
-        <td styleName="">{this.props.user.medals && <Medals season={this.props.season} weeks={this.props.user.medals.silverWeeks} type="silver" />}</td> 
-        <td styleName="">{this.props.user.medals && <Medals season={this.props.season} weeks={this.props.user.medals.bronzeWeeks} type="bronze" />}</td> 
+        <td styleName="">
+          { 
+            this.props.user.medals && 
+            <Medals 
+              season={this.props.season}
+              weeks={this.props.user.medals.goldWeeks} 
+              type="gold" 
+            /> 
+          }
+        </td> 
+        <td styleName="">
+          { 
+            this.props.user.medals && 
+            <Medals 
+              season={this.props.season}
+              weeks={this.props.user.medals.silverWeeks} 
+              type="silver" 
+            />
+          }
+        </td> 
+        <td styleName="">
+          {
+            this.props.user.medals && 
+            <Medals
+              season={this.props.season} 
+              weeks={this.props.user.medals.bronzeWeeks} 
+              type="bronze" 
+            />
+          }
+        </td> 
       </tr>
     );
   }

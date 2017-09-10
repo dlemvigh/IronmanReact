@@ -9,6 +9,8 @@ import SeasonModel from "../models/season";
 import StoreModel from "../models/store";
 import SummaryModel from "../models/summary";
 import MedalsModel from "../models/medals";
+import LoginModel from "../models/login";
+import PersonalGoalModel from "../models/personalGoal";
 
 const staticStore = new StoreModel(42);
 function getStore() {
@@ -36,12 +38,12 @@ function getSeasons() {
 }
 
 async function getCurrentSeason() {
-  const yearWeekId = getYearWeekId(moment().year(), moment().isoWeek());
+  const yearWeekId = getYearWeekId(moment().weekYear(), moment().isoWeek());
   const season = await SeasonModel.findOne({
     from: { $lte: yearWeekId },
     to: { $gte: yearWeekId }
   });
-  if (season != null) return season;
+  if (season != null) { return season; }
 
   const [seasonBefore, seasonAfter] = await Promise.all([
     SeasonModel.findOne({ to: { $lt: yearWeekId } }).sort({to: 1}).exec(),
@@ -53,7 +55,7 @@ async function getCurrentSeason() {
     // TODO: use moment to get prev/next week
     from: seasonBefore && seasonBefore.to + 1,
     to: seasonAfter && seasonAfter.from - 1
-  }
+  };
 }
 
 function getActivity(id) {
@@ -96,10 +98,10 @@ function getAllSummaries(week, year) {
 }
 
 function getAllWeekSummaries() {
-    const query = {
-      week: { $exists: true },
-      year: { $exists: true }
-    };
+  const query = {
+    week: { $exists: true },
+    year: { $exists: true }
+  };
   return SummaryModel.find(query).exec();
 }
 
@@ -230,7 +232,7 @@ async function updateSummaryWeek(userId, userName, date) {
     const query = {
       userId,
       week: m.isoWeek(),
-      year: m.year()
+      year: m.weekYear()
     };
 
     if (result.length == 0) {
@@ -329,24 +331,6 @@ async function addUser(name, username) {
   const newUser = await new UserModel(user).save();
   await populateMedals(newUser);
   return newUser;
-  // return UserModel.findOne({
-  //   name: username
-  // }, (err, result) => {
-  //   if (err){
-  //     console.log("error finding user", username);
-  //   } else if (!result) {
-  //     console.log("creating", username);
-  //     new UserModel(user).save((err2, result2) => {
-  //       if (err2) {
-  //         console.log("error adding user", user.name);
-  //       }else{
-  //         populateMedals(result2);
-  //       }
-  //     });
-  //   }else{
-  //     populateMedals(result);
-  //   }
-  // });  
 }
 
 function populateMedals(user) {
@@ -371,7 +355,77 @@ function populateMedals(user) {
     }
   });
 }
- 
+
+function getLogin(id) {
+  return LoginModel.findById(id).exec(); 
+}
+
+async function getUserByLogin(provider, providerUserId) {
+  const login = await LoginModel.findOne({
+    provider,
+    providerUserId
+  });
+  if (login) {
+    return await UserModel.findById(login.userId);
+  }
+}
+
+async function ensureLogin(username, provider, providerUserId) {
+  const [login, user] = await Promise.all([
+    LoginModel.findOne({
+      provider,
+      providerUserId
+    }),
+    UserModel.findOne({
+      username
+    })
+  ]);
+
+  if (login) { return user; }
+
+  if (!user) { return; }
+
+  await new LoginModel({ 
+    userId: user._id,
+    provider,
+    providerUserId
+  }).save();
+
+  return user;
+}
+
+function getPersonalGoal(id) {
+  return PersonalGoalModel.findById(id).exec(); 
+}
+
+function getPersonalGoalsByUser(userId) {
+  return PersonalGoalModel.find({userId}).sort({priority: 1}).exec(); 
+}
+
+async function setPersonalGoals(userId, goals) {
+  const user = await UserModel.findById(userId).exec();
+  const disciplineIds = goals.map(x => mongoose.Types.ObjectId(x.disciplineId));
+  const disciplines = await DisciplineModel.find({ _id: { $in: disciplineIds } });
+
+  await PersonalGoalModel.remove({userId});
+
+  await Promise.all(goals.map((goal, index) => 
+    new PersonalGoalModel({
+      userId,
+      userName: user.name,
+      disciplineId: goal.disciplineId,
+      disciplineName: goal.disciplineId ? 
+        disciplines.find(x => x._id == goal.disciplineId).name : null,
+      count: goal.count,
+      dist: goal.dist,
+      score: goal.score,
+      priority: index + 1
+    }).save()
+  ));
+
+  return user;
+}
+
 export default {
   ActivityModel,
   DisciplineModel,
@@ -379,6 +433,8 @@ export default {
   SeasonModel,
   StoreModel,
   SummaryModel,
+  LoginModel,
+  PersonalGoalModel,
   getSeason,
   getSeasons,
   getCurrentSeason,
@@ -402,4 +458,10 @@ export default {
   getAllMedals,
   getMedalsByUserId,
   addUser,
+  getLogin,
+  getUserByLogin,
+  ensureLogin,
+  getPersonalGoal,
+  getPersonalGoalsByUser,
+  setPersonalGoals
 };
