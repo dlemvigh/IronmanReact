@@ -17,6 +17,7 @@ class MedalsList extends React.Component {
       ])
       .reverse()
       .value();
+
     return sorted;
   }
 
@@ -33,9 +34,9 @@ class MedalsList extends React.Component {
         </thead>
         <tbody>
           {
-            this.getSortedUsers().map((user, index) => {
-              return <MedalsItem key={user._id} user={user} pos={index + 1} season={this.props.season} />;
-            })
+            this.getSortedUsers().map((user, index) => (
+              <MedalsItem key={user._id} user={user} pos={index + 1} season={this.props.season} />
+            ))
           }
         </tbody>
       </Table>
