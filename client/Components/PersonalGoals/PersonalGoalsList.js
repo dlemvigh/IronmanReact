@@ -32,6 +32,7 @@ PersonalGoalsList = Relay.createContainer(PersonalGoalsList, {
   fragments: {
     user: () => Relay.QL`
       fragment on User {
+        ${PersonalGoalItem.getFragment("user")}
         activities(first: 1000) {
           edges {
             ${PersonalGoalItem.getFragment("activities")}

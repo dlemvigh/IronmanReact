@@ -20,6 +20,7 @@ module.exports = {
     filename: 'static/js/[name].[chunkhash:8].js',
     chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
   },
+  devtool: 'source-map',
   module: {
     loaders: [
     { 

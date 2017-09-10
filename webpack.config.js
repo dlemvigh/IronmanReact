@@ -6,6 +6,7 @@ var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: [
+    'babel-polyfill',
     './client/index.js'
   ],
   output: {
@@ -13,6 +14,7 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  devtool: 'cheap-eval-source-map',
   module: {
     loaders: [
       { 

@@ -1,11 +1,16 @@
 import React from "react";
 import Relay from "react-relay";
+import PropTypes from "prop-types";
 import moment from "moment";
 import CSSModules from "react-css-modules";
 
 import styles from "./PersonalGoalsItem.scss";
 
 class PersonalGoalItem extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
   renderDiscipline() {
     return <strong>{this.props.goal.discipline ? this.props.goal.discipline.name : "exercise"}</strong>;
   }
@@ -56,11 +61,15 @@ class PersonalGoalItem extends React.Component {
     return [progress, total];
   }
 
+  onClick = () => {
+    this.context.router.push(`/${this.props.user.username}/goals`);
+  }
+
   render() {
     const [progres, total] = this.calcProgress();
     const width = 100 * progres / total;
     return (
-      <tr>
+      <tr styleName="row" onClick={this.onClick}>
         <td>
           I want to {this.renderDiscipline()} at least {this.renderAmount()} per week.
           <div className="progress" styleName="progress">
@@ -96,6 +105,11 @@ PersonalGoalItem = Relay.createContainer(PersonalGoalItem, {
         count
         dist
         score
+      }
+    `,
+    user: () => Relay.QL`
+      fragment on User {
+        username
       }
     `
   }

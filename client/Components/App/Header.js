@@ -64,6 +64,9 @@ class Header extends React.Component {
         <LinkContainer to={`/${profile.username}`}>
           <MenuItem>Activities</MenuItem>
         </LinkContainer>
+        <LinkContainer to={`/${profile.username}/goals`}>
+          <MenuItem>Personal goals</MenuItem>
+        </LinkContainer>
         <MenuItem onClick={this.logout}>Sign out</MenuItem>
       </NavDropdown>
     );
@@ -102,12 +105,12 @@ class Header extends React.Component {
                     .filter(x => x.from <= currentWeek)
                     .sort((a,b) => b.from - a.from)
                     .map(season => (
-                    <LinkContainer to={`/season/${season._id}`} key={season._id}>
-                      <MenuItem>
-                        {season.name}
-                      </MenuItem>
-                    </LinkContainer>
-                  ))
+                      <LinkContainer to={`/season/${season._id}`} key={season._id}>
+                        <MenuItem>
+                          {season.name}
+                        </MenuItem>
+                      </LinkContainer>
+                    ))
                 }
                 <LinkContainer to="/season">
                   <MenuItem>

@@ -8,17 +8,19 @@ import Activity from "./Components/Activity/Activity";
 import ActivityQueries from "./Components/Activity/ActivityQueries";
 import Admin from "./Components/Admin/Admin";
 import AdminQueries from "./Components/Admin/AdminQueries";
-import Leaderboard from "./Components/Leaderboard/Leaderboard";
-import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
-import Sandbox from "./Components/Sandbox/Sandbox";
-import SandboxQueries from "./Components/Sandbox/SandboxQueries";
 import Graphs from "./Components/Graphs";
 import GraphsQueries from "./Components/Graphs/GraphsQueries";
+import Leaderboard from "./Components/Leaderboard/Leaderboard";
+import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
+import PersonalGoalsForm from './Components/PersonalGoals/PersonalGoalsForm';
+import PersonalGoalsFormQueries from './Components/PersonalGoals/PersonalGoalsFormQueries';
 import Season from "./Components/Season/Season";
 import SeasonQueries from "./Components/Season/SeasonQueries";
+import Sandbox from "./Components/Sandbox/Sandbox";
+import SandboxQueries from "./Components/Sandbox/SandboxQueries";
+
 import Callback from './Components/Auth/Callback';
 import Auth from './Auth/Auth';
-
 import Loading from "./Components/Common/Loading";
 
 ReactGA.initialize("UA-98797876-1");
@@ -29,6 +31,12 @@ function logPageView() {
 }
 
 const auth = new Auth();
+
+const prepareParamsLeaderboard = (params) => ({
+  ...params, 
+  activeUser: auth.getActiveUser(), 
+  isAuthenticated: auth.isAuthenticated()
+});
 
 const Routes = (props) => ( 
   <Router {...props} onUpdate={logPageView}>
@@ -41,27 +49,27 @@ const Routes = (props) => (
       <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}
-        prepareParams={(params) => ({...params, activeUser: auth.getActiveUser(), isAuthenticated: auth.isAuthenticated()})}
+        prepareParams={prepareParamsLeaderboard}
         render={({props}) => props ? <Leaderboard {...props} auth={auth} /> : <Loading show />} 
       />
       <Route 
-        path="/callback"
+        path="callback"
         component={(props) => <Callback {...props} auth={auth} />}
       />
       <Route
-        path="/sandbox"
+        path="sandbox"
         component={Sandbox}
         queries={SandboxQueries}
         render={({props}) => props ? <Sandbox {...props} /> : <Loading show />}
       />
       <Route
-        path="/graphs"
+        path="graphs"
         component={Graphs}
         queries={GraphsQueries}
         render={({props}) => props ? <Graphs {...props} /> : <Loading show />}
       />
       <Route
-        path="/season(/:id)"
+        path="season(/:id)"
         component={Season}
         queries={SeasonQueries}
         prepareParams={(prev) => ({
@@ -71,18 +79,24 @@ const Routes = (props) => (
         render={({props}) => props ? <Season {...props} /> : <Loading show />}
       />
       <Route
-        path="/admin"
+        path="admin"
         component={Admin}
         queries={AdminQueries}
         render={({props}) => props ? <Admin {...props} /> : <Loading show />}
       />
       <Route 
-        path="/:username" 
+        path=":username" 
       >
         <IndexRoute
           component={Activity} 
           queries={ActivityQueries.byUsername}
           render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
+        />
+        <Route
+          path="goals"
+          component={PersonalGoalsForm}
+          queries={PersonalGoalsFormQueries}
+          render={({props}) => props ? <PersonalGoalsForm {...props} /> : <Loading show />}
         />
       </Route>  
     </Route>
