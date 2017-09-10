@@ -1,7 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
 import PropTypes from "prop-types";
-import moment from "moment";
 import CSSModules from "react-css-modules";
 
 import styles from "./PersonalGoalsItem.scss";
@@ -113,6 +112,6 @@ PersonalGoalItem = Relay.createContainer(PersonalGoalItem, {
       }
     `
   }
-})
+});
 
 export default PersonalGoalItem;

@@ -46,7 +46,7 @@ class Header extends React.Component {
   renderAthleteDropdown() {
     return (
       <NavDropdown title="Athletes" id="athletes">
-      {
+        {
         this.props.store.users.map(user => (
           <LinkContainer key={user.username} to={`/${user.username}`}>
             <MenuItem>{user.name}</MenuItem>
@@ -66,7 +66,7 @@ class Header extends React.Component {
     };
     return (
       <strong>
-        <img src={profile.picture} style={imgStyle}/>{profile.name}
+        <img src={profile.picture} style={imgStyle} />{profile.name}
       </strong>
     );
   }

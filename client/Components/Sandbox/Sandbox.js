@@ -3,9 +3,8 @@ import Relay from "react-relay";
 
 import Activity from "../Activity/Activity";
 import Leaderboard from "../Leaderboard/Leaderboard";
-import _ from "lodash";
 
-import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from "recharts";
+import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from "recharts";
 
 const colors = [
   "crimson",
@@ -13,13 +12,13 @@ const colors = [
   "orange"  
 ];
 
-const colorsDiscipline = {
-  "swim": "blue",
-  "bike": "yellow",
-  "run": "red",
-  "caloric": "green",
-  "misc": "grey"
-};
+// const colorsDiscipline = {
+//   "swim": "blue",
+//   "bike": "yellow",
+//   "run": "red",
+//   "caloric": "green",
+//   "misc": "grey"
+// };
 
 class Sandbox extends React.Component {
 
@@ -40,22 +39,23 @@ class Sandbox extends React.Component {
     const data2 = this.formatData(this.props.store.allSummaries);
     return (
       <div style={{height: "50vh"}}>
-          <h2>Sandbox</h2>
-          <ResponsiveContainer>
-            <LineChart data={data2}
-                  margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-              <XAxis dataKey="name"/>
-              <YAxis/>
-              <Tooltip/>
-              <Legend/>
-              {
+        <h2>Sandbox</h2>
+        <ResponsiveContainer>
+          <LineChart data={data2}
+            margin={{top: 10, right: 30, left: 0, bottom: 0}}
+          >
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {
                 this.props.store.users.map((x, index) => 
                   <Line key={x.name} dataKey={x.name} stroke={colors[index]} />                  
                 )
               }
-            </LineChart>
-          </ResponsiveContainer>
-          {/*
+          </LineChart>
+        </ResponsiveContainer>
+        {/*
           <Leaderboard store={this.props.store} />
           <Activity store={this.props.store} user={this.props.user} />
           */}

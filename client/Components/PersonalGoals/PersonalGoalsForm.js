@@ -2,6 +2,7 @@ import React from "react";
 import Relay from "react-relay";
 import { Button, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
+import PersonalGoals from "./PersonalGoals";
 import PersonalGoalsFormItem from "./PersonalGoalsFormItem";
 import SetPersonalGoalsMutations from "../../Mutations/SetPersonalGoalsMutations";
 
@@ -47,7 +48,7 @@ class PersonalGoalsForm extends React.Component {
       disc: null,
       type: "count",
       value: 1
-    }
+    };
   }
 
   updateGoal = (goal, index) => {
@@ -93,7 +94,7 @@ class PersonalGoalsForm extends React.Component {
       }), {
         onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
         onSuccess: () => { toastr.success("Personal Goals updated"); }
-  }
+      }
     );
   }
 
@@ -122,6 +123,7 @@ class PersonalGoalsForm extends React.Component {
             <Button bsStyle="link" onClick={this.addGoal}>Add goal</Button>
           </Col>
         </Row>
+        <PersonalGoals user={this.props.user} />
       </div>
     );
   }
@@ -136,6 +138,7 @@ PersonalGoalsForm = Relay.createContainer(PersonalGoalsForm, {
     `,
     user: () =>Relay.QL`
       fragment on User {
+        ${PersonalGoals.getFragment("user")}
         id
         _id
         personalGoals {

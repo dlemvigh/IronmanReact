@@ -31,7 +31,7 @@ class SetPersonalGoalsMutations extends Relay.Mutation {
       fieldIDs: {
         user: this.props.user.id
       }
-    }]
+    }];
   }
 }
 

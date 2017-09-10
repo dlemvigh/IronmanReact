@@ -7,7 +7,7 @@ import CSSModules from "react-css-modules";
 
 import styles from "./ControlDate.scss";
 
-const regex = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])-20\d\d$/
+const regex = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])-20\d\d$/;
 
 class ControlDate extends React.Component {
 
@@ -30,7 +30,7 @@ class ControlDate extends React.Component {
   }
 
   getValue = () => {
-    const value =  this.props.value ? moment.utc(this.props.value, "D/M-YYYY").format("YYYY-MM-DD") : null;
+    const value = this.props.value ? moment.utc(this.props.value, "D/M-YYYY").format("YYYY-MM-DD") : null;
     return value;
   }
 
@@ -60,10 +60,14 @@ class ControlDate extends React.Component {
       <FormGroup validationState={this.getValidationState()}>
         <ControlLabel>Date</ControlLabel>
         {
-          this.isMobile() 
-          ? 
-            <input type="date" className="form-control" styleName="mobile-input" value={this.getValue()} onChange={this.onChangeMobile} />
-          :
+          this.isMobile() ? 
+            <input 
+              type="date" 
+              className="form-control" 
+              styleName="mobile-input" 
+              value={this.getValue()} 
+              onChange={this.onChangeMobile} 
+            /> :
             <DateTime
               dateFormat="D/M-YYYY"
               timeFormat={false}
@@ -78,4 +82,4 @@ class ControlDate extends React.Component {
 
 ControlDate = CSSModules(ControlDate, styles);
 
-export default ControlDate
+export default ControlDate;

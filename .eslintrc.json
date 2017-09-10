@@ -2,7 +2,8 @@
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parser": "babel-eslint",
     "plugins": [
-        "react"
+        "react",
+        "eslint-plugin-react"
     ],
     "env": {
         "browser": true,
@@ -58,8 +59,9 @@
         "react/jsx-wrap-multilines": "warn",
         "react/require-render-return": "warn",
         "react/sort-comp": "warn",
+        "react/display-name": "off",
         "max-len": ["warn", {"code": 120}],
-        "newline-per-chained-call": "warn",
+        "newline-per-chained-call": "off",
         /* nice to have */
         "curly": 1,
         "eqeqeq": 0,
