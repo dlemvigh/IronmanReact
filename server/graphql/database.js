@@ -69,6 +69,10 @@ function getActivities(args) {
     .exec();
 }
 
+function getActivityCount(args) {
+  return ActivityModel.count(args);
+}
+
 function getDiscipline(id) {
   return DisciplineModel.findById(id).exec();
 }
@@ -441,6 +445,7 @@ export default {
   addSeason,
   getActivity,
   getActivities,
+  getActivityCount,
   getDiscipline,
   getDisciplines,
   getUser,

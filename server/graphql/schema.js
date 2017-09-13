@@ -250,6 +250,10 @@ const userType = new GraphQLObjectType({
       args: connectionArgs,
       resolve: (root, args) => connectionFromPromisedArray(database.getActivities({userId: root._id}), args)
     },
+    activityCount: {
+      type: GraphQLID,
+      resolve: (root, args) => database.getActivityCount({userId: root._id})
+    },
     summary: {
       type: summaryType,
       args: {

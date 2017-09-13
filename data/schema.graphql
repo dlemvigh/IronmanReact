@@ -266,6 +266,7 @@ type User implements Node {
   username: String
   active: Boolean
   activities(after: String, first: Int, before: String, last: Int): ActivityConnection
+  activityCount: ID
   summary(week: Int, year: Int): Summary
   medals: Medals
   personalGoals: [PersonalGoal]
