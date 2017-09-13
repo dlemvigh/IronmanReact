@@ -5,7 +5,7 @@ import PersonalGoalsList from "./PersonalGoalsList";
 
 class PersonalGoals extends React.Component {
   render() {
-    const goals = this.props.user.personalGoals;
+    const goals = this.props.user && this.props.user.personalGoals;
     if (!(goals && goals.length > 0)) { return null; }
     return (
       <div>

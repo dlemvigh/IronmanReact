@@ -85,7 +85,11 @@ export default class Auth {
   getProfile() {
     return {
       name: localStorage.getItem('profile_name'),
-      username: (localStorage.getItem('profile_name') || "").toLowerCase(),
+      username: (localStorage.getItem('profile_name') || "")
+        .toLowerCase()
+        .replace(/æ/g, "ae")
+        .replace(/ø/g, "o")
+        .replace(/å/g, "aa"),
       picture: localStorage.getItem('profile_pic'),
       provider: localStorage.getItem('provider'),
       providerUserId: localStorage.getItem('provider_user_id'),
