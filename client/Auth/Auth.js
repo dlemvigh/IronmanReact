@@ -83,7 +83,6 @@ export default class Auth {
   }
 
   getProfile() {
-    debugger
     return {
       name: localStorage.getItem('profile_name'),
       username: (localStorage.getItem('profile_name') || "")
