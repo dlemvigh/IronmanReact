@@ -13,12 +13,16 @@ class PersonalGoalsList extends React.Component {
   }
 
   render() {
-    const activities = this.getCurrentWeek();
+    const goals = this.props.user && this.props.user.personalGoals;
+    if (!(goals && goals.length > 0)) { return null; }
+
+      const activities = this.getCurrentWeek();
+      
     return (
       <Table striped hover>
         <tbody>
           { 
-            this.props.user.personalGoals.map(goal => 
+            goals.map(goal => 
               <PersonalGoalItem key={goal._id} user={this.props.user} goal={goal} activities={activities} />
             ) 
           }

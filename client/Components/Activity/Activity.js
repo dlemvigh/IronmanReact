@@ -50,7 +50,7 @@ class Activity extends React.Component {
         >
           { component }
         </ReactCSSTransitionReplace>}
-        <PersonalGoals user={this.props.user} />
+        {(profile.username == this.props.user.username) && <PersonalGoals user={this.props.user} />}
         <ActivityList {...this.props} onEdit={this.onBeginEdit} />
       </div>
     );
