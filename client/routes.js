@@ -35,7 +35,7 @@ const auth = new Auth();
 const perpareParamsAuth = (params) => ({
   ...params, 
   activeUser: auth.getActiveUser(), 
-  isAuthenticated: auth.isAuthenticated()
+  hasActiveUser: !!auth.getActiveUser()
 });
 
 const Routes = (props) => ( 
