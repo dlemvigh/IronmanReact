@@ -16,7 +16,7 @@ export function filterMedals(medals, season) {
   const currentWeek = getYearWeekId(moment().weekYear(), moment().isoWeek());
   medals = medals.filter(x => x < currentWeek);
 
-  if (season == null) return medals;
+  if (season == null) { return medals; }
 
   const from = season.from;
   const to = season.to;

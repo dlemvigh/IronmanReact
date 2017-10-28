@@ -13,10 +13,10 @@ const endpoint = `http://localhost:${config.port}/graphql`;
 
 if (process.env.NODE_ENV !== "production") {
   Relay.injectNetworkLayer(
-        new Relay.DefaultNetworkLayer(endpoint, {
-          credentials: "same-origin"
-        })
-    );
+    new Relay.DefaultNetworkLayer(endpoint, {
+      credentials: "same-origin"
+    })
+  );
 }
 
 render(
