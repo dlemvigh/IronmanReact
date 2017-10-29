@@ -323,6 +323,21 @@
               "kind": "OBJECT",
               "name": "Summary",
               "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Medals",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "PersonalGoal",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Season",
+              "ofType": null
             }
           ]
         },
@@ -1256,7 +1271,13 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -1419,7 +1440,13 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -1510,7 +1537,13 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },

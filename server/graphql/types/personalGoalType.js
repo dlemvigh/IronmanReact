@@ -9,6 +9,7 @@ import {
 import { globalIdField } from "graphql-relay";
 
 import { nodeInterface } from '../nodeInterface';
+import disciplineType from './disciplineType';
 import userType from './userType';
 import database from '../database';
 
@@ -29,10 +30,10 @@ const personalGoalType = new GraphQLObjectType({
     userName: {
       type: GraphQLString
     },
-    // discipline: {
-    //   type: disciplineType,
-    //   resolve: (obj) => database.getDiscipline(obj.disciplineId)
-    // },
+    discipline: {
+      type: disciplineType,
+      resolve: (obj) => database.getDiscipline(obj.disciplineId)
+    },
     disciplineId: {
       type: GraphQLID
     },
