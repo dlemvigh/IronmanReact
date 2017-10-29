@@ -3,12 +3,11 @@ import {
   GraphQLString
 } from "graphql";
 
-import { nodeInterface } from '../nodeInterface';
-import seasonType from './seasonType';
-import storeType from './storeType';
-import userType from './userType';
-import database from '../database';
-import { nodeField } from '../nodeInterface';
+import seasonType from './types/seasonType';
+import storeType from './types/storeType';
+import userType from './types/userType';
+import database from './database';
+import { nodeField } from './nodeInterface';
 
 const queryType = new GraphQLObjectType({
   name: "Query",

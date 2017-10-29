@@ -72,4 +72,4 @@ const {
 } = connectionDefinitions({ name: "Activity", nodeType: activityType });
 
 export default activityType;
-export { activityConnection, activityEdge }
+export { activityConnection, activityEdge };

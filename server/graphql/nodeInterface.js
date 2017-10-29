@@ -63,4 +63,4 @@ const { nodeInterface, nodeField } = nodeDefinitions(
   }
 );
 
-export { nodeInterface, nodeField }
+export { nodeInterface, nodeField };
