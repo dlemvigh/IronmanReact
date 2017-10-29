@@ -12,10 +12,10 @@ import MedalsModel from "../models/medals";
 import LoginModel from "../models/login";
 import PersonalGoalModel from "../models/personalGoal";
 
-const staticStore = new StoreModel(42);
-function getStore() {
-  return staticStore;
-}
+// const staticStore = new StoreModel(42);
+// function getStore() {
+//   return staticStore;
+// }
 
 function getUser(id) {
   return UserModel.findById(id).exec();
@@ -426,7 +426,10 @@ async function setPersonalGoals(userId, goals) {
   return user;
 }
 
+import * as store from "./db/store";
+
 export default {
+  ...store,
   ActivityModel,
   DisciplineModel,
   UserModel,
@@ -446,7 +449,7 @@ export default {
   getUser,
   getUserByUsername,
   getUsers,
-  getStore,
+  // getStore,
   addActivity,
   editActivity,
   removeActivity,
