@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 
 import WeeklyTotal from "./WeeklyTotal";
 import Weekday from "./Weekday";

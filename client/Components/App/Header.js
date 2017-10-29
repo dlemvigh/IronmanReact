@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 import { Link } from "react-router";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";

@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 import { ControlLabel, FormControl, FormGroup, Glyphicon, Row, Col } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 

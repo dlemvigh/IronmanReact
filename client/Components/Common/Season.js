@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 import { fromYearWeekId } from "../../../shared/util";
 
 class Season extends React.Component {

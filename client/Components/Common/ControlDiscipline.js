@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 import { ControlLabel, FormGroup } from "react-bootstrap";
 
 class ControlDiscipline extends React.Component {

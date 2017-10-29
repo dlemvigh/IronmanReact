@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Relay from 'react-relay';
+import Relay from 'react-relay/classic';
 import loading from './loading.svg';
 import EnsureLoginMutation from "../../Mutations/EnsureLoginMutation";
 import history from '../../history';

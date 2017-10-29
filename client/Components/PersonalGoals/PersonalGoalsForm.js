@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 import { Button, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 import PersonalGoals from "./PersonalGoals";

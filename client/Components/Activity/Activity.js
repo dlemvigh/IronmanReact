@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import Relay from 'react-relay/classic';
 import ReactCSSTransitionReplace from "react-css-transition-replace";
 
 import ActivityForm from "./ActivityForm";
