@@ -2,6 +2,7 @@ import React from "react";
 import Relay from 'react-relay/classic';
 import ReactCSSTransitionReplace from "react-css-transition-replace";
 
+import { auth } from '../../Auth/Auth';
 import ActivityForm from "./ActivityForm";
 import ActivityList from "./ActivityList";
 import PersonalGoals from "../PersonalGoals/PersonalGoals";
@@ -26,7 +27,7 @@ class Activity extends React.Component {
   }
 
   render() {
-    const profile = this.props.auth.getProfile();
+    const profile = auth.getProfile();
     const component = this.state.editing === null ? 
           (<ActivityForm 
             {...this.props} 

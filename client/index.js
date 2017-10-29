@@ -1,12 +1,11 @@
 import React from "react";
 import { render } from "react-dom";
 import Relay from 'react-relay/classic';
-// import { applyRouterMiddleware } from "react-router";
-// import useRelay from "react-router-relay";
-// import history from "./history";
-// import Routes from "./routes";
-import Test from "./Components/Test";
-
+// import Test from "./Components/Test";
+import { BrowserProtocol, queryMiddleware } from "farce";
+import { createFarceRouter, createRender } from "found";
+import { Resolver } from 'found-relay/lib/classic';
+import routes from "./routes2";
 import { getConfig } from "../shared/config";
 
 const config = getConfig();
@@ -20,8 +19,16 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
+const Router = createFarceRouter({
+  historyProtocol: new BrowserProtocol(),
+  historyMiddlewares: [queryMiddleware],
+  routeConfig: routes,
+
+  render: createRender({}),
+});
+
 render(
-  <Test />,
+  <Router resolver={new Resolver(Relay.Store)} />,
   // <Routes 
   //   history={history}
   //   render={applyRouterMiddleware(useRelay)}

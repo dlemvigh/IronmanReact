@@ -98,3 +98,5 @@ export default class Auth {
   }
 
 }
+
+export const auth = new Auth();

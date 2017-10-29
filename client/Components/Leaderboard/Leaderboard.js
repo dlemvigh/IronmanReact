@@ -2,6 +2,7 @@ import React from "react";
 import Relay from 'react-relay/classic';
 import moment from "moment";
 
+import { auth } from '../../Auth/Auth';
 import LeaderboardList from "./LeaderboardList";
 import Catchup from "../Catchup/Catchup";
 import Medals from "../Medals/Medals";
@@ -9,10 +10,10 @@ import PersonalGoals from "../PersonalGoals/PersonalGoals";
 
 class Leaderboard extends React.Component {
   render() {
-    const isAuthenticated = this.props.auth.isAuthenticated();
+    const isAuthenticated = auth.isAuthenticated();
     return (
       <div>
-        {isAuthenticated && <PersonalGoals auth={this.props.auth} user={this.props.activeUser} />}
+        {isAuthenticated && <PersonalGoals auth={auth} user={this.props.activeUser} />}
         <h3>This weeks leaderboard</h3>
         <LeaderboardList summary={this.props.store.current} />
         {this.props.store.current.length >= 2 && <Catchup store={this.props.store} />}

@@ -3,6 +3,7 @@ import Relay from 'react-relay/classic';
 import CSSModules from "react-css-modules";
 import toastr from "toastr";
 
+import { auth } from '../../Auth/Auth';
 import Header from "./Header";
 import Footer from "./Footer";
 import styles from "./App.scss";
@@ -31,7 +32,7 @@ class App extends React.Component {
   render() {
     return (
       <div styleName="wrapper">
-        <Header store={this.props.store} activeUser={this.props.activeUser} auth={this.props.auth} />
+        <Header store={this.props.store} activeUser={this.props.activeUser} auth={auth} />
         <main styleName="content">
           <div className="container">
             {this.props.children}

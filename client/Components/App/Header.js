@@ -1,9 +1,9 @@
 import React from "react";
 import Relay from 'react-relay/classic';
-import { Link } from "react-router";
+import { Link } from "found";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
-import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
+import { auth } from '../../Auth/Auth';
 import CSSModules from "react-css-modules";
 import styles from "./Header.scss";
 import { getYearWeekId } from "../../../shared/util";
@@ -11,22 +11,18 @@ import { getYearWeekId } from "../../../shared/util";
 class Header extends React.Component {
 
   login = () => {
-    this.props.auth.login();
+    auth.login();
   }
 
   logout = () => {
-    this.props.auth.logout();
+    auth.logout();
   }
 
   renderUserNav(profile) {
     return (
       <Nav>
-        <IndexLinkContainer to={`/${profile.username}`}>
-          <NavItem>Activities</NavItem>
-        </IndexLinkContainer>
-        <LinkContainer to={`/${profile.username}/goals`}>
-          <NavItem>Personal goals</NavItem>
-        </LinkContainer>
+        <NavItem href={`/${profile.username}`}>Activities</NavItem>
+        <NavItem href={`/${profile.username}/goals`}>Personal goals</NavItem>
       </Nav>
     );
   }
@@ -37,9 +33,7 @@ class Header extends React.Component {
 
   renderAthleteLinks() {
     return this.props.store.users.map(user => (
-      <LinkContainer key={user.username} to={`/${user.username}`}>
-        <NavItem>{user.name}</NavItem>
-      </LinkContainer>
+      <NavItem key={user.username} to={`/${user.username}`}>{user.name}</NavItem>
     ));
   }
 
@@ -47,11 +41,10 @@ class Header extends React.Component {
     return (
       <NavDropdown title="Athletes" id="athletes">
         {
-        this.props.store.users.map(user => (
-          <LinkContainer key={user.username} to={`/${user.username}`}>
-            <MenuItem>{user.name}</MenuItem>
-          </LinkContainer>))
-      }
+          this.props.store.users.map(user => (
+            <MenuItem key={user.username} to={`/${user.username}`}>{user.name}</MenuItem>
+          ))
+        }
       </NavDropdown>
     );
   }
@@ -80,8 +73,8 @@ class Header extends React.Component {
   }
 
   render() {
-    const profile = this.props.auth.getProfile();
-    const isAuthenticated = this.props.auth.isAuthenticated();
+    const profile = auth.getProfile();
+    const isAuthenticated = auth.isAuthenticated();
     const currentWeek = getYearWeekId();
     return (
       <header>
@@ -104,28 +97,22 @@ class Header extends React.Component {
             }
             { isAuthenticated && 
             <Nav pullRight>
-              <LinkContainer to="/graphs">
-                <NavItem>Graphs</NavItem>
-              </LinkContainer>
-                { this.renderAthletes(true) }
+              <NavItem href="/graphs">Graphs</NavItem>
+              { this.renderAthletes(true) }
               <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
                 {
                   this.props.store.allSeasons
                     .filter(x => x.from <= currentWeek)
                     .sort((a,b) => b.from - a.from)
                     .map(season => (
-                      <LinkContainer to={`/season/${season._id}`} key={season._id}>
-                        <MenuItem>
-                          {season.name}
-                        </MenuItem>
-                      </LinkContainer>
+                      <MenuItem to={`/season/${season._id}`} key={season._id}>
+                        {season.name}
+                      </MenuItem>
                     ))
                 }
-                <LinkContainer to="/season">
-                  <MenuItem>
-                      All time
-                  </MenuItem>
-                </LinkContainer>
+                <MenuItem to="/season">
+                    All time
+                </MenuItem>
               </NavDropdown>
               { this.renderLogoutDropdown(profile) }
             </Nav>
