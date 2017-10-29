@@ -1,0 +1,211 @@
+import mongoose from "mongoose";
+import moment from "moment";
+
+import ActivityModel from "../../models/activity";
+import DisciplineModel from "../../models/discipline";
+import MedalsModel from "../../models/medals";
+import SummaryModel from "../../models/summary";
+import UserModel from "../../models/user";
+import { getYearWeekId } from "../../../shared/util";
+
+export function getActivity(id) {
+  return ActivityModel.findById(id).exec(); 
+}
+
+export function getActivities(args) {
+  args = args || {};
+  return ActivityModel.find(args)
+    .sort({date: -1})
+    .exec();
+}
+
+export async function addActivity(userId, disciplineId, distance, date) {
+  const [discipline, user] = await Promise.all([
+    DisciplineModel.findById(disciplineId)
+      .select({name: 1, score: 1, unit: 1})
+      .exec(),
+    UserModel.findById(userId)
+      .select({name: 1})
+      .exec()
+  ]).catch((reason) => {
+    throw new Error(reason);     
+  });
+  date = moment.utc(date).startOf("date");
+
+  const activity = new ActivityModel({
+    userId,
+    userName: user.name,
+    disciplineId,
+    disciplineName: discipline.name,
+    distance,
+    unit: discipline.unit,
+    score: discipline.score * distance,
+    date
+  });
+
+  const newActivity = await activity.save();
+  if (!newActivity){
+    throw new Error("Error adding new activity");
+  }
+  await updateSummary(userId, user.name, date);
+  return newActivity;  
+}
+
+export async function editActivity(id, userId, disciplineId, distance, date) {
+  const [activity, discipline, user] = await Promise.all([
+    ActivityModel.findById(id)
+      .exec(),
+    DisciplineModel.findById(disciplineId)
+      .select({name: 1, score: 1, unit: 1})
+      .exec(),
+    UserModel.findById(userId)
+      .select({name: 1})
+      .exec()
+  ]).catch((reason) => {
+    throw new Error(reason);     
+  });
+  const beforeDate = moment(activity.date).startOf("date")
+    .toDate();
+  date = moment.utc(date).startOf("date");
+
+  Object.assign(activity, {
+    userId,
+    userName: user.name,
+    disciplineId,
+    disciplineName: discipline.name,
+    distance,
+    unit: discipline.unit,
+    score: discipline.score * distance,
+    date
+  });
+
+  const newActivity = await activity.save();
+  if (!newActivity){
+    throw new Error("Error updating activity");
+  }     
+  await updateSummary(userId, user.name, date);
+  if (date.diff(beforeDate, "days") != 0) {
+    await updateSummary(userId, user.name, beforeDate);
+  }
+  return newActivity;  
+}
+
+export async function removeActivity(activityId) {
+  const activity = await ActivityModel.findById(activityId);
+  if (!activity){
+    throw new Error("Error removing activity");
+  }
+  await activity.remove();
+  await updateSummary(activity.userId, activity.userName, moment(activity.date));
+  return activity;
+}
+
+export async function updateSummary(userId, userName, date) {
+  await Promise.all([
+    updateSummaryWeek(userId, userName, date),
+    updateSummaryTotal(userId, userName)
+  ]);
+}
+
+export async function updateSummaryWeek(userId, userName, date) {
+  try {
+    const m = moment(date);
+    const start = m.startOf("isoWeek").toDate();
+    const end = m.endOf("isoWeek").toDate();
+
+    const result = await ActivityModel.aggregate([{   
+      $match: { 
+        userId: { $eq: mongoose.Types.ObjectId(userId) },
+        date: { $gte: start, $lte: end}
+      }
+    }, {
+      $group: {
+        _id: "$userId",
+        score: { $sum: "$score" }
+      }
+    }]).exec(); 
+
+    const query = {
+      userId,
+      week: m.isoWeek(),
+      year: m.weekYear()
+    };
+
+    if (result.length == 0) {
+      await SummaryModel.findOneAndRemove(query);
+    }else{
+      const score = result[0].score;
+      const summary = Object.assign({}, query, {score, userName});
+
+      await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
+    }
+    await updateSummaryLeader(query.week, query.year);
+  }catch(error){
+    console.log("error", error);
+  }
+}
+
+export async function updateSummaryTotal(userId, userName) {
+  try {
+    const result = await ActivityModel.aggregate([{   
+      $match: { 
+        userId: { $eq: mongoose.Types.ObjectId(userId) }
+      }
+    }, {
+      $group: {
+        _id: "$userId",
+        score: { $sum: "$score" }
+      }
+    }]).exec(); 
+
+    const query = {
+      userId,
+      week: { $exists: false },
+      year: { $exists: false }
+    };
+
+    if (result.length == 0) {
+      return await SummaryModel.findOneAndRemove(query);
+    }
+
+    const score = result[0].score;
+    const summary = {
+      userId,
+      userName,
+      score
+    };
+
+    await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
+  }catch(error){
+    console.log("error", error);
+  }
+}
+
+export async function updateSummaryLeader(week, year) {
+  const summaries = await SummaryModel.find({week, year})
+    .sort({score: -1})
+    .exec();
+  summaries.map((summary, index) => summary.position = index + 1);
+  await Promise.all(summaries.map(summary => summary.save()));
+  await updateAllMedals();
+}
+
+export async function updateAllMedals() {
+  const users = await UserModel.find({}).exec();
+  await Promise.all(users.map(user => updateMedals(user)));
+}
+
+export async function updateMedals(user) {
+  const summaries = await SummaryModel.find({userId: user._id, position: { $lte: 3 }}).exec();
+  const medals = {
+    userId: user._id,
+    userName: user.name,
+    gold: summaries.filter(x => x.position == 1).length,
+    goldWeeks: summaries.filter(x => x.position == 1).map(x => getYearWeekId(x.year, x.week)),
+    silver: summaries.filter(x => x.position == 2).length,
+    silverWeeks: summaries.filter(x => x.position == 2).map(x => getYearWeekId(x.year, x.week)),
+    bronze: summaries.filter(x => x.position == 3).length,
+    bronzeWeeks: summaries.filter(x => x.position == 3).map(x => getYearWeekId(x.year, x.week))
+  };
+  await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec();
+}
