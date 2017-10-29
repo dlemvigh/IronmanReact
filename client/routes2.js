@@ -45,6 +45,12 @@ export default makeRouteConfig(
       Component={Callback}
     />
     <Route
+      path="sandbox"
+      Component={Sandbox}
+      queries={SandboxQueries}
+      render={({props}) => props ? <Sandbox {...props} /> : <Loading show />}
+    />
+    <Route
       path="graphs"
       Component={Graphs}
       queries={GraphsQueries}
@@ -60,5 +66,26 @@ export default makeRouteConfig(
       })}
       render={({props}) => props ? <Season {...props} /> : <Loading show />}
     />
+    <Route
+      path="admin"
+      Component={Admin}
+      queries={AdminQueries}
+      render={({props}) => props ? <Admin {...props} /> : <Loading show />}
+    />
+    <Route
+      path=":username"
+    >
+      <Route
+        Component={Activity} 
+        queries={ActivityQueries.byUsername}
+        render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
+      />
+      <Route
+        path="goals"
+        Component={PersonalGoalsForm}
+        queries={PersonalGoalsFormQueries}
+        render={({props}) => props ? <PersonalGoalsForm {...props} /> : <Loading show />}
+      />
+    </Route>
   </Route>
 );
