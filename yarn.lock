@@ -5056,12 +5056,6 @@ react-resize-detector@0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-0.3.3.tgz#ca07443072324843586666d9443a6356da7c0501"
 
-react-router-bootstrap@^0.23.1:
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/react-router-bootstrap/-/react-router-bootstrap-0.23.3.tgz#970c35c53c04c61fb6b110d4ff651a7e8a73b2ba"
-  dependencies:
-    prop-types "^15.5.8"
-
 react-router-relay@^0.13.5:
   version "0.13.8"
   resolved "https://registry.yarnpkg.com/react-router-relay/-/react-router-relay-0.13.8.tgz#3a24eab7b5ea3af3db34dd6b0efee232101cfee9"

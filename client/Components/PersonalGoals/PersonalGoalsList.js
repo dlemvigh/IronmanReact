@@ -16,7 +16,7 @@ class PersonalGoalsList extends React.Component {
     const goals = this.props.user && this.props.user.personalGoals;
     if (!(goals && goals.length > 0)) { return null; }
 
-      const activities = this.getCurrentWeek();
+    const activities = this.getCurrentWeek();
       
     return (
       <Table striped hover>
