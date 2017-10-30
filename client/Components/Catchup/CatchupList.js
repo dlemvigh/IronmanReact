@@ -51,13 +51,13 @@ class CatchupList extends React.Component {
         </thead>
         <tbody>
           {
-            this.getSortedUser().map(user => <CatchupItem 
+            this.getSortedUser().map(user => (<CatchupItem 
               key={user._id} 
               user={user} 
               summary={user.summary} 
               disciplines={this.props.store.disciplines} 
               highscore={highscore} 
-            />)                                                
+            />))                 
           }
         </tbody>
       </Table>

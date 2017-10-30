@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { ControlLabel, FormGroup } from "react-bootstrap";
 
 class ControlDiscipline extends React.Component {
@@ -34,7 +34,7 @@ class ControlDiscipline extends React.Component {
           onBlur={this.onChange}
         >
           { 
-            this.props.store.disciplines.map(discipline => 
+            this.props.store.disciplines.map(discipline => (
               <option 
                 key={discipline._id} 
                 value={discipline._id}
@@ -42,7 +42,7 @@ class ControlDiscipline extends React.Component {
                 data-name={discipline.name}
                 data-unit={discipline.unit}
                 data-score={discipline.score}
-              >{this.getName(discipline.name)}</option>) 
+              >{this.getName(discipline.name)}</option>))
           }
         </select>
       </FormGroup>
@@ -50,19 +50,17 @@ class ControlDiscipline extends React.Component {
   }
 }
 
-ControlDiscipline = Relay.createContainer(ControlDiscipline, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        disciplines {
-          _id
-          name
-          unit
-          score
-        }
+ControlDiscipline = createFragmentContainer(ControlDiscipline, {
+  store: graphql`
+    fragment ControlDiscipline_store on Store {
+      disciplines {
+        _id
+        name
+        unit
+        score
       }
-    `
-  }
+    }
+  `
 });
 
 export default ControlDiscipline;

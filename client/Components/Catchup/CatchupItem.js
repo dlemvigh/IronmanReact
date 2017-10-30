@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 import _ from "lodash";
@@ -49,28 +49,26 @@ class CatchupItem extends React.Component {
 
 CatchupItem = CSSModules(CatchupItem, styles);
 
-CatchupItem = Relay.createContainer(CatchupItem, {
-  fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        name
-        username
-      }
-    `,
-    disciplines: () => Relay.QL`
-      fragment on Discipline @relay(plural: true) {
-        _id
-        name
-        score
-        unit
-      }
-    `,
-    summary: () => Relay.QL`
-      fragment on Summary {
-        score
-      }
-    `
-  }
+CatchupItem = createFragmentContainer(CatchupItem, {
+  user: graphql`
+    fragment CatchupItem_user on User {
+      name
+      username
+    }
+  `,
+  disciplines: graphql`
+    fragment CatchupItem_disciplines on Discipline @relay(plural: true) {
+      _id
+      name
+      score
+      unit
+    }
+  `,
+  summary: graphql`
+    fragment CatchupItem_summary on Summary {
+      score
+    }
+  `
 });
 
 export default CatchupItem;
