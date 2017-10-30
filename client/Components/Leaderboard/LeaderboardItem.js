@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 import _ from "lodash";
@@ -43,18 +43,16 @@ class LeaderboardItem extends React.Component {
 
 LeaderboardItem = CSSModules(LeaderboardItem, styles);
 
-LeaderboardItem = Relay.createContainer(LeaderboardItem, {
-  fragments: {
-    summary: () => Relay.QL`
-      fragment on Summary {
-        user {
-          name
-          username
-        }
-        score
+LeaderboardItem = createFragmentContainer(LeaderboardItem, {
+  summary: graphql`
+    fragment LeaderboardItem_summary on Summary {
+      user {
+        name
+        username
       }
-    `
-  }
+      score
+    }
+  `
 });
 
 export default LeaderboardItem;

@@ -30,9 +30,9 @@ Leaderboard = Relay.createContainer(Leaderboard, {
     currentWeekNo: moment().isoWeek(),
     currentWeekYear: moment().weekYear(),
     lastWeekNo: moment().add(-7, "days")
-                        .isoWeek(),
+      .isoWeek(),
     lastWeekYear: moment().add(-7, "days")
-                          .weekYear()
+      .weekYear()
   },
   fragments: {
     activeUser: () =>Relay.QL`

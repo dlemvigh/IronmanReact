@@ -8,7 +8,9 @@
 
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
-export type Medals_season = {| |};
+export type Season_season = {|
+  +name: ?string;
+|};
 */
 
 
@@ -16,16 +18,18 @@ const fragment /*: ConcreteFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Medals_season",
+  "name": "Season_season",
   "selections": [
     {
-      "kind": "FragmentSpread",
-      "name": "MedalsList_season",
-      "args": null
+      "kind": "ScalarField",
+      "alias": null,
+      "args": null,
+      "name": "name",
+      "storageKey": null
     },
     {
       "kind": "FragmentSpread",
-      "name": "SeasonTitle_season",
+      "name": "Medals_season",
       "args": null
     }
   ],

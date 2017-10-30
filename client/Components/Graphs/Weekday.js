@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import moment from "moment";
 
 import { colorsDiscipline } from "./Colors";
@@ -59,26 +59,24 @@ class Weekday extends React.Component {
 
 }
 
-Weekday = Relay.createContainer(Weekday, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          name
-          activities(first: 1000) {
-            edges {
-              node {
-                date
-                score
-                disciplineId
-                disciplineName
-              }
+Weekday = createFragmentContainer(Weekday, {
+  store: graphql`
+    fragment Weekday_store on Store {
+      users {
+        name
+        activities(first: 1000) {
+          edges {
+            node {
+              date
+              score
+              disciplineId
+              disciplineName
             }
           }
         }
       }
-    `
-  }
+    }
+  `
 });
 
 export default Weekday;

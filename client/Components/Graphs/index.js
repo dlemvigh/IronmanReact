@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 
 import WeeklyTotal from "./WeeklyTotal";
 import Weekday from "./Weekday";
@@ -15,24 +15,22 @@ class Graphs extends React.Component {
   }
 }
 
-Graphs = Relay.createContainer(Graphs, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        ${WeeklyTotal.getFragment('store')},
-        ${Weekday.getFragment('store')}
-        users {
-          name
-        }
-        allSummaries {
-          userName
-          year
-          week
-          score
-        }
+Graphs = createFragmentContainer(Graphs, {
+  store: graphql`
+    fragment Graphs_store on Store {
+      ...WeeklyTotal_store
+      ...Weekday_store
+      users {
+        name
       }
-    `
-  }
+      allSummaries {
+        userName
+        year
+        week
+        score
+      }
+    }
+  `
 });
 
 export default Graphs;

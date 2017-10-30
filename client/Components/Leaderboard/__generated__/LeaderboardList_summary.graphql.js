@@ -8,43 +8,42 @@
 
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
-export type Season_season = {|
-  +name: ?string;
-  +from: ?number;
-  +to: ?number;
-|};
+export type LeaderboardList_summary = $ReadOnlyArray<{|
+  +_id: string;
+  +score: ?number;
+|}>;
 */
 
 
 const fragment /*: ConcreteFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
-  "name": "Season_season",
+  "metadata": {
+    "plural": true
+  },
+  "name": "LeaderboardList_summary",
   "selections": [
     {
       "kind": "ScalarField",
       "alias": null,
       "args": null,
-      "name": "name",
+      "name": "_id",
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
       "args": null,
-      "name": "from",
+      "name": "score",
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "args": null,
-      "name": "to",
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "LeaderboardItem_summary",
+      "args": null
     }
   ],
-  "type": "Season"
+  "type": "Summary"
 };
 
 module.exports = fragment;

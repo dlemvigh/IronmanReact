@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import moment from "moment";
 import _ from "lodash";
 
@@ -91,10 +91,10 @@ class WeeklyTotal extends React.Component {
             <Tooltip />
             <Legend />
             {
-            this.props.store.users.map((x, index) => 
-              <Line key={x.name} dataKey={x.name} type="monotone" stroke={colors[index]} />                  
-            )
-          }
+              this.props.store.users.map((x, index) => 
+                <Line key={x.name} dataKey={x.name} type="monotone" stroke={colors[index]} />                  
+              )
+            }
             <Line 
               dataKey={TrendKey} 
               name={TrendName} 
@@ -111,22 +111,20 @@ class WeeklyTotal extends React.Component {
 
 }
 
-WeeklyTotal = Relay.createContainer(WeeklyTotal, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          name
-        }
-        allSummaries {
-          userName
-          year
-          week
-          score
-        }
+WeeklyTotal = createFragmentContainer(WeeklyTotal, {
+  store: graphql`
+    fragment WeeklyTotal_store on Store {
+      users {
+        name
       }
-    `
-  }
+      allSummaries {
+        userName
+        year
+        week
+        score
+      }
+    }
+  `
 });
 
 export default WeeklyTotal;

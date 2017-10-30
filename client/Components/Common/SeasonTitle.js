@@ -2,7 +2,7 @@ import React from "react";
 import { createFragmentContainer, graphql } from "react-relay/compat";
 import { fromYearWeekId } from "../../../shared/util";
 
-class Season extends React.Component {
+class SeasonTitle extends React.Component {
   renderText() {
     if (this.props.season.from == null && this.props.season.to == null) { return; }
 
@@ -36,9 +36,9 @@ class Season extends React.Component {
   }
 }
 
-Season = createFragmentContainer(Season, {
+SeasonTitle = createFragmentContainer(SeasonTitle, {
   season: graphql`
-    fragment Season_season on Season {
+    fragment SeasonTitle_season on Season {
       name
       from
       to
@@ -46,5 +46,5 @@ Season = createFragmentContainer(Season, {
   `
 });
 
-export default Season;
+export default SeasonTitle;
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
@@ -9,9 +9,9 @@ class LeaderboardList extends React.Component {
 
   sorted() {
     const sorted = _(this.props.summary)
-            .sortBy([summary => summary.score || 0])
-            .reverse()
-            .value();
+      .sortBy([summary => summary.score || 0])
+      .reverse()
+      .value();
     return sorted;
   }
 
@@ -38,16 +38,14 @@ class LeaderboardList extends React.Component {
   }
 }
 
-LeaderboardList = Relay.createContainer(LeaderboardList, {
-  fragments: {
-    summary: () => Relay.QL`
-      fragment on Summary @relay(plural: true) {
-        _id
-        score
-        ${LeaderboardItem.getFragment("summary")}
-      }
-    `
-  }
+LeaderboardList = createFragmentContainer(LeaderboardList, {
+  summary: graphql`
+    fragment LeaderboardList_summary on Summary @relay(plural: true) {
+      _id
+      score
+      ...LeaderboardItem_summary
+    }
+  `
 });
 
 export default LeaderboardList;

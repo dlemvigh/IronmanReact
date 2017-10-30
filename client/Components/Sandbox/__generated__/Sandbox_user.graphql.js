@@ -8,7 +8,7 @@
 
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
-export type Medals_season = {| |};
+export type Sandbox_user = {| |};
 */
 
 
@@ -16,20 +16,15 @@ const fragment /*: ConcreteFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Medals_season",
+  "name": "Sandbox_user",
   "selections": [
     {
       "kind": "FragmentSpread",
-      "name": "MedalsList_season",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "SeasonTitle_season",
+      "name": "Activity_user",
       "args": null
     }
   ],
-  "type": "Season"
+  "type": "User"
 };
 
 module.exports = fragment;

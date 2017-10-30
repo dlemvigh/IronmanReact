@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 
 import Activity from "../Activity/Activity";
 import Leaderboard from "../Leaderboard/Leaderboard";
@@ -64,29 +64,27 @@ class Sandbox extends React.Component {
   }
 }
 
-Sandbox = Relay.createContainer(Sandbox, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        ${Leaderboard.getFragment("store")}
-        ${Activity.getFragment("store")}
-        users {
-          name
-        }
-        allSummaries {
-          userName
-          year
-          week
-          score
-        }
+Sandbox = createFragmentContainer(Sandbox, {
+  store: graphql`
+    fragment Sandbox_store on Store {
+      ...Activity_store
+      ...Leaderboard_store
+      users {
+        name
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        ${Activity.getFragment("user")}
+      allSummaries {
+        userName
+        year
+        week
+        score
       }
-    `
-  }
+    }
+  `,
+  user: graphql`
+    fragment Sandbox_user on User {
+      ...Activity_user
+    }
+  `
 });
 
 export default Sandbox;
