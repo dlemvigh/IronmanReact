@@ -16,7 +16,7 @@ const loginType = new GraphQLObjectType({
     _id: {
       type: new GraphQLNonNull(GraphQLID),
     },
-    id: globalIdField("User"),
+    id: globalIdField("Login"),
     user: {
       type: userType,
       resolve: (obj) => database.getUser(obj.userId)

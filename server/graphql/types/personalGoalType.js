@@ -19,7 +19,7 @@ const personalGoalType = new GraphQLObjectType({
     _id: {
       type: new GraphQLNonNull(GraphQLID),
     },
-    id: globalIdField("User"),
+    id: globalIdField("PersonalGoal"),
     user: {
       type: userType,
       resolve: (obj) => database.getUser(obj.userId)

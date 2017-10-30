@@ -23,9 +23,6 @@ class Header extends React.Component {
   renderUserNav(profile) {
     return (
       <Nav>
-        <LinkContainer to={`/admin`}>
-          <NavItem>Admin</NavItem>
-        </LinkContainer>
         <LinkContainer to={`/${profile.username}`} exact>
           <NavItem>Activities</NavItem>
         </LinkContainer>
@@ -94,7 +91,9 @@ class Header extends React.Component {
         <Navbar collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Ironman 70.3 Club</Link>
+              <Link to="/">
+                Ironman 70.3 Club
+              </Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
