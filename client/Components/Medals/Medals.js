@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 
 import Season from "../Common/Season";
 import MedalsList from "./MedalsList";
@@ -15,20 +15,18 @@ class Medals extends React.Component {
   }
 }
 
-Medals = Relay.createContainer(Medals, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        ${MedalsList.getFragment("store")}
-      }
-    `,
-    season: () => Relay.QL`
-      fragment on Season {
-        ${Season.getFragment("season")}
-        ${MedalsList.getFragment("season")}
-      }
-    `
-  }
+Medals = createFragmentContainer(Medals, {
+  store: graphql`
+    fragment Medals_store on Store {
+      ...MedalsList_store
+    }
+  `,
+  season: graphql`
+    fragment Medals_season on Season {
+      ...MedalsList_season
+      ...Season_season
+    }
+  `
 });
 
 export default Medals;

@@ -24,11 +24,11 @@ class ActivityItem extends React.Component {
       store: this.props.store.id
     });    
     Relay.Store.commitUpdate(
-            mutation, {
-              onFailure: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed"); },
-              onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity removed"); }
-            }
-        );
+      mutation, {
+        onFailure: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed"); },
+        onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity removed"); }
+      }
+    );
   }
 
   getMedals() {

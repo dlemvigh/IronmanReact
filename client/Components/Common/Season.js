@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { fromYearWeekId } from "../../../shared/util";
 
 class Season extends React.Component {
@@ -36,16 +36,14 @@ class Season extends React.Component {
   }
 }
 
-Season = Relay.createContainer(Season, {
-  fragments: {
-    season: () => Relay.QL`
-            fragment on Season {
-                name
-                from
-                to
-            }
-        `
-  }
+Season = createFragmentContainer(Season, {
+  season: graphql`
+    fragment Season_season on Season {
+      name
+      from
+      to
+    }
+  `
 });
 
 export default Season;

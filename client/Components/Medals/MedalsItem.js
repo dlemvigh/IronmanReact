@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 
@@ -66,20 +66,18 @@ class MedalsItem extends React.Component {
 
 MedalsItem = CSSModules(MedalsItem, styles);
 
-MedalsItem = Relay.createContainer(MedalsItem, {
-  fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        username
-        name
-        medals { 
-          goldWeeks 
-          silverWeeks 
-          bronzeWeeks 
-        } 
-      }
-    `
-  }
+MedalsItem = createFragmentContainer(MedalsItem, {
+  user: graphql`
+    fragment MedalsItem_user on User {
+      username
+      name
+      medals { 
+        goldWeeks 
+        silverWeeks 
+        bronzeWeeks 
+      } 
+    }
+  `
 });
 
 export default MedalsItem;
