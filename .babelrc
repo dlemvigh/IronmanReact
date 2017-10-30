@@ -4,5 +4,9 @@
     "es2015",
     "stage-0"
   ],
-  "plugins": ["transform-object-rest-spread", "transform-async-to-generator"]
+  "plugins": [
+    "transform-object-rest-spread", 
+    "transform-async-to-generator",
+    ["relay", {"compat": true, "schema": "data/schema.graphql"}]
+  ]
 }
