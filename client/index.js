@@ -5,7 +5,7 @@ import Relay from 'react-relay/classic';
 import { BrowserProtocol, queryMiddleware } from "farce";
 import { createFarceRouter, createRender } from "found";
 import { Resolver } from 'found-relay/lib/classic';
-import routes from "./routes2";
+import routes from "./routes";
 import { getConfig } from "../shared/config";
 
 const config = getConfig();

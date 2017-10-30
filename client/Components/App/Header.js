@@ -2,11 +2,13 @@ import React from "react";
 import Relay from 'react-relay/classic';
 import { Link } from "found";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+import CSSModules from "react-css-modules";
 
 import { auth } from '../../Auth/Auth';
-import CSSModules from "react-css-modules";
-import styles from "./Header.scss";
+import LinkContainer from '../Util/LinkContainer';
 import { getYearWeekId } from "../../../shared/util";
+
+import styles from "./Header.scss";
 
 class Header extends React.Component {
 
@@ -21,8 +23,15 @@ class Header extends React.Component {
   renderUserNav(profile) {
     return (
       <Nav>
-        <NavItem href={`/${profile.username}`}>Activities</NavItem>
-        <NavItem href={`/${profile.username}/goals`}>Personal goals</NavItem>
+        <LinkContainer to={`/admin`}>
+          <NavItem>Admin</NavItem>
+        </LinkContainer>
+        <LinkContainer to={`/${profile.username}`} exact>
+          <NavItem>Activities</NavItem>
+        </LinkContainer>
+        <LinkContainer to={`/${profile.username}/goals`}>
+          <NavItem>Personal goals</NavItem>
+        </LinkContainer>
       </Nav>
     );
   }
@@ -33,16 +42,20 @@ class Header extends React.Component {
 
   renderAthleteLinks() {
     return this.props.store.users.map(user => (
-      <NavItem key={user.username} to={`/${user.username}`}>{user.name}</NavItem>
+      <LinkContainer key={user.username} to={`/${user.username}`}>
+        <NavItem>{user.name}</NavItem>
+      </LinkContainer>
     ));
   }
 
   renderAthleteDropdown() {
     return (
-      <NavDropdown title="Athletes" id="athletes">
+      <NavDropdown title="Athletes" id="athletes" styleName="dropdown">
         {
           this.props.store.users.map(user => (
-            <MenuItem key={user.username} to={`/${user.username}`}>{user.name}</MenuItem>
+            <LinkContainer key={user.username} to={`/${user.username}`}>
+              <MenuItem>{user.name}</MenuItem>
+            </LinkContainer>
           ))
         }
       </NavDropdown>
@@ -97,7 +110,9 @@ class Header extends React.Component {
             }
             { isAuthenticated && 
             <Nav pullRight>
-              <NavItem href="/graphs">Graphs</NavItem>
+              <LinkContainer to="/graphs">
+                <NavItem>Graphs</NavItem>
+              </LinkContainer>
               { this.renderAthletes(true) }
               <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
                 {
@@ -105,14 +120,18 @@ class Header extends React.Component {
                     .filter(x => x.from <= currentWeek)
                     .sort((a,b) => b.from - a.from)
                     .map(season => (
-                      <MenuItem to={`/season/${season._id}`} key={season._id}>
-                        {season.name}
-                      </MenuItem>
+                      <LinkContainer to={`/season/${season._id}`} key={season._id}>
+                        <MenuItem>
+                          {season.name}
+                        </MenuItem>
+                      </LinkContainer>
                     ))
                 }
-                <MenuItem to="/season">
+                <LinkContainer to="/season">
+                  <MenuItem>
                     All time
-                </MenuItem>
+                  </MenuItem>
+                </LinkContainer>
               </NavDropdown>
               { this.renderLogoutDropdown(profile) }
             </Nav>

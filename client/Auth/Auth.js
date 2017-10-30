@@ -1,4 +1,4 @@
-import history from '../history';
+// import history from '../history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
 
@@ -32,7 +32,7 @@ export default class Auth {
           callback(profile);          
         }
       } else if (err) {
-        history.replace('/');
+        // history.replace('/');
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
@@ -72,7 +72,7 @@ export default class Auth {
     localStorage.removeItem('provider_user_id');
     localStorage.removeItem('active_user');
     // navigate to the home route
-    history.replace('/');
+    // history.replace('/');
   }
 
   isAuthenticated() {

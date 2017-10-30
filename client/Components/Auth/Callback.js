@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Relay from 'react-relay/classic';
 import loading from './loading.svg';
 import EnsureLoginMutation from "../../Mutations/EnsureLoginMutation";
-import history from '../../history';
+// import history from '../../history';
 class Callback extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +19,13 @@ class Callback extends Component {
           new EnsureLoginMutation(login), {
             onSuccess: (resp) => {
               props.auth.setActiveUser(resp.ensureLogin.user.username);
-              history.replace('/');
+              // history.replace('/');
             }
           }
         );
       });
     } else {
-      history.replace('/');
+      // history.replace('/');
     }
   }
 
