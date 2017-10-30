@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 
 import PersonalGoalsList from "./PersonalGoalsList";
 
@@ -16,17 +16,15 @@ class PersonalGoals extends React.Component {
   }
 }
 
-PersonalGoals = Relay.createContainer(PersonalGoals, {
-  fragments: {
-    user: () =>Relay.QL`
-      fragment on User {
-        personalGoals {
-          _id
-        }
-        ${PersonalGoalsList.getFragment("user")}
+PersonalGoals = createFragmentContainer(PersonalGoals, {
+  user: graphql`
+    fragment PersonalGoals_user on User {
+      personalGoals {
+        _id
       }
-    `,
-  }
+      ...PersonalGoalsList_user
+    }
+  `,
 });
 
 export default PersonalGoals;

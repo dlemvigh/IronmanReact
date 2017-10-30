@@ -1,11 +1,11 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 
 import styles from "./PersonalGoalsItem.scss";
 
-class PersonalGoalItem extends React.Component {
+class PersonalGoalsItem extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   }
@@ -80,38 +80,36 @@ class PersonalGoalItem extends React.Component {
   }
 }
 
-PersonalGoalItem = CSSModules(PersonalGoalItem, styles);
+PersonalGoalsItem = CSSModules(PersonalGoalsItem, styles);
 
-PersonalGoalItem = Relay.createContainer(PersonalGoalItem, {
-  fragments: {
-    activities: () => Relay.QL`
-      fragment on ActivityEdge @relay(plural: true) {
-        node {
-          disciplineId
-          disciplineName
-          distance
-          score
-        }
-      }
-    `,
-    goal: () => Relay.QL`
-      fragment on PersonalGoal {
+PersonalGoalsItem = createFragmentContainer(PersonalGoalsItem, {
+  activities: graphql `
+    fragment PersonalGoalsItem_activities on ActivityEdge @relay(plural: true) {
+      node {
         disciplineId
-        discipline {
-          name
-          unit
-        }
-        count
-        dist
+        disciplineName
+        distance
         score
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        username
+    }
+  `,
+  goal: graphql`
+    fragment PersonalGoalsItem_goal on PersonalGoal {
+      disciplineId
+      discipline {
+        name
+        unit
       }
-    `
-  }
+      count
+      dist
+      score
+    }
+  `,
+  user: graphql`
+    fragment PersonalGoalsItem_user on User {
+      username
+    }
+  `  
 });
 
-export default PersonalGoalItem;
+export default PersonalGoalsItem;

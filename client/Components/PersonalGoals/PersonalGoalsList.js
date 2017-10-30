@@ -1,9 +1,9 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { Table } from "react-bootstrap";
 import moment from "moment";
 
-import PersonalGoalItem from "./PersonalGoalsItem";
+import PersonalGoalsItem from "./PersonalGoalsItem";
 
 class PersonalGoalsList extends React.Component {
   getCurrentWeek() {
@@ -23,7 +23,7 @@ class PersonalGoalsList extends React.Component {
         <tbody>
           { 
             goals.map(goal => 
-              <PersonalGoalItem key={goal._id} user={this.props.user} goal={goal} activities={activities} />
+              <PersonalGoalsItem key={goal._id} user={this.props.user} goal={goal} activities={activities} />
             ) 
           }
         </tbody>
@@ -32,27 +32,25 @@ class PersonalGoalsList extends React.Component {
   }
 }
 
-PersonalGoalsList = Relay.createContainer(PersonalGoalsList, {
-  fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        ${PersonalGoalItem.getFragment("user")}
-        activities(first: 1000) {
-          edges {
-            ${PersonalGoalItem.getFragment("activities")}
-            node {
-              week
-              year
-            }
+PersonalGoalsList = createFragmentContainer(PersonalGoalsList, {
+  user: graphql`
+    fragment PersonalGoalsList_user on User {
+      ...PersonalGoalsItem_user
+      activities(first: 1000) {
+        edges {
+          ...PersonalGoalsItem_activities
+          node {
+            week
+            year
           }
         }
-        personalGoals {
-          _id
-          ${PersonalGoalItem.getFragment("goal")}
-        }
       }
-    `
-  }
+      personalGoals {
+        _id
+        ...PersonalGoalsItem_goal
+      }
+    }
+  `
 });
 
 export default PersonalGoalsList;
