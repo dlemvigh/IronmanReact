@@ -1,5 +1,4 @@
 import React from "react";
-import Relay from 'react-relay/classic';
 import { Button, ControlLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 
@@ -48,10 +47,12 @@ class AddSeason extends React.Component {
     };
 
     if (this.validate(season)) {
-      Relay.Store.commitUpdate(
-        new AddSeasonMutation(season), {
-          onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
-          onSuccess: () => { toastr.success("Season added (F5)"); this.clear(); }
+      AddSeasonMutation.commit(
+        this.props.relay.environment,
+        season,
+        {
+          onError: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
+          onCompleted: () => { toastr.success("Season added (F5)"); this.clear(); }          
         }
       );
     }    

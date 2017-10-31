@@ -1,27 +1,36 @@
-import Relay from 'react-relay/classic';
+import { commitMutation, graphql } from 'react-relay/compat';
 
-class AddUserMutation extends Relay.Mutation {
-  getMutation() {
-    return Relay.QL`
-      mutation { addUser }
-    `;  
-  }
-
-  getVariables() {
-    return this.props;
-  }
-
-  getFatQuery() {
-    return Relay.QL`
-      fragment on AddUserPayload {
-        user
+const mutation = graphql`
+  mutation AddUserMutation(
+    $input: AddUserInput!
+  ) {
+    addUser(input: $input) {
+      user {
+        id
       }
-    `;
+      store {
+        users {
+          id
+        }
+      }
+    }
   }
+`;
 
-  getConfigs() {
-    return [];
-  }
+function getConfigs() {
+  return [];
 }
 
-export default AddUserMutation;
+function commit(environment, user, config = {}) {
+  return commitMutation(
+    environment,
+    {
+      ...config,
+      mutation,
+      variables: { input: user },
+      configs: getConfigs(),
+    }
+  );
+}
+
+export default { commit };

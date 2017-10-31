@@ -29,22 +29,22 @@ class Activity extends React.Component {
   render() {
     const profile = auth.getProfile();
     const component = this.state.editing === null ? 
-          (<ActivityForm 
-            {...this.props} 
-            show={this.state.editing === null} 
-            activity={null}
-          />) : 
-          (<ActivityForm
-            {...this.props} 
-            key={this.state.editing._id}
-            show={this.state.editing !== null} 
-            activity={this.state.editing}
-            onEditDone={this.onEndEdit} 
-          />);
+      (<ActivityForm 
+        {...this.props} 
+        show={this.state.editing === null} 
+        activity={null}
+      />) : 
+      (<ActivityForm
+        {...this.props} 
+        key={this.state.editing._id}
+        show={this.state.editing !== null} 
+        activity={this.state.editing}
+        onEditDone={this.onEndEdit} 
+      />);
     return (
       <div>
         <h3>{this.getName()} activities</h3>
-        {(profile.username == this.props.user.username) && <ReactCSSTransitionReplace
+        {(profile.username == this.props.user.username || true) && <ReactCSSTransitionReplace
           transitionName={styles}
           transitionEnterTimeout={1000}
           transitionLeaveTimeout={1000}

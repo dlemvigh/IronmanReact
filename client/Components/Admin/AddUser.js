@@ -1,5 +1,4 @@
 import React from "react";
-import Relay from 'react-relay/classic';
 import { Button, ControlLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 
@@ -44,12 +43,20 @@ class AddUser extends React.Component {
     };
 
     if (this.validate(user)) {
-      Relay.Store.commitUpdate(
-        new AddUserMutation(user), {
-          onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
-          onSuccess: () => { toastr.success("User added (F5)"); this.clear(); }
+      AddUserMutation.commit(
+        this.props.relay.environment,
+        user,
+        {
+          onError: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
+          onCompleted: () => { toastr.success("User added (F5)"); this.clear(); }
         }
       );
+      // Relay.Store.commitUpdate(
+      //   new AddUserMutation(user), {
+      //     onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
+      //     onSuccess: () => { toastr.success("User added (F5)"); this.clear(); }
+      //   }
+      // );
     }    
   } 
 
