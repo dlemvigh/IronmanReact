@@ -4,7 +4,7 @@ import { Button, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 import PersonalGoals from "./PersonalGoals";
 import PersonalGoalsFormItem from "./PersonalGoalsFormItem";
-import SetPersonalGoalsMutations from "../../Mutations/SetPersonalGoalsMutations";
+import SetPersonalGoalsMutation from "../../Mutations/SetPersonalGoalsMutation";
 
 class PersonalGoalsForm extends React.Component {
   constructor(props) {
@@ -86,14 +86,14 @@ class PersonalGoalsForm extends React.Component {
       return;
     }
     const goals = this.state.goals.map(this.toGoal);
-
-    Relay.Store.commitUpdate(
-      new SetPersonalGoalsMutations({
-        user: this.props.user,
+    SetPersonalGoalsMutation.commit(
+      this.props.relay.environment,
+      { 
+        userId: this.props.user._id,
         goals
-      }), {
-        onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
-        onSuccess: () => { toastr.success("Personal Goals updated"); }
+      }, {
+        onError: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
+        onCompleted: () => { toastr.success("Personal Goals updated"); }        
       }
     );
   }
