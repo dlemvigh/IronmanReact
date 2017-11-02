@@ -17,16 +17,13 @@ class ActivityItem extends React.Component {
   }
 
   onDelete = () => {
-    const mutation = new RemoveActivityMutation({
-      id: this.props.activity._id,
-      nodeId: this.props.user.id,
-      medals: this.getMedals(),
-      store: this.props.store.id
-    });    
-    Relay.Store.commitUpdate(
-      mutation, {
-        onFailure: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed"); },
-        onSuccess: (resp) => { console.log("success", resp); toastr.success("Activity removed"); }
+    RemoveActivityMutation.commit(
+      this.props.relay.environment,
+      this.props.activity._id,
+      this.props.user.id,
+      {
+        onError: (resp) => { console.log("fail", resp); toastr.error("Remove activity failed"); },
+        onCompleted: (resp) => { console.log("success", resp); toastr.success("Activity removed"); }
       }
     );
   }

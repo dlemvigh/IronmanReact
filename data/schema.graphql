@@ -44,6 +44,7 @@ input AddActivityInput {
 }
 
 type AddActivityPayload {
+  activity: Activity
   activityEdge: ActivityEdge
   user: User
   medals: [Medals]

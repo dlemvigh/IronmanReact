@@ -10,7 +10,7 @@ import {
 } from "graphql-relay";
 
 import database from '../database';
-import { activityEdge } from '../types/activityType';
+import activityType, { activityEdge } from '../types/activityType';
 import medalsType from '../types/medalsType';
 import storeType from '../types/storeType';
 import userType from '../types/userType';
@@ -25,6 +25,12 @@ const addActivityMutation = mutationWithClientMutationId({
   },
 
   outputFields: {
+    activity: {
+      type: activityType,
+      resolve: (obj) => {
+        return obj;
+      }
+    },
     activityEdge: {
       type: activityEdge,
       resolve: async (obj) => {

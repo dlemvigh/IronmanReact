@@ -1,56 +1,68 @@
-import Relay from 'react-relay/classic';
+import { commitMutation, graphql } from 'react-relay/compat';
 
-class AddActivityMutation extends Relay.Mutation {
-
-  getMutation() {
-    return Relay.QL`
-      mutation { addActivity }
-    `;
-  }
-
-  getVariables() {
-    return {
-      disciplineId: this.props.disciplineId,
-      userId: this.props.userId,
-      distance: this.props.distance,
-      date: this.props.date
-    };
-  }
-
-  getFatQuery() {
-    return Relay.QL`
-      fragment on AddActivityPayload {
-        activityEdge
-        medals
-        user { 
-          activities
-          summary {
-            score
+const mutation = graphql`
+  mutation AddActivityMutation (
+    $input: AddActivityInput!
+  ) {
+    addActivity(input: $input) {
+      activity {
+        id  
+        _id
+        date
+        disciplineId
+        disciplineName
+        distance
+        score
+        unit
+        week
+        year
+        userId
+        userName      
+      }
+      store {
+        users {
+          medals {
+            id
+            gold
+            goldWeeks
+            silver
+            silverWeeks
+            bronze
+            bronzeWeeks
           }
         }
-        store
+      }  
+      user {
+        summary {
+          id
+          score
+        }
+        activities(first: 1000) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
-    `;
+    }
   }
+`;
 
-  getConfigs() {
-    return [{
-      type: "RANGE_ADD",
-      parentName: "user",
-      parentID: this.props.nodeId,
-      connectionName: "activities",
-      edgeName: "activityEdge",
-      rangeBehaviors: {
-        "": "prepend",
-      },
-    },{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        medals: this.props.medals,
-        store: this.props.store
-      }
-    }];
-  }
+function getConfigs() {
+  return [];
 }
 
-export default AddActivityMutation;
+function commit(environment, activity, config = {}) {
+  return commitMutation(
+    environment,
+    {
+      ...config,
+      mutation,
+      variables: { input: activity },
+      configs: getConfigs(),
+    }
+  );
+}
+
+export default { commit };

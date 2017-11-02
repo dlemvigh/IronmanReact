@@ -1,48 +1,65 @@
-import Relay from 'react-relay/classic';
+import { commitMutation, graphql } from 'react-relay/compat';
 
-class EditActivityMutation extends Relay.Mutation {
-
-  getMutation() {
-    return Relay.QL`
-      mutation { editActivity }
-    `;
-  }
-
-  getVariables() {
-    return {
-      id: this.props._id,
-      disciplineId: this.props.disciplineId,
-      userId: this.props.userId,
-      distance: this.props.distance,
-      date: this.props.date
-    };
-  }
-
-  getFatQuery() {
-    return Relay.QL`
-      fragment on EditActivityPayload {
-        activity
-        medals
-        user { 
-          summary {
-            score
+const mutation = graphql`
+  mutation EditActivityMutation (
+    $input: EditActivityInput!
+  ) {
+    editActivity(input: $input) {
+      activity {
+        id  
+        date
+        disciplineId
+        disciplineName
+        distance
+        score
+        unit
+        week
+        year
+      }
+      store {
+        users {
+          medals {
+            id
+            gold
+            goldWeeks
+            silver
+            silverWeeks
+            bronze
+            bronzeWeeks
           }
         }
-        store
+      }  
+      user {
+        summary {
+          id
+          score
+        }
+        activities(first: 1000) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
-    `;
+    }
   }
+`;
 
-  getConfigs() {
-    return [{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        activity: this.props.id,
-        medals: this.props.medals,
-        store: this.props.store
-      },
-    }];
-  }
+function getConfigs() {
+  return [];
 }
 
-export default EditActivityMutation;
+function commit(environment, activity, config = {}) {
+  return commitMutation(
+    environment,
+    {
+      ...config,
+      mutation,
+      variables: { input: activity },
+      configs: getConfigs(),
+    }
+  );
+}
+
+export default { commit };

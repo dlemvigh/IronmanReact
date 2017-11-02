@@ -94,24 +94,24 @@ class ActivityForm extends React.Component {
     if (this.isValid()) {
       const activity = this.getActivity();
       if (this.isEditing()) {
-        Relay.Store.commitUpdate(
-          new EditActivityMutation({
-            _id: this.props.activity._id,
-            id: this.props.activity.id,                        
-            ...activity
-          }), {
-            onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
-            onSuccess: () => { toastr.success("Activity updated"); }
+        EditActivityMutation.commit(
+          this.props.relay.environment,
+          {
+            id: this.props.activity._id,
+            ...activity,
+          }, {
+            onError: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
+            onCompleted: () => { toastr.success("Activity updated"); }
           }
         );
         this.props.onEditDone();
       } else {
-        Relay.Store.commitUpdate(
-          new AddActivityMutation({
-            ...activity,
-          }), {
-            onFailure: (resp) => { console.error("fail", resp); toastr.error("Add activity failed"); },
-            onSuccess: () => { toastr.success("Activity added"); }
+        AddActivityMutation.commit(
+          this.props.relay.environment,
+          activity,
+          {
+            onError: (resp) => { console.error("fail", resp); toastr.error("Add activity failed"); },
+            onCompleted: () => { toastr.success("Activity added"); }
           }
         );
         this.clearState();
@@ -125,15 +125,15 @@ class ActivityForm extends React.Component {
 
   getActivity() {
     const activity = {
-      medals: this.getMedals(),
-      store: this.props.store.id,
+      // medals: this.getMedals(),
+      // store: this.props.store.id,
       userId: this.props.user._id,
-      nodeId: this.props.user.id,
-      userIds: this.getUserIds(),
+      // nodeId: this.props.user.id,
+      // userIds: this.getUserIds(),
       disciplineId: this.state.disciplineId,
       distance: parseFloat(this.state.distance),
-      unit: this.state.unit,
-      score: this.state.score * this.state.distance,
+      // unit: this.state.unit,
+      // score: this.state.score * this.state.distance,
       date: moment.utc(this.state.date, "D/M-YYYY").toISOString()
     };
     return activity;

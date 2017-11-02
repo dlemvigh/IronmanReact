@@ -1830,6 +1830,18 @@
           "description": null,
           "fields": [
             {
+              "name": "activity",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Activity",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "activityEdge",
               "description": null,
               "args": [],

@@ -1,50 +1,60 @@
-import Relay from 'react-relay/classic';
+import { commitMutation, graphql } from 'react-relay/compat';
 
-class RemoveActivityMutation extends Relay.Mutation {
-
-  getMutation() {
-    return Relay.QL`
-      mutation { removeActivity }
-    `;
-  }
-
-  getVariables() {
-    return {
-      id: this.props.id  
-    };
-  }
-
-  getFatQuery() {
-    return Relay.QL`
-      fragment on RemoveActivityPayload {
-        removedActivityId
-        medals
-        user { 
-          activities
-          summary {
-            score
-          } 
+const mutation = graphql`
+  mutation RemoveActivityMutation (
+    $input: RemoveActivityInput!
+  ) {
+    removeActivity(input: $input) {
+      store {
+        users {
+          medals {
+            id
+            gold
+            goldWeeks
+            silver
+            silverWeeks
+            bronze
+            bronzeWeeks
+          }
         }
-        store
+      }  
+      user {
+        summary {
+          id
+          score
+        }
+        activities(first: 1000) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
-    `;
+    }
   }
+`;
 
-  getConfigs() {
-    return [{
-      type: "NODE_DELETE",
-      parentName: "user",
-      parentID: this.props.nodeId,
-      connectionName: "activities",
-      deletedIDFieldName: "removedActivityId",
-    },{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        medals: this.props.medals,
-        store: this.props.store
-      }
-    }];
-  }
+function getConfigs(nodeId) {
+  return [{
+    type: "NODE_DELETE",
+    parentName: "user",
+    parentID: nodeId,
+    connectionName: "activities",
+    deletedIDFieldName: "removedActivityId",
+  }];
 }
 
-export default RemoveActivityMutation;
+function commit(environment, id, nodeId, config = {}) {
+  return commitMutation(
+    environment,
+    {
+      ...config,
+      mutation,
+      variables: { input: { id } },
+      configs: getConfigs(nodeId)
+    }
+  );
+}
+
+export default { commit };
