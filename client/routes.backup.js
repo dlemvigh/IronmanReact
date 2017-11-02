@@ -2,8 +2,8 @@ import React from "react";
 import { Router, Route, IndexRoute } from "react-router";
 import ReactGA from "react-ga";
 
-import App from "./Components/App/App";
-import AppQueries from "./Components/App/AppQueries";
+import App, { AppQuery } from "./Components/App/App";
+// import AppQueries from "./Components/App/AppQueries";
 import Activity from "./Components/Activity/Activity";
 import ActivityQueries from "./Components/Activity/ActivityQueries";
 import Admin from "./Components/Admin/Admin";
@@ -44,7 +44,7 @@ const Routes = (props) => (
     <Route 
       path="/" 
       component={App} 
-      queries={AppQueries}
+      queries={AppQuery}
       prepareParams={perpareParamsAuth}
       render={({props}) => props ? <App {...props} auth={auth} /> : <Loading show />} 
     >

@@ -39,7 +39,7 @@ const fragment /*: ConcreteFragment*/ = {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 100,
+          "value": 1000,
           "type": "Int"
         }
       ],
@@ -89,7 +89,7 @@ const fragment /*: ConcreteFragment*/ = {
           "storageKey": null
         }
       ],
-      "storageKey": "activities{\"first\":100}"
+      "storageKey": "activities{\"first\":1000}"
     }
   ],
   "type": "User"

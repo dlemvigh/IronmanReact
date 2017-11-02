@@ -58,6 +58,19 @@ class Activity extends React.Component {
   }
 }
 
+export const ActivityQuery = graphql`
+  query ActivityQuery(
+    $username: String!
+  ) {
+    store {
+      ...Activity_store
+    }
+    user (username: $username) {
+      ...Activity_user
+    }
+  }
+`;
+
 Activity = createFragmentContainer(Activity, {
   store: graphql`
     fragment Activity_store on Store {

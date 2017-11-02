@@ -61,7 +61,10 @@ App = createFragmentContainer(App, {
 });
 
 export const AppQuery = graphql`
-  query AppQuery($activeUser: String!, $hasActiveUser: Boolean!) {
+  query AppQuery(
+    $activeUser: String!, 
+    $hasActiveUser: Boolean!
+  ) {
     user(username: $activeUser) @include(if: $hasActiveUser) {
       ...App_activeUser
     }

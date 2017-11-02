@@ -51,7 +51,7 @@ ActivityList = createFragmentContainer(ActivityList, {
   user: graphql`
     fragment ActivityList_user on User {
       ...ActivityItem_user
-      activities(first: 100) {
+      activities(first: 1000) {
         edges {
           node {
             id
