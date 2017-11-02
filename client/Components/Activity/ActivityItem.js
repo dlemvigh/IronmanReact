@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { Glyphicon } from "react-bootstrap";
 import toastr from "toastr";
 
@@ -53,35 +53,33 @@ class ActivityItem extends React.Component {
   }
 }
 
-ActivityItem = Relay.createContainer(ActivityItem, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        id  
-        users {
-          medals {
-            id
-          }
+ActivityItem = createFragmentContainer(ActivityItem, {
+  store: graphql`
+    fragment ActivityItem_store on Store {
+      id  
+      users {
+        medals {
+          id
         }
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        id
-      }
-    `,
-    activity: () => Relay.QL`
-      fragment on Activity {
-        _id
-        id
-        disciplineId, 
-        disciplineName, 
-        distance,
-        unit,
-        score,
-        date
-      }`
-  }
+    }
+  `,
+  user: graphql`
+    fragment ActivityItem_user on User {
+      id
+    }
+  `,
+  activity: graphql`
+    fragment ActivityItem_activity on Activity {
+      _id
+      id
+      disciplineId, 
+      disciplineName, 
+      distance,
+      unit,
+      score,
+      date
+    }`
 });
 
 export default ActivityItem;

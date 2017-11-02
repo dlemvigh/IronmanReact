@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
@@ -42,28 +42,26 @@ class ActivityList extends React.Component {
   }
 }
 
-ActivityList = Relay.createContainer(ActivityList, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        ${ActivityItem.getFragment("store")}
-      }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        ${ActivityItem.getFragment("user")}
-        activities(first: 100) {
-          edges {
-            node {
-              id
-              week
-              ${ActivityItem.getFragment("activity")}
-            }
+ActivityList = createFragmentContainer(ActivityList, {
+  store: graphql`
+    fragment ActivityList_store on Store {
+      ...ActivityItem_store
+    }
+  `,
+  user: graphql`
+    fragment ActivityList_user on User {
+      ...ActivityItem_user
+      activities(first: 100) {
+        edges {
+          node {
+            id
+            week
+            ...ActivityItem_activity
           }
         }
       }
-    `
-  }
+    }
+  `
 });
 
 export default ActivityList;

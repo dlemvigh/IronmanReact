@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import CSSModules from "react-css-modules";
 import toastr from "toastr";
 
@@ -46,20 +46,18 @@ class App extends React.Component {
 
 App = CSSModules(App, styles);
 
-App = Relay.createContainer(App, {
-  fragments: {
-    activeUser: () => Relay.QL`
-      fragment on User {
-        ${Header.getFragment("activeUser")}
-      }
-    `,
-    store: () => Relay.QL`
-      fragment on Store {
-        id
-        ${Header.getFragment("store")}
-      }
-    `
-  }
+App = createFragmentContainer(App, {
+  activeUser: graphql`
+    fragment App_activeUser on User {
+      ...Header_activeUser
+    }
+  `,
+  store: graphql`
+    fragment App_store on Store {
+      id
+      ...Header_store
+    }
+  `
 });
 
 export default App;

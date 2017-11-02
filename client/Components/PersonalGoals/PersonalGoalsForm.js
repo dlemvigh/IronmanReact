@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay/classic";
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { Button, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 import PersonalGoals from "./PersonalGoals";
@@ -129,29 +129,27 @@ class PersonalGoalsForm extends React.Component {
   }
 }
 
-PersonalGoalsForm = Relay.createContainer(PersonalGoalsForm, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        ${PersonalGoalsFormItem.getFragment("store")}
+PersonalGoalsForm = createFragmentContainer(PersonalGoalsForm, {
+  store: graphql`
+    fragment PersonalGoalsForm_store on Store {
+      ...PersonalGoalsFormItem_store
+    }
+  `,
+  user: graphql`
+    fragment PersonalGoalsForm_user on User {
+      ...PersonalGoals_user
+      id
+      _id
+      personalGoals {
+        _id          
+        disciplineId
+        disciplineName
+        dist
+        count
+        score      
       }
-    `,
-    user: () =>Relay.QL`
-      fragment on User {
-        ${PersonalGoals.getFragment("user")}
-        id
-        _id
-        personalGoals {
-          _id          
-          disciplineId
-          disciplineName
-          dist
-          count
-          score      
-        }
-      }
-    `,
-  }
+    }
+  `,
 });
 
 export default PersonalGoalsForm;

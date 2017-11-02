@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { Button, Col, Row } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 import moment from "moment";
@@ -197,30 +197,28 @@ class ActivityForm extends React.Component {
 
 ActivityForm = CSSModules(ActivityForm, styles);
 
-ActivityForm = Relay.createContainer(ActivityForm, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        id
-        users {
-          medals {
-            id
-          }
+ActivityForm = createFragmentContainer(ActivityForm, {
+  store: graphql`
+    fragment ActivityForm_store on Store {
+      id
+      users {
+        medals {
+          id
         }
-        disciplines {
-          _id
-          name
-        }
-        ${ControlDiscipline.getFragment("store")}
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
+      disciplines {
         _id
-        id
+        name
       }
-    `
-  }
+      ...ControlDiscipline_store
+    }
+  `,
+  user: graphql`
+    fragment ActivityForm_user on User {
+      _id
+      id
+    }
+  `
 });
 
 export default ActivityForm;

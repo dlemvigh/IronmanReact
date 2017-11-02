@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { ControlLabel, FormControl, FormGroup, Glyphicon, Row, Col } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
@@ -134,18 +134,16 @@ class PersonalGoalsFormItem extends React.Component {
 
 PersonalGoalsFormItem = CSSModules(PersonalGoalsFormItem, styles, { allowMultiple: true });
 
-PersonalGoalsFormItem = Relay.createContainer(PersonalGoalsFormItem, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        disciplines {
-          _id
-          name
-          unit
-        }
+PersonalGoalsFormItem = createFragmentContainer(PersonalGoalsFormItem, {
+  store: graphql`
+    fragment PersonalGoalsFormItem_store on Store {
+      disciplines {
+        _id
+        name
+        unit
       }
-    `
-  }
+    }
+  `
 });
 
 export default PersonalGoalsFormItem; 

@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import ReactCSSTransitionReplace from "react-css-transition-replace";
 
 import { auth } from '../../Auth/Auth';
@@ -58,24 +58,22 @@ class Activity extends React.Component {
   }
 }
 
-Activity = Relay.createContainer(Activity, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        ${ActivityForm.getFragment("store")}
-        ${ActivityList.getFragment("store")}
-      }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        name
-        username
-        ${ActivityForm.getFragment("user")}
-        ${ActivityList.getFragment("user")}
-        ${PersonalGoals.getFragment("user")}
-      }
-    `
-  }
+Activity = createFragmentContainer(Activity, {
+  store: graphql`
+    fragment Activity_store on Store {
+      ...ActivityForm_store
+      ...ActivityList_store
+    }
+  `,
+  user: graphql`
+    fragment Activity_user on User {
+      name
+      username
+      ...ActivityForm_user
+      ...ActivityList_user
+      ...PersonalGoals_user
+    }
+  `
 });
 
 export default Activity;

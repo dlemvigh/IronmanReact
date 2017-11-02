@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from "react-relay/compat";
 import { Link } from "found";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import CSSModules from "react-css-modules";
@@ -144,27 +144,25 @@ class Header extends React.Component {
 
 Header = CSSModules(Header, styles);
 
-Header = Relay.createContainer(Header, {
-  fragments: {
-    activeUser: () => Relay.QL`
-      fragment on User {
-        username
+Header = createFragmentContainer(Header, {
+  activeUser: graphql`
+    fragment Header_activeUser on User {
+      username
+    }
+  `,
+  store: graphql`
+    fragment Header_store on Store {
+      users {
+        name
+        username                        
       }
-    `,
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          name
-          username                        
-        }
-        allSeasons {
-          _id
-          name
-          from
-        }
+      allSeasons {
+        _id
+        name
+        from
       }
-    `
-  }
+    }
+  `
 });
 
 export default Header;
