@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 6f7a4da7097e164056d0b39406b13d96
+ * @relayHash 4e895f23e3a16cf3ac1e0d92b7143c2d
  */
 
 /* eslint-disable */
@@ -9,24 +9,28 @@
 
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
-export type CatchupQueryResponse = {|
+export type LeaderboardQueryResponse = {|
   +store: ?{| |};
 |};
 */
 
 
 /*
-query CatchupQuery(
+query LeaderboardQuery(
   $week: Int
   $year: Int
+  $currentWeekNo: Int
+  $currentWeekYear: Int
+  $lastWeekNo: Int
+  $lastWeekYear: Int
 ) {
   store {
-    ...Catchup_store_3L7R8V
+    ...Catchup_store_2SxrC3
     id
   }
 }
 
-fragment Catchup_store_3L7R8V on Store {
+fragment Catchup_store_2SxrC3 on Store {
   users {
     name
     summary(week: $week, year: $year) {
@@ -88,11 +92,35 @@ const batch /*: ConcreteBatch*/ = {
         "name": "year",
         "type": "Int",
         "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "currentWeekNo",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "currentWeekYear",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "lastWeekNo",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "lastWeekYear",
+        "type": "Int",
+        "defaultValue": null
       }
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "CatchupQuery",
+    "name": "LeaderboardQuery",
     "selections": [
       {
         "kind": "LinkedField",
@@ -106,6 +134,30 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "FragmentSpread",
             "name": "Catchup_store",
             "args": [
+              {
+                "kind": "Variable",
+                "name": "currentWeekNo",
+                "variableName": "currentWeekNo",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "currentWeekYear",
+                "variableName": "currentWeekYear",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "lastWeekNo",
+                "variableName": "lastWeekNo",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "lastWeekYear",
+                "variableName": "lastWeekYear",
+                "type": null
+              },
               {
                 "kind": "Variable",
                 "name": "week",
@@ -129,7 +181,7 @@ const batch /*: ConcreteBatch*/ = {
   "id": null,
   "kind": "Batch",
   "metadata": {},
-  "name": "CatchupQuery",
+  "name": "LeaderboardQuery",
   "query": {
     "argumentDefinitions": [
       {
@@ -143,10 +195,34 @@ const batch /*: ConcreteBatch*/ = {
         "name": "year",
         "type": "Int",
         "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "currentWeekNo",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "currentWeekYear",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "lastWeekNo",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "lastWeekYear",
+        "type": "Int",
+        "defaultValue": null
       }
     ],
     "kind": "Root",
-    "name": "CatchupQuery",
+    "name": "LeaderboardQuery",
     "operation": "query",
     "selections": [
       {
@@ -304,7 +380,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query CatchupQuery(\n  $week: Int\n  $year: Int\n) {\n  store {\n    ...Catchup_store_3L7R8V\n    id\n  }\n}\n\nfragment Catchup_store_3L7R8V on Store {\n  users {\n    name\n    summary(week: $week, year: $year) {\n      score\n      id\n    }\n    id\n  }\n  ...CatchupList_store\n}\n\nfragment CatchupList_store on Store {\n  disciplines {\n    _id\n    name\n    ...CatchupItem_disciplines\n    id\n  }\n  users {\n    _id\n    ...CatchupItem_user\n    summary(week: $week, year: $year) {\n      score\n      ...CatchupItem_summary\n      id\n    }\n    id\n  }\n}\n\nfragment CatchupItem_disciplines on Discipline {\n  _id\n  name\n  score\n  unit\n}\n\nfragment CatchupItem_user on User {\n  name\n  username\n}\n\nfragment CatchupItem_summary on Summary {\n  score\n}\n"
+  "text": "query LeaderboardQuery(\n  $week: Int\n  $year: Int\n  $currentWeekNo: Int\n  $currentWeekYear: Int\n  $lastWeekNo: Int\n  $lastWeekYear: Int\n) {\n  store {\n    ...Catchup_store_2SxrC3\n    id\n  }\n}\n\nfragment Catchup_store_2SxrC3 on Store {\n  users {\n    name\n    summary(week: $week, year: $year) {\n      score\n      id\n    }\n    id\n  }\n  ...CatchupList_store\n}\n\nfragment CatchupList_store on Store {\n  disciplines {\n    _id\n    name\n    ...CatchupItem_disciplines\n    id\n  }\n  users {\n    _id\n    ...CatchupItem_user\n    summary(week: $week, year: $year) {\n      score\n      ...CatchupItem_summary\n      id\n    }\n    id\n  }\n}\n\nfragment CatchupItem_disciplines on Discipline {\n  _id\n  name\n  score\n  unit\n}\n\nfragment CatchupItem_user on User {\n  name\n  username\n}\n\nfragment CatchupItem_summary on Summary {\n  score\n}\n"
 };
 
 module.exports = batch;

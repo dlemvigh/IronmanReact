@@ -9,19 +9,7 @@ import { mapFilter, getClassName } from "./CatchupFilter";
 import CatchupItem from "./CatchupItem";
 
 class CatchupList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.refetch(props);
-  }
-
-  refetch(props) {
-    const vars = {
-      week: moment().isoWeek(),
-      year: moment().weekYear() 
-    };
-    props.relay.refetch(vars, null);
-  }
-
+  
   getDisciplines() {
     const filtered = mapFilter(this.props.store.disciplines);
     return filtered;
