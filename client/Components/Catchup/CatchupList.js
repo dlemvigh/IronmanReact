@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from 'react-relay/classic';
+import { createFragmentContainer, graphql } from 'react-relay/compat';
 import { Table } from "react-bootstrap";
 import moment from "moment";
 import _ from "lodash";
@@ -9,6 +9,18 @@ import { mapFilter, getClassName } from "./CatchupFilter";
 import CatchupItem from "./CatchupItem";
 
 class CatchupList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.refetch(props);
+  }
+
+  refetch(props) {
+    const vars = {
+      week: moment().isoWeek(),
+      year: moment().weekYear() 
+    };
+    props.relay.refetch(vars, null);
+  }
 
   getDisciplines() {
     const filtered = mapFilter(this.props.store.disciplines);
@@ -65,30 +77,26 @@ class CatchupList extends React.Component {
   }
 }
 
-CatchupList = Relay.createContainer(CatchupList, {
-  initialVariables: {
-    week: moment().isoWeek(),
-    year: moment().weekYear() 
-  },
-  fragments: {
-    store: () => Relay.QL`
-      fragments on Store {
-        disciplines {
+CatchupList = createFragmentContainer(
+  CatchupList,
+  {
+    store: graphql`
+      fragment CatchupList_store on Store {
+          disciplines {
           _id
           name
-          ${CatchupItem.getFragment("disciplines")}
+          ...CatchupItem_disciplines
         }
         users {
           _id
-          ${CatchupItem.getFragment("user")}
+          ...CatchupItem_user
           summary(week: $week, year: $year) {
             score
-            ${CatchupItem.getFragment("summary")}
+            ...CatchupItem_summary
           }
         }
       }
     `
   }
-});
-
+);
 export default CatchupList;
