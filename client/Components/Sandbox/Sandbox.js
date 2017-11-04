@@ -1,9 +1,6 @@
 import React from "react";
 import { createFragmentContainer, graphql } from "react-relay/compat";
 
-import Activity from "../Activity/Activity";
-import Leaderboard from "../Leaderboard/Leaderboard";
-
 import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from "recharts";
 
 const colors = [
@@ -49,10 +46,10 @@ class Sandbox extends React.Component {
             <Tooltip />
             <Legend />
             {
-                this.props.store.users.map((x, index) => 
-                  <Line key={x.name} dataKey={x.name} stroke={colors[index]} />                  
-                )
-              }
+              this.props.store.users.map((x, index) => 
+                <Line key={x.name} dataKey={x.name} stroke={colors[index]} />                  
+              )
+            }
           </LineChart>
         </ResponsiveContainer>
         {/*
@@ -86,5 +83,16 @@ Sandbox = createFragmentContainer(Sandbox, {
     }
   `
 });
+
+// export const SandboxQuery = graphql`
+//   query SandboxQuery {
+//     store {
+//       ...Sandbox_store
+//     }
+//     user(username: "david") {
+//       ...Sandbox_user
+//     }
+//   }
+// `;
 
 export default Sandbox;

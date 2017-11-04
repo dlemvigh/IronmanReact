@@ -18,8 +18,8 @@ import PersonalGoalsForm from './Components/PersonalGoals/PersonalGoalsForm';
 import PersonalGoalsFormQueries from './Components/PersonalGoals/PersonalGoalsFormQueries';
 import Season from "./Components/Season/Season";
 import SeasonQueries from "./Components/Season/SeasonQueries";
-import Sandbox from "./Components/Sandbox/Sandbox";
-import SandboxQueries from "./Components/Sandbox/SandboxQueries";
+// import Sandbox from "./Components/Sandbox/Sandbox";
+// import SandboxQueries from "./Components/Sandbox/SandboxQueries";
 
 const perpareParamsAuth = (params) => ({
   ...params, 
@@ -44,12 +44,12 @@ export default makeRouteConfig(
       path="callback"
       Component={Callback}
     />
-    <Route
+    {/* <Route
       path="sandbox"
       Component={Sandbox}
       queries={SandboxQueries}
       render={({props}) => props ? <Sandbox {...props} /> : <Loading show />}
-    />
+    /> */}
     <Route
       path="graphs"
       Component={Graphs}

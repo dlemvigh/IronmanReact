@@ -15,14 +15,6 @@ class Graphs extends React.Component {
   }
 }
 
-export const GraphsQuery = graphql`
-  query GraphsQuery {
-    store {
-      ...Graphs_store
-    }
-  }
-`;
-
 Graphs = createFragmentContainer(Graphs, {
   store: graphql`
     fragment Graphs_store on Store {
@@ -40,5 +32,13 @@ Graphs = createFragmentContainer(Graphs, {
     }
   `
 });
+
+export const GraphsQuery = graphql`
+  query GraphsQuery {
+    store {
+      ...Graphs_store
+    }
+  }
+`;
 
 export default Graphs;

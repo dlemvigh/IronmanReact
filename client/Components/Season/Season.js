@@ -27,4 +27,17 @@ Season = createFragmentContainer(Season, {
   `
 });
 
+export const SeasonQuery = graphql`
+  query SeasonQuery (
+    $id: String!
+  ) {
+    store {
+      ...Season_store
+    }
+    season(id: $id) {
+      ...Season_season
+    }
+  }
+`;
+
 export default Season;

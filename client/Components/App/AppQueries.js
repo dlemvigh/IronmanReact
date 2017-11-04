@@ -12,19 +12,3 @@ export default {
         }
     `,
 };
-
-  // import { graphql } from 'react-relay/compat';
-
-  // export default graphql`
-  //     query AppQueriesQuery (
-  //         $activeUser: String!, 
-  //         $hasActiveUser: Boolean!
-  //       ) {
-  //         user(username: $activeUser) @include(if: $hasActiveUser) {
-  //           ...App_activeUser
-  //         }
-  //         store {
-  //           ...App_store
-  //         }
-  //     }
-  // `;

@@ -23,7 +23,7 @@ class Leaderboard extends React.Component {
       currentWeekYear: moment().weekYear(),
       lastWeekNo: moment().add(-7, "days").isoWeek(),
       lastWeekYear: moment().add(-7, "days").weekYear()
-      };
+    };
     props.relay.refetch(vars, null);
   }
 
@@ -137,5 +137,19 @@ Leaderboard = createRefetchContainer(
       } 
     `
 )
+
+// export const LeaderboardQuery = graphql`
+//   query LeaderboardQuery (
+//     $activeUser: String,
+//     $hasActiveUser: Boolean!
+//   ) {
+//     store {
+//       ...Leaderboard_store
+//     }
+//     user(username: $activeUser) @include(if: $hasActiveUser) {
+//       ...Leaderboard_activeUser
+//     }
+//   }
+// `;
 
 export default Leaderboard;

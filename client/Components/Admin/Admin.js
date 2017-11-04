@@ -15,14 +15,6 @@ class Admin extends React.Component {
   }
 }
 
-export const AdminQuery = graphql`
-  query AdminQuery {
-    store {
-      ...Admin_store
-    }
-  }
-`;
-
 Admin = createFragmentContainer(Admin, {
   store: graphql`
     fragment Admin_store on Store {
@@ -30,5 +22,13 @@ Admin = createFragmentContainer(Admin, {
     }
   `
 });
+
+export const AdminQuery = graphql`
+query AdminQuery {
+  store {
+    ...Admin_store
+  }
+}
+`;
 
 export default Admin;

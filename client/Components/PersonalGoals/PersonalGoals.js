@@ -27,4 +27,14 @@ PersonalGoals = createFragmentContainer(PersonalGoals, {
   `,
 });
 
+export const PersonalGoalsQuery = graphql`
+  query PersonalGoalsQuery(
+    $username: String!
+  ) {
+    user(username: $username) {
+      ...PersonalGoals_user
+    }
+  }
+`;
+
 export default PersonalGoals;
