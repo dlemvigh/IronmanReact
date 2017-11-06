@@ -152,4 +152,18 @@ PersonalGoalsForm = createFragmentContainer(PersonalGoalsForm, {
   `,
 });
 
+export const PersonalGoalsFormQuery = graphql`
+query PersonalGoalsFormQuery(
+  $username: String!
+) {
+  user(username: $username) {
+    ...PersonalGoalsForm_user
+  }
+  store {
+    ...PersonalGoalsForm_store
+  }
+}
+`;
+
+
 export default PersonalGoalsForm;

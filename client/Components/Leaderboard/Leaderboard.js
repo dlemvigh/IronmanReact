@@ -1,5 +1,4 @@
 import React from "react";
-// import Relay from 'react-relay/classic';
 import { createRefetchContainer, graphql } from 'react-relay/compat';
 import moment from "moment";
 
@@ -31,7 +30,7 @@ class Leaderboard extends React.Component {
     const isAuthenticated = auth.isAuthenticated();
     return (
       <div>
-        {isAuthenticated && <PersonalGoals auth={auth} user={this.props.activeUser} />}
+        {isAuthenticated && <PersonalGoals auth={auth} user={this.props.user} />}
         <h3>This weeks leaderboard</h3>
         <LeaderboardList summary={this.props.store.current} />
         {this.props.store.current.length >= 2 && <Catchup store={this.props.store} />}
@@ -85,8 +84,8 @@ class Leaderboard extends React.Component {
 Leaderboard = createRefetchContainer(
   Leaderboard, 
   {
-    activeUser: graphql`
-      fragment Leaderboard_activeUser on User {
+    user: graphql`
+      fragment Leaderboard_user on User {
         ...PersonalGoals_user
       }
     `,
@@ -147,7 +146,7 @@ Leaderboard = createRefetchContainer(
 //       ...Leaderboard_store
 //     }
 //     user(username: $activeUser) @include(if: $hasActiveUser) {
-//       ...Leaderboard_activeUser
+//       ...Leaderboard_user
 //     }
 //   }
 // `;

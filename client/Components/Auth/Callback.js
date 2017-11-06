@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import loading from './loading.svg';
+
+import { auth } from '../../Auth/Auth';
+import environment from '../../environment';
 import EnsureLoginMutation from "../../Mutations/EnsureLoginMutation";
+
+import loading from './loading.svg';
 
 class Callback extends Component {
   constructor(props) {
     super(props);
-
+    debugger
     if (/access_token|id_token|error/.test(props.location.hash)) {
-      props.auth.handleAuthentication((profile) => {  
+      auth.handleAuthentication((profile) => {  
         const login = {
           username: profile.username,
           provider: profile.provider,
@@ -15,7 +19,7 @@ class Callback extends Component {
         };
 
         EnsureLoginMutation.commit(
-          this.props.relay.environment,
+          environment,
           login,
           {
             onCompleted: (resp) => {

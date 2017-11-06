@@ -8,7 +8,7 @@
 
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
-export type Leaderboard_activeUser = {| |};
+export type App_user = {| |};
 */
 
 
@@ -16,11 +16,11 @@ const fragment /*: ConcreteFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Leaderboard_activeUser",
+  "name": "App_user",
   "selections": [
     {
       "kind": "FragmentSpread",
-      "name": "PersonalGoals_user",
+      "name": "Header_activeUser",
       "args": null
     }
   ],

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 67b8f1e33ec1877221785cd9ead54edb
+ * @relayHash 4cd954120af436309f5adc8aa44b52ae
  */
 
 /* eslint-disable */
@@ -18,11 +18,11 @@ export type AppQueryResponse = {|
 
 /*
 query AppQuery(
-  $activeUser: String!
+  $activeUser: String
   $hasActiveUser: Boolean!
 ) {
   user(username: $activeUser) @include(if: $hasActiveUser) {
-    ...App_activeUser
+    ...App_user
     id
   }
   store {
@@ -31,7 +31,7 @@ query AppQuery(
   }
 }
 
-fragment App_activeUser on User {
+fragment App_user on User {
   ...Header_activeUser
 }
 
@@ -65,7 +65,7 @@ const batch /*: ConcreteBatch*/ = {
       {
         "kind": "LocalArgument",
         "name": "activeUser",
-        "type": "String!",
+        "type": "String",
         "defaultValue": null
       },
       {
@@ -117,7 +117,7 @@ const batch /*: ConcreteBatch*/ = {
             "selections": [
               {
                 "kind": "FragmentSpread",
-                "name": "App_activeUser",
+                "name": "App_user",
                 "args": null
               }
             ],
@@ -137,7 +137,7 @@ const batch /*: ConcreteBatch*/ = {
       {
         "kind": "LocalArgument",
         "name": "activeUser",
-        "type": "String!",
+        "type": "String",
         "defaultValue": null
       },
       {
@@ -281,7 +281,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query AppQuery(\n  $activeUser: String!\n  $hasActiveUser: Boolean!\n) {\n  user(username: $activeUser) @include(if: $hasActiveUser) {\n    ...App_activeUser\n    id\n  }\n  store {\n    ...App_store\n    id\n  }\n}\n\nfragment App_activeUser on User {\n  ...Header_activeUser\n}\n\nfragment App_store on Store {\n  id\n  ...Header_store\n}\n\nfragment Header_store on Store {\n  users {\n    name\n    username\n    id\n  }\n  allSeasons {\n    _id\n    name\n    from\n    id\n  }\n}\n\nfragment Header_activeUser on User {\n  username\n}\n"
+  "text": "query AppQuery(\n  $activeUser: String\n  $hasActiveUser: Boolean!\n) {\n  user(username: $activeUser) @include(if: $hasActiveUser) {\n    ...App_user\n    id\n  }\n  store {\n    ...App_store\n    id\n  }\n}\n\nfragment App_user on User {\n  ...Header_activeUser\n}\n\nfragment App_store on Store {\n  id\n  ...Header_store\n}\n\nfragment Header_store on Store {\n  users {\n    name\n    username\n    id\n  }\n  allSeasons {\n    _id\n    name\n    from\n    id\n  }\n}\n\nfragment Header_activeUser on User {\n  username\n}\n"
 };
 
 module.exports = batch;

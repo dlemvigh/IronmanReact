@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash ec41dc1e40cf153bde2abdccdfb9ddb3
+ * @relayHash c41f3ad642d894c3fc10b042e3e6eb8d
  */
 
 /* eslint-disable */
@@ -9,18 +9,51 @@
 
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
-export type PersonalGoalsQueryResponse = {|
+export type PersonalGoalsFormQueryResponse = {|
   +user: ?{| |};
+  +store: ?{| |};
 |};
 */
 
 
 /*
-query PersonalGoalsQuery(
+query PersonalGoalsFormQuery(
   $username: String!
 ) {
   user(username: $username) {
-    ...PersonalGoals_user
+    ...PersonalGoalsForm_user
+    id
+  }
+  store {
+    ...PersonalGoalsForm_store
+    id
+  }
+}
+
+fragment PersonalGoalsForm_user on User {
+  ...PersonalGoals_user
+  id
+  _id
+  personalGoals {
+    _id
+    disciplineId
+    disciplineName
+    dist
+    count
+    score
+    id
+  }
+}
+
+fragment PersonalGoalsForm_store on Store {
+  ...PersonalGoalsFormItem_store
+}
+
+fragment PersonalGoalsFormItem_store on Store {
+  disciplines {
+    _id
+    name
+    unit
     id
   }
 }
@@ -91,7 +124,7 @@ const batch /*: ConcreteBatch*/ = {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "PersonalGoalsQuery",
+    "name": "PersonalGoalsFormQuery",
     "selections": [
       {
         "kind": "LinkedField",
@@ -110,7 +143,23 @@ const batch /*: ConcreteBatch*/ = {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "PersonalGoals_user",
+            "name": "PersonalGoalsForm_user",
+            "args": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "args": null,
+        "concreteType": "Store",
+        "name": "store",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "PersonalGoalsForm_store",
             "args": null
           }
         ],
@@ -122,7 +171,7 @@ const batch /*: ConcreteBatch*/ = {
   "id": null,
   "kind": "Batch",
   "metadata": {},
-  "name": "PersonalGoalsQuery",
+  "name": "PersonalGoalsFormQuery",
   "query": {
     "argumentDefinitions": [
       {
@@ -133,7 +182,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ],
     "kind": "Root",
-    "name": "PersonalGoalsQuery",
+    "name": "PersonalGoalsFormQuery",
     "operation": "query",
     "selections": [
       {
@@ -174,16 +223,44 @@ const batch /*: ConcreteBatch*/ = {
                 "storageKey": null
               },
               {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "disciplineId",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "disciplineName",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "dist",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "count",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "score",
+                "storageKey": null
+              },
+              {
                 "kind": "InlineFragment",
                 "type": "PersonalGoal",
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "disciplineId",
-                    "storageKey": null
-                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -214,27 +291,6 @@ const batch /*: ConcreteBatch*/ = {
                         "storageKey": null
                       }
                     ],
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "count",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "dist",
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "args": null,
-                    "name": "score",
                     "storageKey": null
                   }
                 ]
@@ -361,13 +417,77 @@ const batch /*: ConcreteBatch*/ = {
             "args": null,
             "name": "id",
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "args": null,
+            "name": "_id",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "args": null,
+        "concreteType": "Store",
+        "name": "store",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "args": null,
+            "concreteType": "Discipline",
+            "name": "disciplines",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "_id",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "name",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "unit",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "id",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "args": null,
+            "name": "id",
+            "storageKey": null
           }
         ],
         "storageKey": null
       }
     ]
   },
-  "text": "query PersonalGoalsQuery(\n  $username: String!\n) {\n  user(username: $username) {\n    ...PersonalGoals_user\n    id\n  }\n}\n\nfragment PersonalGoals_user on User {\n  personalGoals {\n    _id\n    id\n  }\n  ...PersonalGoalsList_user\n}\n\nfragment PersonalGoalsList_user on User {\n  ...PersonalGoalsItem_user\n  activities(first: 1000) {\n    edges {\n      ...PersonalGoalsItem_activities\n      node {\n        week\n        year\n        id\n      }\n    }\n  }\n  personalGoals {\n    _id\n    ...PersonalGoalsItem_goal\n    id\n  }\n}\n\nfragment PersonalGoalsItem_user on User {\n  username\n}\n\nfragment PersonalGoalsItem_activities on ActivityEdge {\n  node {\n    disciplineId\n    disciplineName\n    distance\n    score\n    id\n  }\n}\n\nfragment PersonalGoalsItem_goal on PersonalGoal {\n  disciplineId\n  discipline {\n    name\n    unit\n    id\n  }\n  count\n  dist\n  score\n}\n"
+  "text": "query PersonalGoalsFormQuery(\n  $username: String!\n) {\n  user(username: $username) {\n    ...PersonalGoalsForm_user\n    id\n  }\n  store {\n    ...PersonalGoalsForm_store\n    id\n  }\n}\n\nfragment PersonalGoalsForm_user on User {\n  ...PersonalGoals_user\n  id\n  _id\n  personalGoals {\n    _id\n    disciplineId\n    disciplineName\n    dist\n    count\n    score\n    id\n  }\n}\n\nfragment PersonalGoalsForm_store on Store {\n  ...PersonalGoalsFormItem_store\n}\n\nfragment PersonalGoalsFormItem_store on Store {\n  disciplines {\n    _id\n    name\n    unit\n    id\n  }\n}\n\nfragment PersonalGoals_user on User {\n  personalGoals {\n    _id\n    id\n  }\n  ...PersonalGoalsList_user\n}\n\nfragment PersonalGoalsList_user on User {\n  ...PersonalGoalsItem_user\n  activities(first: 1000) {\n    edges {\n      ...PersonalGoalsItem_activities\n      node {\n        week\n        year\n        id\n      }\n    }\n  }\n  personalGoals {\n    _id\n    ...PersonalGoalsItem_goal\n    id\n  }\n}\n\nfragment PersonalGoalsItem_user on User {\n  username\n}\n\nfragment PersonalGoalsItem_activities on ActivityEdge {\n  node {\n    disciplineId\n    disciplineName\n    distance\n    score\n    id\n  }\n}\n\nfragment PersonalGoalsItem_goal on PersonalGoal {\n  disciplineId\n  discipline {\n    name\n    unit\n    id\n  }\n  count\n  dist\n  score\n}\n"
 };
 
 module.exports = batch;

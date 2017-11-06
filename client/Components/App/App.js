@@ -1,5 +1,5 @@
 import React from "react";
-import { createFragmentContainer, graphql } from "react-relay/compat";
+import { createFragmentContainer, graphql } from "react-relay";
 import CSSModules from "react-css-modules";
 import toastr from "toastr";
 
@@ -32,7 +32,7 @@ class App extends React.Component {
   render() {
     return (
       <div styleName="wrapper">
-        <Header store={this.props.store} activeUser={this.props.activeUser} auth={auth} />
+        <Header store={this.props.store} activeUser={this.props.user} auth={auth} />
         <main styleName="content">
           <div className="container">
             {this.props.children}
@@ -47,8 +47,8 @@ class App extends React.Component {
 App = CSSModules(App, styles);
 
 App = createFragmentContainer(App, {
-  activeUser: graphql`
-    fragment App_activeUser on User {
+  user: graphql`
+    fragment App_user on User {
       ...Header_activeUser
     }
   `,
@@ -62,11 +62,11 @@ App = createFragmentContainer(App, {
 
 export const AppQuery = graphql`
   query AppQuery(
-    $activeUser: String!, 
+    $activeUser: String, 
     $hasActiveUser: Boolean!
   ) {
     user(username: $activeUser) @include(if: $hasActiveUser) {
-      ...App_activeUser
+      ...App_user
     }
     store {
       ...App_store

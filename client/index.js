@@ -1,23 +1,19 @@
-import React from "react";
-import { render } from "react-dom";
-import Relay from 'react-relay/classic';
-// import Test from "./Components/Test";
-import { BrowserProtocol, queryMiddleware } from "farce";
-import { createFarceRouter, createRender } from "found";
-import { Resolver } from 'found-relay/lib/classic';
-import routes from "./routes";
-import { getConfig } from "../shared/config";
+import BrowserProtocol from 'farce/lib/BrowserProtocol';
+import queryMiddleware from 'farce/lib/queryMiddleware';
+import createFarceRouter from 'found/lib/createFarceRouter';
+import createRender from 'found/lib/createRender';
+import { Resolver } from 'found-relay';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Environment, RecordSource, Store } from 'relay-runtime';
 
-const config = getConfig();
-const endpoint = `http://localhost:${config.port}/graphql`;
+import routes from './routes';
+import network from './network';
 
-if (process.env.NODE_ENV !== "production") {
-  Relay.injectNetworkLayer(
-    new Relay.DefaultNetworkLayer(endpoint, {
-      credentials: "same-origin"
-    })
-  );
-}
+const environment = new Environment({
+  store: new Store(new RecordSource()),
+  network
+});
 
 const Router = createFarceRouter({
   historyProtocol: new BrowserProtocol(),
@@ -27,12 +23,9 @@ const Router = createFarceRouter({
   render: createRender({}),
 });
 
-render(
-  <Router resolver={new Resolver(Relay.Store)} />,
-  // <Routes 
-  //   history={history}
-  //   render={applyRouterMiddleware(useRelay)}
-  //   environment={Relay.Store}
-  // />, 
-  document.getElementById("app")
+const mountNode = document.getElementById('app');
+
+ReactDOM.render(
+  <Router resolver={new Resolver(environment)} />,
+  mountNode,
 );

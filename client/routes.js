@@ -2,44 +2,41 @@ import React from "react";
 import { makeRouteConfig, Route } from "found";
 
 import { auth } from './Auth/Auth';
-import App from "./Components/App/App";
-import AppQueries from "./Components/App/AppQueries";
-import Activity from "./Components/Activity/Activity";
-import ActivityQueries from "./Components/Activity/ActivityQueries";
-import Admin from "./Components/Admin/Admin";
-import AdminQueries from "./Components/Admin/AdminQueries";
+import App, { AppQuery } from "./Components/App/App";
+import Activity, { ActivityQuery } from "./Components/Activity/Activity";
+import Admin, { AdminQuery } from "./Components/Admin/Admin";
 import Callback from './Components/Auth/Callback';
-import Graphs from "./Components/Graphs";
-import GraphsQueries from "./Components/Graphs/GraphsQueries";
+import Graphs, { GraphsQuery } from "./Components/Graphs";
 import Loading from "./Components/Common/Loading";
-import Leaderboard from "./Components/Leaderboard/Leaderboard";
-import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
-import PersonalGoalsForm from './Components/PersonalGoals/PersonalGoalsForm';
-import PersonalGoalsFormQueries from './Components/PersonalGoals/PersonalGoalsFormQueries';
-import Season from "./Components/Season/Season";
-import SeasonQueries from "./Components/Season/SeasonQueries";
+// import Leaderboard, { LeaderboardQuery } from "./Components/Leaderboard/Leaderboard";
+import PersonalGoalsForm, { PersonalGoalsFormQuery } from './Components/PersonalGoals/PersonalGoalsForm';
+import Season, { SeasonQuery } from "./Components/Season/Season";
 // import Sandbox from "./Components/Sandbox/Sandbox";
-// import SandboxQueries from "./Components/Sandbox/SandboxQueries";
+// import SandboxQuery from "./Components/Sandbox/SandboxQuery";
 
-const perpareParamsAuth = (params) => ({
-  ...params, 
-  activeUser: auth.getActiveUser(), 
-  hasActiveUser: !!auth.getActiveUser(),
-  isAuthenticated: auth.isAuthenticated()
-});
+const perpareParamsAuth = (params) => {  
+  const newParams = {
+    ...params, 
+    activeUser: auth.getActiveUser(), 
+    hasActiveUser: !!auth.getActiveUser(),
+    isAuthenticated: auth.isAuthenticated()
+  };
+  return newParams;
+};
 
 export default makeRouteConfig(
   <Route
+    path="/"
     Component={App}
-    queries={AppQueries}
-    prepareParams={perpareParamsAuth}
+    query={AppQuery}
+    prepareVariables={perpareParamsAuth}
   >
-    <Route
+    {/* <Route
       path="/"
       Component={Leaderboard}
-      queries={LeaderboardQueries}
-      prepareParams={perpareParamsAuth}      
-    />
+      query={LeaderboardQuery}
+      prepareVariables={perpareParamsAuth}      
+    /> */}
     <Route 
       path="callback"
       Component={Callback}
@@ -47,20 +44,20 @@ export default makeRouteConfig(
     {/* <Route
       path="sandbox"
       Component={Sandbox}
-      queries={SandboxQueries}
+      query={SandboxQuery}
       render={({props}) => props ? <Sandbox {...props} /> : <Loading show />}
     /> */}
     <Route
       path="graphs"
       Component={Graphs}
-      queries={GraphsQueries}
+      query={GraphsQuery}
       render={({props}) => props ? <Graphs {...props} /> : <Loading show />}
     />
     <Route
       path="season/:id?"
       Component={Season}
-      queries={SeasonQueries}
-      prepareParams={(prev) => ({
+      query={SeasonQuery}
+      prepareVariables={(prev) => ({
         ...prev,
         id: prev.id || null
       })}
@@ -69,7 +66,7 @@ export default makeRouteConfig(
     <Route
       path="admin"
       Component={Admin}
-      queries={AdminQueries}
+      query={AdminQuery}
       render={({props}) => props ? <Admin {...props} /> : <Loading show />}
     />
     <Route
@@ -77,13 +74,13 @@ export default makeRouteConfig(
     >
       <Route
         Component={Activity} 
-        queries={ActivityQueries.byUsername}
+        query={ActivityQuery}
         render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
       />
       <Route
         path="goals"
         Component={PersonalGoalsForm}
-        queries={PersonalGoalsFormQueries}
+        query={PersonalGoalsFormQuery}
         render={({props}) => props ? <PersonalGoalsForm {...props} /> : <Loading show />}
       />
     </Route>
