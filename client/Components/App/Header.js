@@ -1,6 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
-import { Link } from "react-router";
+import { Link, withRouter } from "react-router";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
@@ -10,21 +10,15 @@ import { getYearWeekId } from "../../../shared/util";
 
 class Header extends React.Component {
 
-  login = () => {
-    this.props.auth.login();
-  }
-
-  logout = () => {
-    this.props.auth.logout();
-  }
-
-  renderUserNav(profile) {
+  renderUserNav() {
+    const username = this.props.params.username;
+    if (!username) return null;
     return (
       <Nav>
-        <IndexLinkContainer to={`/${profile.username}`}>
+        <IndexLinkContainer to={`/${username}`}>
           <NavItem>Activities</NavItem>
         </IndexLinkContainer>
-        <LinkContainer to={`/${profile.username}/goals`}>
+        <LinkContainer to={`/${username}/goals`}>
           <NavItem>Personal goals</NavItem>
         </LinkContainer>
       </Nav>
@@ -56,32 +50,7 @@ class Header extends React.Component {
     );
   }
 
-  renderLogoutTitle(profile) {
-    const imgStyle = {
-      width: "4rem",
-      height: "4rem",
-      borderRadius: "2rem",
-      margin: "-12px",
-      marginRight: "1rem",
-    };
-    return (
-      <strong>
-        <img src={profile.picture} style={imgStyle} />{profile.name}
-      </strong>
-    );
-  }
-
-  renderLogoutDropdown(profile) {
-    return (
-      <NavDropdown title={this.renderLogoutTitle(profile)} id="logout" styleName="dropdown">
-        <MenuItem onClick={this.logout}>Sign out</MenuItem>
-      </NavDropdown>
-    );
-  }
-
   render() {
-    const profile = this.props.auth.getProfile();
-    const isAuthenticated = this.props.auth.isAuthenticated();
     const currentWeek = getYearWeekId();
     return (
       <header>
@@ -94,15 +63,8 @@ class Header extends React.Component {
           </Navbar.Header>
           <Navbar.Collapse>
             {
-              isAuthenticated && this.renderUserNav(profile)
+              this.renderUserNav()
             }
-            {
-              !isAuthenticated &&
-              <Nav pullRight>
-                <NavItem onClick={this.login}><strong>Sign in</strong></NavItem>
-              </Nav>
-            }
-            { isAuthenticated && 
             <Nav pullRight>
               <LinkContainer to="/graphs">
                 <NavItem>Graphs</NavItem>
@@ -127,9 +89,7 @@ class Header extends React.Component {
                   </MenuItem>
                 </LinkContainer>
               </NavDropdown>
-              { this.renderLogoutDropdown(profile) }
             </Nav>
-            }
           </Navbar.Collapse>
         </Navbar>
       </header>
@@ -139,13 +99,10 @@ class Header extends React.Component {
 
 Header = CSSModules(Header, styles);
 
+Header = withRouter(Header);
+
 Header = Relay.createContainer(Header, {
   fragments: {
-    activeUser: () => Relay.QL`
-      fragment on User {
-        username
-      }
-    `,
     store: () => Relay.QL`
       fragment on Store {
         users {
