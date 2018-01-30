@@ -19,8 +19,6 @@ import SeasonQueries from "./Components/Season/SeasonQueries";
 import Sandbox from "./Components/Sandbox/Sandbox";
 import SandboxQueries from "./Components/Sandbox/SandboxQueries";
 
-import Callback from './Components/Auth/Callback';
-import Auth from './Auth/Auth';
 import Loading from "./Components/Common/Loading";
 
 ReactGA.initialize("UA-98797876-1");
@@ -30,33 +28,18 @@ function logPageView() {
   ReactGA.pageview(window.location.pathname + window.location.search);
 }
 
-const auth = new Auth();
-
-const perpareParamsAuth = (params) => ({
-  ...params, 
-  activeUser: auth.getActiveUser(), 
-  hasActiveUser: !!auth.getActiveUser(),
-  isAuthenticated: auth.isAuthenticated()
-});
-
 const Routes = (props) => ( 
   <Router {...props} onUpdate={logPageView}>
     <Route 
       path="/" 
       component={App} 
       queries={AppQueries}
-      prepareParams={perpareParamsAuth}
-      render={({props}) => props ? <App {...props} auth={auth} /> : <Loading show />} 
+      render={({props}) => props ? <App {...props} /> : <Loading show />} 
     >
       <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}
-        prepareParams={perpareParamsAuth}
-        render={({props}) => props ? <Leaderboard {...props} auth={auth} /> : <Loading show />} 
-      />
-      <Route 
-        path="callback"
-        component={(props) => <Callback {...props} auth={auth} />}
+        render={({props}) => props ? <Leaderboard {...props} /> : <Loading show />} 
       />
       <Route
         path="sandbox"
@@ -92,13 +75,13 @@ const Routes = (props) => (
         <IndexRoute
           component={Activity} 
           queries={ActivityQueries.byUsername}
-          render={({props}) => props ? <Activity {...props} auth={auth} /> : <Loading show />} 
+          render={({props}) => props ? <Activity {...props} /> : <Loading show />} 
         />
         <Route
           path="goals"
           component={PersonalGoalsForm}
           queries={PersonalGoalsFormQueries}
-          render={({props}) => props ? <PersonalGoalsForm {...props} auth={auth} /> : <Loading show />}
+          render={({props}) => props ? <PersonalGoalsForm {...props} /> : <Loading show />}
         />
       </Route>  
     </Route>

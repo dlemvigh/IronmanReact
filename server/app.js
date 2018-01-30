@@ -45,7 +45,7 @@ app.get("*", function(req, res) {
 });
 
 const db = `mongodb://127.0.0.1/${config.db}`;
-mongoose.connect(db);
+mongoose.connect(db, { useMongoClient: true });
 
 app.listen(config.port);
 console.log("Running a GraphQL API server");

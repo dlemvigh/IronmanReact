@@ -1,15 +1,11 @@
 import React from "react";
 import Relay from "react-relay";
-import PropTypes from "prop-types";
+import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 
 import styles from "./PersonalGoalsItem.scss";
 
 class PersonalGoalItem extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object
-  }
-
   renderDiscipline() {
     return <strong>{this.props.goal.discipline ? this.props.goal.discipline.name : "exercise"}</strong>;
   }
@@ -61,7 +57,7 @@ class PersonalGoalItem extends React.Component {
   }
 
   onClick = () => {
-    this.context.router.push(`/${this.props.user.username}/goals`);
+    this.props.router.push(`/${this.props.user.username}/goals`);
   }
 
   render() {
@@ -81,6 +77,8 @@ class PersonalGoalItem extends React.Component {
 }
 
 PersonalGoalItem = CSSModules(PersonalGoalItem, styles);
+
+PersonalGoalItem = withRouter(PersonalGoalItem);
 
 PersonalGoalItem = Relay.createContainer(PersonalGoalItem, {
   fragments: {

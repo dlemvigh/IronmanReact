@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import _ from "lodash";
 
 const swim = { score: 25, dist: .4 };
@@ -8,10 +7,6 @@ const run = { score: 5, dist: 4 };
 const total = swim.score * swim.dist + bike.score * bike.dist + run.score * run.dist;
 
 class CatchupItemTriathlon extends React.Component {
-  static propTypes = {
-    score: PropTypes.number.isRequired
-  }
-
   getDiff() {
     return this.props.highscore - this.props.score;
   }

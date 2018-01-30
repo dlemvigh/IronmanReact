@@ -9,10 +9,8 @@ import PersonalGoals from "../PersonalGoals/PersonalGoals";
 
 class Leaderboard extends React.Component {
   render() {
-    const isAuthenticated = this.props.auth.isAuthenticated();
     return (
       <div>
-        {isAuthenticated && <PersonalGoals auth={this.props.auth} user={this.props.activeUser} />}
         <h3>This weeks leaderboard</h3>
         <LeaderboardList summary={this.props.store.current} />
         {this.props.store.current.length >= 2 && <Catchup store={this.props.store} />}
@@ -34,11 +32,6 @@ Leaderboard = Relay.createContainer(Leaderboard, {
                           .weekYear()
   },
   fragments: {
-    activeUser: () =>Relay.QL`
-      fragment on User {
-        ${PersonalGoals.getFragment("user")}
-      }
-    `,
     store: () => Relay.QL`
     fragment on Store {
         id
