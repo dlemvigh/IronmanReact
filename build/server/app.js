@@ -57,7 +57,7 @@ app.get("*", function (req, res) {
 });
 
 var db = "mongodb://127.0.0.1/" + config.db;
-_mongoose2.default.connect(db);
+_mongoose2.default.connect(db, { useMongoClient: true });
 
 app.listen(config.port);
 console.log("Running a GraphQL API server");
