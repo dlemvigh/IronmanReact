@@ -1,20 +1,16 @@
 import React from "react";
 import Relay from "react-relay";
-import PropTypes from "prop-types";
 import CSSModules from "react-css-modules";
 import _ from "lodash";
+import { withRouter } from "react-router";
 
 import Pos from "../Common/Pos";
 import styles from "./LeaderboardItem.scss";
 
 class LeaderboardItem extends React.Component {
 
-  static contextTypes = {
-    router: PropTypes.object
-  }
-
   onClick = () => {
-    this.context.router.push(`/${this.props.summary.user.username}`);
+    this.props.router.push(`/${this.props.summary.user.username}`);
   }
 
   getScore() {
@@ -42,6 +38,8 @@ class LeaderboardItem extends React.Component {
 }
 
 LeaderboardItem = CSSModules(LeaderboardItem, styles);
+
+LeaderboardItem = withRouter(LeaderboardItem);
 
 LeaderboardItem = Relay.createContainer(LeaderboardItem, {
   fragments: {

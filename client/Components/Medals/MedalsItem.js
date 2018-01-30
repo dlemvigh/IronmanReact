@@ -1,6 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
-import PropTypes from "prop-types";
+import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 
 import styles from "./MedalsItem.scss";
@@ -8,12 +8,8 @@ import Medals from "../Common/Medals";
 
 class MedalsItem extends React.Component {
 
-  static contextTypes = {
-    router: PropTypes.object
-  }
-
   onClick = () => {
-    this.context.router.push(`/${this.props.user.username}`);
+    this.props.router.push(`/${this.props.user.username}`);
   }
 
   getStyleName() {
@@ -65,6 +61,8 @@ class MedalsItem extends React.Component {
 }
 
 MedalsItem = CSSModules(MedalsItem, styles);
+
+MedalsItem = withRouter(MedalsItem);
 
 MedalsItem = Relay.createContainer(MedalsItem, {
   fragments: {

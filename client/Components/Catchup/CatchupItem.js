@@ -1,6 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
-import PropTypes from "prop-types";
+import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 import _ from "lodash";
 
@@ -10,12 +10,8 @@ import CatchupItemTriathlon from "./CatchupItemTriathlon";
 import styles from "./CatchupItem.scss";
 
 class CatchupItem extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object
-  }
-
   onClick = () => {
-    this.context.router.push(`/${this.props.user.username}`);
+    this.props.router.push(`/${this.props.user.username}`);
   }
 
   getScore() {
@@ -48,6 +44,8 @@ class CatchupItem extends React.Component {
 }
 
 CatchupItem = CSSModules(CatchupItem, styles);
+
+CatchupItem = withRouter(CatchupItem);
 
 CatchupItem = Relay.createContainer(CatchupItem, {
   fragments: {
