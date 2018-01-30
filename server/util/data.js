@@ -4,11 +4,11 @@ import UserModel from "../models/user";
 import SeasonModel from "../models/season";
 
 const disciplines = [
-  { name: "run", score: 5, unit: "km" },
-  { name: "swim", score: 25, unit: "km" },
-  { name: "bike", score: 1, unit: "km" },
-  { name: "caloric", score: .06, unit: "cal" },
-  { name: "misc", score: 25, unit: "hours" },
+  { name: "run", score: 5, unit: "km", order: 1 },
+  { name: "bike", score: 1, unit: "km", order: 2 },
+  { name: "swim", score: 25, unit: "km", order: 3 },
+  { name: "caloric", score: .06, unit: "cal", order: 4 },
+  { name: "misc", score: 25, unit: "hours", order: 5 },
 ];
 
 const users = [

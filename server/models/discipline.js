@@ -13,6 +13,9 @@ const disciplineSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  order: {
+    type: Number,    
+  }
 });
 
 disciplineSchema.virtual("id").get(function() { return this._id; });

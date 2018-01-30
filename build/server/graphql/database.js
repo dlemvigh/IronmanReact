@@ -858,7 +858,7 @@ function getDiscipline(id) {
 }
 
 function getDisciplines() {
-  return _discipline2.default.find({}).exec();
+  return _discipline2.default.find({}).sort({ order: 1 }).exec();
 }
 
 function getSummary(id) {

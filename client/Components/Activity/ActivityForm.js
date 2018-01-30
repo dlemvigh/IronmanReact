@@ -68,7 +68,7 @@ class ActivityForm extends React.Component {
 
   handleChangeDiscipline = (discipline) => {
     this.setState({
-      disciplineId: discipline.id,
+      disciplineId: discipline.id || discipline._id,
       disciplineName: discipline.name,
       unit: discipline.unit,
       score: discipline.score
@@ -84,9 +84,7 @@ class ActivityForm extends React.Component {
   }
 
   isValid = () => {
-    return this.refs.discipline.refs.component.isValid() &&
-            this.refs.distance.isValid() &&
-            this.refs.date.isValid();
+    return this.refs.distance.isValid() && this.refs.date.isValid();
   }
 
   handleSubmit = (event) => {
@@ -155,7 +153,7 @@ class ActivityForm extends React.Component {
           <Col sm={3}>
             <ControlDiscipline 
               ref="discipline" 
-              value={this.state.disciplineId} 
+              value={this.state.disciplineId}
               onChange={this.handleChangeDiscipline} 
               store={this.props.store} 
               ensureValidation={this.state.ensureValidation}

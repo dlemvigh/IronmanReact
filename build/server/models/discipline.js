@@ -22,6 +22,9 @@ var disciplineSchema = new _mongoose2.default.Schema({
   unit: {
     type: String,
     required: true
+  },
+  order: {
+    type: Number
   }
 });
 

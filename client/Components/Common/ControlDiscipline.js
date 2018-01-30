@@ -2,15 +2,10 @@ import React from "react";
 import Relay from "react-relay";
 import { ControlLabel, FormGroup } from "react-bootstrap";
 
+import DisciplineIcon from "./DisciplineIcon";
+import isMobile from "./isMobile";
+
 class ControlDiscipline extends React.Component {
-
-  isValid(){
-    return this.props.value.length > 0;
-  }
-
-  getValidationState() {
-    return this.isValid() ? null : "error";
-  }
 
   onChange = (event) => {
     const options = event.target.selectedOptions;
@@ -19,15 +14,41 @@ class ControlDiscipline extends React.Component {
     }
   }
 
+  handleClick = (discipline) => {
+    if (this.props.onChange) {
+      this.props.onChange(discipline);
+    }
+  }
+
   getName(disciplineName) {
     return disciplineName[0].toUpperCase() + disciplineName.substr(1);
   }
 
-  render() {
+  renderIcons() {
     return (
-      <FormGroup validationState={this.getValidationState()}>
-        <ControlLabel>Discipline</ControlLabel>
-        <select className="form-control"
+      <div className="visible-xs">
+        {
+          this.props.store.disciplines.map(discipline =>             
+            <span 
+              key={discipline._id} 
+              onClick={() => this.handleClick(discipline)}
+            >
+              <DisciplineIcon 
+                key={discipline._id} 
+                value={discipline.name} 
+                size="large" 
+                disabled={this.props.value !== discipline._id}
+              />
+            </span>
+          )
+        }
+      </div>    
+    );
+  }
+
+  renderDropdown() {
+    return (
+        <select className="form-control hidden-xs"
           value={this.props.value || ""} 
           placeholder="distance" 
           onChange={this.onChange}
@@ -44,7 +65,16 @@ class ControlDiscipline extends React.Component {
                 data-score={discipline.score}
               >{this.getName(discipline.name)}</option>) 
           }
-        </select>
+        </select>      
+    );
+  }
+
+  render() {
+    return (
+      <FormGroup>
+        <ControlLabel>Discipline</ControlLabel>
+        {this.renderIcons()}
+        {this.renderDropdown()}
       </FormGroup>
     );
   }

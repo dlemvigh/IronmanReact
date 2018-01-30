@@ -74,7 +74,7 @@ function getDiscipline(id) {
 }
 
 function getDisciplines() {
-  return DisciplineModel.find({}).exec();
+  return DisciplineModel.find({}).sort({order: 1}).exec();
 }
 
 function getSummary(id) {
