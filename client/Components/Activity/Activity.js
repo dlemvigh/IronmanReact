@@ -42,13 +42,7 @@ class Activity extends React.Component {
     return (
       <div>
         <h3>{this.getName()} activities</h3>
-        <ReactCSSTransitionReplace
-          transitionName={styles}
-          transitionEnterTimeout={1000}
-          transitionLeaveTimeout={1000}
-        >
-          { component }
-        </ReactCSSTransitionReplace>
+        { component }
         <PersonalGoals user={this.props.user} />
         <ActivityList {...this.props} onEdit={this.onBeginEdit} />
       </div>
