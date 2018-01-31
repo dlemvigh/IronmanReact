@@ -1,9 +1,12 @@
 import React from "react";
 import { ControlLabel, FormGroup, FormControl, InputGroup } from "react-bootstrap";
+import CSSModules from "react-css-modules";
+
+import styles from "./ControlDistance.scss";
 
 const regex = /^((\d+\.?\d*)|(\d*\.?\d+))$/;
 
-export default class ControlDistance extends React.Component {
+class ControlDistance extends React.Component {
 
   onChange = (event) => {
     const distance = event.target.value;
@@ -29,11 +32,12 @@ export default class ControlDistance extends React.Component {
         <ControlLabel>Distance</ControlLabel>
         <InputGroup>
           <FormControl 
-            type="text" 
+            type="number" 
             value={this.props.value}
             placeholder="4.7" 
             onChange={this.onChange}
             autoFocus
+            styleName="distance-input" 
           />
           <InputGroup.Addon>{this.props.unit}</InputGroup.Addon>
         </InputGroup>                    
@@ -41,3 +45,7 @@ export default class ControlDistance extends React.Component {
     );
   }
 }
+
+ControlDistance = CSSModules(ControlDistance, styles);
+
+export default ControlDistance;
