@@ -3,7 +3,6 @@ const path = require("path");
 const CompressionPlugin = require("compression-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
-// var FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const WebpackBar = require("webpackbar");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
