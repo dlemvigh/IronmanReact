@@ -1,7 +1,8 @@
 import React from "react";
-import Relay from "react-relay";
-import { Link, withRouter } from "react-router";
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+import gql from "graphql-tag";
+import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
+import { Navbar, Nav, NavItem, NavDropdown } from "react-bootstrap";
 import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
 import CSSModules from "react-css-modules";
@@ -9,9 +10,8 @@ import styles from "./Header.scss";
 import { getYearWeekId } from "../../../shared/util";
 
 class Header extends React.Component {
-
   renderUserNav() {
-    const username = this.props.params.username;
+    const username = this.props.match.params.username;
     if (!username) return null;
     return (
       <Nav>
@@ -26,7 +26,9 @@ class Header extends React.Component {
   }
 
   renderAthletes(compactMode) {
-    return compactMode ? this.renderAthleteDropdown() : this.renderAthleteLinks();
+    return compactMode
+      ? this.renderAthleteDropdown()
+      : this.renderAthleteLinks();
   }
 
   renderAthleteLinks() {
@@ -40,12 +42,11 @@ class Header extends React.Component {
   renderAthleteDropdown() {
     return (
       <NavDropdown title="Athletes" id="athletes">
-        {
-        this.props.store.users.map(user => (
+        {this.props.store.users.map(user => (
           <LinkContainer key={user.username} to={`/${user.username}`}>
-            <MenuItem>{user.name}</MenuItem>
-          </LinkContainer>))
-      }
+            <NavDropdown.Item>{user.name}</NavDropdown.Item>
+          </LinkContainer>
+        ))}
       </NavDropdown>
     );
   }
@@ -54,39 +55,32 @@ class Header extends React.Component {
     const currentWeek = getYearWeekId();
     return (
       <header>
-        <Navbar collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Ironman 70.3 Club</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
+        <Navbar collapseOnSelect bg="dark" variant="dark">
+          <Navbar.Brand>
+            <Link to="/">Ironman 70.3 Club</Link>
+          </Navbar.Brand>
+          <Navbar.Toggle />
           <Navbar.Collapse>
-            {
-              this.renderUserNav()
-            }
-            <Nav pullRight>
+            {this.renderUserNav()}
+            <Nav>
               <LinkContainer to="/graphs">
-                <NavItem>Graphs</NavItem>
+                <Nav.Item>Graphs</Nav.Item>
               </LinkContainer>
-                { this.renderAthletes(true) }
+              {this.renderAthletes(true)}
               <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
-                {
-                  this.props.store.allSeasons
-                    .filter(x => x.from <= currentWeek)
-                    .sort((a,b) => b.from - a.from)
-                    .map(season => (
-                      <LinkContainer to={`/season/${season._id}`} key={season._id}>
-                        <MenuItem>
-                          {season.name}
-                        </MenuItem>
-                      </LinkContainer>
-                    ))
-                }
+                {this.props.store.allSeasons
+                  .filter(x => x.from <= currentWeek)
+                  .sort((a, b) => b.from - a.from)
+                  .map(season => (
+                    <LinkContainer
+                      to={`/season/${season._id}`}
+                      key={season._id}
+                    >
+                      <NavDropdown.Item>{season.name}</NavDropdown.Item>
+                    </LinkContainer>
+                  ))}
                 <LinkContainer to="/season">
-                  <MenuItem>
-                      All time
-                  </MenuItem>
+                  <NavDropdown.Item>All time</NavDropdown.Item>
                 </LinkContainer>
               </NavDropdown>
             </Nav>
@@ -94,29 +88,27 @@ class Header extends React.Component {
         </Navbar>
       </header>
     );
-  }    
+  }
 }
 
 Header = CSSModules(Header, styles);
 
 Header = withRouter(Header);
 
-Header = Relay.createContainer(Header, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          name
-          username                        
-        }
-        allSeasons {
-          _id
-          name
-          from
-        }
+Header.fragments = {
+  store: gql`
+    fragment Header_store on Store {
+      users {
+        name
+        username
       }
-    `
-  }
-});
+      allSeasons {
+        _id
+        name
+        from
+      }
+    }
+  `
+};
 
 export default Header;

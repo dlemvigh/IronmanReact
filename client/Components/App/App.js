@@ -1,10 +1,11 @@
 import React from "react";
-// import Relay from "react-relay";
+import gql from "graphql-tag";
 import CSSModules from "react-css-modules";
 import toastr from "toastr";
 
-// import Header from "./Header";
+import Header from "./Header";
 import Footer from "./Footer";
+import Routes from "../../routes";
 import styles from "./App.scss";
 
 import "!style-loader!css-loader!../../Styles/bootstrap.css";
@@ -30,9 +31,11 @@ class App extends React.Component {
   render() {
     return (
       <div styleName="wrapper">
-        {/* <Header store={this.props.store} /> */}
+        <Header store={this.props.store} />
         <main styleName="content">
-          {/* <div className="container">{this.props.children}</div> */}
+          <div className="container">
+            <Routes />
+          </div>
         </main>
         <Footer />
       </div>
@@ -40,17 +43,14 @@ class App extends React.Component {
   }
 }
 
-App = CSSModules(App, styles);
+App.fragments = {
+  store: gql`
+    fragment App_store on Store {
+      id
+      ...Header_store
+    }
+    ${Header.fragments.store}
+  `
+};
 
-// App = Relay.createContainer(App, {
-//   fragments: {
-//     store: () => Relay.QL`
-//       fragment on Store {
-//         id
-//         ${Header.getFragment("store")}
-//       }
-//     `
-//   }
-// });
-
-export default App;
+export default CSSModules(App, styles);

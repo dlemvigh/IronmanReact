@@ -1,12 +1,11 @@
 import React from "react";
-import Relay from "react-relay";
 import moment from "moment";
 import _ from "lodash";
 
 import CatchupList from "../Catchup/CatchupList";
+import gql from "graphql-tag";
 
 class Catchup extends React.Component {
-
   getHighestScore() {
     const max = _.max(this.props.store.users.map(this.getScore));
     return max;
@@ -21,7 +20,11 @@ class Catchup extends React.Component {
   }
 
   getLeader() {
-    return this.getSortedUser()[0].name;    
+    return (
+      this.props.store.user &&
+      this.props.store.user.length &&
+      this.getSortedUser()[0].name
+    );
   }
 
   render() {
@@ -34,24 +37,39 @@ class Catchup extends React.Component {
   }
 }
 
-Catchup = Relay.createContainer(Catchup, {
-  initialVariables: {
-    week: moment().isoWeek(),
-    year: moment().weekYear() 
-  },
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          name
-          summary(week: $week, year: $year) {
-            score
-          }
+Catchup.fragments = {
+  store: gql`
+    fragment Catchup_store on Store {
+      users {
+        name
+        summary(week: $week, year: $year) {
+          score
         }
-        ${CatchupList.getFragment("store")}
       }
-    `
-  }
-});
+      ...CatchupList_store
+    }
+    ${CatchupList.fragments.store}
+  `
+};
+
+// Catchup = Relay.createContainer(Catchup, {
+//   initialVariables: {
+//     week: moment().isoWeek(),
+//     year: moment().weekYear()
+//   },
+//   fragments: {
+//     store: () => Relay.QL`
+//       fragment on Store {
+//         users {
+//           name
+//           summary(week: $week, year: $year) {
+//             score
+//           }
+//         }
+//         ${CatchupList.getFragment("store")}
+//       }
+//     `
+//   }
+// });
 
 export default Catchup;

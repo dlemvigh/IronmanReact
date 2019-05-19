@@ -1,9 +1,20 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
+import moment from "moment";
 
-export default {
-  store: () => Relay.QL`
-        query Store {
-            store    
-        }
-    `,
-};
+import Leaderboard from "./Leaderboard";
+import { withApollo } from "../Common/ApolloLoader";
+
+export default withApollo(Leaderboard, {
+  query: gql`
+    query LeaderboardQuery($week: Int!, $year: Int!) {
+      store {
+        ...Leaderboard_store
+      }
+    }
+    ${Leaderboard.fragments.store}
+  `,
+  variables: {
+    week: moment().isoWeek(),
+    year: moment().isoWeekYear()
+  }
+});

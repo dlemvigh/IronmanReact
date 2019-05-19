@@ -1,11 +1,16 @@
 import React from "react";
 import { render } from "react-dom";
-import history from "./history";
-import Routes from "./routes";
+import { ApolloProvider } from "react-apollo";
+import { BrowserRouter } from "react-router-dom";
 
-import { getConfig } from "../shared/config";
+import { client } from "./apolloClient";
+import AppQueries from "./Components/App/AppQueries";
 
-const config = getConfig();
-const endpoint = `http://localhost:${config.port}/graphql`;
-
-render(<Routes history={history} />, document.getElementById("app"));
+render(
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <AppQueries />
+    </BrowserRouter>
+  </ApolloProvider>,
+  document.getElementById("app")
+);

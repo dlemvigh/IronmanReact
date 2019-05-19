@@ -7,7 +7,6 @@ import { filterMedals } from "../../../shared/util";
 import MedalsItem from "./MedalsItem";
 
 class MedalsList extends React.Component {
-
   getSortedUsers() {
     const sorted = _(this.props.store.users)
       .sortBy([
@@ -33,11 +32,14 @@ class MedalsList extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {
-            this.getSortedUsers().map((user, index) => (
-              <MedalsItem key={user._id} user={user} pos={index + 1} season={this.props.season} />
-            ))
-          }
+          {this.getSortedUsers().map((user, index) => (
+            <MedalsItem
+              key={user._id}
+              user={user}
+              pos={index + 1}
+              season={this.props.season}
+            />
+          ))}
         </tbody>
       </Table>
     );

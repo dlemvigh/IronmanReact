@@ -1,18 +1,24 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { fromYearWeekId } from "../../../shared/util";
 
 class Season extends React.Component {
   renderText() {
-    if (this.props.season.from == null && this.props.season.to == null) { return; }
+    if (this.props.season.from == null && this.props.season.to == null) {
+      return;
+    }
 
-    const from = fromYearWeekId(this.props.season.from).startOf("isoWeek").format("MMMM D");
-    const to = fromYearWeekId(this.props.season.to).endOf("isoWeek").format("MMMM D");
+    const from = fromYearWeekId(this.props.season.from)
+      .startOf("isoWeek")
+      .format("MMMM D");
+    const to = fromYearWeekId(this.props.season.to)
+      .endOf("isoWeek")
+      .format("MMMM D");
 
     if (this.props.season.to == null) {
       return `(from ${from})`;
     }
-    
+
     if (this.props.season.from == null) {
       return `(to ${to})`;
     }
@@ -31,22 +37,21 @@ class Season extends React.Component {
 
     const season = this.props.season;
     return (
-      <h3>Medals - {season.name} {this.renderSpan()}</h3>
+      <h3>
+        Medals - {season.name} {this.renderSpan()}
+      </h3>
     );
   }
 }
 
-Season = Relay.createContainer(Season, {
-  fragments: {
-    season: () => Relay.QL`
-            fragment on Season {
-                name
-                from
-                to
-            }
-        `
-  }
-});
+Season.fragments = {
+  season: gql`
+    fragment Season_season on Season {
+      name
+      from
+      to
+    }
+  `
+};
 
 export default Season;
-
