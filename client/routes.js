@@ -3,21 +3,21 @@ import { Router, Route, IndexRoute } from "react-router";
 import ReactGA from "react-ga";
 
 import App from "./Components/App/App";
-import AppQueries from "./Components/App/AppQueries";
-import Activity from "./Components/Activity/Activity";
-import ActivityQueries from "./Components/Activity/ActivityQueries";
-import Admin from "./Components/Admin/Admin";
-import AdminQueries from "./Components/Admin/AdminQueries";
-import Graphs from "./Components/Graphs";
-import GraphsQueries from "./Components/Graphs/GraphsQueries";
-import Leaderboard from "./Components/Leaderboard/Leaderboard";
-import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
-import PersonalGoalsForm from './Components/PersonalGoals/PersonalGoalsForm';
-import PersonalGoalsFormQueries from './Components/PersonalGoals/PersonalGoalsFormQueries';
-import Season from "./Components/Season/Season";
-import SeasonQueries from "./Components/Season/SeasonQueries";
-import Sandbox from "./Components/Sandbox/Sandbox";
-import SandboxQueries from "./Components/Sandbox/SandboxQueries";
+// import AppQueries from "./Components/App/AppQueries";
+// import Activity from "./Components/Activity/Activity";
+// import ActivityQueries from "./Components/Activity/ActivityQueries";
+// import Admin from "./Components/Admin/Admin";
+// import AdminQueries from "./Components/Admin/AdminQueries";
+// import Graphs from "./Components/Graphs";
+// import GraphsQueries from "./Components/Graphs/GraphsQueries";
+// import Leaderboard from "./Components/Leaderboard/Leaderboard";
+// import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
+// import PersonalGoalsForm from "./Components/PersonalGoals/PersonalGoalsForm";
+// import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFormQueries";
+// import Season from "./Components/Season/Season";
+// import SeasonQueries from "./Components/Season/SeasonQueries";
+// import Sandbox from "./Components/Sandbox/Sandbox";
+// import SandboxQueries from "./Components/Sandbox/SandboxQueries";
 
 import Loading from "./Components/Common/Loading";
 
@@ -28,15 +28,15 @@ function logPageView() {
   ReactGA.pageview(window.location.pathname + window.location.search);
 }
 
-const Routes = (props) => ( 
+const Routes = props => (
   <Router {...props} onUpdate={logPageView}>
-    <Route 
-      path="/" 
-      component={App} 
-      queries={AppQueries}
-      render={({props}) => props ? <App {...props} /> : <Loading show />} 
+    <Route
+      path="/"
+      component={App}
+      // queries={AppQueries}
+      render={({ props }) => (props ? <App {...props} /> : <Loading show />)}
     >
-      <IndexRoute  
+      {/* <IndexRoute  
         component={Leaderboard}
         queries={LeaderboardQueries}
         render={({props}) => props ? <Leaderboard {...props} /> : <Loading show />} 
@@ -83,7 +83,7 @@ const Routes = (props) => (
           queries={PersonalGoalsFormQueries}
           render={({props}) => props ? <PersonalGoalsForm {...props} /> : <Loading show />}
         />
-      </Route>  
+      </Route>   */}
     </Route>
   </Router>
 );

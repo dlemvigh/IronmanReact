@@ -1,29 +1,28 @@
 import React from "react";
-import Relay from "react-relay";
+// import Relay from "react-relay";
 import CSSModules from "react-css-modules";
 import toastr from "toastr";
 
-import Header from "./Header";
+// import Header from "./Header";
 import Footer from "./Footer";
 import styles from "./App.scss";
 
-import "!style!css!../../Styles/bootstrap.css";
-import "!style!css!../../Styles/react-datetime.css";
-//import "!style!css!bootstrap/dist/css/bootstrap.min.css";
-//import "!style!css!bootstrap/dist/css/bootstrap-theme.min.css";
-//import "!style!css!react-datetime/css/react-datetime.css";
-import "!style!css!toastr/build/toastr.min.css";
+import "!style-loader!css-loader!../../Styles/bootstrap.css";
+import "!style-loader!css-loader!../../Styles/react-datetime.css";
+//import "!style-loader!css-loader!bootstrap/dist/css/bootstrap.min.css";
+//import "!style-loader!css-loader!bootstrap/dist/css/bootstrap-theme.min.css";
+//import "!style-loader!css-loader!react-datetime/css/react-datetime.css";
+import "!style-loader!css-loader!toastr/build/toastr.min.css";
 
 class App extends React.Component {
-
-  componentWillMount(){
+  componentWillMount() {
     toastr.options = {
       newestOnTop: true,
       positionClass: styles.toastr,
-      progressBar: true,
+      progressBar: true
     };
 
-    window.onerror = (message) => {
+    window.onerror = message => {
       toastr.error(message);
     };
   }
@@ -31,11 +30,9 @@ class App extends React.Component {
   render() {
     return (
       <div styleName="wrapper">
-        <Header store={this.props.store} />
+        {/* <Header store={this.props.store} /> */}
         <main styleName="content">
-          <div className="container">
-            {this.props.children}
-          </div>
+          {/* <div className="container">{this.props.children}</div> */}
         </main>
         <Footer />
       </div>
@@ -45,15 +42,15 @@ class App extends React.Component {
 
 App = CSSModules(App, styles);
 
-App = Relay.createContainer(App, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        id
-        ${Header.getFragment("store")}
-      }
-    `
-  }
-});
+// App = Relay.createContainer(App, {
+//   fragments: {
+//     store: () => Relay.QL`
+//       fragment on Store {
+//         id
+//         ${Header.getFragment("store")}
+//       }
+//     `
+//   }
+// });
 
 export default App;
