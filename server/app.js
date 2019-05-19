@@ -5,7 +5,6 @@ var graphqlHTTP = require("express-graphql");
 var compression = require("compression");
 
 import mongoose from "mongoose";
-mongoose.Promise = global.Promise;
 
 import { populate } from "./util/data.js";
 populate();
@@ -18,13 +17,16 @@ var app = express();
 app.use(compression());
 app.use(cors());
 
-app.use("/graphql", graphqlHTTP({
-  schema: schema,
-  pretty: true,
-  graphiql: true,
-}));
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    pretty: true,
+    graphiql: true
+  })
+);
 
-app.use(function noCacheForRoot(req, res, next) {  
+app.use(function noCacheForRoot(req, res, next) {
   if (req.url === "/") {
     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
     res.header("Pragma", "no-cache");
@@ -33,19 +35,21 @@ app.use(function noCacheForRoot(req, res, next) {
   next();
 });
 
-app.use(express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000000}));
+app.use(
+  express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000000 })
+);
 
-app.get("*", function(req, res) { 
-  res.set({ 
-    'Cache-Control': 'no-cache, no-store, must-revalidate', 
-    'Expires': '-1', 
-    'Pragma': 'no-cache' 
-  }) ;
-  res.sendFile(path.join(__dirname, "..", "client", "index.html")); 
+app.get("*", function(req, res) {
+  res.set({
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    Expires: "-1",
+    Pragma: "no-cache"
+  });
+  res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
 const db = `mongodb://127.0.0.1/${config.db}`;
-mongoose.connect(db, { useMongoClient: true });
+mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true });
 
 app.listen(config.port);
 console.log("Running a GraphQL API server");

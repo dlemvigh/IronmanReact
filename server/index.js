@@ -1,3 +1,6 @@
-require("babel-register");
-require("babel-polyfill");
-require("./app");
+require("@babel/polyfill");
+require("@babel/register")({
+  presets: ["@babel/preset-env"]
+});
+
+require("./app.js");
