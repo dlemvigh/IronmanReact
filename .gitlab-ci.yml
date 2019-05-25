@@ -1,0 +1,29 @@
+image: node:latest
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+run_lint:
+  stage: test
+  script: npm run lint
+
+run_build:
+  stage: test
+  script: npm run build
+
+run_webpack:
+  state: test
+  script: npm run start
