@@ -25,5 +25,5 @@ run_build:
   script: npm run build
 
 run_webpack:
-  state: test
+  stage: test
   script: npm run start
