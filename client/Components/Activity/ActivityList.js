@@ -4,7 +4,7 @@ import { Table } from "react-bootstrap";
 import _ from "lodash";
 
 import ActivityHeader from "./ActivityHeader";
-// import ActivityItem from "./ActivityItem";
+import ActivityItem from "./ActivityItem";
 
 class ActivityList extends React.Component {
   getWeeks() {
@@ -26,7 +26,7 @@ class ActivityList extends React.Component {
           <ActivityHeader />
         </thead>
         <tbody>
-          {/* {this.props.user.activities.edges.map(edge => (
+          {this.props.user.activities.edges.map(edge => (
             <ActivityItem
               key={edge.node.id}
               activity={edge.node}
@@ -34,34 +34,37 @@ class ActivityList extends React.Component {
               {...this.props}
               striped={this.isStriped(weeks, edge.node.week)}
             />
-          ))} */}
+          ))}
         </tbody>
       </Table>
     );
   }
 }
 
-// ${/*ActivityItem.getFragment("store")*/}
-// ${/*ActivityItem.getFragment("user")*/}
-// ${/*ActivityItem.getFragment("activity")*/}
 
 ActivityList.fragments = {
   store: gql`
     fragment ActivityList_store on Store {
       id
+      ...ActivityItem_store
     }
+    ${ActivityItem.fragments.store}
   `,
   user: gql`
     fragment ActivityList_user on User {
+      ...ActivityItem_user
       activities(first: 100) {
         edges {
           node {
             id
             week
+            ...ActivityItem_activity
           }
         }
       }
     }
+    ${ActivityItem.fragments.user}
+    ${ActivityItem.fragments.activity}
   `
 };
 

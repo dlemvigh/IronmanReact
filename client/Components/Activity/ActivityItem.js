@@ -1,6 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Glyphicon } from "react-bootstrap";
+// FIXME glyphs are missing from react-bootstrap
+// import { Glyphicon } from "react-bootstrap";
 import toastr from "toastr";
 
 import Date from "../Common/Date";
@@ -65,12 +66,12 @@ class ActivityItem extends React.Component {
         </td>
         <td>
           <a href="javascript:void 0" onClick={this.onEdit}>
-            <Glyphicon glyph="pencil" />
+            {/* <Glyphicon glyph="pencil" /> */}
           </a>
         </td>
         <td>
           <a href="javascript:void 0" onClick={this.onDelete}>
-            <Glyphicon glyph="trash" />
+            {/* <Glyphicon glyph="trash" /> */}
           </a>
         </td>
       </tr>
@@ -78,35 +79,33 @@ class ActivityItem extends React.Component {
   }
 }
 
-ActivityItem = Relay.createContainer(ActivityItem, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        id  
-        users {
-          medals {
-            id
-          }
+ActivityItem.fragments = {
+  store: gql`
+    fragment ActivityItem_store on Store {
+      id  
+      users {
+        medals {
+          id
         }
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        id
-      }
-    `,
-    activity: () => Relay.QL`
-      fragment on Activity {
-        _id
-        id
-        disciplineId, 
-        disciplineName, 
-        distance,
-        unit,
-        score,
-        date
-      }`
-  }
-});
+    }
+  `,
+  user: gql`
+    fragment ActivityItem_user on User {
+      id
+    }
+  `,
+  activity: gql`
+    fragment ActivityItem_activity on Activity {
+      _id
+      id
+      disciplineId, 
+      disciplineName, 
+      distance,
+      unit,
+      score,
+      date
+    }`
+};
 
 export default ActivityItem;
