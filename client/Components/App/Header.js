@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { Navbar, Nav, NavItem, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, NavItem, NavDropdown, Container } from "react-bootstrap";
 import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
 import CSSModules from "react-css-modules";
@@ -56,36 +56,39 @@ class Header extends React.Component {
     return (
       <header>
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand>
-            <Link to="/">Ironman 70.3 Club</Link>
-          </Navbar.Brand>
-          {/* 
-          <Navbar.Toggle />
-          <Navbar.Collapse>
-            {this.renderUserNav()}
-            <Nav>
-              <LinkContainer to="/graphs">
-                <Nav.Item>Graphs</Nav.Item>
-              </LinkContainer>
-              {this.renderAthletes(true)}
-              <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
-                {this.props.store.allSeasons
-                  .filter(x => x.from <= currentWeek)
-                  .sort((a, b) => b.from - a.from)
-                  .map(season => (
-                    <LinkContainer
-                      to={`/season/${season._id}`}
-                      key={season._id}
-                    >
-                      <NavDropdown.Item>{season.name}</NavDropdown.Item>
-                    </LinkContainer>
-                  ))}
-                <LinkContainer to="/season">
-                  <NavDropdown.Item>All time</NavDropdown.Item>
+          <Container>
+            <LinkContainer to="/">
+              <Navbar.Brand>
+                Ironman 70.3 Club
+              </Navbar.Brand>
+            </LinkContainer>
+            <Navbar.Toggle />
+            <Navbar.Collapse>
+              {this.renderUserNav()}
+              <Nav className="ml-auto">
+                <LinkContainer to="/graphs">
+                  <Nav.Link>Graphs</Nav.Link>
                 </LinkContainer>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse> */}
+                {this.renderAthletes(true)}
+                <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
+                  {this.props.store.allSeasons
+                    .filter(x => x.from <= currentWeek)
+                    .sort((a, b) => b.from - a.from)
+                    .map(season => (
+                      <LinkContainer
+                        to={`/season/${season._id}`}
+                        key={season._id}
+                      >
+                        <NavDropdown.Item>{season.name}</NavDropdown.Item>
+                      </LinkContainer>
+                    ))}
+                  <LinkContainer to="/season">
+                    <NavDropdown.Item>All time</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
         </Navbar>
       </header>
     );
