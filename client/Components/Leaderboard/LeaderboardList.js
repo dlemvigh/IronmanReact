@@ -41,16 +41,15 @@ class LeaderboardList extends React.Component {
   }
 }
 
-LeaderboardList = Relay.createContainer(LeaderboardList, {
-  fragments: {
-    summary: () => Relay.QL`
-      fragment on Summary @relay(plural: true) {
-        _id
-        score
-        ${LeaderboardItem.getFragment("summary")}
-      }
-    `
-  }
-});
+LeaderboardList.fragments = {
+  summary: gql`
+    fragment LeaderboardList_summary on Summary {
+      _id
+      score
+      ...LeaderboardItem_summary
+    }
+    ${LeaderboardItem.fragments.summary}
+  `
+};
 
 export default LeaderboardList;

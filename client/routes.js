@@ -33,7 +33,7 @@ import Loading from "./Components/Common/Loading";
 export default () => (
   <Switch>
     <Route path="/:username" component={ActivityQueries} />
-    {/* <Route component={LeaderboardQueries} /> */}
+    <Route component={LeaderboardQueries} />
   </Switch>
 );
 

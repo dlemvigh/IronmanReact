@@ -46,18 +46,16 @@ LeaderboardItem = CSSModules(LeaderboardItem, styles);
 
 LeaderboardItem = withRouter(LeaderboardItem);
 
-LeaderboardItem = Relay.createContainer(LeaderboardItem, {
-  fragments: {
-    summary: () => Relay.QL`
-      fragment on Summary {
-        user {
-          name
-          username
-        }
-        score
+LeaderboardItem.fragments = {
+  summary: gql`
+    fragment LeaderboardItem_summary on Summary {
+      user {
+        name
+        username
       }
-    `
-  }
-});
+      score
+    }
+  `
+};
 
 export default LeaderboardItem;
