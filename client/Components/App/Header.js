@@ -1,7 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
 import { Navbar, Nav, NavItem, NavDropdown, Container } from "react-bootstrap";
 import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 

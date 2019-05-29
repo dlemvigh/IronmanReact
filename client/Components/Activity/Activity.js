@@ -25,28 +25,29 @@ class Activity extends React.Component {
   };
 
   render() {
-    // const component =
-    //   this.state.editing === null ? (
-    //     <ActivityForm
-    //       {...this.props}
-    //       show={this.state.editing === null}
-    //       activity={null}
-    //     />
-    //   ) : (
-    //     <ActivityForm
-    //       {...this.props}
-    //       key={this.state.editing._id}
-    //       show={this.state.editing !== null}
-    //       activity={this.state.editing}
-    //       onEditDone={this.onEndEdit}
-    //     />
-    //   );
+    // const component = null;
+    const component =
+      this.state.editing === null ? (
+        <ActivityForm
+          {...this.props}
+          show={this.state.editing === null}
+          activity={null}
+        />
+      ) : (
+        <ActivityForm
+          {...this.props}
+          key={this.state.editing._id}
+          show={this.state.editing !== null}
+          activity={this.state.editing}
+          onEditDone={this.onEndEdit}
+        />
+      );
     return (
       <div>
         <h3>{this.getName()} activities</h3>
-        {/* {component}
+        {component}
         <PersonalGoals user={this.props.user} />
-        <ActivityList {...this.props} onEdit={this.onBeginEdit} /> */}
+        <ActivityList {...this.props} onEdit={this.onBeginEdit} />
       </div>
     );
   }

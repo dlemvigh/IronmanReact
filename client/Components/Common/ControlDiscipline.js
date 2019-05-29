@@ -3,7 +3,6 @@ import gql from "graphql-tag";
 import { FormLabel, FormGroup } from "react-bootstrap";
 
 import DisciplineIcon from "./DisciplineIcon";
-import isMobile from "./isMobile";
 
 class ControlDiscipline extends React.Component {
   onChange = event => {
@@ -25,7 +24,7 @@ class ControlDiscipline extends React.Component {
 
   renderIcons() {
     return (
-      <div className="visible-xs">
+      <div className="d-sm-none">
         {this.props.store.disciplines.map(discipline => (
           <span
             key={discipline._id}
@@ -46,7 +45,7 @@ class ControlDiscipline extends React.Component {
   renderDropdown() {
     return (
       <select
-        className="form-control hidden-xs"
+        className="form-control d-sm-inline d-none"
         value={this.props.value || ""}
         placeholder="distance"
         onChange={this.onChange}
@@ -79,19 +78,17 @@ class ControlDiscipline extends React.Component {
   }
 }
 
-ControlDiscipline = Relay.createContainer(ControlDiscipline, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        disciplines {
-          _id
-          name
-          unit
-          score
-        }
+ControlDiscipline.fragments = {
+  store: gql`
+    fragment ControlDiscipline_store on Store {
+      disciplines {
+        _id
+        name
+        unit
+        score
       }
-    `
-  }
-});
+    }
+  `
+};
 
 export default ControlDiscipline;

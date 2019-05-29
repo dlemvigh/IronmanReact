@@ -121,7 +121,7 @@ class AddSeason extends React.Component {
         >Clear</Button>          
         <Button 
           type="submit" 
-          bsStyle="primary"
+          variant="primary"
           disabled={!this.state.isValid}
         >Submit</Button>
       </form>

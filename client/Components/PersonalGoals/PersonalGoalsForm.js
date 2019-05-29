@@ -121,10 +121,10 @@ class PersonalGoalsForm extends React.Component {
         ))}
         <Row>
           <Col xs={12}>
-            <Button bsStyle="primary" onClick={this.save}>
+            <Button variant="primary" onClick={this.save}>
               Save
             </Button>
-            <Button bsStyle="link" onClick={this.addGoal}>
+            <Button variant="link" onClick={this.addGoal}>
               Add goal
             </Button>
           </Col>

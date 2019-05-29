@@ -5,9 +5,9 @@ import CSSModules from "react-css-modules";
 import moment from "moment";
 import toastr from "toastr";
 
-import styles from "./ActivityForm.scss";
+import styles from "./ActivityForm.modules.scss";
 import ControlDate from "../Common/ControlDate";
-// import ControlDiscipline from "../Common/ControlDiscipline";
+import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
 // import AddActivityMutation from "../../Mutations/AddActivityMutation";
@@ -170,13 +170,13 @@ class ActivityForm extends React.Component {
       <form onSubmit={this.handleSubmit} noValidate>
         <Row>
           <Col sm={3}>
-            {/* <ControlDiscipline
+            <ControlDiscipline
               ref="discipline"
               value={this.state.disciplineId}
               onChange={this.handleChangeDiscipline}
               store={this.props.store}
               ensureValidation={this.state.ensureValidation}
-            /> */}
+            />
           </Col>
           <Col sm={3} xs={8}>
             <ControlDistance
@@ -204,7 +204,7 @@ class ActivityForm extends React.Component {
           <Col sm={1} xs={4}>
             <Button
               type="submit"
-              bsStyle="primary"
+              variant="primary"
               styleName="form-noncontrol-offset"
             >
               {this.isEditing() ? "Update" : "Log"}
@@ -227,7 +227,7 @@ ActivityForm = CSSModules(ActivityForm, styles);
 ActivityForm.fragments = {
   store: gql`
     fragment ActivityForm_store on Store {
-      id
+      ...ControlDiscipline_store
       users {
         medals {
           id
@@ -238,6 +238,7 @@ ActivityForm.fragments = {
         name
       }
     }
+    ${ControlDiscipline.fragments.store}
   `,
   user: gql`
     fragment ActivityForm_user on User {

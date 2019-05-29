@@ -11,6 +11,7 @@ export function withApollo(WrappedComponent, { query, variables }) {
         if (loading) return "Loading...";
         if (error) return `Error! ${error.message}`;
 
+        // return <div>test</div>
         return <WrappedComponent {...data} {...props} />;
       }}
     </Query>
