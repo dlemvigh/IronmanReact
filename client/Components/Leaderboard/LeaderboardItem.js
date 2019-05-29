@@ -5,7 +5,7 @@ import _ from "lodash";
 import { withRouter } from "react-router";
 
 import Pos from "../Common/Pos";
-import styles from "./LeaderboardItem.scss";
+import styles from "./LeaderboardItem.modules.scss";
 
 class LeaderboardItem extends React.Component {
   onClick = () => {

@@ -10,7 +10,7 @@ import ControlDate from "../Common/ControlDate";
 import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
-// import AddActivityMutation from "../../Mutations/AddActivityMutation";
+import { withAddActivityMutation } from "../../Mutations/AddActivityMutation";
 // import EditActivityMutation from "../../Mutations/EditActivityMutation";
 
 class ActivityForm extends React.Component {
@@ -95,7 +95,7 @@ class ActivityForm extends React.Component {
   };
 
   isValid = () => {
-    return this.ref.distance.isValid() && this.ref.date.isValid();
+    return this.ref.distance.current.isValid() && this.ref.date.current.isValid();
   };
 
   handleSubmit = event => {
@@ -121,21 +121,27 @@ class ActivityForm extends React.Component {
         );
         this.props.onEditDone();
       } else {
-        Relay.Store.commitUpdate(
-          new AddActivityMutation({
-            ...activity
-          }),
-          {
-            onFailure: resp => {
-              console.error("fail", resp);
-              toastr.error("Add activity failed");
-            },
-            onSuccess: () => {
-              toastr.success("Activity added");
-            }
+
+        this.props.addActivity({
+          variables: {
+            input: activity
           }
-        );
-        this.clearState();
+        });
+        // Relay.Store.commitUpdate(
+        //   new AddActivityMutation({
+        //     ...activity
+        //   }),
+        //   {
+        //     onFailure: resp => {
+        //       console.error("fail", resp);
+        //       toastr.error("Add activity failed");
+        //     },
+        //     onSuccess: () => {
+        //       toastr.success("Activity added");
+        //     }
+        //   }
+        // );
+        // this.clearState();
       }
     } else {
       this.setState({
@@ -146,15 +152,15 @@ class ActivityForm extends React.Component {
 
   getActivity() {
     const activity = {
-      medals: this.getMedals(),
-      store: this.props.store.id,
+      // medals: this.getMedals(),
+      // store: this.props.store.id,
       userId: this.props.user._id,
-      nodeId: this.props.user.id,
-      userIds: this.getUserIds(),
+      // nodeId: this.props.user.id,
+      // userIds: this.getUserIds(),
       disciplineId: this.state.disciplineId,
       distance: parseFloat(this.state.distance),
-      unit: this.state.unit,
-      score: this.state.score * this.state.distance,
+      // unit: this.state.unit,
+      // score: this.state.score * this.state.distance,
       date: moment.utc(this.state.date, "D/M-YYYY").toISOString()
     };
     return activity;
@@ -228,8 +234,21 @@ class ActivityForm extends React.Component {
 }
 
 ActivityForm = CSSModules(ActivityForm, styles);
+ActivityForm = withAddActivityMutation(ActivityForm);
 
 // ${/*ControlDiscipline.getFragment("store")*/}
+
+// const ActivityFormContainer = (props) => (
+//   <AddActivityMutation>
+//     {({ addActivity }) => (
+//       <ActivityForm {...props} addActivity={addActivity}>
+//         {props.children}
+//       </ActivityForm>
+//     )}
+//   </AddActivityMutation>
+
+// )
+
 ActivityForm.fragments = {
   store: gql`
     fragment ActivityForm_store on Store {
