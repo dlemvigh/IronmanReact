@@ -10,6 +10,7 @@
         "es6": true,
         "node": true
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -61,7 +62,6 @@
         "react/display-name": "off",
         "max-len": ["warn", {"code": 120}],
         "newline-per-chained-call": "off",
-        /* nice to have */
         "curly": 1,
         "eqeqeq": 0,
         "react/prefer-stateless-function": 0

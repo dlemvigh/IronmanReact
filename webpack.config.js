@@ -70,12 +70,13 @@ module.exports = {
       }
     ]
   },
-  // resolve: {
-  //   alias: {
-  //     react: "preact-compat",
-  //     "react-dom": "preact-compat"
-  //   }
-  // },
+  resolve: {
+    extensions: ['*', '.js', '.jsx']
+    // alias: {
+    //   react: "preact-compat",
+    //   "react-dom": "preact-compat"
+    // }
+  },
   plugins: [
     new CompressionPlugin(),
     new HtmlWebpackPlugin({
