@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { Button, Col, Row } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 import moment from "moment";
@@ -7,14 +7,13 @@ import toastr from "toastr";
 
 import styles from "./ActivityForm.scss";
 import ControlDate from "../Common/ControlDate";
-import ControlDiscipline from "../Common/ControlDiscipline";
+// import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
-import AddActivityMutation from "../../Mutations/AddActivityMutation";
-import EditActivityMutation from "../../Mutations/EditActivityMutation";
+// import AddActivityMutation from "../../Mutations/AddActivityMutation";
+// import EditActivityMutation from "../../Mutations/EditActivityMutation";
 
 class ActivityForm extends React.Component {
-
   constructor(props) {
     super(props);
     if (props.activity) {
@@ -28,9 +27,12 @@ class ActivityForm extends React.Component {
     distance: "",
     unit: "km",
     score: "" || 5,
-    date: moment.utc().startOf("date").format("D/M-YYYY"),
+    date: moment
+      .utc()
+      .startOf("date")
+      .format("D/M-YYYY"),
     ensureValidation: false
-  }
+  };
 
   componentWillReceiveProps(newProps) {
     if (newProps.activity != null) {
@@ -39,15 +41,15 @@ class ActivityForm extends React.Component {
     }
   }
 
-  onReceiveActivity(activity){
+  onReceiveActivity(activity) {
     return {
       disciplineId: activity.disciplineId,
       disciplineName: activity.disciplineName,
       distance: activity.distance,
       unit: activity.unit,
       score: activity.score / activity.distance,
-      date: moment.utc(activity.date).format("D/M-YYYY"),
-    };    
+      date: moment.utc(activity.date).format("D/M-YYYY")
+    };
   }
 
   isEditing() {
@@ -57,7 +59,10 @@ class ActivityForm extends React.Component {
   clearState() {
     this.setState({
       distance: "" || "",
-      date: moment.utc().startOf("date").format("D/M-YYYY"),
+      date: moment
+        .utc()
+        .startOf("date")
+        .format("D/M-YYYY"),
       ensureValidation: false
     });
   }
@@ -66,28 +71,28 @@ class ActivityForm extends React.Component {
     return this.props.store.users.map(user => user.id);
   }
 
-  handleChangeDiscipline = (discipline) => {
+  handleChangeDiscipline = discipline => {
     this.setState({
       disciplineId: discipline.id || discipline._id,
       disciplineName: discipline.name,
       unit: discipline.unit,
       score: discipline.score
     });
-  }
+  };
 
-  handleChangeDistance = (distance) => {        
-    this.setState({ distance });        
-  }
+  handleChangeDistance = distance => {
+    this.setState({ distance });
+  };
 
-  handleChangeDate = (date) => {
+  handleChangeDate = date => {
     this.setState({ date });
-  }
+  };
 
   isValid = () => {
     return this.refs.distance.isValid() && this.refs.date.isValid();
-  }
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     if (this.isValid()) {
       const activity = this.getActivity();
@@ -95,21 +100,33 @@ class ActivityForm extends React.Component {
         Relay.Store.commitUpdate(
           new EditActivityMutation({
             _id: this.props.activity._id,
-            id: this.props.activity.id,                        
+            id: this.props.activity.id,
             ...activity
-          }), {
-            onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
-            onSuccess: () => { toastr.success("Activity updated"); }
+          }),
+          {
+            onFailure: resp => {
+              console.error("fail", resp);
+              toastr.error("Update activity failed");
+            },
+            onSuccess: () => {
+              toastr.success("Activity updated");
+            }
           }
         );
         this.props.onEditDone();
       } else {
         Relay.Store.commitUpdate(
           new AddActivityMutation({
-            ...activity,
-          }), {
-            onFailure: (resp) => { console.error("fail", resp); toastr.error("Add activity failed"); },
-            onSuccess: () => { toastr.success("Activity added"); }
+            ...activity
+          }),
+          {
+            onFailure: resp => {
+              console.error("fail", resp);
+              toastr.error("Add activity failed");
+            },
+            onSuccess: () => {
+              toastr.success("Activity added");
+            }
           }
         );
         this.clearState();
@@ -119,7 +136,7 @@ class ActivityForm extends React.Component {
         ensureValidation: true
       });
     }
-  }
+  };
 
   getActivity() {
     const activity = {
@@ -143,51 +160,62 @@ class ActivityForm extends React.Component {
 
   onCancelEdit = () => {
     this.props.onEditDone();
-  }
+  };
 
   render() {
-    if (!this.props.show) { return null; }
+    if (!this.props.show) {
+      return null;
+    }
     return (
       <form onSubmit={this.handleSubmit} noValidate>
         <Row>
           <Col sm={3}>
-            <ControlDiscipline 
-              ref="discipline" 
+            {/* <ControlDiscipline
+              ref="discipline"
               value={this.state.disciplineId}
-              onChange={this.handleChangeDiscipline} 
-              store={this.props.store} 
+              onChange={this.handleChangeDiscipline}
+              store={this.props.store}
+              ensureValidation={this.state.ensureValidation}
+            /> */}
+          </Col>
+          <Col sm={3} xs={8}>
+            <ControlDistance
+              ref="distance"
+              value={this.state.distance}
+              unit={this.state.unit}
+              onChange={this.handleChangeDistance}
               ensureValidation={this.state.ensureValidation}
             />
           </Col>
-          <Col sm={3} xs={8} >
-            <ControlDistance 
-              ref="distance" 
-              value={this.state.distance} 
-              unit={this.state.unit} 
-              onChange={this.handleChangeDistance} 
-              ensureValidation={this.state.ensureValidation}
-            />  
-          </Col>
           <Col sm={2} xs={4}>
-            <ControlScore value={this.state.score * this.state.distance} readonly />
+            <ControlScore
+              value={this.state.score * this.state.distance}
+              readonly
+            />
           </Col>
           <Col sm={3} xs={8}>
-            <ControlDate 
-              ref="date" 
-              value={this.state.date} 
-              onChange={this.handleChangeDate} 
+            <ControlDate
+              ref="date"
+              value={this.state.date}
+              onChange={this.handleChangeDate}
               ensureValidation={this.state.ensureValidation}
             />
           </Col>
           <Col sm={1} xs={4}>
-            <Button 
-              type="submit" 
-              bsStyle="primary" 
+            <Button
+              type="submit"
+              bsStyle="primary"
               styleName="form-noncontrol-offset"
-            >{this.isEditing() ? "Update" : "Log"}</Button>
+            >
+              {this.isEditing() ? "Update" : "Log"}
+            </Button>
           </Col>
         </Row>
-        {this.isEditing() && <a href="javascript: void 0" onClick={this.onCancelEdit}>cancel</a>}
+        {this.isEditing() && (
+          <a href="javascript: void 0" onClick={this.onCancelEdit}>
+            cancel
+          </a>
+        )}
       </form>
     );
   }
@@ -195,30 +223,28 @@ class ActivityForm extends React.Component {
 
 ActivityForm = CSSModules(ActivityForm, styles);
 
-ActivityForm = Relay.createContainer(ActivityForm, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        id
-        users {
-          medals {
-            id
-          }
+// ${/*ControlDiscipline.getFragment("store")*/}
+ActivityForm.fragments = {
+  store: gql`
+    fragment ActivityForm_store on Store {
+      id
+      users {
+        medals {
+          id
         }
-        disciplines {
-          _id
-          name
-        }
-        ${ControlDiscipline.getFragment("store")}
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
+      disciplines {
         _id
-        id
+        name
       }
-    `
-  }
-});
+    }
+  `,
+  user: gql`
+    fragment ActivityForm_user on User {
+      _id
+      id
+    }
+  `
+};
 
 export default ActivityForm;

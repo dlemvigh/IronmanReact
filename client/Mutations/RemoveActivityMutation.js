@@ -1,7 +1,6 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 class RemoveActivityMutation extends Relay.Mutation {
-
   getMutation() {
     return Relay.QL`
       mutation { removeActivity }
@@ -10,7 +9,7 @@ class RemoveActivityMutation extends Relay.Mutation {
 
   getVariables() {
     return {
-      id: this.props.id  
+      id: this.props.id
     };
   }
 
@@ -31,19 +30,22 @@ class RemoveActivityMutation extends Relay.Mutation {
   }
 
   getConfigs() {
-    return [{
-      type: "NODE_DELETE",
-      parentName: "user",
-      parentID: this.props.nodeId,
-      connectionName: "activities",
-      deletedIDFieldName: "removedActivityId",
-    },{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        medals: this.props.medals,
-        store: this.props.store
+    return [
+      {
+        type: "NODE_DELETE",
+        parentName: "user",
+        parentID: this.props.nodeId,
+        connectionName: "activities",
+        deletedIDFieldName: "removedActivityId"
+      },
+      {
+        type: "FIELDS_CHANGE",
+        fieldIDs: {
+          medals: this.props.medals,
+          store: this.props.store
+        }
       }
-    }];
+    ];
   }
 }
 

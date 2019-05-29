@@ -1,7 +1,6 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 class SetPersonalGoalsMutations extends Relay.Mutation {
-  
   getMutation() {
     return Relay.QL`
       mutation { setPersonalGoals }
@@ -26,12 +25,14 @@ class SetPersonalGoalsMutations extends Relay.Mutation {
   }
 
   getConfigs() {
-    return [{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        user: this.props.user.id
+    return [
+      {
+        type: "FIELDS_CHANGE",
+        fieldIDs: {
+          user: this.props.user.id
+        }
       }
-    }];
+    ];
   }
 }
 

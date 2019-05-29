@@ -1,6 +1,6 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
-export default { 
+export default {
   store: () => Relay.QL`
     query Store {
       store

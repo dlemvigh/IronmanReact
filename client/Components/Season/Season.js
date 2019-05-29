@@ -1,12 +1,12 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 import Medals from "../Medals/Medals";
 
 class Season extends React.Component {
   render() {
     return (
-      <div>                
+      <div>
         <Medals store={this.props.store} season={this.props.season || null} />
       </div>
     );

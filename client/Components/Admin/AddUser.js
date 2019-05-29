@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { Button, ControlLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 

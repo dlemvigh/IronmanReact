@@ -1,10 +1,10 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 class EnsureLoginMutation extends Relay.Mutation {
   getMutation() {
     return Relay.QL`
       mutation { ensureLogin }
-    `;  
+    `;
   }
 
   getVariables() {
@@ -20,18 +20,20 @@ class EnsureLoginMutation extends Relay.Mutation {
   }
 
   getConfigs() {
-    return [{
-      type: 'REQUIRED_CHILDREN',
-      children: [
-        Relay.QL`
+    return [
+      {
+        type: "REQUIRED_CHILDREN",
+        children: [
+          Relay.QL`
           fragment on EnsureLoginPayload {
             user {
               username
             }
           }
         `
-      ]
-    }];
+        ]
+      }
+    ];
   }
 }
 

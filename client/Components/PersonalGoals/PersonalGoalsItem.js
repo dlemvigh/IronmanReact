@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 
@@ -7,7 +7,13 @@ import styles from "./PersonalGoalsItem.scss";
 
 class PersonalGoalItem extends React.Component {
   renderDiscipline() {
-    return <strong>{this.props.goal.discipline ? this.props.goal.discipline.name : "exercise"}</strong>;
+    return (
+      <strong>
+        {this.props.goal.discipline
+          ? this.props.goal.discipline.name
+          : "exercise"}
+      </strong>
+    );
   }
 
   renderAmount() {
@@ -28,15 +34,21 @@ class PersonalGoalItem extends React.Component {
       unit = this.props.goal.score != 1 ? "points" : "point";
     }
 
-    return <strong>{number} {unit}</strong>;
+    return (
+      <strong>
+        {number} {unit}
+      </strong>
+    );
   }
 
   calcProgress() {
     let progress, total;
     const goal = this.props.goal;
-    const activities = goal.disciplineId ? 
-      this.props.activities.filter(edge => edge.node.disciplineId == goal.disciplineId) : 
-      this.props.activities;
+    const activities = goal.disciplineId
+      ? this.props.activities.filter(
+          edge => edge.node.disciplineId == goal.disciplineId
+        )
+      : this.props.activities;
 
     if (goal.count) {
       progress = activities.length;
@@ -58,17 +70,22 @@ class PersonalGoalItem extends React.Component {
 
   onClick = () => {
     this.props.router.push(`/${this.props.user.username}/goals`);
-  }
+  };
 
   render() {
     const [progres, total] = this.calcProgress();
-    const width = 100 * progres / total;
+    const width = (100 * progres) / total;
     return (
       <tr styleName="row" onClick={this.onClick}>
         <td>
-          I want to {this.renderDiscipline()} at least {this.renderAmount()} per week.
+          I want to {this.renderDiscipline()} at least {this.renderAmount()} per
+          week.
           <div className="progress" styleName="progress">
-            <div className="progress-bar" styleName="progress-bar" style={{width: width + "%"}} />
+            <div
+              className="progress-bar"
+              styleName="progress-bar"
+              style={{ width: width + "%" }}
+            />
           </div>
         </td>
       </tr>

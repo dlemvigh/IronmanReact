@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { Button, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 import PersonalGoals from "./PersonalGoals";
@@ -10,9 +10,10 @@ class PersonalGoalsForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      goals: props.user.personalGoals.length > 0 ? 
-        props.user.personalGoals.map(this.fromGoal) :
-        [ this.defaultGoal() ]
+      goals:
+        props.user.personalGoals.length > 0
+          ? props.user.personalGoals.map(this.fromGoal)
+          : [this.defaultGoal()]
     };
   }
 
@@ -38,7 +39,7 @@ class PersonalGoalsForm extends React.Component {
 
   toGoal(goal) {
     return {
-      disciplineId: goal.disc,      
+      disciplineId: goal.disc,
       [goal.type]: goal.value
     };
   }
@@ -55,32 +56,29 @@ class PersonalGoalsForm extends React.Component {
     const goals = [...this.state.goals];
     goals[index] = goal;
     this.setState({ goals });
-  }
-  
+  };
+
   swapGoals = (oldIndex, newIndex) => {
     const goals = [...this.state.goals];
     [goals[oldIndex], goals[newIndex]] = [goals[newIndex], goals[oldIndex]];
     this.setState({ goals });
-  }
+  };
 
-  removeGoal = (index) => {
+  removeGoal = index => {
     const goals = this.state.goals.filter((goal, idx) => idx != index);
     this.setState({ goals });
-  }
+  };
 
   addGoal = () => {
-    const goals = [
-      ...this.state.goals,
-      this.defaultGoal()
-    ];
+    const goals = [...this.state.goals, this.defaultGoal()];
     this.setState({ goals });
-  }
+  };
 
   isValid = () => {
     return true;
-  }
+  };
 
-  save = (event) => {
+  save = event => {
     event.preventDefault();
     if (!this.isValid()) {
       return;
@@ -91,36 +89,44 @@ class PersonalGoalsForm extends React.Component {
       new SetPersonalGoalsMutations({
         user: this.props.user,
         goals
-      }), {
-        onFailure: (resp) => { console.error("fail", resp); toastr.error("Update activity failed"); },
-        onSuccess: () => { toastr.success("Personal Goals updated"); }
+      }),
+      {
+        onFailure: resp => {
+          console.error("fail", resp);
+          toastr.error("Update activity failed");
+        },
+        onSuccess: () => {
+          toastr.success("Personal Goals updated");
+        }
       }
     );
-  }
+  };
 
   render() {
     return (
       <div>
         <h3>Personal Goals</h3>
-        {
-          this.state.goals.map((goal, index) => (
-            <PersonalGoalsFormItem 
-              key={index} 
-              index={index}
-              goal={goal} 
-              numGoals={this.state.goals.length}
-              update={this.updateGoal}
-              swap={this.swapGoals}
-              remove={this.removeGoal}
-              store={this.props.store}
-              save={this.save}
-            />
-          ))
-        }
+        {this.state.goals.map((goal, index) => (
+          <PersonalGoalsFormItem
+            key={index}
+            index={index}
+            goal={goal}
+            numGoals={this.state.goals.length}
+            update={this.updateGoal}
+            swap={this.swapGoals}
+            remove={this.removeGoal}
+            store={this.props.store}
+            save={this.save}
+          />
+        ))}
         <Row>
           <Col xs={12}>
-            <Button bsStyle="primary" onClick={this.save}>Save</Button>
-            <Button bsStyle="link" onClick={this.addGoal}>Add goal</Button>
+            <Button bsStyle="primary" onClick={this.save}>
+              Save
+            </Button>
+            <Button bsStyle="link" onClick={this.addGoal}>
+              Add goal
+            </Button>
           </Col>
         </Row>
         <PersonalGoals user={this.props.user} />
@@ -136,7 +142,7 @@ PersonalGoalsForm = Relay.createContainer(PersonalGoalsForm, {
         ${PersonalGoalsFormItem.getFragment("store")}
       }
     `,
-    user: () =>Relay.QL`
+    user: () => Relay.QL`
       fragment on User {
         ${PersonalGoals.getFragment("user")}
         id
@@ -150,7 +156,7 @@ PersonalGoalsForm = Relay.createContainer(PersonalGoalsForm, {
           score      
         }
       }
-    `,
+    `
   }
 });
 

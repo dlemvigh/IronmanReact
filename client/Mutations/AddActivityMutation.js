@@ -1,7 +1,6 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 class AddActivityMutation extends Relay.Mutation {
-
   getMutation() {
     return Relay.QL`
       mutation { addActivity }
@@ -34,22 +33,25 @@ class AddActivityMutation extends Relay.Mutation {
   }
 
   getConfigs() {
-    return [{
-      type: "RANGE_ADD",
-      parentName: "user",
-      parentID: this.props.nodeId,
-      connectionName: "activities",
-      edgeName: "activityEdge",
-      rangeBehaviors: {
-        "": "prepend",
+    return [
+      {
+        type: "RANGE_ADD",
+        parentName: "user",
+        parentID: this.props.nodeId,
+        connectionName: "activities",
+        edgeName: "activityEdge",
+        rangeBehaviors: {
+          "": "prepend"
+        }
       },
-    },{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        medals: this.props.medals,
-        store: this.props.store
+      {
+        type: "FIELDS_CHANGE",
+        fieldIDs: {
+          medals: this.props.medals,
+          store: this.props.store
+        }
       }
-    }];
+    ];
   }
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 import AddSeason from "./AddSeason";
 import AddUser from "./AddUser";

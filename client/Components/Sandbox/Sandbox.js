@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 import Activity from "../Activity/Activity";
 import Leaderboard from "../Leaderboard/Leaderboard";

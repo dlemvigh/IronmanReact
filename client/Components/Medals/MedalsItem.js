@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 
@@ -7,17 +7,20 @@ import styles from "./MedalsItem.scss";
 import Medals from "../Common/Medals";
 
 class MedalsItem extends React.Component {
-
   onClick = () => {
     this.props.router.push(`/${this.props.user.username}`);
-  }
+  };
 
   getStyleName() {
-    switch(this.props.pos) {
-      case 1: return "gold";
-      case 2: return "silver";
-      case 3: return "bronze";
-      default: "";
+    switch (this.props.pos) {
+      case 1:
+        return "gold";
+      case 2:
+        return "silver";
+      case 3:
+        return "bronze";
+      default:
+        "";
     }
   }
 
@@ -26,35 +29,32 @@ class MedalsItem extends React.Component {
       <tr onClick={this.onClick} styleName="row">
         <td>{this.props.user.name}</td>
         <td styleName="">
-          { 
-            this.props.user.medals && 
-            <Medals 
-              season={this.props.season}
-              weeks={this.props.user.medals.goldWeeks} 
-              type="gold" 
-            /> 
-          }
-        </td> 
-        <td styleName="">
-          { 
-            this.props.user.medals && 
-            <Medals 
-              season={this.props.season}
-              weeks={this.props.user.medals.silverWeeks} 
-              type="silver" 
-            />
-          }
-        </td> 
-        <td styleName="">
-          {
-            this.props.user.medals && 
+          {this.props.user.medals && (
             <Medals
-              season={this.props.season} 
-              weeks={this.props.user.medals.bronzeWeeks} 
-              type="bronze" 
+              season={this.props.season}
+              weeks={this.props.user.medals.goldWeeks}
+              type="gold"
             />
-          }
-        </td> 
+          )}
+        </td>
+        <td styleName="">
+          {this.props.user.medals && (
+            <Medals
+              season={this.props.season}
+              weeks={this.props.user.medals.silverWeeks}
+              type="silver"
+            />
+          )}
+        </td>
+        <td styleName="">
+          {this.props.user.medals && (
+            <Medals
+              season={this.props.season}
+              weeks={this.props.user.medals.bronzeWeeks}
+              type="bronze"
+            />
+          )}
+        </td>
       </tr>
     );
   }

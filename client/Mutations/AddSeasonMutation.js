@@ -1,10 +1,10 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 class AddSeasonMutation extends Relay.Mutation {
   getMutation() {
     return Relay.QL`
       mutation { addSeason }
-    `;  
+    `;
   }
 
   getVariables() {

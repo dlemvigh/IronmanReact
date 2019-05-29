@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 
-// import Relay from "react-relay";
+// import gql from "graphql-tag";
 // import moment from "moment";
 
 // import LeaderboardList from "./LeaderboardList";

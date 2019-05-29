@@ -7,7 +7,7 @@ import { withApollo } from "./apolloClient";
 // import App from "./Components/App/App";
 // import AppQueries from "./Components/App/AppQueries";
 // import Activity from "./Components/Activity/Activity";
-// import ActivityQueries from "./Components/Activity/ActivityQueries";
+import ActivityQueries from "./Components/Activity/ActivityQueries";
 // import Admin from "./Components/Admin/Admin";
 // import AdminQueries from "./Components/Admin/AdminQueries";
 // import Graphs from "./Componen ts/Graphs";
@@ -32,7 +32,8 @@ import Loading from "./Components/Common/Loading";
 
 export default () => (
   <Switch>
-    <Route path="/" component={LeaderboardQueries} />
+    <Route path="/:username" component={ActivityQueries} />
+    {/* <Route component={LeaderboardQueries} /> */}
   </Switch>
 );
 

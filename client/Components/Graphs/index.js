@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 import WeeklyTotal from "./WeeklyTotal";
 import Weekday from "./Weekday";

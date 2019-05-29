@@ -1,17 +1,16 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
 import LeaderboardItem from "./LeaderboardItem";
 
 class LeaderboardList extends React.Component {
-
   sorted() {
     const sorted = _(this.props.summary)
-            .sortBy([summary => summary.score || 0])
-            .reverse()
-            .value();
+      .sortBy([summary => summary.score || 0])
+      .reverse()
+      .value();
     return sorted;
   }
 
@@ -28,10 +27,14 @@ class LeaderboardList extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {
-            sorted.map((summary, index) => 
-              <LeaderboardItem key={summary._id} summary={summary} index={index} max={max} />)
-          }
+          {sorted.map((summary, index) => (
+            <LeaderboardItem
+              key={summary._id}
+              summary={summary}
+              index={index}
+              max={max}
+            />
+          ))}
         </tbody>
       </Table>
     );
