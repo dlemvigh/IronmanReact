@@ -14,7 +14,7 @@ module.exports = {
     publicPath: "/",
     filename: "bundle.js"
   },
-  // devtool: "source-map",
+  devtool: "source-map",
   module: {
     rules: [
       {

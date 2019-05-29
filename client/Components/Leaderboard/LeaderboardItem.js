@@ -9,7 +9,7 @@ import styles from "./LeaderboardItem.modules.scss";
 
 class LeaderboardItem extends React.Component {
   onClick = () => {
-    this.props.router.push(`/${this.props.summary.user.username}`);
+    this.props.history.push(`/${this.props.summary.user.username}`);
   };
 
   getScore() {

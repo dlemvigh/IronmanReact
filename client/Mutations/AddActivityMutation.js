@@ -1,25 +1,67 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+const ActivityEdgeFragment = gql`
+  fragment ActivityEdgeFragment on ActivityEdge {
+    node {
+      _id
+      id
+      date
+      disciplineId
+      disciplineName
+      distance        
+      score
+      unit
+      week
+    }
+  }
+`;
 
 const ADD_ACTIVITY = gql`
 mutation AddActivityMutation($input: AddActivityInput!) {
   addActivity(input: $input) {
     activityEdge {
-      node {
-        id
-        score
-        unit
-        date
-      }
+      ...ActivityEdgeFragment
     }
   }
-}`;
+}
+${ActivityEdgeFragment}
+`;
+
+const GET_ACTIVITIES = gql`
+  query GetActivities($username: String!) {
+    user(username: $username) {
+      id
+      activities(first: 100) {
+        edges {
+          ...ActivityEdgeFragment
+        }
+      }      
+    }
+  }
+  ${ActivityEdgeFragment}
+`;
 
 export function withAddActivityMutation(WrappedComponent) {
   return ({ ...props }) => (
     <Mutation
       mutation={ADD_ACTIVITY}
+      update={(cache, { data: { addActivity }}) => {
+        const activity = addActivity.activityEdge.node;
+        const { user } = cache.readQuery({ query: GET_ACTIVITIES, variables: { username: "david" } });
+        user.activities.edges = [
+          ...user.activities.edges,
+          { 
+            node: activity,
+            __typename: "Activity"
+          }
+        ];
+        cache.writeQuery({
+          query: GET_ACTIVITIES,
+          variables: { username: "david" },
+          data: { user }
+        });
+      }}
     >
       {(addActivity) => (
         <WrappedComponent {...props} addActivity={addActivity} />
@@ -27,70 +69,3 @@ export function withAddActivityMutation(WrappedComponent) {
     </Mutation>
   );
 }
-
-// const AddActivityMutation = (props) => (
-//   <Mutation
-//     mutation={ADD_ACTIVITY}
-//   >
-//     {props.children}
-//   </Mutation>
-// )
-
-// export default AddActivityMutation;
-
-// class AddActivityMutation extends Relay.Mutation {
-//   getMutation() {
-//     return Relay.QL`
-//       mutation { addActivity }
-//     `;
-//   }
-
-//   getVariables() {
-//     return {
-//       disciplineId: this.props.disciplineId,
-//       userId: this.props.userId,
-//       distance: this.props.distance,
-//       date: this.props.date
-//     };
-//   }
-
-//   getFatQuery() {
-//     return Relay.QL`
-//       fragment on AddActivityPayload {
-//         activityEdge
-//         medals
-//         user { 
-//           activities
-//           summary {
-//             score
-//           }
-//         }
-//         store
-//       }
-//     `;
-//   }
-
-//   getConfigs() {
-//     return [
-//       {
-//         type: "RANGE_ADD",
-//         parentName: "user",
-//         parentID: this.props.nodeId,
-//         connectionName: "activities",
-//         edgeName: "activityEdge",
-//         rangeBehaviors: {
-//           "": "prepend"
-//         }
-//       },
-//       {
-//         type: "FIELDS_CHANGE",
-//         fieldIDs: {
-//           medals: this.props.medals,
-//           store: this.props.store
-//         }
-//       }
-//     ];
-//   }
-// }
-
-// export default AddActivityMutation;
