@@ -10,8 +10,9 @@ import { getYearWeekId } from "../../../shared/util";
 
 class Header extends React.Component {
   renderUserNav() {
+    // FIXME match doesn't contain username
     const username = this.props.match.params.username;
-    if (!username) return null;
+    if (!username) { return null; }
     return (
       <Nav>
         <IndexLinkContainer to={`/${username}`}>
@@ -54,7 +55,7 @@ class Header extends React.Component {
     const currentWeek = getYearWeekId();
     return (
       <header>
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark" expand="sm">
           <Container>
             <LinkContainer to="/">
               <Navbar.Brand>
