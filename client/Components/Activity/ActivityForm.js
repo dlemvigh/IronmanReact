@@ -19,22 +19,28 @@ class ActivityForm extends React.Component {
     if (props.activity) {
       this.state = this.onReceiveActivity(props.activity);
     }
+
+    this.ref = {
+      distance: React.createRef(),
+      discipline: React.createRef(),
+      date: React.createRef()
+    };
+
+    this.state = {
+      disciplineId: "" || this.props.store.disciplines[0]._id,
+      disciplineName: "" || this.props.store.disciplines[0].name,
+      distance: "",
+      unit: "km",
+      score: "" || 5,
+      date: moment
+        .utc()
+        .startOf("date")
+        .format("D/M-YYYY"),
+      ensureValidation: false
+    };
   }
 
-  state = {
-    disciplineId: "" || this.props.store.disciplines[0]._id,
-    disciplineName: "" || this.props.store.disciplines[0].name,
-    distance: "",
-    unit: "km",
-    score: "" || 5,
-    date: moment
-      .utc()
-      .startOf("date")
-      .format("D/M-YYYY"),
-    ensureValidation: false
-  };
-
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.activity != null) {
       const newState = this.onReceiveActivity(newProps.activity);
       this.setState(newState);
@@ -89,7 +95,7 @@ class ActivityForm extends React.Component {
   };
 
   isValid = () => {
-    return this.refs.distance.isValid() && this.refs.date.isValid();
+    return this.ref.distance.isValid() && this.ref.date.isValid();
   };
 
   handleSubmit = event => {
@@ -171,7 +177,7 @@ class ActivityForm extends React.Component {
         <Row>
           <Col sm={3}>
             <ControlDiscipline
-              ref="discipline"
+              ref={this.ref.discipline}
               value={this.state.disciplineId}
               onChange={this.handleChangeDiscipline}
               store={this.props.store}
@@ -180,7 +186,7 @@ class ActivityForm extends React.Component {
           </Col>
           <Col sm={3} xs={8}>
             <ControlDistance
-              ref="distance"
+              ref={this.ref.distance}
               value={this.state.distance}
               unit={this.state.unit}
               onChange={this.handleChangeDistance}
@@ -195,7 +201,7 @@ class ActivityForm extends React.Component {
           </Col>
           <Col sm={3} xs={8}>
             <ControlDate
-              ref="date"
+              ref={this.ref.date}
               value={this.state.date}
               onChange={this.handleChangeDate}
               ensureValidation={this.state.ensureValidation}
