@@ -6,7 +6,7 @@ import { Navbar, Nav, NavItem, NavDropdown } from "react-bootstrap";
 import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
 import CSSModules from "react-css-modules";
-import styles from "./Header.scss";
+import styles from "./Header.modules.scss";
 import { getYearWeekId } from "../../../shared/util";
 
 class Header extends React.Component {
@@ -55,10 +55,11 @@ class Header extends React.Component {
     const currentWeek = getYearWeekId();
     return (
       <header>
-        <Navbar collapseOnSelect bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark">
           <Navbar.Brand>
             <Link to="/">Ironman 70.3 Club</Link>
           </Navbar.Brand>
+          {/* 
           <Navbar.Toggle />
           <Navbar.Collapse>
             {this.renderUserNav()}
@@ -84,7 +85,7 @@ class Header extends React.Component {
                 </LinkContainer>
               </NavDropdown>
             </Nav>
-          </Navbar.Collapse>
+          </Navbar.Collapse> */}
         </Navbar>
       </header>
     );

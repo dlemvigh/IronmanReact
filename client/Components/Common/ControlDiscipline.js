@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
-import { ControlLabel, FormGroup } from "react-bootstrap";
+import { FormLabel, FormGroup } from "react-bootstrap";
 
 import DisciplineIcon from "./DisciplineIcon";
 import isMobile from "./isMobile";
@@ -71,7 +71,7 @@ class ControlDiscipline extends React.Component {
   render() {
     return (
       <FormGroup>
-        <ControlLabel>Discipline</ControlLabel>
+        <FormLabel>Discipline</FormLabel>
         {this.renderIcons()}
         {this.renderDropdown()}
       </FormGroup>

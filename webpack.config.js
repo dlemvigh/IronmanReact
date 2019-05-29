@@ -35,6 +35,15 @@ module.exports = {
       },
       {
         test: /\.scss$/,
+        exclude: /\.modules\.scss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader"
+        ]
+      },
+      {
+        test: /\.modules\.scss$/,
         use: [
           "style-loader", // creates style nodes from JS strings
           {

@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Button, ControlLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
+import { Button, FormLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 
 import AddUserMutation from "../../Mutations/AddUserMutation";
@@ -64,7 +64,7 @@ class AddUser extends React.Component {
         <Row>
           <Col sm={6}>
             <FormGroup>
-              <ControlLabel>Name</ControlLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl
                 name="name"
                 type="text"
@@ -76,7 +76,7 @@ class AddUser extends React.Component {
           </Col>
           <Col sm={6}>
             <FormGroup>
-              <ControlLabel>Username</ControlLabel>
+              <FormLabel>Username</FormLabel>
               <FormControl
                 name="username"
                 type="text"

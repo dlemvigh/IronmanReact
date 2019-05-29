@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import {
-  ControlLabel,
+  FormLabel,
   FormControl,
   FormGroup,
   Glyphicon,
@@ -78,7 +78,7 @@ class PersonalGoalsFormItem extends React.Component {
         <Row>
           <Col xs={12} sm={4}>
             <FormGroup>
-              <ControlLabel>I want to</ControlLabel>
+              <FormLabel>I want to</FormLabel>
               <select
                 name="disc"
                 className="form-control"
@@ -96,7 +96,7 @@ class PersonalGoalsFormItem extends React.Component {
           </Col>
           <Col xs={4} sm={3}>
             <FormGroup>
-              <ControlLabel>At least</ControlLabel>
+              <FormLabel>At least</FormLabel>
               <FormControl
                 name="value"
                 type="text"
@@ -107,7 +107,7 @@ class PersonalGoalsFormItem extends React.Component {
           </Col>
           <Col xs={6} sm={4}>
             <FormGroup>
-              <ControlLabel>per week</ControlLabel>
+              <FormLabel>per week</FormLabel>
               <select
                 name="type"
                 className="form-control"

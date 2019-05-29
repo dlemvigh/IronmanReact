@@ -1,5 +1,5 @@
 import React from "react";
-import { ControlLabel, FormGroup } from "react-bootstrap";
+import { FormLabel, FormGroup } from "react-bootstrap";
 import DateTime from "react-datetime";
 import MobileDetect from "mobile-detect";
 import moment from "moment";
@@ -58,7 +58,7 @@ class ControlDate extends React.Component {
   render() {
     return (
       <FormGroup validationState={this.getValidationState()}>
-        <ControlLabel>Date</ControlLabel>
+        <FormLabel>Date</FormLabel>
         {
           this.isMobile() ? 
             <input 

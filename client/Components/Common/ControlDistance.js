@@ -1,5 +1,5 @@
 import React from "react";
-import { ControlLabel, FormGroup, FormControl, InputGroup } from "react-bootstrap";
+import { FormLabel, FormGroup, FormControl, InputGroup } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
 import styles from "./ControlDistance.scss";
@@ -29,7 +29,7 @@ class ControlDistance extends React.Component {
   render() {
     return (
       <FormGroup validationState={this.getValidationState()}>
-        <ControlLabel>Distance</ControlLabel>
+        <FormLabel>Distance</FormLabel>
         <InputGroup>
           <FormControl 
             type="number" 

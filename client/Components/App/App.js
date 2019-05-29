@@ -6,9 +6,9 @@ import toastr from "toastr";
 import Header from "./Header";
 import Footer from "./Footer";
 import Routes from "../../routes";
-import styles from "./App.scss";
+import styles from "./App.modules.scss";
 
-import "!style-loader!css-loader!../../Styles/bootstrap.css";
+import "../../Styles/custom.scss"
 import "!style-loader!css-loader!../../Styles/react-datetime.css";
 //import "!style-loader!css-loader!bootstrap/dist/css/bootstrap.min.css";
 //import "!style-loader!css-loader!bootstrap/dist/css/bootstrap-theme.min.css";

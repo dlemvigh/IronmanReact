@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
-import { Button, ControlLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
+import { Button, FormLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 
 import AddSeasonMutation from "../../Mutations/AddSeasonMutation";
@@ -68,7 +68,7 @@ class AddSeason extends React.Component {
         <Row>
           <Col sm={6}>
             <FormGroup>
-              <ControlLabel>Name</ControlLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl
                 name="name"
                 type="text"
@@ -80,7 +80,7 @@ class AddSeason extends React.Component {
           </Col>
           <Col sm={6}>
             <FormGroup>
-              <ControlLabel>Url</ControlLabel>
+              <FormLabel>Url</FormLabel>
               <FormControl
                 name="url"
                 type="text"
@@ -92,7 +92,7 @@ class AddSeason extends React.Component {
           </Col>
           <Col sm={6}>
             <FormGroup>
-              <ControlLabel>From</ControlLabel>
+              <FormLabel>From</FormLabel>
               <FormControl
                 name="from"
                 type="number"
@@ -104,7 +104,7 @@ class AddSeason extends React.Component {
           </Col>
           <Col sm={6}>
             <FormGroup>
-              <ControlLabel>To</ControlLabel>
+              <FormLabel>To</FormLabel>
               <FormControl
                 name="to"
                 type="number"
