@@ -2,21 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-const ActivityEdgeFragment = gql`
-  fragment ActivityEdgeFragment on ActivityEdge {
-    node {
-      _id
-      id
-      date
-      disciplineId
-      disciplineName
-      distance        
-      score
-      unit
-      week
-    }
-  }
-`;
+import { ActivityEdgeFragment, GET_ACTIVITIES } from "./SharedActivityMutation";
 
 const ADD_ACTIVITY = gql`
 mutation AddActivityMutation($input: AddActivityInput!) {
@@ -27,20 +13,6 @@ mutation AddActivityMutation($input: AddActivityInput!) {
   }
 }
 ${ActivityEdgeFragment}
-`;
-
-const GET_ACTIVITIES = gql`
-  query GetActivities($username: String!) {
-    user(username: $username) {
-      id
-      activities(first: 100) {
-        edges {
-          ...ActivityEdgeFragment
-        }
-      }      
-    }
-  }
-  ${ActivityEdgeFragment}
 `;
 
 export function withAddActivityMutation(WrappedComponent) {

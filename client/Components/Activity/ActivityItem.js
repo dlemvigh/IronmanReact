@@ -10,7 +10,7 @@ import Discipline from "../Common/Discipline";
 import Score from "../Common/Score";
 import Week from "../Common/Week";
 import Year from "../Common/Year";
-// import RemoveActivityMutation from "../../Mutations/RemoveActivityMutation";
+import { withRemoveActivityMutation } from "../../Mutations/RemoveActivityMutation";
 
 class ActivityItem extends React.Component {
   onEdit = () => {
@@ -18,6 +18,13 @@ class ActivityItem extends React.Component {
   };
 
   onDelete = () => {
+    this.props.removeActivity({
+      variables: {
+        input: {
+          id: this.props.activity._id
+        }
+      }
+    });
     // const mutation = new RemoveActivityMutation({
     //   id: this.props.activity._id,
     //   nodeId: this.props.user.id,
@@ -66,18 +73,20 @@ class ActivityItem extends React.Component {
         </td>
         <td>
           <a href="javascript:void 0" onClick={this.onEdit}>
-            {/* <Glyphicon glyph="pencil" /> */}
+            edit
           </a>
         </td>
         <td>
           <a href="javascript:void 0" onClick={this.onDelete}>
-            {/* <Glyphicon glyph="trash" /> */}
+            delete
           </a>
         </td>
       </tr>
     );
   }
 }
+
+ActivityItem = withRemoveActivityMutation(ActivityItem);
 
 ActivityItem.fragments = {
   store: gql`
