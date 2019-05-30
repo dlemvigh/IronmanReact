@@ -24,7 +24,7 @@ export function withEditActivityMutation(WrappedComponent) {
         cache.writeData({
           id: `Activity:${activity.id}`,
           data: activity
-        })
+        });
       }}
     >
       {(editActivity) => (

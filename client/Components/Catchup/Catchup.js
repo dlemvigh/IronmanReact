@@ -1,7 +1,5 @@
 import React from "react";
-import moment from "moment";
 import _ from "lodash";
-
 import CatchupList from "../Catchup/CatchupList";
 import gql from "graphql-tag";
 
