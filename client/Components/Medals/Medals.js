@@ -24,20 +24,4 @@ Medals.fragments = {
   `
 };
 
-// Medals = Relay.createContainer(Medals, {
-//   fragments: {
-//     store: () => Relay.QL`
-//       fragment on Store {
-//         ${MedalsList.getFragment("store")}
-//       }
-//     `,
-//     season: () => Relay.QL`
-//       fragment on Season {
-//         ${Season.getFragment("season")}
-//         ${MedalsList.getFragment("season")}
-//       }
-//     `
-//   }
-// });
-
 export default Medals;

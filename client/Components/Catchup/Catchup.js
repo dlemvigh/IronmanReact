@@ -52,24 +52,4 @@ Catchup.fragments = {
   `
 };
 
-// Catchup = Relay.createContainer(Catchup, {
-//   initialVariables: {
-//     week: moment().isoWeek(),
-//     year: moment().weekYear()
-//   },
-//   fragments: {
-//     store: () => Relay.QL`
-//       fragment on Store {
-//         users {
-//           name
-//           summary(week: $week, year: $year) {
-//             score
-//           }
-//         }
-//         ${CatchupList.getFragment("store")}
-//       }
-//     `
-//   }
-// });
-
 export default Catchup;
