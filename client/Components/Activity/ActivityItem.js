@@ -25,22 +25,6 @@ class ActivityItem extends React.Component {
         }
       }
     });
-    // const mutation = new RemoveActivityMutation({
-    //   id: this.props.activity._id,
-    //   nodeId: this.props.user.id,
-    //   medals: this.getMedals(),
-    //   store: this.props.store.id
-    // });
-    // Relay.Store.commitUpdate(mutation, {
-    //   onFailure: resp => {
-    //     console.log("fail", resp);
-    //     toastr.error("Remove activity failed");
-    //   },
-    //   onSuccess: resp => {
-    //     console.log("success", resp);
-    //     toastr.success("Activity removed");
-    //   }
-    // });
   };
 
   getMedals() {

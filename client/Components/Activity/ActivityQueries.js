@@ -19,30 +19,3 @@ export default withApollo(Activity, {
     ${Activity.fragments.user}
   `
 });
-
-// export default {
-//   byUsername: {
-//     store: () => Relay.QL`
-//         query Store {
-//             store
-//         }
-//     `,
-//     user: () => Relay.QL`
-//             query User {
-//                 user (username: $username)
-//             }
-//         `
-//   },
-//   byId: {
-//     store: () => Relay.QL`
-//             query Store {
-//                 store
-//             }
-//         `,
-//     user: () => Relay.QL`
-//             query User {
-//                 user (id: $id)
-//             }
-//         `
-//   }
-// };

@@ -1,19 +1,26 @@
 import gql from "graphql-tag";
 
+export const ActivityFragment = gql`
+  fragment ActivityFragment on Activity {
+    _id
+    id
+    date
+    disciplineId
+    disciplineName
+    distance        
+    score
+    unit
+    week
+  }
+`;
+
 export const ActivityEdgeFragment = gql`
   fragment ActivityEdgeFragment on ActivityEdge {
     node {
-      _id
-      id
-      date
-      disciplineId
-      disciplineName
-      distance        
-      score
-      unit
-      week
+      ...ActivityFragment
     }
   }
+  ${ActivityFragment}
 `;
 
 export const GET_ACTIVITIES = gql`

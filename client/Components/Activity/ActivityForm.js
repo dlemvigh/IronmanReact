@@ -11,13 +11,25 @@ import ControlDiscipline from "../Common/ControlDiscipline";
 import ControlDistance from "../Common/ControlDistance";
 import ControlScore from "../Common/ControlScore";
 import { withAddActivityMutation } from "../../Mutations/AddActivityMutation";
-// import EditActivityMutation from "../../Mutations/EditActivityMutation";
+import { withEditActivityMutation } from "../../Mutations/EditActivityMutation";
+
+function mapPropsToState({ activity }) {
+  return {
+    activity,
+    disciplineId: activity.disciplineId,
+    disciplineName: activity.disciplineName,
+    distance: activity.distance,
+    unit: activity.unit,
+    score: activity.score / activity.distance,
+    date: moment.utc(activity.date).format("D/M-YYYY")
+  };
+}
 
 class ActivityForm extends React.Component {
   constructor(props) {
     super(props);
     if (props.activity) {
-      this.state = this.onReceiveActivity(props.activity);
+      this.state = mapPropsToState(props);
     }
 
     this.ref = {
@@ -40,22 +52,14 @@ class ActivityForm extends React.Component {
     };
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (newProps.activity != null) {
-      const newState = this.onReceiveActivity(newProps.activity);
-      this.setState(newState);
-    }
-  }
+  static getDerivedStateFromProps(props, state){
 
-  onReceiveActivity(activity) {
-    return {
-      disciplineId: activity.disciplineId,
-      disciplineName: activity.disciplineName,
-      distance: activity.distance,
-      unit: activity.unit,
-      score: activity.score / activity.distance,
-      date: moment.utc(activity.date).format("D/M-YYYY")
-    };
+    if (props.activity != null && props.activity !== state.activity) {
+      const newState = mapPropsToState(props);
+      return newState;
+    }
+
+    return state;
   }
 
   isEditing() {
@@ -103,22 +107,14 @@ class ActivityForm extends React.Component {
     if (this.isValid()) {
       const activity = this.getActivity();
       if (this.isEditing()) {
-        Relay.Store.commitUpdate(
-          new EditActivityMutation({
-            _id: this.props.activity._id,
-            id: this.props.activity.id,
-            ...activity
-          }),
-          {
-            onFailure: resp => {
-              console.error("fail", resp);
-              toastr.error("Update activity failed");
-            },
-            onSuccess: () => {
-              toastr.success("Activity updated");
+        this.props.editActivity({
+          variables: {
+            input: {
+              id: this.props.activity._id,
+              ...activity
             }
           }
-        );
+        });
         this.props.onEditDone();
       } else {
 
@@ -127,21 +123,7 @@ class ActivityForm extends React.Component {
             input: activity
           }
         });
-        // Relay.Store.commitUpdate(
-        //   new AddActivityMutation({
-        //     ...activity
-        //   }),
-        //   {
-        //     onFailure: resp => {
-        //       console.error("fail", resp);
-        //       toastr.error("Add activity failed");
-        //     },
-        //     onSuccess: () => {
-        //       toastr.success("Activity added");
-        //     }
-        //   }
-        // );
-        // this.clearState();
+        this.clearState();
       }
     } else {
       this.setState({
@@ -178,6 +160,7 @@ class ActivityForm extends React.Component {
     if (!this.props.show) {
       return null;
     }
+
     return (
       <form onSubmit={this.handleSubmit} noValidate>
         <Row>
@@ -235,6 +218,7 @@ class ActivityForm extends React.Component {
 
 ActivityForm = CSSModules(ActivityForm, styles);
 ActivityForm = withAddActivityMutation(ActivityForm);
+ActivityForm = withEditActivityMutation(ActivityForm);
 
 // ${/*ControlDiscipline.getFragment("store")*/}
 

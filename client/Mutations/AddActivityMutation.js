@@ -5,14 +5,14 @@ import gql from "graphql-tag";
 import { ActivityEdgeFragment, GET_ACTIVITIES } from "./SharedActivityMutation";
 
 const ADD_ACTIVITY = gql`
-mutation AddActivityMutation($input: AddActivityInput!) {
-  addActivity(input: $input) {
-    activityEdge {
-      ...ActivityEdgeFragment
+  mutation AddActivityMutation($input: AddActivityInput!) {
+    addActivity(input: $input) {
+      activityEdge {
+        ...ActivityEdgeFragment
+      }
     }
   }
-}
-${ActivityEdgeFragment}
+  ${ActivityEdgeFragment}
 `;
 
 export function withAddActivityMutation(WrappedComponent) {
