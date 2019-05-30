@@ -1,6 +1,7 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+
 const ActivityEdgeFragment = gql`
   fragment ActivityEdgeFragment on ActivityEdge {
     node {

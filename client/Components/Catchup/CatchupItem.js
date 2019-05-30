@@ -7,7 +7,7 @@ import _ from "lodash";
 import { mapFilter, getClassName } from "./CatchupFilter";
 import CatchupItemTriathlon from "./CatchupItemTriathlon";
 
-import styles from "./CatchupItem.scss";
+import styles from "./CatchupItem.modules.scss";
 
 class CatchupItem extends React.Component {
   onClick = () => {

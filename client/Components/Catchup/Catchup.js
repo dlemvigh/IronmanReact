@@ -21,8 +21,8 @@ class Catchup extends React.Component {
 
   getLeader() {
     return (
-      this.props.store.user &&
-      this.props.store.user.length &&
+      this.props.store.users &&
+      this.props.store.users.length &&
       this.getSortedUser()[0].name
     );
   }
