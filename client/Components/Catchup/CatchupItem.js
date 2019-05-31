@@ -11,7 +11,7 @@ import styles from "./CatchupItem.modules.scss";
 
 class CatchupItem extends React.Component {
   onClick = () => {
-    this.props.router.push(`/${this.props.user.username}`);
+    this.props.history.push(`/${this.props.user.username}`);
   };
 
   getScore() {

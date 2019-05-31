@@ -27,7 +27,7 @@ class Season extends React.Component {
   }
 
   renderSpan() {
-    return <span className="hidden-xs">{this.renderText()}</span>;
+    return <span className="d-none d-sm-table-cell">{this.renderText()}</span>;
   }
 
   render() {

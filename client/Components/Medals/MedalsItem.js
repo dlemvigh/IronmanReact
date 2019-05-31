@@ -8,7 +8,7 @@ import Medals from "../Common/Medals";
 
 class MedalsItem extends React.Component {
   onClick = () => {
-    this.props.router.push(`/${this.props.user.username}`);
+    this.props.history.push(`/${this.props.user.username}`);
   };
 
   getStyleName() {

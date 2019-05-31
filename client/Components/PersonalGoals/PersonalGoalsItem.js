@@ -69,7 +69,7 @@ class PersonalGoalItem extends React.Component {
   }
 
   onClick = () => {
-    this.props.router.push(`/${this.props.user.username}/goals`);
+    this.props.history.push(`/${this.props.user.username}/goals`);
   };
 
   render() {

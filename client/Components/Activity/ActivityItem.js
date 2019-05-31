@@ -32,8 +32,9 @@ class ActivityItem extends React.Component {
   }
 
   render() {
+    const hiddenXs = "d-none d-md-table-cell";
     return (
-      <tr className={this.props.striped && "active"}>
+      <tr className={this.props.striped ? "active" : null}>
         <td>
           <Discipline value={this.props.activity.disciplineName} />
         </td>
@@ -46,13 +47,13 @@ class ActivityItem extends React.Component {
         <td>
           <Date value={this.props.activity.date} />
         </td>
-        <td className="hidden-xs">
+        <td className={hiddenXs}>
           <Day value={this.props.activity.date} />
         </td>
-        <td className="hidden-xs">
+        <td className={hiddenXs}>
           <Week value={this.props.activity.date} />
         </td>
-        <td className="hidden-xs">
+        <td className={hiddenXs}>
           <Year value={this.props.activity.date} />
         </td>
         <td>

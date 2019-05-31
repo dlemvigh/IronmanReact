@@ -47,7 +47,7 @@ class CatchupList extends React.Component {
                 </th>
               );
             })}
-            <th className="hidden-xs">Triathlon</th>
+            <th className="d-none d-sm-table-cell">Triathlon</th>
           </tr>
         </thead>
         <tbody>
