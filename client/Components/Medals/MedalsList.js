@@ -46,28 +46,27 @@ class MedalsList extends React.Component {
   }
 }
 
-MedalsList = Relay.createContainer(MedalsList, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          ${MedalsItem.getFragment("user")}
-          _id
-          medals {
-            goldWeeks
-            silverWeeks
-            bronzeWeeks
-          }
+MedalsList.fragments = {
+  store: gql`
+    fragment MedalsList_store on Store {
+      users {
+        ...MedalsItem_user
+        _id
+        medals {
+          goldWeeks
+          silverWeeks
+          bronzeWeeks
         }
       }
-    `,
-    season: () => Relay.QL`
-      fragment on Season {
-        from
-        to
-      }
-    `
-  }
-});
+    }
+    ${MedalsItem.fragments.user}
+  `,
+  season: gql`
+    fragment MedalsList_season on Season {
+      from
+      to
+    }
+  `
+};
 
 export default MedalsList;

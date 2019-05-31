@@ -34,6 +34,7 @@ Leaderboard.fragments = {
     fragment Leaderboard_store on Store {
       id
       ...Catchup_store
+      ...Medals_store
       currentSeason {
         ...Medals_season
       }
@@ -45,6 +46,7 @@ Leaderboard.fragments = {
       }
     }
     ${Catchup.fragments.store}
+    ${Medals.fragments.store}
     ${Medals.fragments.season}
     ${LeaderboardList.fragments.summary}
   `

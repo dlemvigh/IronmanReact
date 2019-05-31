@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 
-import styles from "./MedalsItem.scss";
+import styles from "./MedalsItem.modules.scss";
 import Medals from "../Common/Medals";
 
 class MedalsItem extends React.Component {
@@ -64,20 +64,18 @@ MedalsItem = CSSModules(MedalsItem, styles);
 
 MedalsItem = withRouter(MedalsItem);
 
-MedalsItem = Relay.createContainer(MedalsItem, {
-  fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        username
-        name
-        medals { 
-          goldWeeks 
-          silverWeeks 
-          bronzeWeeks 
-        } 
-      }
-    `
-  }
-});
+MedalsItem.fragments = {
+  user: gql`
+    fragment MedalsItem_user on User {
+      username
+      name
+      medals { 
+        goldWeeks 
+        silverWeeks 
+        bronzeWeeks 
+      } 
+    }
+  `
+};
 
 export default MedalsItem;
