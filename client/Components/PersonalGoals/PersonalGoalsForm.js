@@ -39,7 +39,7 @@ class PersonalGoalsForm extends React.Component {
 
   toGoal(goal) {
     return {
-      disciplineId: goal.disc,
+      disciplineId: goal.disc || undefined,
       [goal.type]: Number(goal.value)
     };
   }
@@ -158,7 +158,7 @@ PersonalGoalsForm.fragments = {
       id
       _id
       personalGoals {
-        _id          
+        _id
         disciplineId
         disciplineName
         dist

@@ -6,14 +6,17 @@ const PERSONAL_GOALS_FRAGMENT = gql`
   fragment PersonalGoalsFragment_user on User {
     personalGoals {
       _id
-      id
-      userId
+      count
+      discipline {
+        id
+        name
+        score
+        unit
+      }
       disciplineId
       disciplineName
-      count
       dist
       score
-      priority
     }
   }
 `;
@@ -44,7 +47,18 @@ export function withSetPersonalGoals(WrappedComponent) {
     <Mutation
       mutation={UPDATE_PERSONAL_GOALS}
       update={(cache, { data: { setPersonalGoals }}) => {
-        debugger;
+        const { user } = cache.readQuery({
+          query: QUERY_PERSONAL_GOALS,
+          variables: { username: "david" }
+        });
+
+        user.personalGoals = [...setPersonalGoals.user.personalGoals];
+        
+        cache.writeQuery({
+          query: QUERY_PERSONAL_GOALS,
+          variables: { username: "david" },
+          data: { user }
+        });
       }}
     >
       {(setPersonalGoals) => (

@@ -1,12 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
-import {
-  FormLabel,
-  FormControl,
-  FormGroup,
-  Row,
-  Col
-} from "react-bootstrap";
+import { FormLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
 import styles from "./PersonalGoalsFormItem.modules.scss";
@@ -84,11 +78,12 @@ class PersonalGoalsFormItem extends React.Component {
                 value={this.props.goal.disc || ""}
                 onChange={this.onChangeDisc}
               >
-                {this.props.store.disciplines.map(disc => (
-                  <option key={disc._id} value={disc._id}>
-                    {disc.name}
-                  </option>
-                ))}
+                {this.props.store &&
+                  this.props.store.disciplines.map(disc => (
+                    <option key={disc._id} value={disc._id}>
+                      {disc.name}
+                    </option>
+                  ))}
                 <option value="">any exercise</option>
               </select>
             </FormGroup>
@@ -123,6 +118,29 @@ class PersonalGoalsFormItem extends React.Component {
           </Col>
           <Col xs={1}>
             <div styleName="icons">
+              <a
+                styleName={this.getIconStyles({ up: true })}
+                href="javascript:void(0)"
+                onClick={this.onClickUp}
+              >
+                up
+              </a>
+              <br />
+              <a
+                styleName={this.getIconStyles({})}
+                href="javascript:void(0)"
+                onClick={this.onClickRemove}
+              >
+                delete
+              </a>
+              <br />
+              <a
+                styleName={this.getIconStyles({ down: true })}
+                href="javascript:void(0)"
+                onClick={this.onClickDown}
+              >
+                down
+              </a>
               {/* <Glyphicon
                 glyph="chevron-up"
                 styleName={this.getIconStyles({ up: true })}

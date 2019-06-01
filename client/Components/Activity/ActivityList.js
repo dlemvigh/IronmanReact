@@ -41,7 +41,6 @@ class ActivityList extends React.Component {
   }
 }
 
-
 ActivityList.fragments = {
   store: gql`
     fragment ActivityList_store on Store {
