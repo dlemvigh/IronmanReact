@@ -27,7 +27,7 @@ export const GET_ACTIVITIES = gql`
   query GetActivities($username: String!) {
     user(username: $username) {
       id
-      activities(first: 100) {
+      activities(first: 1000) {
         edges {
           ...ActivityEdgeFragment
         }

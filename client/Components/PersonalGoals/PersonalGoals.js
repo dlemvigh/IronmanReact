@@ -18,15 +18,15 @@ class PersonalGoals extends React.Component {
   }
 }
 
-// ${PersonalGoalsList.getFragment("user")}
-
 PersonalGoals.fragments = {
   user: gql`
     fragment PersonalGoals_user on User {
+      ...PersonalGoalsList_user
       personalGoals {
         _id
       }
     }
+    ${PersonalGoalsList.fragments.user}
   `
 };
 

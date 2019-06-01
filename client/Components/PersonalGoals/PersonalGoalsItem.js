@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 
-import styles from "./PersonalGoalsItem.scss";
+import styles from "./PersonalGoalsItem.modules.scss";
 
 class PersonalGoalItem extends React.Component {
   renderDiscipline() {

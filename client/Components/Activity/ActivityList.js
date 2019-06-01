@@ -53,7 +53,7 @@ ActivityList.fragments = {
   user: gql`
     fragment ActivityList_user on User {
       ...ActivityItem_user
-      activities(first: 100) {
+      activities(first: 1000) {
         edges {
           node {
             id

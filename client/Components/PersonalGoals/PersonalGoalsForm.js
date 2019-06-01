@@ -4,7 +4,7 @@ import { Button, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 import PersonalGoals from "./PersonalGoals";
 import PersonalGoalsFormItem from "./PersonalGoalsFormItem";
-// import SetPersonalGoalsMutations from "../../Mutations/SetPersonalGoalsMutations";
+import { withSetPersonalGoals } from "../../Mutations/SetPersonalGoalsMutations";
 
 class PersonalGoalsForm extends React.Component {
   constructor(props) {
@@ -84,6 +84,14 @@ class PersonalGoalsForm extends React.Component {
       return;
     }
     const goals = this.state.goals.map(this.toGoal);
+    this.props.setPersonalGoals({
+      variables: {
+        input: {
+          userId: this.props.user._id,
+          goals
+        }
+      }
+    });
 
     // Relay.Store.commitUpdate(
     //   new SetPersonalGoalsMutations({
@@ -134,6 +142,8 @@ class PersonalGoalsForm extends React.Component {
     );
   }
 }
+
+PersonalGoalsForm = withSetPersonalGoals(PersonalGoalsForm);
 
 PersonalGoalsForm.fragments = {
   store: gql`

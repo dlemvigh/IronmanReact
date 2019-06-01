@@ -34,7 +34,7 @@ export default () => (
   <Switch>
     <Route path="/:username">
       <Switch>
-        <Route path="/:username/goal" component={PersonalGoalsFormQueries} />
+        <Route path="/:username/goals" component={PersonalGoalsFormQueries} />
         <Route component={ActivityQueries} />
       </Switch>
     </Route>
