@@ -7,8 +7,20 @@ import { ActivityEdgeFragment, GET_ACTIVITIES } from "./SharedActivityMutation";
 const ADD_ACTIVITY = gql`
   mutation AddActivityMutation($input: AddActivityInput!) {
     addActivity(input: $input) {
+      medals {
+        id
+        gold
+        goldWeeks
+        silver
+        silverWeeks
+        bronze
+        bronzeWeeks
+      }
       activityEdge {
         ...ActivityEdgeFragment
+        node {
+          id          
+        }
       }
     }
   }
@@ -20,18 +32,37 @@ export function withAddActivityMutation(WrappedComponent) {
     <Mutation
       mutation={ADD_ACTIVITY}
       update={(cache, { data: { addActivity }}) => {
-        const activity = addActivity.activityEdge.node;
-        const { user } = cache.readQuery({ query: GET_ACTIVITIES, variables: { username: "david" } });
-        user.activities.edges = [
-          ...user.activities.edges,
-          { 
-            node: activity,
-            __typename: "Activity"
+        const query = gql`
+          query AddActivityQuery($username: String!) {
+            user(username: $username) {
+              id
+              activities {
+                edges {
+                  ...ActivityEdgeFragment
+                  node {
+                    id
+                  }
+                }
+              }
+            }
           }
+          ${ActivityEdgeFragment}
+        `;
+
+        const variables = {
+          username: props.user.username
+        };
+
+        const { user } = cache.readQuery({ query, variables });
+        const activities = [
+          ...user.activities.edges,
+          addActivity.activityEdge
         ];
+        user.activities.edges = activities;
+
         cache.writeQuery({
-          query: GET_ACTIVITIES,
-          variables: { username: "david" },
+          query,
+          variables,
           data: { user }
         });
       }}

@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 
 export const ActivityFragment = gql`
   fragment ActivityFragment on Activity {
-    _id
     id
+    _id
     date
     disciplineId
     disciplineName
@@ -11,6 +11,7 @@ export const ActivityFragment = gql`
     score
     unit
     week
+    year
   }
 `;
 

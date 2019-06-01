@@ -17,17 +17,18 @@ export function withRemoveActivityMutation(WrappedComponent) {
     <Mutation
       mutation={REMOVE_ACTIVITY}
       update={(cache, { data: { removeActivity }}) => {
+        const username = props.user.username;
         const { removedActivityId } = removeActivity;
         
         const { user } = cache.readQuery({ 
           query: GET_ACTIVITIES, 
-          variables: { username: "david" } 
+          variables: { username } 
         });
         const activities = user.activities.edges.filter(edge => edge.node.id !== removedActivityId);
         user.activities.edges = activities;
         cache.writeQuery({
           query: GET_ACTIVITIES,
-          variables: { username: "david" },
+          variables: { username },
           data: { user }
         });
       }}

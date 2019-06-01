@@ -48,16 +48,17 @@ export function withSetPersonalGoals(WrappedComponent) {
     <Mutation
       mutation={UPDATE_PERSONAL_GOALS}
       update={(cache, { data: { setPersonalGoals }}) => {
+        const username = props.user.username;
         const { user } = cache.readQuery({
           query: QUERY_PERSONAL_GOALS,
-          variables: { username: "david" }
+          variables: { username }
         });
 
         user.personalGoals = [...setPersonalGoals.user.personalGoals];
         
         cache.writeQuery({
           query: QUERY_PERSONAL_GOALS,
-          variables: { username: "david" },
+          variables: { username },
           data: { user }
         });
       }}
