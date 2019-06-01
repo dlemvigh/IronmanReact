@@ -7,6 +7,15 @@ import { GET_ACTIVITIES } from "./SharedActivityMutation";
 const REMOVE_ACTIVITY = gql`
   mutation RemoveActivityMutation($input: RemoveActivityInput!) {
     removeActivity(input: $input) {
+      medals {
+        id
+        gold
+        goldWeeks
+        silver
+        silverWeeks
+        bronze
+        bronzeWeeks
+      }
       removedActivityId    
     }
   }

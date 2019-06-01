@@ -7,6 +7,15 @@ import { ActivityFragment } from "./SharedActivityMutation";
 const UPDATE_ACTIVITY = gql`
   mutation UpdateActivityMuataion($input: EditActivityInput!) {
     editActivity(input: $input) {
+      medals {
+        id
+        gold
+        goldWeeks
+        silver
+        silverWeeks
+        bronze
+        bronzeWeeks
+      }
       activity {
         ...ActivityFragment
       }

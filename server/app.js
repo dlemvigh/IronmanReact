@@ -49,7 +49,11 @@ app.get("*", function(req, res) {
 });
 
 const db = `mongodb://127.0.0.1/${config.db}`;
-mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(db, { 
+  useNewUrlParser: true, 
+  useCreateIndex: true,
+  useFindAndModify: false
+});
 
 app.listen(config.port);
 console.log("Running a GraphQL API server");
