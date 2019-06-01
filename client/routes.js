@@ -16,7 +16,7 @@ import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
 // import PersonalGoalsForm from "./Components/PersonalGoals/PersonalGoalsForm";
 import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFormQueries";
 // import Season from "./Components/Season/Season";
-// import SeasonQueries from "./Components/Season/SeasonQueries";
+import SeasonPageQueries from "./Components/Season/SeasonPageQueries";
 // import Sandbox from "./Components/Sandbox/Sandbox";
 // import SandboxQueries from "./Components/Sandbox/SandboxQueries";
 
@@ -29,6 +29,7 @@ import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFo
 
 export default () => (
   <Switch>
+    <Route path="/season" component={SeasonPageQueries} />
     <Route path="/:username">
       <Switch>
         <Route path="/:username/goals" component={PersonalGoalsFormQueries} />
