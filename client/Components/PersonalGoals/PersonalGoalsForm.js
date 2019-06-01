@@ -1,7 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
 import { Button, Row, Col } from "react-bootstrap";
-import toastr from "toastr";
 import PersonalGoals from "./PersonalGoals";
 import PersonalGoalsFormItem from "./PersonalGoalsFormItem";
 import { withSetPersonalGoals } from "../../Mutations/SetPersonalGoalsMutations";
@@ -93,21 +92,6 @@ class PersonalGoalsForm extends React.Component {
       }
     });
 
-    // Relay.Store.commitUpdate(
-    //   new SetPersonalGoalsMutations({
-    //     user: this.props.user,
-    //     goals
-    //   }),
-    //   {
-    //     onFailure: resp => {
-    //       console.error("fail", resp);
-    //       toastr.error("Update activity failed");
-    //     },
-    //     onSuccess: () => {
-    //       toastr.success("Personal Goals updated");
-    //     }
-    //   }
-    // );
   };
 
   render() {

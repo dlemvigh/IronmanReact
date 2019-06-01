@@ -54,6 +54,7 @@ MedalsList.fragments = {
         ...MedalsItem_user
         _id
         medals {
+          id
           goldWeeks
           silverWeeks
           bronzeWeeks

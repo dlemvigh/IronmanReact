@@ -1,6 +1,5 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { withApollo } from "./apolloClient";
 // import { Router, Route, IndexRoute } from "react-router";
 // import ReactGA from "react-ga";
 
@@ -20,8 +19,6 @@ import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFo
 // import SeasonQueries from "./Components/Season/SeasonQueries";
 // import Sandbox from "./Components/Sandbox/Sandbox";
 // import SandboxQueries from "./Components/Sandbox/SandboxQueries";
-
-import Loading from "./Components/Common/Loading";
 
 // ReactGA.initialize("UA-98797876-1");
 

@@ -3,7 +3,6 @@ import gql from "graphql-tag";
 import { Button, Col, Row } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 import moment from "moment";
-import toastr from "toastr";
 
 import styles from "./ActivityForm.modules.scss";
 import ControlDate from "../Common/ControlDate";
@@ -52,8 +51,7 @@ class ActivityForm extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state){
-
+  static getDerivedStateFromProps(props, state) {
     if (props.activity != null && props.activity !== state.activity) {
       const newState = mapPropsToState(props);
       return newState;
@@ -99,7 +97,9 @@ class ActivityForm extends React.Component {
   };
 
   isValid = () => {
-    return this.ref.distance.current.isValid() && this.ref.date.current.isValid();
+    return (
+      this.ref.distance.current.isValid() && this.ref.date.current.isValid()
+    );
   };
 
   handleSubmit = event => {
@@ -117,7 +117,6 @@ class ActivityForm extends React.Component {
         });
         this.props.onEditDone();
       } else {
-
         this.props.addActivity({
           variables: {
             input: activity

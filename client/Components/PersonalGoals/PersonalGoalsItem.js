@@ -24,7 +24,7 @@ class PersonalGoalItem extends React.Component {
       unit = this.props.goal.count != 1 ? "times" : "time";
     }
 
-    if (this.props.goal.dist) {
+    if (this.props.goal.dist && this.props.goal.discipline) {
       number = this.props.goal.dist;
       unit = this.props.goal.discipline.unit;
     }
