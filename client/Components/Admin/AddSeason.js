@@ -11,8 +11,6 @@ import {
 import gql from "graphql-tag";
 import toastr from "toastr";
 
-// import AddSeasonMutation from "../../Mutations/AddSeasonMutation";
-
 class AddSeason extends React.Component {
   constructor() {
     super();
@@ -90,7 +88,10 @@ class AddSeason extends React.Component {
                 variables: {
                   input: season
                 }
-              });
+              }).then(
+                () => toastr.success("Added season"),
+                () => toastr.error("Failed to add season")
+              );
             }
           };
 

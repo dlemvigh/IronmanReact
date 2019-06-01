@@ -16,7 +16,7 @@ import "!style-loader!css-loader!../../Styles/react-datetime.css";
 import "!style-loader!css-loader!toastr/build/toastr.min.css";
 
 class App extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     toastr.options = {
       newestOnTop: true,
       positionClass: styles.toastr,

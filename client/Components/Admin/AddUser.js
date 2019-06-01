@@ -9,9 +9,7 @@ import {
   Col
 } from "react-bootstrap";
 import gql from "graphql-tag";
-// import toastr from "toastr";
-
-// import AddUserMutation from "../../Mutations/AddUserMutation";
+import toastr from "toastr";
 
 class AddUser extends React.Component {
   constructor() {
@@ -83,7 +81,10 @@ class AddUser extends React.Component {
                 variables: {
                   input: user
                 }
-              });
+              }).then(
+                () => toastr.success("Added user"),
+                () => toastr.error("Failed to add user")
+              );
             }
           };
 

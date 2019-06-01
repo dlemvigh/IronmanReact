@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Button, Col, Row } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 import moment from "moment";
+import toastr from "toastr";
 
 import styles from "./ActivityForm.modules.scss";
 import ControlDate from "../Common/ControlDate";
@@ -114,14 +115,20 @@ class ActivityForm extends React.Component {
               ...activity
             }
           }
-        });
+        }).then(
+          () => toastr.success("Activity updated"),
+          () => toastr.error("Update activity failed")
+        );
         this.props.onEditDone();
       } else {
         this.props.addActivity({
           variables: {
             input: activity
           }
-        });
+        }).then(
+          () => toastr.success("Activity added"),
+          () => toastr.error("Add activity failed")
+        );
         this.clearState();
       }
     } else {

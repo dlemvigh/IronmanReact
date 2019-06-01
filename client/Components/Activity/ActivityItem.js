@@ -24,7 +24,10 @@ class ActivityItem extends React.Component {
           id: this.props.activity._id
         }
       }
-    });
+    }).then(
+      () => toastr.success("Activity removed"), 
+      () => toastr.error("Remove activity failed")
+    );
   };
 
   getMedals() {
