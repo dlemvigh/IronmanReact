@@ -23,7 +23,7 @@ class PersonalGoalsList extends React.Component {
     const activities = this.getCurrentWeek();
 
     return (
-      <Table striped hover>
+      <Table striped hover size="sm">
         <tbody>
           {goals.map(goal => (
             <PersonalGoalItem
@@ -47,6 +47,7 @@ PersonalGoalsList.fragments = {
         edges {
           ...PersonalGoalItem_activities
           node {
+            id
             week
             year
           }

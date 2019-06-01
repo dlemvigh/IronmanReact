@@ -21,7 +21,7 @@ class ActivityList extends React.Component {
   render() {
     const weeks = this.getWeeks();
     return (
-      <Table hover>
+      <Table hover size="sm">
         <thead>
           <ActivityHeader />
         </thead>
