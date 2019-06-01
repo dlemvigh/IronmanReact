@@ -36,7 +36,7 @@ class CatchupList extends React.Component {
   render() {
     const highscore = this.getHighestScore();
     return (
-      <Table hover striped>
+      <Table hover striped size="sm">
         <thead>
           <tr>
             <th className="col-xs-3">Name</th>

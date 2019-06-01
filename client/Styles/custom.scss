@@ -1,10 +1,17 @@
+
+// colors
 $primary: #dc0026;
 $secondary: #464c4f;
 
 $dark: #464c4f;
 
-$headings-color: #dc0026;
+// typography
+$font-family-base: "Source Sans Pro","Calibri","Candara","Arial","sans-serif";
 
+$headings-color: #dc0026;
+$headings-font-weight: 300;
+
+// misc
 $border-radius: 0;
 
 @import "bootstrap/scss/bootstrap.scss"
