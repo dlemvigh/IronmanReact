@@ -18,7 +18,7 @@ class Admin extends React.Component {
 Admin = Relay.createContainer(Admin, {
   fragments: {
     store: () => Relay.QL`
-      fragment on Store {
+      fragment Admin_store on Store {
         id
       }
     `

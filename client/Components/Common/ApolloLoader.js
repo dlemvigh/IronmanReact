@@ -8,10 +8,13 @@ export function withApollo(WrappedComponent, { query, variables }) {
       variables={{ ...((match && match.params) || {}), ...variables }}
     >
       {({ loading, error, data }) => {
-        if (loading) return "Loading...";
-        if (error) return `Error! ${error.message}`;
+        if (loading) {
+          return "Loading...";
+        }
+        if (error) {
+          return `Error! ${error.message}`;
+        }
 
-        // return <div>test</div>
         return <WrappedComponent {...data} {...props} />;
       }}
     </Query>

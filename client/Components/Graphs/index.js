@@ -18,7 +18,7 @@ class Graphs extends React.Component {
 Graphs = Relay.createContainer(Graphs, {
   fragments: {
     store: () => Relay.QL`
-      fragment on Store {
+      fragment Graphs_store on Store {
         ${WeeklyTotal.getFragment('store')},
         ${Weekday.getFragment('store')}
         users {

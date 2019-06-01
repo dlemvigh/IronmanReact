@@ -4,7 +4,7 @@ import { Button, Row, Col } from "react-bootstrap";
 import toastr from "toastr";
 import PersonalGoals from "./PersonalGoals";
 import PersonalGoalsFormItem from "./PersonalGoalsFormItem";
-import SetPersonalGoalsMutations from "../../Mutations/SetPersonalGoalsMutations";
+// import SetPersonalGoalsMutations from "../../Mutations/SetPersonalGoalsMutations";
 
 class PersonalGoalsForm extends React.Component {
   constructor(props) {
@@ -85,21 +85,21 @@ class PersonalGoalsForm extends React.Component {
     }
     const goals = this.state.goals.map(this.toGoal);
 
-    Relay.Store.commitUpdate(
-      new SetPersonalGoalsMutations({
-        user: this.props.user,
-        goals
-      }),
-      {
-        onFailure: resp => {
-          console.error("fail", resp);
-          toastr.error("Update activity failed");
-        },
-        onSuccess: () => {
-          toastr.success("Personal Goals updated");
-        }
-      }
-    );
+    // Relay.Store.commitUpdate(
+    //   new SetPersonalGoalsMutations({
+    //     user: this.props.user,
+    //     goals
+    //   }),
+    //   {
+    //     onFailure: resp => {
+    //       console.error("fail", resp);
+    //       toastr.error("Update activity failed");
+    //     },
+    //     onSuccess: () => {
+    //       toastr.success("Personal Goals updated");
+    //     }
+    //   }
+    // );
   };
 
   render() {
@@ -135,29 +135,29 @@ class PersonalGoalsForm extends React.Component {
   }
 }
 
-PersonalGoalsForm = Relay.createContainer(PersonalGoalsForm, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        ${PersonalGoalsFormItem.getFragment("store")}
+PersonalGoalsForm.fragments = {
+  store: gql`
+    fragment PersonalGoalsForm_store on Store {
+      ...PersonalGoalsFormItem_store
+    }
+    ${PersonalGoalsFormItem.fragments.store}
+  `,
+  user: gql`
+    fragment PersonalGoalsForm_user on User {
+      ...PersonalGoals_user
+      id
+      _id
+      personalGoals {
+        _id          
+        disciplineId
+        disciplineName
+        dist
+        count
+        score      
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        ${PersonalGoals.getFragment("user")}
-        id
-        _id
-        personalGoals {
-          _id          
-          disciplineId
-          disciplineName
-          dist
-          count
-          score      
-        }
-      }
-    `
-  }
-});
+    }
+    ${PersonalGoals.fragments.user}
+  `
+};
 
 export default PersonalGoalsForm;

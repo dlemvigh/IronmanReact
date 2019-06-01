@@ -46,8 +46,8 @@ class PersonalGoalItem extends React.Component {
     const goal = this.props.goal;
     const activities = goal.disciplineId
       ? this.props.activities.filter(
-          edge => edge.node.disciplineId == goal.disciplineId
-        )
+        edge => edge.node.disciplineId == goal.disciplineId
+      )
       : this.props.activities;
 
     if (goal.count) {
@@ -97,36 +97,34 @@ PersonalGoalItem = CSSModules(PersonalGoalItem, styles);
 
 PersonalGoalItem = withRouter(PersonalGoalItem);
 
-PersonalGoalItem = Relay.createContainer(PersonalGoalItem, {
-  fragments: {
-    activities: () => Relay.QL`
-      fragment on ActivityEdge @relay(plural: true) {
-        node {
-          disciplineId
-          disciplineName
-          distance
-          score
-        }
-      }
-    `,
-    goal: () => Relay.QL`
-      fragment on PersonalGoal {
+PersonalGoalItem.fragments = {
+  activities: gql`
+    fragment PersonalGoalItem_activities on ActivityEdge {
+      node {
         disciplineId
-        discipline {
-          name
-          unit
-        }
-        count
-        dist
+        disciplineName
+        distance
         score
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        username
+    }
+  `,
+  goal: gql`
+    fragment PersonalGoalItem_goal on PersonalGoal {
+      disciplineId
+      discipline {
+        name
+        unit
       }
-    `
-  }
-});
+      count
+      dist
+      score
+    }
+  `,
+  user: gql`
+    fragment PersonalGoalItem_user on User {
+      username
+    }
+  `
+};
 
 export default PersonalGoalItem;

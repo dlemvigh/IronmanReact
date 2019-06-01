@@ -114,7 +114,7 @@ class WeeklyTotal extends React.Component {
 WeeklyTotal = Relay.createContainer(WeeklyTotal, {
   fragments: {
     store: () => Relay.QL`
-      fragment on Store {
+      fragment WeeklyTotal_store on Store {
         users {
           name
         }

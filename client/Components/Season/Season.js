@@ -16,12 +16,12 @@ class Season extends React.Component {
 Season = Relay.createContainer(Season, {
   fragments: {
     store: () => Relay.QL`
-      fragment on Store {
+      fragment Season_store on Store {
         ${Medals.getFragment("store")}
       }
     `,
     season: () => Relay.QL`
-      fragment on Season {
+      fragment Season_season on Season {
         name
         ${Medals.getFragment("season")}
       }

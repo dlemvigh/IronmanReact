@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 
-// import PersonalGoalsList from "./PersonalGoalsList";
+import PersonalGoalsList from "./PersonalGoalsList";
 
 class PersonalGoals extends React.Component {
   render() {
@@ -12,7 +12,7 @@ class PersonalGoals extends React.Component {
     return (
       <div>
         <h3>Personal Goals</h3>
-        {/* <PersonalGoalsList user={this.props.user} /> */}
+        <PersonalGoalsList user={this.props.user} />
       </div>
     );
   }

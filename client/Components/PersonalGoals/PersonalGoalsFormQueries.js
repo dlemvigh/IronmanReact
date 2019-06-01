@@ -1,14 +1,21 @@
 import gql from "graphql-tag";
 
-export default {
-  store: () => Relay.QL`
-    query Store {
-      store
+import PersonalGoalsForm from "./PersonalGoalsForm";
+import { withApollo } from "../Common/ApolloLoader";
+
+export default withApollo(PersonalGoalsForm, {
+  query: gql`
+    query PersonalGoalsFormQuery($username: String!) {
+      store {
+        id
+        ...PersonalGoalsForm_store
+      }
+      user(username: $username) {
+        _id
+        ...PersonalGoalsForm_user
+      }
     }
-  `,
-  user: () => Relay.QL`
-    query User {
-      user (username: $username)
-    }
+    ${PersonalGoalsForm.fragments.store}
+    ${PersonalGoalsForm.fragments.user}
   `
-};
+});

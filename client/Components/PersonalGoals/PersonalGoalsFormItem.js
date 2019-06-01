@@ -4,13 +4,12 @@ import {
   FormLabel,
   FormControl,
   FormGroup,
-  Glyphicon,
   Row,
   Col
 } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
-import styles from "./PersonalGoalsFormItem.scss";
+import styles from "./PersonalGoalsFormItem.modules.scss";
 
 class PersonalGoalsFormItem extends React.Component {
   isEnabledDist() {
@@ -124,7 +123,7 @@ class PersonalGoalsFormItem extends React.Component {
           </Col>
           <Col xs={1}>
             <div styleName="icons">
-              <Glyphicon
+              {/* <Glyphicon
                 glyph="chevron-up"
                 styleName={this.getIconStyles({ up: true })}
                 onClick={this.onClickUp}
@@ -138,7 +137,7 @@ class PersonalGoalsFormItem extends React.Component {
                 glyph="chevron-down"
                 styleName={this.getIconStyles({ down: true })}
                 onClick={this.onClickDown}
-              />
+              /> */}
             </div>
           </Col>
         </Row>
@@ -151,18 +150,16 @@ PersonalGoalsFormItem = CSSModules(PersonalGoalsFormItem, styles, {
   allowMultiple: true
 });
 
-PersonalGoalsFormItem = Relay.createContainer(PersonalGoalsFormItem, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        disciplines {
-          _id
-          name
-          unit
-        }
+PersonalGoalsFormItem.fragments = {
+  store: gql`
+    fragment PersonalGoalsFormItem_store on Store {
+      disciplines {
+        _id
+        name
+        unit
       }
-    `
-  }
-});
+    }
+  `
+};
 
 export default PersonalGoalsFormItem;

@@ -62,7 +62,7 @@ class Weekday extends React.Component {
 Weekday = Relay.createContainer(Weekday, {
   fragments: {
     store: () => Relay.QL`
-      fragment on Store {
+      fragment Weekday_store on Store {
         users {
           name
           activities(first: 1000) {

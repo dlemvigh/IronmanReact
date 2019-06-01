@@ -39,27 +39,28 @@ class PersonalGoalsList extends React.Component {
   }
 }
 
-PersonalGoalsList = Relay.createContainer(PersonalGoalsList, {
-  fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        ${PersonalGoalItem.getFragment("user")}
-        activities(first: 1000) {
-          edges {
-            ${PersonalGoalItem.getFragment("activities")}
-            node {
-              week
-              year
-            }
+PersonalGoalsList.fragments = {
+  user: gql`
+    fragment PersonalGoalsList_user on User {
+      ...PersonalGoalItem_user
+      activities(first: 1000) {
+        edges {
+          ...PersonalGoalItem_activities
+          node {
+            week
+            year
           }
         }
-        personalGoals {
-          _id
-          ${PersonalGoalItem.getFragment("goal")}
-        }
       }
-    `
-  }
-});
+      personalGoals {
+        _id
+        ...PersonalGoalItem_goal
+      }
+    }
+    ${PersonalGoalItem.fragments.user}
+    ${PersonalGoalItem.fragments.activities}
+    ${PersonalGoalItem.fragments.goal}
+  `
+};
 
 export default PersonalGoalsList;

@@ -1,13 +1,9 @@
 import React from "react";
 import gql from "graphql-tag";
 
-// import gql from "graphql-tag";
-// import moment from "moment";
-
 import LeaderboardList from "./LeaderboardList";
 import Catchup from "../Catchup/Catchup";
 import Medals from "../Medals/Medals";
-// import PersonalGoals from "../PersonalGoals/PersonalGoals";
 
 class Leaderboard extends React.Component {
   render() {

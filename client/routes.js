@@ -15,7 +15,7 @@ import ActivityQueries from "./Components/Activity/ActivityQueries";
 // import Leaderboard from "./Components/Leaderboard/Leaderboard";
 import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
 // import PersonalGoalsForm from "./Components/PersonalGoals/PersonalGoalsForm";
-// import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFormQueries";
+import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFormQueries";
 // import Season from "./Components/Season/Season";
 // import SeasonQueries from "./Components/Season/SeasonQueries";
 // import Sandbox from "./Components/Sandbox/Sandbox";
@@ -32,7 +32,12 @@ import Loading from "./Components/Common/Loading";
 
 export default () => (
   <Switch>
-    <Route path="/:username" component={ActivityQueries} />
+    <Route path="/:username">
+      <Switch>
+        <Route path="/:username/goal" component={PersonalGoalsFormQueries} />
+        <Route component={ActivityQueries} />
+      </Switch>
+    </Route>
     <Route component={LeaderboardQueries} />
   </Switch>
 );
