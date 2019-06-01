@@ -109,6 +109,7 @@ Header.fragments = {
       }
       allSeasons {
         _id
+        id
         name
         from
       }

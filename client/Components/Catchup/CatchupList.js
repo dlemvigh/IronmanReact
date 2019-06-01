@@ -70,6 +70,7 @@ CatchupList.fragments = {
   store: gql`
     fragment CatchupList_store on Store {
       disciplines {
+        id
         _id
         name
         ...CatchupItem_disciplines

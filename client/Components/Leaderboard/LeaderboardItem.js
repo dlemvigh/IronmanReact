@@ -49,7 +49,9 @@ LeaderboardItem = withRouter(LeaderboardItem);
 LeaderboardItem.fragments = {
   summary: gql`
     fragment LeaderboardItem_summary on Summary {
+      id
       user {
+        id
         name
         username
       }

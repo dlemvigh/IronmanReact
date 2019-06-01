@@ -44,6 +44,7 @@ class LeaderboardList extends React.Component {
 LeaderboardList.fragments = {
   summary: gql`
     fragment LeaderboardList_summary on Summary {
+      id
       _id
       score
       ...LeaderboardItem_summary

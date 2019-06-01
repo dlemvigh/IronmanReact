@@ -73,6 +73,7 @@ CatchupItem.fragments = {
   `,
   summary: gql`
     fragment CatchupItem_summary on Summary {
+      id
       score
     }
   `

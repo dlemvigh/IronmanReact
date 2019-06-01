@@ -142,6 +142,7 @@ PersonalGoalsForm.fragments = {
       id
       _id
       personalGoals {
+        id
         _id
         disciplineId
         disciplineName

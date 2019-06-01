@@ -55,8 +55,16 @@ class AddSeason extends React.Component {
         mutation={gql`
           mutation AddSeason($input: AddSeasonInput!) {
             addSeason(input: $input) {
+              store {
+                id
+                allSeasons {
+                  id
+                  _id
+                }
+              }
               season {
                 id
+                _id
                 name
                 url
                 from

@@ -172,6 +172,7 @@ PersonalGoalsFormItem.fragments = {
   store: gql`
     fragment PersonalGoalsFormItem_store on Store {
       disciplines {
+        id
         _id
         name
         unit

@@ -82,6 +82,7 @@ ControlDiscipline.fragments = {
   store: gql`
     fragment ControlDiscipline_store on Store {
       disciplines {
+        id
         _id
         name
         unit

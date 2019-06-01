@@ -606,6 +606,12 @@ const addSeasonMutation = mutationWithClientMutationId({
       resolve: (obj) => {
         return obj;
       }
+    },
+    store: {
+      type: storeType,
+      resolve: () => {
+        return database.getStore();
+      }
     }
   },
   mutateAndGetPayload: ({name, url, from, to}) => {

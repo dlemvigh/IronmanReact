@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 const PERSONAL_GOALS_FRAGMENT = gql`
   fragment PersonalGoalsFragment_user on User {
     personalGoals {
+      id
       _id
       count
       discipline {
