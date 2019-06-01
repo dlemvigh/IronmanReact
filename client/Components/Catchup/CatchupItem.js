@@ -64,6 +64,7 @@ CatchupItem.fragments = {
   `,
   disciplines: gql`
     fragment CatchupItem_disciplines on Discipline {
+      id
       _id
       name
       score

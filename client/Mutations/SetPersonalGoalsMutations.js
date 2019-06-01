@@ -32,6 +32,7 @@ const UPDATE_PERSONAL_GOALS = gql`
 const QUERY_PERSONAL_GOALS = gql`
   query GetPersonalGoals($username: String!) {
     user(username: $username) {
+      id
       ...PersonalGoalsFragment_user
     }
   }

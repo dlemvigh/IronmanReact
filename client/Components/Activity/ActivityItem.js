@@ -78,6 +78,7 @@ ActivityItem.fragments = {
     fragment ActivityItem_store on Store {
       id  
       users {
+        id
         medals {
           id
         }

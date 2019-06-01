@@ -116,6 +116,7 @@ WeeklyTotal = Relay.createContainer(WeeklyTotal, {
     store: () => Relay.QL`
       fragment WeeklyTotal_store on Store {
         users {
+          id
           name
         }
         allSummaries {

@@ -75,6 +75,7 @@ CatchupList.fragments = {
         ...CatchupItem_disciplines
       }
       users {
+        id
         _id
         ...CatchupItem_user
         summary(week: $week, year: $year) {

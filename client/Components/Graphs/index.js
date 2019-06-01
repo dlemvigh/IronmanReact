@@ -22,6 +22,7 @@ Graphs = Relay.createContainer(Graphs, {
         ${WeeklyTotal.getFragment('store')},
         ${Weekday.getFragment('store')}
         users {
+          id
           name
         }
         allSummaries {

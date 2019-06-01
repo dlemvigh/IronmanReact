@@ -112,6 +112,7 @@ PersonalGoalItem.fragments = {
     fragment PersonalGoalItem_goal on PersonalGoal {
       disciplineId
       discipline {
+        id
         name
         unit
       }

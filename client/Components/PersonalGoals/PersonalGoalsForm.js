@@ -21,13 +21,13 @@ class PersonalGoalsForm extends React.Component {
     let type, value;
     if (goal.count) {
       type = "count";
-      value = goal.count;
+      value = Number(goal.count);
     } else if (goal.dist) {
       type = "dist";
-      value = goal.dist;
+      value = Number(goal.dist);
     } else if (goal.score) {
       type = "score";
-      value = goal.score;
+      value = Number(goal.score);
     }
 
     return {
@@ -40,7 +40,7 @@ class PersonalGoalsForm extends React.Component {
   toGoal(goal) {
     return {
       disciplineId: goal.disc,
-      [goal.type]: goal.value
+      [goal.type]: Number(goal.value)
     };
   }
 

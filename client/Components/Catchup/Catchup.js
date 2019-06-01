@@ -39,6 +39,7 @@ Catchup.fragments = {
   store: gql`
     fragment Catchup_store on Store {
       users {
+        id
         name
         summary(week: $week, year: $year) {
           score

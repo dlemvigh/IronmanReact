@@ -11,7 +11,7 @@ export default withApollo(PersonalGoalsForm, {
         ...PersonalGoalsForm_store
       }
       user(username: $username) {
-        _id
+        id
         ...PersonalGoalsForm_user
       }
     }

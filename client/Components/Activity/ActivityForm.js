@@ -238,11 +238,13 @@ ActivityForm.fragments = {
     fragment ActivityForm_store on Store {
       ...ControlDiscipline_store
       users {
+        id
         medals {
           id
         }
       }
       disciplines {
+        id
         _id
         name
       }

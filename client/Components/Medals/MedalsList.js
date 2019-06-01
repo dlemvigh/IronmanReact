@@ -50,6 +50,7 @@ MedalsList.fragments = {
   store: gql`
     fragment MedalsList_store on Store {
       users {
+        id
         ...MedalsItem_user
         _id
         medals {

@@ -64,6 +64,7 @@ Weekday = Relay.createContainer(Weekday, {
     store: () => Relay.QL`
       fragment Weekday_store on Store {
         users {
+          id
           name
           activities {
             edges {

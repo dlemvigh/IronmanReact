@@ -103,6 +103,7 @@ Header.fragments = {
   store: gql`
     fragment Header_store on Store {
       users {
+        id
         name
         username
       }
