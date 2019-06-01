@@ -1,5 +1,4 @@
 import React from "react";
-import gql from "graphql-tag";
 
 import AddSeason from "./AddSeason";
 import AddUser from "./AddUser";
@@ -14,15 +13,5 @@ class Admin extends React.Component {
     );
   }
 }
-
-Admin = Relay.createContainer(Admin, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment Admin_store on Store {
-        id
-      }
-    `
-  }
-});
 
 export default Admin;

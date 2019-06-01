@@ -7,7 +7,7 @@ import { Switch, Route } from "react-router-dom";
 // import AppQueries from "./Components/App/AppQueries";
 // import Activity from "./Components/Activity/Activity";
 import ActivityQueries from "./Components/Activity/ActivityQueries";
-// import Admin from "./Components/Admin/Admin";
+import Admin from "./Components/Admin/Admin";
 // import AdminQueries from "./Components/Admin/AdminQueries";
 // import Graphs from "./Componen ts/Graphs";
 // import GraphsQueries from "./Components/Graphs/GraphsQueries";
@@ -30,6 +30,7 @@ import SeasonPageQueries from "./Components/Season/SeasonPageQueries";
 export default () => (
   <Switch>
     <Route path="/season" component={SeasonPageQueries} />
+    <Route path="/admin" component={Admin} />
     <Route path="/:username">
       <Switch>
         <Route path="/:username/goals" component={PersonalGoalsFormQueries} />
