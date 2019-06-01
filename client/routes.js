@@ -1,31 +1,13 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-// import { Router, Route, IndexRoute } from "react-router";
-// import ReactGA from "react-ga";
 
-// import App from "./Components/App/App";
-// import AppQueries from "./Components/App/AppQueries";
-// import Activity from "./Components/Activity/Activity";
 import ActivityQueries from "./Components/Activity/ActivityQueries";
 import Admin from "./Components/Admin/Admin";
-// import AdminQueries from "./Components/Admin/AdminQueries";
 // import Graphs from "./Componen ts/Graphs";
 // import GraphsQueries from "./Components/Graphs/GraphsQueries";
-// import Leaderboard from "./Components/Leaderboard/Leaderboard";
 import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
-// import PersonalGoalsForm from "./Components/PersonalGoals/PersonalGoalsForm";
 import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFormQueries";
-// import Season from "./Components/Season/Season";
 import SeasonPageQueries from "./Components/Season/SeasonPageQueries";
-// import Sandbox from "./Components/Sandbox/Sandbox";
-// import SandboxQueries from "./Components/Sandbox/SandboxQueries";
-
-// ReactGA.initialize("UA-98797876-1");
-
-// function logPageView() {
-//   ReactGA.set({ page: window.location.pathname + window.location.search });
-//   ReactGA.pageview(window.location.pathname + window.location.search);
-// }
 
 export default () => (
   <Switch>

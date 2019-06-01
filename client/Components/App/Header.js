@@ -66,9 +66,10 @@ class Header extends React.Component {
             <Navbar.Collapse>
               {this.renderUserNav()}
               <Nav className="ml-auto">
-                <LinkContainer to="/graphs">
+                {/* <LinkContainer to="/graphs">
+                  FIXME re-implement graphs
                   <Nav.Link>Graphs</Nav.Link>
-                </LinkContainer>
+                </LinkContainer> */}
                 {this.renderAthletes(true)}
                 <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
                   {this.props.store.allSeasons
