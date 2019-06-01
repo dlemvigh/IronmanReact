@@ -43,7 +43,7 @@ PersonalGoalsList.fragments = {
   user: gql`
     fragment PersonalGoalsList_user on User {
       ...PersonalGoalItem_user
-      activities(first: 1000) {
+      activities {
         edges {
           ...PersonalGoalItem_activities
           node {

@@ -65,7 +65,7 @@ Weekday = Relay.createContainer(Weekday, {
       fragment Weekday_store on Store {
         users {
           name
-          activities(first: 1000) {
+          activities {
             edges {
               node {
                 date
