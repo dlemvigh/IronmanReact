@@ -1,29 +1,25 @@
-image: node:latest
+image: node:alpine
 
 stages:
+  - init
   - build
-  - test
 
 cache:
   paths:
     - node_modules/
 
-install_dependencies:
-  stage: build
+install:
+  stage: init
   script:
     - npm install
   artifacts:
     paths:
       - node_modules/
 
-run_lint:
-  stage: test
+lint:
+  stage: build
   script: npm run lint
 
-run_build:
-  stage: test
+build:
+  stage: build
   script: npm run build
-
-run_webpack:
-  stage: test
-  script: npm run start
