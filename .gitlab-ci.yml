@@ -22,4 +22,6 @@ lint:
 
 build:
   stage: build
-  script: npm run build
+  script: 
+    - npm rebuild node-sass
+    - npm run build
