@@ -54,7 +54,7 @@ class ControlDiscipline extends React.Component {
         {this.props.store.disciplines.map(discipline => (
           <option
             key={discipline._id}
-            value={discipline._id}
+            value={discipline.name}
             data-id={discipline._id}
             data-name={discipline.name}
             data-unit={discipline.unit}

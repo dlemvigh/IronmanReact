@@ -43,7 +43,7 @@ class ActivityForm extends React.Component {
       disciplineName: "" || this.props.store.disciplines[0].name,
       distance: "",
       unit: "km",
-      score: "",
+      score: "" || this.props.store.disciplines[0].score,
       date: moment
         .utc()
         .startOf("date")
@@ -173,7 +173,7 @@ class ActivityForm extends React.Component {
           <Col sm={3}>
             <ControlDiscipline
               ref={this.ref.discipline}
-              value={this.state.disciplineId}
+              value={this.state.disciplineName}
               onChange={this.handleChangeDiscipline}
               store={this.props.store}
               ensureValidation={this.state.ensureValidation}
@@ -253,6 +253,7 @@ ActivityForm.fragments = {
         id
         _id
         name
+        score
       }
     }
     ${ControlDiscipline.fragments.store}
