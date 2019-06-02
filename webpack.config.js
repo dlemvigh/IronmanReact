@@ -1,16 +1,14 @@
 const path = require("path");
-// var webpack = require("webpack");
-const CompressionPlugin = require("compression-webpack-plugin");
+// const CompressionPlugin = require("compression-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const WebpackBar = require("webpackbar");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = {
   mode: "development",
   entry: ["./client/index.js"],
   output: {
-    path: path.join(__dirname, "dist"),
+    path: path.join(__dirname, "build", "client"),
     publicPath: "/",
     filename: "bundle.js"
   },
@@ -52,7 +50,6 @@ module.exports = {
               modules: true,
               importLoaders: 1,
               localIdentName: "[path]___[name]__[local]___[hash:base64:5]"
-              // modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
             }
           }, // translates CSS into CommonJS
 
@@ -78,7 +75,7 @@ module.exports = {
     // }
   },
   plugins: [
-    new CompressionPlugin(),
+    // new CompressionPlugin(),
     new HtmlWebpackPlugin({
       template: "client/index.html"
     }),

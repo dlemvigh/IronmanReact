@@ -7,9 +7,7 @@
     "start": "npm-run-all --parallel client server",
     "client": "webpack-dev-server --inline --content-base . --history-api-fallback",
     "server": "nodemon server/index.js --watch server",
-    "build": "webpack",
-
-
+    "build:client": "webpack",
     "run:test": "cross-env NODE_ENV='\"test\"' node build/server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:old": "cross-env NODE_ENV='\"dev\"' npm-run-all update-schema --parallel client server --parallel postclient postserver",
@@ -20,7 +18,7 @@
     "prebuild": "rimraf build/",
     "build:old": "npm-run-all --parallel build:client build:server build:shared",
     "build:test": "npm-run-all --parallel build:client:test build:server build:shared",
-    "build:client": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js --progress",
+    "build:client:old": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js --progress",
     "build:client:test": "cross-env NODE_ENV='\"test\"' webpack --config webpack.config.test.js --progress",
     "build:server": "babel server -d build/server",
     "build:shared": "babel shared -d build/shared",
@@ -71,6 +69,7 @@
     "toastr": "^2.1.4"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
