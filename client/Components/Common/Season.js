@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
-import { fromYearWeekId } from "../../../shared/util";
+import { fromYearWeekId } from "../../../shared/lib/util";
 
 class Season extends React.Component {
   renderText() {

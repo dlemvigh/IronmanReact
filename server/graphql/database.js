@@ -1,18 +1,17 @@
-import mongoose from "mongoose";
-import moment from "moment";
-import { getYearWeekId } from "../../shared/util";
-
-import ActivityModel from "../models/activity";
-import DisciplineModel from "../models/discipline";
-import UserModel from "../models/user";
-import SeasonModel from "../models/season";
-import StoreModel from "../models/store";
-import SummaryModel from "../models/summary";
-import MedalsModel from "../models/medals";
-import LoginModel from "../models/login";
-import PersonalGoalModel from "../models/personalGoal";
-
+const mongoose = require("mongoose")
+const moment = require("moment");
+const  { getYearWeekId } = require("../../shared/lib/util");
+const ActivityModel = require("../models/activity");
+const DisciplineModel = require("../models/discipline");
+const UserModel = require("../models/user");
+const SeasonModel = require("../models/season");
+const StoreModel = require("../models/store");
+const SummaryModel = require("../models/summary");
+const MedalsModel = require("../models/medals");
+const LoginModel = require("../models/login");
+const PersonalGoalModel = require("../models/personalGoal");
 const staticStore = new StoreModel(42);
+
 function getStore() {
   return staticStore;
 }
@@ -22,7 +21,9 @@ function getUser(id) {
 }
 
 function getUserByUsername(username) {
-  return UserModel.findOne({username}).exec();
+  return UserModel.findOne({
+    username
+  }).exec();
 }
 
 function getUsers() {
@@ -40,16 +41,31 @@ function getSeasons() {
 async function getCurrentSeason() {
   const yearWeekId = getYearWeekId(moment().weekYear(), moment().isoWeek());
   const season = await SeasonModel.findOne({
-    from: { $lte: yearWeekId },
-    to: { $gte: yearWeekId }
+    from: {
+      $lte: yearWeekId
+    },
+    to: {
+      $gte: yearWeekId
+    }
   });
-  if (season != null) { return season; }
 
-  const [seasonBefore, seasonAfter] = await Promise.all([
-    SeasonModel.findOne({ to: { $lt: yearWeekId } }).sort({to: 1}).exec(),
-    SeasonModel.findOne({ from: { $gt: yearWeekId } }).sort({from: 1}).exec()
-  ]);
+  if (season != null) {
+    return season;
+  }
 
+  const [seasonBefore, seasonAfter] = await Promise.all([SeasonModel.findOne({
+    to: {
+      $lt: yearWeekId
+    }
+  }).sort({
+    to: 1
+  }).exec(), SeasonModel.findOne({
+    from: {
+      $gt: yearWeekId
+    }
+  }).sort({
+    from: 1
+  }).exec()]);
   return {
     name: "Off-season",
     // TODO: use moment to get prev/next week
@@ -59,14 +75,14 @@ async function getCurrentSeason() {
 }
 
 function getActivity(id) {
-  return ActivityModel.findById(id).exec(); 
+  return ActivityModel.findById(id).exec();
 }
 
 function getActivities(args) {
   args = args || {};
-  return ActivityModel.find(args)
-    .sort({date: -1})
-    .exec();
+  return ActivityModel.find(args).sort({
+    date: -1
+  }).exec();
 }
 
 function getDiscipline(id) {
@@ -74,7 +90,9 @@ function getDiscipline(id) {
 }
 
 function getDisciplines() {
-  return DisciplineModel.find({}).sort({order: 1}).exec();
+  return DisciplineModel.find({}).sort({
+    order: 1
+  }).exec();
 }
 
 function getSummary(id) {
@@ -87,11 +105,18 @@ function getMedals(id) {
 
 function getAllSummaries(week, year) {
   if (week && year) {
-    return SummaryModel.find({week, year}).exec();
-  }else{
+    return SummaryModel.find({
+      week,
+      year
+    }).exec();
+  } else {
     const query = {
-      week: { $exists: false },
-      year: { $exists: false }
+      week: {
+        $exists: false
+      },
+      year: {
+        $exists: false
+      }
     };
     return SummaryModel.find(query).exec();
   }
@@ -99,43 +124,58 @@ function getAllSummaries(week, year) {
 
 function getAllWeekSummaries() {
   const query = {
-    week: { $exists: true },
-    year: { $exists: true }
+    week: {
+      $exists: true
+    },
+    year: {
+      $exists: true
+    }
   };
   return SummaryModel.find(query).exec();
 }
 
 function getWeekSummary(userId, week, year) {
   if (week && year) {
-    return SummaryModel.findOne({userId, week, year}).exec();
-  }else{
+    return SummaryModel.findOne({
+      userId,
+      week,
+      year
+    }).exec();
+  } else {
     const query = {
       userId,
-      week: { $exists: false },
-      year: { $exists: false }
+      week: {
+        $exists: false
+      },
+      year: {
+        $exists: false
+      }
     };
     return SummaryModel.findOne(query).exec();
   }
 }
 
 async function addSeason(name, url, from, to) {
-  const season = new SeasonModel({ name, url, from, to });
+  const season = new SeasonModel({
+    name,
+    url,
+    from,
+    to
+  });
   return await season.save();
 }
 
 async function addActivity(userId, disciplineId, distance, date) {
-  const [discipline, user] = await Promise.all([
-    DisciplineModel.findById(disciplineId)
-      .select({name: 1, score: 1, unit: 1})
-      .exec(),
-    UserModel.findById(userId)
-      .select({name: 1})
-      .exec()
-  ]).catch((reason) => {
-    throw new Error(reason);     
+  const [discipline, user] = await Promise.all([DisciplineModel.findById(disciplineId).select({
+    name: 1,
+    score: 1,
+    unit: 1
+  }).exec(), UserModel.findById(userId).select({
+    name: 1
+  }).exec()]).catch(reason => {
+    throw new Error(reason);
   });
   date = moment.utc(date).startOf("date");
-
   const activity = new ActivityModel({
     userId,
     userName: user.name,
@@ -146,30 +186,28 @@ async function addActivity(userId, disciplineId, distance, date) {
     score: discipline.score * distance,
     date
   });
-
   const newActivity = await activity.save();
-  if (!newActivity){
+
+  if (!newActivity) {
     throw new Error("Error adding new activity");
   }
+
   await updateSummary(userId, user.name, date);
-  return newActivity;  
+  return newActivity;
 }
 
 async function editActivity(id, userId, disciplineId, distance, date) {
-  const [activity, discipline, user] = await Promise.all([
-    ActivityModel.findById(id).exec(),
-    DisciplineModel.findById(disciplineId)
-      .select({name: 1, score: 1, unit: 1})
-      .exec(),
-    UserModel.findById(userId)
-      .select({name: 1})
-      .exec()
-  ]).catch((reason) => {
-    throw new Error(reason);     
+  const [activity, discipline, user] = await Promise.all([ActivityModel.findById(id).exec(), DisciplineModel.findById(disciplineId).select({
+    name: 1,
+    score: 1,
+    unit: 1
+  }).exec(), UserModel.findById(userId).select({
+    name: 1
+  }).exec()]).catch(reason => {
+    throw new Error(reason);
   });
   const beforeDate = moment(activity.date).startOf("date").toDate();
   date = moment.utc(date).startOf("date");
-
   Object.assign(activity, {
     userId,
     userName: user.name,
@@ -180,33 +218,35 @@ async function editActivity(id, userId, disciplineId, distance, date) {
     score: discipline.score * distance,
     date
   });
-
   const newActivity = await activity.save();
-  if (!newActivity){
+
+  if (!newActivity) {
     throw new Error("Error updating activity");
-  }     
+  }
+
   await updateSummary(userId, user.name, date);
+
   if (date.diff(beforeDate, "days") != 0) {
     await updateSummary(userId, user.name, beforeDate);
   }
-  return newActivity;  
+
+  return newActivity;
 }
 
 async function removeActivity(activityId) {
   const activity = await ActivityModel.findById(activityId);
-  if (!activity){
+
+  if (!activity) {
     throw new Error("Error removing activity");
   }
+
   await activity.remove();
   await updateSummary(activity.userId, activity.userName, moment(activity.date));
   return activity;
 }
 
 async function updateSummary(userId, userName, date) {
-  await Promise.all([
-    updateSummaryWeek(userId, userName, date),
-    updateSummaryTotal(userId, userName)
-  ]);
+  await Promise.all([updateSummaryWeek(userId, userName, date), updateSummaryTotal(userId, userName)]);
 }
 
 async function updateSummaryWeek(userId, userName, date) {
@@ -214,19 +254,24 @@ async function updateSummaryWeek(userId, userName, date) {
     const m = moment(date);
     const start = m.startOf("isoWeek").toDate();
     const end = m.endOf("isoWeek").toDate();
-
-    const result = await ActivityModel.aggregate([{   
-      $match: { 
-        userId: { $eq: mongoose.Types.ObjectId(userId) },
-        date: { $gte: start, $lte: end}
+    const result = await ActivityModel.aggregate([{
+      $match: {
+        userId: {
+          $eq: mongoose.Types.ObjectId(userId)
+        },
+        date: {
+          $gte: start,
+          $lte: end
+        }
       }
     }, {
       $group: {
         _id: "$userId",
-        score: { $sum: "$score" }
+        score: {
+          $sum: "$score"
+        }
       }
-    }]).exec(); 
-
+    }]).exec();
     const query = {
       userId,
       week: m.isoWeek(),
@@ -235,35 +280,47 @@ async function updateSummaryWeek(userId, userName, date) {
 
     if (result.length == 0) {
       await SummaryModel.findOneAndRemove(query);
-    }else{
+    } else {
       const score = result[0].score;
-      const summary = Object.assign({}, query, {score, userName});
-
-      await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
+      const summary = Object.assign({}, query, {
+        score,
+        userName
+      });
+      await SummaryModel.findOneAndUpdate(query, summary, {
+        upsert: true
+      }).exec();
     }
+
     await updateSummaryLeader(query.week, query.year);
-  }catch(error){
+  } catch (error) {
     console.log("error", error);
   }
 }
 
 async function updateSummaryTotal(userId, userName) {
   try {
-    const result = await ActivityModel.aggregate([{   
-      $match: { 
-        userId: { $eq: mongoose.Types.ObjectId(userId) }
+    const result = await ActivityModel.aggregate([{
+      $match: {
+        userId: {
+          $eq: mongoose.Types.ObjectId(userId)
+        }
       }
     }, {
       $group: {
         _id: "$userId",
-        score: { $sum: "$score" }
+        score: {
+          $sum: "$score"
+        }
       }
-    }]).exec(); 
-
+    }]).exec();
     const query = {
       userId,
-      week: { $exists: false },
-      year: { $exists: false }
+      week: {
+        $exists: false
+      },
+      year: {
+        $exists: false
+      }
     };
 
     if (result.length == 0) {
@@ -276,17 +333,21 @@ async function updateSummaryTotal(userId, userName) {
       userName,
       score
     };
-
-    await SummaryModel.findOneAndUpdate(query, summary, {upsert: true}).exec();
-  }catch(error){
+    await SummaryModel.findOneAndUpdate(query, summary, {
+      upsert: true
+    }).exec();
+  } catch (error) {
     console.log("error", error);
   }
 }
 
 async function updateSummaryLeader(week, year) {
-  const summaries = await SummaryModel.find({week, year})
-    .sort({score: -1})
-    .exec();
+  const summaries = await SummaryModel.find({
+    week,
+    year
+  }).sort({
+    score: -1
+  }).exec();
   summaries.map((summary, index) => summary.position = index + 1);
   await Promise.all(summaries.map(summary => summary.save()));
   await updateAllMedals();
@@ -298,7 +359,12 @@ async function updateAllMedals() {
 }
 
 async function updateMedals(user) {
-  const summaries = await SummaryModel.find({userId: user._id, position: { $lte: 3 }}).exec();
+  const summaries = await SummaryModel.find({
+    userId: user._id,
+    position: {
+      $lte: 3
+    }
+  }).exec();
   const medals = {
     userId: user._id,
     userName: user.name,
@@ -309,7 +375,12 @@ async function updateMedals(user) {
     bronze: summaries.filter(x => x.position == 3).length,
     bronzeWeeks: summaries.filter(x => x.position == 3).map(x => getYearWeekId(x.year, x.week))
   };
-  await MedalsModel.findOneAndUpdate({ userId: user._id}, medals, {new: true, upsert: true}).exec();
+  await MedalsModel.findOneAndUpdate({
+    userId: user._id
+  }, medals, {
+    new: true,
+    upsert: true
+  }).exec();
 }
 
 function getAllMedals() {
@@ -317,15 +388,24 @@ function getAllMedals() {
 }
 
 function getMedalsByUserId(userId) {
-  return MedalsModel.findOne({userId}).exec();
-}   
+  return MedalsModel.findOne({
+    userId
+  }).exec();
+}
 
 async function addUser(name, username) {
-  const user = { name, username };
-  const oldUser = await UserModel.findOne({name: username});
+  const user = {
+    name,
+    username
+  };
+  const oldUser = await UserModel.findOne({
+    name: username
+  });
+
   if (oldUser) {
     throw "username already exists";
   }
+
   const newUser = await new UserModel(user).save();
   await populateMedals(newUser);
   return newUser;
@@ -333,7 +413,7 @@ async function addUser(name, username) {
 
 function populateMedals(user) {
   MedalsModel.findOne({
-    userId: user._id,
+    userId: user._id
   }, (err, result) => {
     if (err) {
       console.log("error finding medal");
@@ -343,9 +423,9 @@ function populateMedals(user) {
         userName: user.name,
         gold: 0,
         silver: 0,
-        bronze: 0                
+        bronze: 0
       };
-      new MedalsModel(medal).save((err2) => {
+      new MedalsModel(medal).save(err2 => {
         if (err2) {
           console.log("error saving medal", err2);
         }
@@ -355,7 +435,7 @@ function populateMedals(user) {
 }
 
 function getLogin(id) {
-  return LoginModel.findById(id).exec(); 
+  return LoginModel.findById(id).exec();
 }
 
 async function getUserByLogin(provider, providerUserId) {
@@ -363,68 +443,73 @@ async function getUserByLogin(provider, providerUserId) {
     provider,
     providerUserId
   });
+
   if (login) {
     return await UserModel.findById(login.userId);
   }
 }
 
 async function ensureLogin(username, provider, providerUserId) {
-  const [login, user] = await Promise.all([
-    LoginModel.findOne({
-      provider,
-      providerUserId
-    }),
-    UserModel.findOne({
-      username
-    })
-  ]);
+  const [login, user] = await Promise.all([LoginModel.findOne({
+    provider,
+    providerUserId
+  }), UserModel.findOne({
+    username
+  })]);
 
-  if (login) { return user; }
+  if (login) {
+    return user;
+  }
 
-  if (!user) { return; }
+  if (!user) {
+    return;
+  }
 
-  await new LoginModel({ 
+  await new LoginModel({
     userId: user._id,
     provider,
     providerUserId
   }).save();
-
   return user;
 }
 
 function getPersonalGoal(id) {
-  return PersonalGoalModel.findById(id).exec(); 
+  return PersonalGoalModel.findById(id).exec();
 }
 
 function getPersonalGoalsByUser(userId) {
-  return PersonalGoalModel.find({userId}).sort({priority: 1}).exec(); 
+  return PersonalGoalModel.find({
+    userId
+  }).sort({
+    priority: 1
+  }).exec();
 }
 
 async function setPersonalGoals(userId, goals) {
   const user = await UserModel.findById(userId).exec();
   const disciplineIds = goals.map(x => mongoose.Types.ObjectId(x.disciplineId));
-  const disciplines = await DisciplineModel.find({ _id: { $in: disciplineIds } });
-
-  await PersonalGoalModel.remove({userId});
-
-  await Promise.all(goals.map((goal, index) => 
-    new PersonalGoalModel({
-      userId,
-      userName: user.name,
-      disciplineId: goal.disciplineId,
-      disciplineName: goal.disciplineId ? 
-        disciplines.find(x => x._id == goal.disciplineId).name : null,
-      count: goal.count,
-      dist: goal.dist,
-      score: goal.score,
-      priority: index + 1
-    }).save()
-  ));
-
+  const disciplines = await DisciplineModel.find({
+    _id: {
+      $in: disciplineIds
+    }
+  });
+  await PersonalGoalModel.remove({
+    userId
+  });
+  await Promise.all(goals.map((goal, index) => new PersonalGoalModel({
+    userId,
+    userName: user.name,
+    disciplineId: goal.disciplineId,
+    disciplineName: goal.disciplineId ? disciplines.find(x => x._id == goal.disciplineId).name : null,
+    count: goal.count,
+    dist: goal.dist,
+    score: goal.score,
+    priority: index + 1
+  }).save()));
   return user;
 }
 
-export default {
+module.exports = {
   ActivityModel,
   DisciplineModel,
   UserModel,

@@ -6,7 +6,7 @@ import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
 import CSSModules from "react-css-modules";
 import styles from "./Header.modules.scss";
-import { getYearWeekId } from "../../../shared/util";
+import { getYearWeekId } from "../../../shared/lib/util";
 
 class Header extends React.Component {
   renderUserNav() {

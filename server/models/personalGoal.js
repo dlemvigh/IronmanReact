@@ -1,31 +1,29 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose")
 const personalGoalSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
   userName: {
-    type: String,
+    type: String
   },
   disciplineId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId
   },
   disciplineName: {
-    type: String,
+    type: String
   },
   count: {
-    type: Number,
+    type: Number
   },
   dist: {
-    type: Number,
+    type: Number
   },
   score: {
-    type: Number,
+    type: Number
   },
   priority: {
     type: Number
   }
 });
-
-export default mongoose.model("PersonalGoal", personalGoalSchema);
+module.exports = mongoose.model("PersonalGoal", personalGoalSchema);

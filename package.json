@@ -6,8 +6,10 @@
   "scripts": {
     "start": "npm-run-all --parallel client server",
     "client": "webpack-dev-server --inline --content-base . --history-api-fallback",
-    "server": "nodemon server/index.js --watch server",
+    "server": "nodemon --watch server server/index.js",
     "build:client": "webpack",
+    "build:server": "babel server -d build/server --presets=@babel/preset-env",
+    "build:shared": "babel shared -d build/shared --presets=@babel/preset-env",
     "run:test": "cross-env NODE_ENV='\"test\"' node build/server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:old": "cross-env NODE_ENV='\"dev\"' npm-run-all update-schema --parallel client server --parallel postclient postserver",
@@ -20,8 +22,6 @@
     "build:test": "npm-run-all --parallel build:client:test build:server build:shared",
     "build:client:old": "cross-env NODE_ENV='\"production\"' webpack --config webpack.config.prod.js --progress",
     "build:client:test": "cross-env NODE_ENV='\"test\"' webpack --config webpack.config.test.js --progress",
-    "build:server": "babel server -d build/server",
-    "build:shared": "babel shared -d build/shared",
     "deploy": "rimraf backup && mv deploy backup && mv build deploy && pm2 restart ironman",
     "deploy:undo": "rimraf deploy && cp backup deploy -rf && pm2 restart ironman",
     "publish": "npm run build && npm run deploy"
@@ -71,6 +71,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",

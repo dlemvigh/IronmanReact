@@ -2,35 +2,35 @@ const base = {
   db: "ironman",
 };
 
-export const prod = {
+const prod = {
   ...base,
   db: "ironman-dev",
   port: 4000, 
   callbackUrl: "https://ironman.dlemvigh.dk/callback"
 };
 
-export const test = {
+const test = {
   ...base,
   db: "ironman-test",
   port: 4001,
   callbackUrl: "https://test.ironman.dlemvigh.dk/callback"
 };
 
-export const staging = {
+const staging = {
   ...base,
   port: 4001,
   callbackUrl: "https://test.ironman.dlemvigh.dk/callback"
 };
 
-export const dev = {
+const dev = {
   ...base,
   port: 8080,
   callbackUrl: "http://localhost:8080/callback"
 };
 
-export const config = { prod, test, staging, dev };
+const config = { prod, test, staging, dev };
 
-export function getEnv() {
+function getEnv() {
   switch(process.env.NODE_ENV) {
     case "development":
       return "dev";
@@ -44,7 +44,17 @@ export function getEnv() {
   }
 }
 
-export function getConfig() {
+function getConfig() {
   const env = getEnv();
   return config[env];
 }
+
+module.exports = {
+  config,
+  prod,
+  test,
+  staging,
+  dev,
+  getEnv,
+  getConfig
+};

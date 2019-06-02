@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
-import { filterMedals } from "../../../shared/util";
+import { filterMedals } from "../../../shared/lib/util";
 import MedalsItem from "./MedalsItem";
 
 class MedalsList extends React.Component {

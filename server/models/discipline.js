@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose")
 const disciplineSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -14,10 +13,10 @@ const disciplineSchema = new mongoose.Schema({
     required: true
   },
   order: {
-    type: Number,    
+    type: Number
   }
 });
-
-disciplineSchema.virtual("id").get(function() { return this._id; });
-
-export default mongoose.model("Discipline", disciplineSchema);
+disciplineSchema.virtual("id").get(function () {
+  return this._id;
+});
+module.exports = mongoose.model("Discipline", disciplineSchema);

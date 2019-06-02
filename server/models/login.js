@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose")
 const loginSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,7 +11,6 @@ const loginSchema = new mongoose.Schema({
   providerUserId: {
     type: String,
     required: true
-  },
+  }
 });
-
-export default mongoose.model("Login", loginSchema);
+module.exports = mongoose.model("Login", loginSchema);

@@ -1,12 +1,11 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose")
 const seasonSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
   url: {
-    type: String,
+    type: String
   },
   from: {
     type: Number,
@@ -17,5 +16,4 @@ const seasonSchema = new mongoose.Schema({
     required: true
   }
 });
-
-export default mongoose.model("Season", seasonSchema);
+module.exports = mongoose.model("Season", seasonSchema);

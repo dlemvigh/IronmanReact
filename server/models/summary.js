@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose")
 const summarySchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true        
+    required: true
   },
   userName: {
     type: String
@@ -23,5 +22,4 @@ const summarySchema = new mongoose.Schema({
     type: Number
   }
 });
-
-export default mongoose.model("Summary", summarySchema);
+module.exports = mongoose.model("Summary", summarySchema);

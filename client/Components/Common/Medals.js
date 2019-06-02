@@ -1,6 +1,6 @@
 import React from "react";
 
-import { filterMedals } from "../../../shared/util";
+import { filterMedals } from "../../../shared/lib/util";
 
 class Medals extends React.Component {
 
