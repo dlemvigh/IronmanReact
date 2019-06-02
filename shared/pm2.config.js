@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    script: "../server/index.js",
+    script: "./server/index.js",
     watch: true,
     env_test: {
       name: "ironman-test",
