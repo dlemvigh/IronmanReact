@@ -355,6 +355,7 @@ async function updateSummaryLeader(week, year) {
 
 async function updateAllMedals() {
   const users = await UserModel.find({}).exec();
+  console.log("update medals - users", users.length, users);
   await Promise.all(users.map(user => updateMedals(user)));
 }
 
@@ -409,6 +410,25 @@ async function addUser(name, username) {
   const newUser = await new UserModel(user).save();
   await populateMedals(newUser);
   return newUser;
+}
+
+async function removeUser(username) {
+  const user = await UserModel.findOne({username});
+
+  const activities = await ActivityModel.find({ userId: user._id });
+  await Promise.all(
+    activities.map(activity => 
+      removeActivity(activity.id)
+    )
+  );
+
+  await Promise.all([
+    MedalsModel.deleteMany({ userId: user._id }),
+    SummaryModel.deleteMany({ userId: user._id }),
+    UserModel.deleteOne({username})
+  ]);
+
+  return user;
 }
 
 function populateMedals(user) {
@@ -541,6 +561,7 @@ module.exports = {
   getAllMedals,
   getMedalsByUserId,
   addUser,
+  removeUser,
   getLogin,
   getUserByLogin,
   ensureLogin,

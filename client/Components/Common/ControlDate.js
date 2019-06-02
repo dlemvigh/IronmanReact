@@ -67,6 +67,7 @@ class ControlDate extends React.Component {
               styleName="mobile-input" 
               value={this.getValue()} 
               onChange={this.onChangeMobile} 
+              data-test="form-input-date"
             /> :
             <DateTime
               dateFormat="D/M-YYYY"
@@ -74,6 +75,7 @@ class ControlDate extends React.Component {
               value={this.props.value}
               onChange={this.onChange}
               className={this.getValidationState()}
+              data-test="form-input-date"
             />
         }
       </FormGroup>

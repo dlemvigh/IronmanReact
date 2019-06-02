@@ -30,7 +30,7 @@ class ActivityList extends React.Component {
             <ActivityItem
               key={edge.node.id}
               activity={edge.node}
-              onEdit={this.props.onEdit}
+              onEdit={this.props.onEdit}              
               {...this.props}
               striped={this.isStriped(weeks, edge.node.week)}
             />

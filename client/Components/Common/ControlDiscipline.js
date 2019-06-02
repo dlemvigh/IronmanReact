@@ -50,6 +50,7 @@ class ControlDiscipline extends React.Component {
         placeholder="distance"
         onChange={this.onChange}
         onBlur={this.onChange}
+        data-test="form-input-discipline"
       >
         {this.props.store.disciplines.map(discipline => (
           <option

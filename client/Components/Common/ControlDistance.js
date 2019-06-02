@@ -39,6 +39,7 @@ class ControlDistance extends React.Component {
             autoFocus
             styleName="distance-input" 
             className={this.getValidationState()}
+            data-test="form-input-distance"
           />
           <InputGroup.Append>
             <InputGroup.Text>

@@ -613,6 +613,32 @@ const addUserMutation = mutationWithClientMutationId({
     return database.addUser(name, username);
   }
 });
+
+const removeUserMutation = mutationWithClientMutationId({
+  name: "RemoveUser",
+  inputFields: {
+    username: { type: new GraphQLNonNull(GraphQLString) }
+  },
+  outputFields: {
+    user: {
+      type: userType,
+      resolve: (obj) => {
+        return obj;
+      }
+    },
+    store: {
+      type: storeType,
+      resolve: () => {
+        return database.getStore();
+      }
+    }
+  },
+  mutateAndGetPayload: ({username}) => {
+    return database.removeUser(username);
+  }
+});
+
+
 const addSeasonMutation = mutationWithClientMutationId({
   name: "AddSeason",
   inputFields: {
@@ -718,6 +744,7 @@ const mutationType = new GraphQLObjectType({
     editActivity: editActivityMutation,
     removeActivity: removeActivityMutation,
     addUser: addUserMutation,
+    removeUser: removeUserMutation,
     addSeason: addSeasonMutation,
     ensureLogin: ensureLoginMutation,
     setPersonalGoals: setPersonalGoalsMutation

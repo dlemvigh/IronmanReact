@@ -15,6 +15,7 @@ export default class ControlScore extends React.Component {
           type="text"
           value={this.round()}
           disabled={this.props.readonly}
+          data-test="form-output-score"
         />
       </FormGroup>
     );

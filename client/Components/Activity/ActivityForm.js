@@ -176,7 +176,7 @@ class ActivityForm extends React.Component {
               value={this.state.disciplineName}
               onChange={this.handleChangeDiscipline}
               store={this.props.store}
-              ensureValidation={this.state.ensureValidation}
+              ensureValidation={this.state.ensureValidation}              
             />
           </Col>
           <Col sm={3} xs={8}>
@@ -185,13 +185,13 @@ class ActivityForm extends React.Component {
               value={this.state.distance}
               unit={this.state.unit}
               onChange={this.handleChangeDistance}
-              ensureValidation={this.state.ensureValidation}
+              ensureValidation={this.state.ensureValidation}              
             />
           </Col>
           <Col sm={2} xs={4}>
             <ControlScore
               value={this.state.score * this.state.distance}
-              readonly
+              readonly              
             />
           </Col>
           <Col sm={3} xs={8}>
@@ -199,7 +199,7 @@ class ActivityForm extends React.Component {
               ref={this.ref.date}
               value={this.state.date}
               onChange={this.handleChangeDate}
-              ensureValidation={this.state.ensureValidation}
+              ensureValidation={this.state.ensureValidation}              
             />
           </Col>
           <Col sm={1} xs={4}>
@@ -207,6 +207,7 @@ class ActivityForm extends React.Component {
               type="submit"
               variant="primary"
               styleName="form-noncontrol-offset"
+              data-test="form-btn-submit"
             >
               {this.isEditing() ? "Update" : "Log"}
             </Button>
