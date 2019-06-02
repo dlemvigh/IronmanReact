@@ -1,15 +1,12 @@
 module.exports = {
   apps: [{
-    name: "ironman",
     script: "../server/index.js",
-    watch: false,
-    env: {
-      "NODE_ENV": "development"
-    },
     env_test: {
+      name: "ironman-test",
       "NODE_ENV": "test"
     },
     env_production: {
+      name: "ironman",
       "NODE_ENV": "production"
     }
   }]
