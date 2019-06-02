@@ -1,5 +1,6 @@
 const base = {
   db: "ironman",
+  apiUrl: "/graphql"
 };
 
 const prod = {
@@ -24,6 +25,7 @@ const staging = {
 
 const dev = {
   ...base,
+  apiUrl: "http://localhost:4000/graphql",
   port: 4000,
   callbackUrl: "http://localhost:8080/callback"
 };
