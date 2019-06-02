@@ -24,7 +24,7 @@ const staging = {
 
 const dev = {
   ...base,
-  port: 8080,
+  port: 4000,
   callbackUrl: "http://localhost:8080/callback"
 };
 

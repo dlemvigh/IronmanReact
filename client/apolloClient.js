@@ -9,6 +9,6 @@ const endpoint = `http://localhost:${config.port}/graphql`;
 export const cache = new InMemoryCache();
 
 export const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  uri: endpoint,
   cache
 });
