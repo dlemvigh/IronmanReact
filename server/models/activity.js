@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const moment = require("moment");
 const activitySchema = new mongoose.Schema({
   userId: {
