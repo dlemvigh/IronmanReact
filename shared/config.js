@@ -20,7 +20,7 @@ export const staging = {
   ...base,
   port: 4001,
   callbackUrl: "https://test.ironman.dlemvigh.dk/callback"
-}
+};
 
 export const dev = {
   ...base,

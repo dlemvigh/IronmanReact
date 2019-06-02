@@ -8,7 +8,7 @@ import Footer from "./Footer";
 import Routes from "../../routes";
 import styles from "./App.modules.scss";
 
-import "../../Styles/custom.scss"
+import "../../Styles/custom.scss";
 import "!style-loader!css-loader!../../Styles/react-datetime.css";
 //import "!style-loader!css-loader!bootstrap/dist/css/bootstrap.min.css";
 //import "!style-loader!css-loader!bootstrap/dist/css/bootstrap-theme.min.css";

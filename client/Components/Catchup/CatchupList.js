@@ -1,6 +1,5 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import moment from "moment";
 import _ from "lodash";
 import titleCase from "title-case";
 
