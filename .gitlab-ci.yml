@@ -1,27 +1,42 @@
-image: node:alpine
+image: node:8
+
+cache:
+  key: ${CI_JOB_NAME}
+  paths:
+    - .cache/
+    - .npm_cache
 
 stages:
   - init
   - build
 
-cache:
-  paths:
-    - node_modules/
-
 install:
   stage: init
+  image: node:8
   script:
     - npm install
   artifacts:
     paths:
       - node_modules/
+    expire_in: 2 weeks
+  only:
+    changes:
+      - package.json
+      - package-lock.json
 
-lint:
+build_client:
   stage: build
-  script: npm run lint
-
-build:
-  stage: build
+  image: node:8
   script: 
+    - npm run lint
     - npm rebuild node-sass
-    - npm run build
+    - npm run build:client
+  artifacts:
+    paths:
+      - build/client
+      - server
+      - shared
+      - package.json
+      - package-lock.json
+
+  
