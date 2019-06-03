@@ -3,30 +3,26 @@ const base = {
   apiUrl: "/graphql"
 };
 
-const prod = {
+const dev = {
   ...base,
   db: "ironman-dev",
-  port: 4000, 
-  callbackUrl: "https://ironman.dlemvigh.dk/callback"
+  port: 4000,
 };
 
 const test = {
   ...base,
   db: "ironman-test",
   port: 4001,
-  callbackUrl: "https://test.ironman.dlemvigh.dk/callback"
 };
 
 const staging = {
   ...base,
-  port: 4001,
-  callbackUrl: "https://test.ironman.dlemvigh.dk/callback"
+  port: 4002,
 };
 
-const dev = {
+const prod = {
   ...base,
-  port: 4000,
-  callbackUrl: "http://localhost:8080/callback"
+  port: 4000, 
 };
 
 const config = { prod, test, staging, dev };
