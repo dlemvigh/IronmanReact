@@ -11,7 +11,7 @@ module.exports = {
       "NODE_ENV": "staging"
     },
     env_production: {
-      name: "ironman",
+      name: "ironman-prod",
       "NODE_ENV": "production"
     }
   }]
