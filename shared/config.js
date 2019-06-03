@@ -6,7 +6,7 @@ const base = {
 const dev = {
   ...base,
   db: "ironman-dev",
-  port: 4000,
+  port: 8080,
 };
 
 const test = {

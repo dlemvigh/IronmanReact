@@ -355,7 +355,6 @@ async function updateSummaryLeader(week, year) {
 
 async function updateAllMedals() {
   const users = await UserModel.find({}).exec();
-  console.log("update medals - users", users.length, users);
   await Promise.all(users.map(user => updateMedals(user)));
 }
 

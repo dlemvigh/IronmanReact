@@ -1,22 +1,31 @@
-var path = require("path");
-
-var express = require("express");
-
-var cors = require("cors");
-
-var graphqlHTTP = require("express-graphql");
-
-var compression = require("compression");
-
+const path = require("path");
+const express = require("express");
+const cors = require("cors");
+const graphqlHTTP = require("express-graphql");
+const compression = require("compression");
 const mongoose = require("mongoose");
 const { populate } = require("./util/data.js");
 populate();
 const schema = require("./graphql/schema");
 const { getConfig } = require("../shared/config");
 const config = getConfig();
-var app = express();
+
+const app = express();
 app.use(compression());
 app.use(cors());
+
+if (process.env.NODE_ENV === "development") {
+  const webpack = require("webpack");
+  const webpackDevMiddleware = require("webpack-dev-middleware");
+  const history = require('connect-history-api-fallback');
+  const webpackConfig = require("../webpack.config");
+  const compiler = webpack(webpackConfig);
+  app.use(history());
+  app.use(webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath
+  }));
+}
+// "client": "webpack-dev-server --inline --content-base . --history-api-fallback",
 app.use("/graphql", graphqlHTTP({
   schema: schema,
   pretty: true,
@@ -48,5 +57,6 @@ mongoose.connect(db, {
   useCreateIndex: true,
   useFindAndModify: false
 });
-app.listen(config.port);
-console.log("Running a GraphQL API server");
+const listener = app.listen(config.port, () => {
+  console.log("Running a GraphQL API server - ", listener.address().port);
+});
