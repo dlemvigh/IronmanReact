@@ -25,7 +25,6 @@ const staging = {
 
 const dev = {
   ...base,
-  apiUrl: "http://localhost:4000/graphql",
   port: 4000,
   callbackUrl: "http://localhost:8080/callback"
 };
@@ -33,7 +32,6 @@ const dev = {
 const config = { prod, test, staging, dev };
 
 function getEnv() {
-  console.log("env", process.env.NODE_ENV, process.env);
   switch(process.env.NODE_ENV) {
     case "development":
       return "dev";
