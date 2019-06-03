@@ -33,6 +33,7 @@ const dev = {
 const config = { prod, test, staging, dev };
 
 function getEnv() {
+  console.log("env", process.env.NODE_ENV, process.env);
   switch(process.env.NODE_ENV) {
     case "development":
       return "dev";
