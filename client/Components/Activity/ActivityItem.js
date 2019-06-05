@@ -68,7 +68,7 @@ class ActivityItem extends React.Component {
         </td>
         <td>
           <a href="javascript:void 0" onClick={this.onDelete}>
-          <Icon name="delete" />
+            <Icon name="delete" />
           </a>
         </td>
       </tr>

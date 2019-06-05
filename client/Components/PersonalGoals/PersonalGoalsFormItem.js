@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { FormLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
+import Icon from "../Common/Icon";
 import styles from "./PersonalGoalsFormItem.modules.scss";
 
 class PersonalGoalsFormItem extends React.Component {
@@ -123,39 +124,23 @@ class PersonalGoalsFormItem extends React.Component {
                 href="javascript:void(0)"
                 onClick={this.onClickUp}
               >
-                up
+                <Icon name="up" />
               </a>
-              <br />
               <a
                 styleName={this.getIconStyles({})}
                 href="javascript:void(0)"
                 onClick={this.onClickRemove}
               >
-                delete
+                <Icon name="delete" />
+
               </a>
-              <br />
               <a
                 styleName={this.getIconStyles({ down: true })}
                 href="javascript:void(0)"
                 onClick={this.onClickDown}
               >
-                down
+                <Icon name="down" />
               </a>
-              {/* <Glyphicon
-                glyph="chevron-up"
-                styleName={this.getIconStyles({ up: true })}
-                onClick={this.onClickUp}
-              />
-              <Glyphicon
-                glyph="trash"
-                styleName={this.getIconStyles({})}
-                onClick={this.onClickRemove}
-              />
-              <Glyphicon
-                glyph="chevron-down"
-                styleName={this.getIconStyles({ down: true })}
-                onClick={this.onClickDown}
-              /> */}
             </div>
           </Col>
         </Row>
