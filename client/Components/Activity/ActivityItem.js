@@ -2,11 +2,13 @@ import React from "react";
 import gql from "graphql-tag";
 // FIXME glyphs are missing from react-bootstrap
 // import { Glyphicon } from "react-bootstrap";
+
 import toastr from "toastr";
 
 import Date from "../Common/Date";
 import Day from "../Common/Day";
 import Discipline from "../Common/Discipline";
+import Icon from "../Common/Icon";
 import Score from "../Common/Score";
 import Week from "../Common/Week";
 import Year from "../Common/Year";
@@ -61,12 +63,12 @@ class ActivityItem extends React.Component {
         </td>
         <td>
           <a href="javascript:void 0" onClick={this.onEdit}>
-            edit
+            <Icon name="edit" />
           </a>
         </td>
         <td>
           <a href="javascript:void 0" onClick={this.onDelete}>
-            delete
+          <Icon name="delete" />
           </a>
         </td>
       </tr>
