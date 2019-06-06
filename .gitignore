@@ -5,8 +5,9 @@ node_modules
 
 # testing
 coverage
-tests/cypress/videos
-tests/cypress/screenshots
+cypress/videos
+cypress/screenshots
+test-results.xml
 
 # production
 build
