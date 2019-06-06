@@ -12,7 +12,7 @@
     "start:old": "cross-env NODE_ENV='\"dev\"' npm-run-all update-schema --parallel client server --parallel postclient postserver",
     "start:test": "cross-env NODE_ENV='\"test\"' npm-run-all update-schema --parallel client server --parallel postclient postserver",
     "server:prod": "nodemon build/server/index.js --watch build",
-    "lint": "eslint client server shared devServer.js",
+    "lint": "eslint client server shared",
     "update-schema": "babel-node ./util/update-schema.js",
     "prebuild": "rimraf build/",
     "build:old": "npm-run-all --parallel build:client build:server build:shared",

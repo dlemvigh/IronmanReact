@@ -638,7 +638,6 @@ const removeUserMutation = mutationWithClientMutationId({
   }
 });
 
-
 const addSeasonMutation = mutationWithClientMutationId({
   name: "AddSeason",
   inputFields: {

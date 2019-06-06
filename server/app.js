@@ -52,7 +52,7 @@ app.use(
           if (error.source && error.source.body) {
             scope.setExtra("body", error.source.body);
           }
-          scope.setExtra("positions", error.positions)        ;
+          scope.setExtra("positions", error.positions);
           scope.setExtra("path", error.path);
       
           Sentry.captureException(error);

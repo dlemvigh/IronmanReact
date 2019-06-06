@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const moment = require("moment");
 const { getYearWeekId } = require("../../shared/lib/util");
 const ActivityModel = require("../models/activity");

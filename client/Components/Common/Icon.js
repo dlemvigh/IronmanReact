@@ -10,7 +10,7 @@ const icons = {
   delete: require("../../Media/icons/icons8-trash-100.png")
 };
 
-let Icon = ({ name, color }) => (
+let Icon = ({ name }) => (
   <img src={icons[name]} styleName="icon" />
 );
 

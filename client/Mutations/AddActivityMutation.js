@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-import { ActivityEdgeFragment, GET_ACTIVITIES } from "./SharedActivityMutation";
+import { ActivityEdgeFragment } from "./SharedActivityMutation";
 
 const ADD_ACTIVITY = gql`
   mutation AddActivityMutation($input: AddActivityInput!) {
