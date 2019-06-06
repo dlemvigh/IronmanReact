@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const moment = require("moment");
-const  { getYearWeekId } = require("../../shared/lib/util");
+const { getYearWeekId } = require("../../shared/lib/util");
 const ActivityModel = require("../models/activity");
 const DisciplineModel = require("../models/discipline");
 const UserModel = require("../models/user");
@@ -172,9 +172,7 @@ async function addActivity(userId, disciplineId, distance, date) {
     unit: 1
   }).exec(), UserModel.findById(userId).select({
     name: 1
-  }).exec()]).catch(reason => {
-    throw new Error(reason);
-  });
+  }).exec()]);
   date = moment.utc(date).startOf("date");
   const activity = new ActivityModel({
     userId,
@@ -197,15 +195,16 @@ async function addActivity(userId, disciplineId, distance, date) {
 }
 
 async function editActivity(id, userId, disciplineId, distance, date) {
-  const [activity, discipline, user] = await Promise.all([ActivityModel.findById(id).exec(), DisciplineModel.findById(disciplineId).select({
-    name: 1,
-    score: 1,
-    unit: 1
-  }).exec(), UserModel.findById(userId).select({
-    name: 1
-  }).exec()]).catch(reason => {
-    throw new Error(reason);
-  });
+  const [activity, discipline, user] = await Promise.all([
+    ActivityModel.findById(id).exec(), 
+    DisciplineModel.findById(disciplineId).select({
+      name: 1,
+      score: 1,
+      unit: 1
+    }).exec(), UserModel.findById(userId).select({
+      name: 1
+    }).exec()
+  ]);
   const beforeDate = moment(activity.date).startOf("date").toDate();
   date = moment.utc(date).startOf("date");
   Object.assign(activity, {
