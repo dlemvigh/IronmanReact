@@ -4,13 +4,18 @@
   "description": "",
   "scripts": {
     "test": "cypress run",
-    "test:watch": "cypress open"
+    "test:watch": "cypress open",
+    "lint": "eslint ."
   },
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "cypress": "^3.3.1",
-    "eslint-plugin-cypress": "^2.2.1",
     "faker": "^4.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-cypress": "^2.2.1",
+    "eslint-plugin-no-only-tests": "^2.3.1",
+    "eslint-plugin-no-skip-tests": "^1.1.0"
   }
 }
