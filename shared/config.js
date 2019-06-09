@@ -6,8 +6,7 @@ const base = {
 const dev = {
   ...base,
   db: "ironman-dev",
-  port: 8080,
-  apiUrl: "http://localhost:4000/graphql"
+  port: 8080
 };
 
 const test = {
