@@ -36,6 +36,7 @@ describe("Activity tests", () => {
     cy.get("[data-test=form-btn-submit]").click();
 
     cy.get("[data-test=activity-list-item]")
+      .should("have.length", 2)
       .eq(0)
       .should("contain", 2020);
     cy.get("[data-test=activity-list-item]")
@@ -53,6 +54,7 @@ describe("Activity tests", () => {
     cy.get("[data-test=form-btn-submit]").click();
 
     cy.get("[data-test=activity-list-item]")
+      .should("have.length", 3)
       .eq(0)
       .should("contain", 2020);
     cy.get("[data-test=activity-list-item]")
