@@ -18,6 +18,13 @@ class ActivityList extends React.Component {
     return index % 2 == 1;
   }
 
+  getSortedActivities() {
+    return _.sortBy(
+      this.props.user.activities.edges,
+      x => x.node.date
+    ).reverse();
+  }
+
   render() {
     const weeks = this.getWeeks();
     return (
@@ -26,11 +33,11 @@ class ActivityList extends React.Component {
           <ActivityHeader />
         </thead>
         <tbody>
-          {this.props.user.activities.edges.map(edge => (
+          {this.getSortedActivities().map(edge => (
             <ActivityItem
               key={edge.node.id}
               activity={edge.node}
-              onEdit={this.props.onEdit}              
+              onEdit={this.props.onEdit}
               {...this.props}
               striped={this.isStriped(weeks, edge.node.week)}
             />

@@ -9,9 +9,18 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch server",
-      "program": "${workspaceRoot}\\server\\index.js",
-      "cwd": "${workspaceRoot}"
+      "name": "Launch Program",
+      "program": "${workspaceRoot}/server/index.js",
+      "cwd": "${workspaceRoot}",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Process",
+      "port": 5858
     }
   ]
 }
