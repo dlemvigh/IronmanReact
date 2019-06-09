@@ -7,28 +7,29 @@ const dev = {
   ...base,
   db: "ironman-dev",
   port: 8080,
+  apiUrl: "http://localhost:4000/graphql"
 };
 
 const test = {
   ...base,
   db: "ironman-test",
-  port: 4001,
+  port: 4001
 };
 
 const staging = {
   ...base,
-  port: 4002,
+  port: 4002
 };
 
 const prod = {
   ...base,
-  port: 4000, 
+  port: 4000
 };
 
 const config = { prod, test, staging, dev };
 
 function getEnv() {
-  switch(process.env.NODE_ENV) {
+  switch (process.env.NODE_ENV) {
     case "development":
       return "dev";
     case "test":
