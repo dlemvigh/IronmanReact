@@ -100,6 +100,7 @@
     "webpack-cli": "^3.3.2",
     "webpack-dev-middleware": "^3.7.0",
     "webpack-dev-server": "^3.6.0",
+    "webpack-express-reload": "^1.0.0",
     "webpack-hot-middleware": "^2.25.0",
     "webpackbar": "^3.2.0"
   }

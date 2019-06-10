@@ -12,7 +12,9 @@ class Header extends React.Component {
   renderUserNav() {
     // FIXME match doesn't contain username
     const username = this.props.match.params.username;
-    if (!username) { return null; }
+    if (!username) {
+      return null;
+    }
     return (
       <Nav>
         <IndexLinkContainer to={`/${username}`}>
@@ -58,9 +60,7 @@ class Header extends React.Component {
         <Navbar bg="dark" variant="dark" expand="sm">
           <Container>
             <LinkContainer to="/">
-              <Navbar.Brand>
-                Ironman 70.3 Club
-              </Navbar.Brand>
+              <Navbar.Brand>Ironman 70.3 Club</Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle />
             <Navbar.Collapse>

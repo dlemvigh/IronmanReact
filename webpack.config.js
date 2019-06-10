@@ -4,9 +4,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const WebpackBar = require("webpackbar");
 
+const { getConfig } = require("./shared/config");
+const config = getConfig();
+
 module.exports = {
   mode: "development",
-  entry: ["./client/index.js"],
+  entry: [
+    "./client/index.js",
+    `webpack-express-reload/client?http://0.0.0.0:${config.port}/_testapp`
+  ],
   output: {
     path: path.join(__dirname, "build", "client"),
     publicPath: "/",
@@ -34,11 +40,7 @@ module.exports = {
       {
         test: /\.scss$/,
         exclude: /\.modules\.scss$/,
-        use: [
-          "style-loader",
-          "css-loader",
-          "sass-loader"
-        ]
+        use: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.modules\.scss$/,
@@ -68,7 +70,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx']
+    extensions: ["*", ".js", ".jsx"]
     // alias: {
     //   react: "preact-compat",
     //   "react-dom": "preact-compat"
