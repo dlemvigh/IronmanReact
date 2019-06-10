@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "build", "client"),
     publicPath: "/",
-    filename: "bundle.js"
+    filename: "bundle.[contenthash].js"
   },
   devtool: "source-map",
   module: {

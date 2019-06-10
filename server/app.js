@@ -84,27 +84,23 @@ if (isDev) {
   app.use(
     express.static(path.join(__dirname, "..", "client"), {
       setHeaders: (res, path) => {
-        res.set("Cache-Control", "no-cache, no-store, must-revalidate");
+        if (/bundle\..*\.js/.test(path)) {
+          res.set("Cache-Control", "max-age=31557600000");
+        } else {
+          res.set("Cache-Control", "cache, no-store, must-revalidate");
+          res.set("Pragma", "no-cache");
+          res.set("Expires", 0);
+        }
       }
     })
   );
   app.get("*", function(req, res) {
-    res.set({
-      "Cache-Control": "no-cache, no-store, must-revalidate",
-      Expires: "-1",
-      Pragma: "no-cache"
-    });
+    res.set("Cache-Control", "cache, no-store, must-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", 0);
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
   });
 }
-
-// app.use(function noCacheForRoot(req, res, next) {
-//   if (req.url === "/") {
-//     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-//     res.header("Pragma", "no-cache");
-//     res.header("Expires", 0);
-//   }
-// });
 
 mongoose.connect(db, {
   useNewUrlParser: true,
