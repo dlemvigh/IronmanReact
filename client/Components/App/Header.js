@@ -43,10 +43,12 @@ class Header extends React.Component {
 
   renderAthleteDropdown() {
     return (
-      <NavDropdown title="Athletes" id="athletes">
+      <NavDropdown title="Athletes" id="athletes" data-test="nav-athletes-menu">
         {this.props.store.users.map(user => (
           <LinkContainer key={user.username} to={`/${user.username}`}>
-            <NavDropdown.Item>{user.name}</NavDropdown.Item>
+            <NavDropdown.Item data-test={`nav-athletes-item-${user.username}`}>
+              {user.name}
+            </NavDropdown.Item>
           </LinkContainer>
         ))}
       </NavDropdown>
@@ -60,7 +62,7 @@ class Header extends React.Component {
         <Navbar bg="dark" variant="dark" expand="sm">
           <Container>
             <LinkContainer to="/">
-              <Navbar.Brand>Ironman 70.3 Club</Navbar.Brand>
+              <Navbar.Brand data-test="brand">Ironman 70.3 Club</Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle />
             <Navbar.Collapse>

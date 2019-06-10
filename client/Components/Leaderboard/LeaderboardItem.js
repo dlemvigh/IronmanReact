@@ -22,7 +22,11 @@ class LeaderboardItem extends React.Component {
 
   render() {
     return (
-      <tr styleName="row" onClick={this.onClick}>
+      <tr
+        styleName="row"
+        onClick={this.onClick}
+        data-test={`leaderboard-item-${this.props.summary.user.username}`}
+      >
         <td>
           <Pos value={this.props.index + 1} />
         </td>

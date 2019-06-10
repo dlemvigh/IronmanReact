@@ -20,16 +20,18 @@ class ActivityItem extends React.Component {
   };
 
   onDelete = () => {
-    this.props.removeActivity({
-      variables: {
-        input: {
-          id: this.props.activity._id
+    this.props
+      .removeActivity({
+        variables: {
+          input: {
+            id: this.props.activity._id
+          }
         }
-      }
-    }).then(
-      () => toastr.success("Activity removed"), 
-      () => toastr.error("Remove activity failed")
-    );
+      })
+      .then(
+        () => toastr.success("Activity removed"),
+        () => toastr.error("Remove activity failed")
+      );
   };
 
   getMedals() {
@@ -39,7 +41,10 @@ class ActivityItem extends React.Component {
   render() {
     const hiddenXs = "d-none d-md-table-cell";
     return (
-      <tr data-test="activity-list-item" className={this.props.striped ? "active" : null}>
+      <tr
+        data-test="activity-list-item"
+        className={this.props.striped ? "active" : null}
+      >
         <td>
           <Discipline value={this.props.activity.disciplineName} />
         </td>
@@ -62,12 +67,20 @@ class ActivityItem extends React.Component {
           <Year value={this.props.activity.date} />
         </td>
         <td>
-          <a href="javascript:void 0" onClick={this.onEdit}>
+          <a
+            href="javascript:void 0"
+            onClick={this.onEdit}
+            data-test="activity-list-item-edit"
+          >
             <Icon name="edit" />
           </a>
         </td>
         <td>
-          <a href="javascript:void 0" onClick={this.onDelete}>
+          <a
+            href="javascript:void 0"
+            onClick={this.onDelete}
+            data-test="activity-list-item-delete"
+          >
             <Icon name="delete" />
           </a>
         </td>
@@ -81,7 +94,7 @@ ActivityItem = withRemoveActivityMutation(ActivityItem);
 ActivityItem.fragments = {
   store: gql`
     fragment ActivityItem_store on Store {
-      id  
+      id
       users {
         id
         medals {
@@ -99,13 +112,14 @@ ActivityItem.fragments = {
     fragment ActivityItem_activity on Activity {
       _id
       id
-      disciplineId, 
-      disciplineName, 
-      distance,
-      unit,
-      score,
+      disciplineId
+      disciplineName
+      distance
+      unit
+      score
       date
-    }`
+    }
+  `
 };
 
 export default ActivityItem;
