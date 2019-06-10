@@ -4,15 +4,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 // var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const WebpackBar = require("webpackbar");
 
-const { getConfig } = require("./shared/config");
-const config = getConfig();
-
 module.exports = {
   mode: "development",
-  entry: [
-    "./client/index.js",
-    `webpack-express-reload/client?http://0.0.0.0:${config.port}/_testapp`
-  ],
+  entry: ["./client/index.js"],
   output: {
     path: path.join(__dirname, "build", "client"),
     publicPath: "/",

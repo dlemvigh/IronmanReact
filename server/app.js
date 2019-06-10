@@ -21,6 +21,7 @@ Sentry.init({
 });
 
 const isDev = process.env.NODE_ENV === "development";
+console.log("is dev", isDev, process.env.NODE_ENV);
 
 const app = express();
 app.use(Sentry.Handlers.requestHandler());
@@ -67,7 +68,7 @@ if (isDev) {
   const webpack = require("webpack");
   const webpackDevMiddleware = require("webpack-dev-middleware");
   const history = require("connect-history-api-fallback");
-  const webpackConfig = require("../webpack.config");
+  const webpackConfig = require("../webpack.config.dev");
   compiler = webpack(webpackConfig);
   app.use(history());
   app.use(
