@@ -3,6 +3,7 @@ const compression = require("compression");
 const cors = require("cors");
 const express = require("express");
 const graphqlHTTP = require("express-graphql");
+const robots = require("express-robots-txt");
 const mongoose = require("mongoose");
 const path = require("path");
 const Sentry = require("@sentry/node");
@@ -29,6 +30,8 @@ app.use(Sentry.Handlers.errorHandler());
 app.use(compression());
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use(robots({ UserAgent: "*", Disallow: "/admin" }));
 
 app.use(
   "/graphql",
