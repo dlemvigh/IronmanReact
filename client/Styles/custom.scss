@@ -14,4 +14,10 @@ $headings-font-weight: 300;
 // misc
 $border-radius: 0;
 
-@import "bootstrap/scss/bootstrap.scss"
+@import "bootstrap/scss/bootstrap.scss";
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
