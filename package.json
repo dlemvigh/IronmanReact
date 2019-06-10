@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=development nodemon --watch server server/index.js",
     "client": "webpack-dev-server --inline --content-base . --history-api-fallback",
     "server": "nodemon --watch server server/index.js",
-    "build:client": "webpack",
+    "build:client": "cross-env NODE_ENV=production webpack",
     "build:server": "cp server/ build/server -r",
     "build:shared": "cp shared/ build/shared -r",
     "clean": "rm -rf build",
