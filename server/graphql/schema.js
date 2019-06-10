@@ -555,7 +555,7 @@ const editActivityMutation = mutationWithClientMutationId({
     },
     summary: {
       type: new GraphQLList(summaryType),
-      resolve: async ({ newActivity, oldActivity }) => {
+      resolve: async ({ newActivity }) => {
         const summary = await database.getAllSummaries(
           newActivity.week,
           newActivity.year
@@ -597,6 +597,16 @@ const removeActivityMutation = mutationWithClientMutationId({
       resolve: obj => {
         const globalId = toGlobalId("Activity", obj._id);
         return globalId;
+      }
+    },
+    activity: {
+      type: activityType,
+      resolve: activity => activity
+    },
+    summary: {
+      type: new GraphQLList(summaryType),
+      resolve: activity => {
+        return database.getAllSummaries(activity.week, activity.year);
       }
     },
     user: {
