@@ -463,6 +463,12 @@ const addActivityMutation = mutationWithClientMutationId({
     }
   },
   outputFields: {
+    activity: {
+      type: activityType,
+      resolve: async obj => {
+        return obj;
+      }
+    },
     activityEdge: {
       type: activityEdge,
       resolve: async obj => {
@@ -479,14 +485,21 @@ const addActivityMutation = mutationWithClientMutationId({
     },
     user: {
       type: userType,
-      resolve: async obj => {
-        return await database.getUser(obj.userId);
+      resolve: obj => {
+        return database.getUser(obj.userId);
       }
     },
     medals: {
       type: new GraphQLList(medalsType),
-      resolve: async () => {
-        return await database.getAllMedals();
+      resolve: () => {
+        return database.getAllMedals();
+      }
+    },
+    summary: {
+      type: new GraphQLList(summaryType),
+      resolve: async obj => {
+        const summary = await database.getAllSummaries(obj.week, obj.year);
+        return summary;
       }
     },
     store: {
@@ -526,14 +539,14 @@ const editActivityMutation = mutationWithClientMutationId({
     },
     user: {
       type: userType,
-      resolve: async obj => {
-        return await database.getUser(obj.userId);
+      resolve: obj => {
+        return database.getUser(obj.userId);
       }
     },
     medals: {
       type: new GraphQLList(medalsType),
-      resolve: async () => {
-        return await database.getAllMedals();
+      resolve: () => {
+        return database.getAllMedals();
       }
     },
     store: {
@@ -564,14 +577,14 @@ const removeActivityMutation = mutationWithClientMutationId({
     },
     user: {
       type: userType,
-      resolve: async obj => {
-        return await database.getUser(obj.userId);
+      resolve: obj => {
+        return database.getUser(obj.userId);
       }
     },
     medals: {
       type: new GraphQLList(medalsType),
-      resolve: async () => {
-        return await database.getAllMedals();
+      resolve: () => {
+        return database.getAllMedals();
       }
     },
     store: {
@@ -622,7 +635,7 @@ const removeUserMutation = mutationWithClientMutationId({
   outputFields: {
     user: {
       type: userType,
-      resolve: (obj) => {
+      resolve: obj => {
         return obj;
       }
     },
@@ -633,7 +646,7 @@ const removeUserMutation = mutationWithClientMutationId({
       }
     }
   },
-  mutateAndGetPayload: ({username}) => {
+  mutateAndGetPayload: ({ username }) => {
     return database.removeUser(username);
   }
 });

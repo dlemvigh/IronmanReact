@@ -7,6 +7,17 @@ import { ActivityEdgeFragment } from "./SharedActivityMutation";
 const ADD_ACTIVITY = gql`
   mutation AddActivityMutation($input: AddActivityInput!) {
     addActivity(input: $input) {
+      activity {
+        week
+        year
+      }
+      summary {
+        id
+        score
+        user {
+          id
+        }
+      }
       medals {
         id
         gold
@@ -16,10 +27,19 @@ const ADD_ACTIVITY = gql`
         bronze
         bronzeWeeks
       }
+      summary {
+        id
+        score
+        week
+        year
+        user {
+          id
+        }
+      }
       activityEdge {
         ...ActivityEdgeFragment
         node {
-          id          
+          id
         }
       }
     }
@@ -31,7 +51,9 @@ export function withAddActivityMutation(WrappedComponent) {
   return ({ ...props }) => (
     <Mutation
       mutation={ADD_ACTIVITY}
-      update={(cache, { data: { addActivity }}) => {
+      update={(cache, { data: { addActivity } }) => {
+        const { activity, summary } = addActivity;
+        const { week, year } = activity;
         const query = gql`
           query AddActivityQuery($username: String!) {
             user(username: $username) {
@@ -50,14 +72,13 @@ export function withAddActivityMutation(WrappedComponent) {
         `;
 
         const variables = {
-          username: props.user.username
+          username: props.user.username,
+          week: addActivity.activity.week,
+          year: addActivity.activity.year
         };
 
         const { user } = cache.readQuery({ query, variables });
-        const activities = [
-          ...user.activities.edges,
-          addActivity.activityEdge
-        ];
+        const activities = [...user.activities.edges, addActivity.activityEdge];
         user.activities.edges = activities;
 
         cache.writeQuery({
@@ -65,11 +86,50 @@ export function withAddActivityMutation(WrappedComponent) {
           variables,
           data: { user }
         });
+
+        const queryUpdateSummary = gql`
+          query UpdateSummaryQuery($week: Int!, $year: Int!) {
+            store {
+              id
+              summary(week: $week, year: $year) {
+                id
+                score
+                user {
+                  id
+                }
+              }
+            }
+          }
+        `;
+        let store;
+        try {
+          store = cache.readQuery({
+            query: queryUpdateSummary,
+            variables: {
+              week,
+              year
+            }
+          }).store;
+        } catch (error) {
+          store = cache.readQuery({
+            query: gql`
+              query UpdateSummaryQuery {
+                store {
+                  id
+                }
+              }
+            `
+          }).store;
+        }
+        store.summary = summary;
+        cache.writeQuery({
+          query: queryUpdateSummary,
+          variables: { week, year },
+          data: { store }
+        });
       }}
     >
-      {(addActivity) => (
-        <WrappedComponent {...props} addActivity={addActivity} />
-      )}
+      {addActivity => <WrappedComponent {...props} addActivity={addActivity} />}
     </Mutation>
   );
 }

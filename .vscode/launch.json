@@ -9,7 +9,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch server",
       "program": "${workspaceRoot}/server/index.js",
       "cwd": "${workspaceRoot}",
       "env": {
