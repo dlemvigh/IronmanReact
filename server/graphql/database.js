@@ -213,7 +213,8 @@ async function addActivity(userId, disciplineId, distance, date) {
 }
 
 async function editActivity(id, userId, disciplineId, distance, date) {
-  const [activity, discipline, user] = await Promise.all([
+  const [activity, oldActivity, discipline, user] = await Promise.all([
+    ActivityModel.findById(id).exec(),
     ActivityModel.findById(id).exec(),
     DisciplineModel.findById(disciplineId)
       .select({
@@ -228,7 +229,7 @@ async function editActivity(id, userId, disciplineId, distance, date) {
       })
       .exec()
   ]);
-  const beforeDate = moment(activity.date)
+  const beforeDate = moment(oldActivity.date)
     .startOf("date")
     .toDate();
   date = moment.utc(date).startOf("date");
@@ -254,7 +255,7 @@ async function editActivity(id, userId, disciplineId, distance, date) {
     await updateSummary(userId, user.name, beforeDate);
   }
 
-  return newActivity;
+  return { newActivity, oldActivity };
 }
 
 async function removeActivity(activityId) {

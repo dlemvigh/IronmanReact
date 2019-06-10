@@ -2,7 +2,11 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-import { ActivityEdgeFragment } from "./SharedActivityMutation";
+import {
+  ActivityEdgeFragment,
+  SummaryFragment,
+  updateSummary
+} from "./SharedActivityMutation";
 
 const ADD_ACTIVITY = gql`
   mutation AddActivityMutation($input: AddActivityInput!) {
@@ -12,11 +16,7 @@ const ADD_ACTIVITY = gql`
         year
       }
       summary {
-        id
-        score
-        user {
-          id
-        }
+        ...SummaryFragment
       }
       medals {
         id
@@ -45,6 +45,7 @@ const ADD_ACTIVITY = gql`
     }
   }
   ${ActivityEdgeFragment}
+  ${SummaryFragment}
 `;
 
 export function withAddActivityMutation(WrappedComponent) {
@@ -72,9 +73,7 @@ export function withAddActivityMutation(WrappedComponent) {
         `;
 
         const variables = {
-          username: props.user.username,
-          week: addActivity.activity.week,
-          year: addActivity.activity.year
+          username: props.user.username
         };
 
         const { user } = cache.readQuery({ query, variables });
@@ -87,46 +86,47 @@ export function withAddActivityMutation(WrappedComponent) {
           data: { user }
         });
 
-        const queryUpdateSummary = gql`
-          query UpdateSummaryQuery($week: Int!, $year: Int!) {
-            store {
-              id
-              summary(week: $week, year: $year) {
-                id
-                score
-                user {
-                  id
-                }
-              }
-            }
-          }
-        `;
-        let store;
-        try {
-          store = cache.readQuery({
-            query: queryUpdateSummary,
-            variables: {
-              week,
-              year
-            }
-          }).store;
-        } catch (error) {
-          store = cache.readQuery({
-            query: gql`
-              query UpdateSummaryQuery {
-                store {
-                  id
-                }
-              }
-            `
-          }).store;
-        }
-        store.summary = summary;
-        cache.writeQuery({
-          query: queryUpdateSummary,
-          variables: { week, year },
-          data: { store }
-        });
+        updateSummary(cache, summary, week, year);
+        // const queryUpdateSummary = gql`
+        //   query UpdateSummaryQuery($week: Int!, $year: Int!) {
+        //     store {
+        //       id
+        //       summary(week: $week, year: $year) {
+        //         id
+        //         score
+        //         user {
+        //           id
+        //         }
+        //       }
+        //     }
+        //   }
+        // `;
+        // let store;
+        // try {
+        //   store = cache.readQuery({
+        //     query: queryUpdateSummary,
+        //     variables: {
+        //       week,
+        //       year
+        //     }
+        //   }).store;
+        // } catch (error) {
+        //   store = cache.readQuery({
+        //     query: gql`
+        //       query UpdateSummaryQuery {
+        //         store {
+        //           id
+        //         }
+        //       }
+        //     `
+        //   }).store;
+        // }
+        // store.summary = summary;
+        // cache.writeQuery({
+        //   query: queryUpdateSummary,
+        //   variables: { week, year },
+        //   data: { store }
+        // });
       }}
     >
       {addActivity => <WrappedComponent {...props} addActivity={addActivity} />}

@@ -535,18 +535,42 @@ const editActivityMutation = mutationWithClientMutationId({
   outputFields: {
     activity: {
       type: activityType,
-      resolve: async obj => obj
+      resolve: async ({ newActivity }) => newActivity
+    },
+    activityPrev: {
+      type: activityType,
+      resolve: async ({ oldActivity }) => oldActivity
     },
     user: {
       type: userType,
-      resolve: obj => {
-        return database.getUser(obj.userId);
+      resolve: ({ newActivity }) => {
+        return database.getUser(newActivity.userId);
       }
     },
     medals: {
       type: new GraphQLList(medalsType),
       resolve: () => {
         return database.getAllMedals();
+      }
+    },
+    summary: {
+      type: new GraphQLList(summaryType),
+      resolve: async ({ newActivity, oldActivity }) => {
+        const summary = await database.getAllSummaries(
+          newActivity.week,
+          newActivity.year
+        );
+        return summary;
+      }
+    },
+    summaryPrev: {
+      type: new GraphQLList(summaryType),
+      resolve: async ({ oldActivity }) => {
+        const summary = await database.getAllSummaries(
+          oldActivity.week,
+          oldActivity.year
+        );
+        return summary;
       }
     },
     store: {
