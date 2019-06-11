@@ -85,7 +85,7 @@ class Header extends React.Component {
                         <NavDropdown.Item>{season.name}</NavDropdown.Item>
                       </LinkContainer>
                     ))}
-                  <LinkContainer to="/season">
+                  <LinkContainer to="/season" exact>
                     <NavDropdown.Item>All time</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
