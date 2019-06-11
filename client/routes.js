@@ -11,7 +11,7 @@ import SeasonPageQueries from "./Components/Season/SeasonPageQueries";
 
 export default () => (
   <Switch>
-    <Route path="/season" component={SeasonPageQueries} />
+    <Route path="/season/:id?" component={SeasonPageQueries} />
     <Route path="/admin" component={Admin} />
     <Route path="/:username">
       <Switch>
