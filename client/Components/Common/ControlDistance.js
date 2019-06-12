@@ -34,7 +34,6 @@ class ControlDistance extends React.Component {
           <Form.Control 
             type="number" 
             value={this.props.value}
-            placeholder="4.7" 
             onChange={this.onChange}
             autoFocus
             styleName="distance-input" 

@@ -47,7 +47,6 @@ class ControlDiscipline extends React.Component {
       <select
         className="form-control d-sm-inline d-none"
         value={this.props.value || ""}
-        placeholder="distance"
         onChange={this.onChange}
         onBlur={this.onChange}
         data-test="form-input-discipline"
