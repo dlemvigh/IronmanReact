@@ -1,7 +1,7 @@
-import DisciplineModel from "../models/discipline";
-import MedalsModel from "../models/medals";
-import UserModel from "../models/user";
-import SeasonModel from "../models/season";
+const DisciplineModel = require("../models/discipline");
+const MedalsModel = require("../models/medals");
+const UserModel = require("../models/user");
+const SeasonModel = require("../models/season");
 
 const disciplines = [
   { name: "run", score: 5, unit: "km", order: 1 },
@@ -98,8 +98,10 @@ function populateSeasons(){
   });
 }
 
-export function populate(){
+function populate(){
   populateDisciplines();
   populateUsers();
   populateSeasons();
 }
+
+module.exports = { populate };

@@ -1,0 +1,19 @@
+::selection {
+  color: white;
+  background: #dc0026;
+}
+
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+}
+.toastr {
+  right: 1rem;
+  bottom: 6rem;
+}

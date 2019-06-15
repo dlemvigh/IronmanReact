@@ -1,24 +1,26 @@
 import React from "react";
-import Relay from "react-relay";
-import { ControlLabel, FormGroup } from "react-bootstrap";
+import gql from "graphql-tag";
+import { FormLabel, FormGroup } from "react-bootstrap";
 
 import DisciplineIcon from "./DisciplineIcon";
-import isMobile from "./isMobile";
 
 class ControlDiscipline extends React.Component {
-
-  onChange = (event) => {
+  onChange = event => {
     const options = event.target.selectedOptions;
     if (options.length == 1 && this.props.onChange) {
       this.props.onChange(options[0].dataset);
     }
-  }
+  };
 
-  handleClick = (discipline) => {
+  handleClick = discipline => {
     if (this.props.onChange) {
-      this.props.onChange(discipline);
+      const disc = {
+        ...discipline,
+        id: discipline._id,
+      }
+      this.props.onChange(disc);
     }
-  }
+  };
 
   getName(disciplineName) {
     return disciplineName[0].toUpperCase() + disciplineName.substr(1);
@@ -26,53 +28,54 @@ class ControlDiscipline extends React.Component {
 
   renderIcons() {
     return (
-      <div className="visible-xs">
-        {
-          this.props.store.disciplines.map(discipline =>             
-            <span 
-              key={discipline._id} 
-              onClick={() => this.handleClick(discipline)}
-            >
-              <DisciplineIcon 
-                key={discipline._id} 
-                value={discipline.name} 
-                size="large" 
-                disabled={this.props.value !== discipline._id}
-              />
-            </span>
-          )
-        }
-      </div>    
+      <div className="d-sm-none">
+        {this.props.store.disciplines.map(discipline => (
+          <span
+            key={discipline._id}
+            onClick={() => this.handleClick(discipline)}
+          >
+            <DisciplineIcon
+              key={discipline._id}
+              value={discipline.name}
+              size="large"
+              disabled={this.props.value !== discipline.name}
+              data-test={`form-input-discipline-button-${discipline.name}`}
+            />
+          </span>
+        ))}
+      </div>
     );
   }
 
   renderDropdown() {
     return (
-        <select className="form-control hidden-xs"
-          value={this.props.value || ""} 
-          placeholder="distance" 
-          onChange={this.onChange}
-          onBlur={this.onChange}
-        >
-          { 
-            this.props.store.disciplines.map(discipline => 
-              <option 
-                key={discipline._id} 
-                value={discipline._id}
-                data-id={discipline._id}
-                data-name={discipline.name}
-                data-unit={discipline.unit}
-                data-score={discipline.score}
-              >{this.getName(discipline.name)}</option>) 
-          }
-        </select>      
+      <select
+        className="form-control d-sm-inline d-none"
+        value={this.props.value || ""}
+        onChange={this.onChange}
+        onBlur={this.onChange}
+        data-test="form-input-discipline"
+      >
+        {this.props.store.disciplines.map(discipline => (
+          <option
+            key={discipline._id}
+            value={discipline.name}
+            data-id={discipline._id}
+            data-name={discipline.name}
+            data-unit={discipline.unit}
+            data-score={discipline.score}
+          >
+            {this.getName(discipline.name)}
+          </option>
+        ))}
+      </select>
     );
   }
 
   render() {
     return (
       <FormGroup>
-        <ControlLabel>Discipline</ControlLabel>
+        <FormLabel>Discipline</FormLabel>
         {this.renderIcons()}
         {this.renderDropdown()}
       </FormGroup>
@@ -80,19 +83,18 @@ class ControlDiscipline extends React.Component {
   }
 }
 
-ControlDiscipline = Relay.createContainer(ControlDiscipline, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        disciplines {
-          _id
-          name
-          unit
-          score
-        }
+ControlDiscipline.fragments = {
+  store: gql`
+    fragment ControlDiscipline_store on Store {
+      disciplines {
+        id
+        _id
+        name
+        unit
+        score
       }
-    `
-  }
-});
+    }
+  `
+};
 
 export default ControlDiscipline;

@@ -1,29 +1,22 @@
 import React from "react";
 import { render } from "react-dom";
-import Relay from "react-relay";
-import { applyRouterMiddleware } from "react-router";
-import useRelay from "react-router-relay";
-import history from "./history";
-import Routes from "./routes";
+import { ApolloProvider } from "react-apollo";
+import { BrowserRouter } from "react-router-dom";
+import * as Sentry from "@sentry/browser";
 
-import { getConfig } from "../shared/config";
+import { client } from "./apolloClient";
+import AppQueries from "./Components/App/AppQueries";
 
-const config = getConfig();
-const endpoint = `http://localhost:${config.port}/graphql`;
-
-if (process.env.NODE_ENV !== "production") {
-  Relay.injectNetworkLayer(
-    new Relay.DefaultNetworkLayer(endpoint, {
-      credentials: "same-origin"
-    })
-  );
-}
+Sentry.init({
+  dsn: "https://8676b823da2a4ac49e0e0c70e6cc03cd@sentry.io/1457481",
+  environment: process.env.NODE_ENV
+});
 
 render(
-  <Routes 
-    history={history}
-    render={applyRouterMiddleware(useRelay)}
-    environment={Relay.Store}
-  />, 
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <AppQueries />
+    </BrowserRouter>
+  </ApolloProvider>,
   document.getElementById("app")
 );

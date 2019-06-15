@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose");
 const medalsSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: true
   },
   userName: {
     type: String
@@ -31,7 +30,6 @@ const medalsSchema = new mongoose.Schema({
   bronzeWeeks: {
     type: [Number],
     default: []
-  },
+  }
 });
-
-export default mongoose.model("Medals", medalsSchema);
+module.exports = mongoose.model("Medals", medalsSchema);

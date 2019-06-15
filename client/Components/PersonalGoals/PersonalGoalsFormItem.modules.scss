@@ -1,0 +1,23 @@
+.value {
+  height: 2.2rem;
+  width: 3rem;
+}
+
+.select {
+  margin-left: .5rem;
+  margin-right: .5rem;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons {
+  width: .5rem;
+}
+
+.disabled {
+  color: lightgrey;
+  opacity: .2;
+  cursor: default;
+}

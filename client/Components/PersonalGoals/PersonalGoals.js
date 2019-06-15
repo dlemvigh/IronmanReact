@@ -1,12 +1,14 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
 import PersonalGoalsList from "./PersonalGoalsList";
 
 class PersonalGoals extends React.Component {
   render() {
     const goals = this.props.user && this.props.user.personalGoals;
-    if (!(goals && goals.length > 0)) { return null; }
+    if (!(goals && goals.length > 0)) {
+      return null;
+    }
     return (
       <div>
         <h3>Personal Goals</h3>
@@ -16,17 +18,13 @@ class PersonalGoals extends React.Component {
   }
 }
 
-PersonalGoals = Relay.createContainer(PersonalGoals, {
-  fragments: {
-    user: () =>Relay.QL`
-      fragment on User {
-        personalGoals {
-          _id
-        }
-        ${PersonalGoalsList.getFragment("user")}
-      }
-    `,
-  }
-});
+PersonalGoals.fragments = {
+  user: gql`
+    fragment PersonalGoals_user on User {
+      ...PersonalGoalsList_user
+    }
+    ${PersonalGoalsList.fragments.user}
+  `
+};
 
 export default PersonalGoals;

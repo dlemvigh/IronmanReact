@@ -1,56 +1,135 @@
-import Relay from "react-relay";
+import React from "react";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
-class AddActivityMutation extends Relay.Mutation {
+import {
+  ActivityEdgeFragment,
+  SummaryFragment,
+  updateSummary
+} from "./SharedActivityMutation";
 
-  getMutation() {
-    return Relay.QL`
-      mutation { addActivity }
-    `;
-  }
-
-  getVariables() {
-    return {
-      disciplineId: this.props.disciplineId,
-      userId: this.props.userId,
-      distance: this.props.distance,
-      date: this.props.date
-    };
-  }
-
-  getFatQuery() {
-    return Relay.QL`
-      fragment on AddActivityPayload {
-        activityEdge
-        medals
-        user { 
-          activities
-          summary {
-            score
-          }
+const ADD_ACTIVITY = gql`
+  mutation AddActivityMutation($input: AddActivityInput!) {
+    addActivity(input: $input) {
+      activity {
+        week
+        year
+      }
+      summary {
+        ...SummaryFragment
+      }
+      medals {
+        id
+        gold
+        goldWeeks
+        silver
+        silverWeeks
+        bronze
+        bronzeWeeks
+      }
+      summary {
+        id
+        score
+        week
+        year
+        user {
+          id
         }
-        store
       }
-    `;
+      activityEdge {
+        ...ActivityEdgeFragment
+        node {
+          id
+        }
+      }
+    }
   }
+  ${ActivityEdgeFragment}
+  ${SummaryFragment}
+`;
 
-  getConfigs() {
-    return [{
-      type: "RANGE_ADD",
-      parentName: "user",
-      parentID: this.props.nodeId,
-      connectionName: "activities",
-      edgeName: "activityEdge",
-      rangeBehaviors: {
-        "": "prepend",
-      },
-    },{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        medals: this.props.medals,
-        store: this.props.store
-      }
-    }];
-  }
+export function withAddActivityMutation(WrappedComponent) {
+  return ({ ...props }) => (
+    <Mutation
+      mutation={ADD_ACTIVITY}
+      update={(cache, { data: { addActivity } }) => {
+        const { activity, summary } = addActivity;
+        const { week, year } = activity;
+        const query = gql`
+          query AddActivityQuery($username: String!) {
+            user(username: $username) {
+              id
+              activities {
+                edges {
+                  ...ActivityEdgeFragment
+                  node {
+                    id
+                  }
+                }
+              }
+            }
+          }
+          ${ActivityEdgeFragment}
+        `;
+
+        const variables = {
+          username: props.user.username
+        };
+
+        const { user } = cache.readQuery({ query, variables });
+        const activities = [...user.activities.edges, addActivity.activityEdge];
+        user.activities.edges = activities;
+
+        cache.writeQuery({
+          query,
+          variables,
+          data: { user }
+        });
+
+        updateSummary(cache, summary, week, year);
+        // const queryUpdateSummary = gql`
+        //   query UpdateSummaryQuery($week: Int!, $year: Int!) {
+        //     store {
+        //       id
+        //       summary(week: $week, year: $year) {
+        //         id
+        //         score
+        //         user {
+        //           id
+        //         }
+        //       }
+        //     }
+        //   }
+        // `;
+        // let store;
+        // try {
+        //   store = cache.readQuery({
+        //     query: queryUpdateSummary,
+        //     variables: {
+        //       week,
+        //       year
+        //     }
+        //   }).store;
+        // } catch (error) {
+        //   store = cache.readQuery({
+        //     query: gql`
+        //       query UpdateSummaryQuery {
+        //         store {
+        //           id
+        //         }
+        //       }
+        //     `
+        //   }).store;
+        // }
+        // store.summary = summary;
+        // cache.writeQuery({
+        //   query: queryUpdateSummary,
+        //   variables: { week, year },
+        //   data: { store }
+        // });
+      }}
+    >
+      {addActivity => <WrappedComponent {...props} addActivity={addActivity} />}
+    </Mutation>
+  );
 }
-
-export default AddActivityMutation;

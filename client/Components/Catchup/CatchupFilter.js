@@ -10,5 +10,5 @@ export function mapFilter(disciplines) {
 
 export function getClassName(disc){
   const result = _.some(smFilter, x => x === disc);
-  return result ? "" : "hidden-xs"; 
+  return result ? "" : "d-none d-sm-table-cell"; 
 }

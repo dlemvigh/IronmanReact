@@ -1,8 +1,8 @@
 import React from "react";
-import { ControlLabel, FormGroup, FormControl, InputGroup } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
-import styles from "./ControlDistance.scss";
+import styles from "./ControlDistance.modules.scss";
 
 const regex = /^((\d+\.?\d*)|(\d*\.?\d+))$/;
 
@@ -21,27 +21,32 @@ class ControlDistance extends React.Component {
 
   getValidationState() { 
     if (String(this.props.value).length == 0) {
-      return this.props.ensureValidation ? "error" : null;
+      return this.props.ensureValidation ? "is-invalid" : null;
     }
-    return this.isValid() ? null : "error";
+    return this.isValid() ? null : "is-invalid";
   }
 
   render() {
     return (
-      <FormGroup validationState={this.getValidationState()}>
-        <ControlLabel>Distance</ControlLabel>
+      <Form.Group>
+        <Form.Label>Distance</Form.Label>
         <InputGroup>
-          <FormControl 
+          <Form.Control 
             type="number" 
             value={this.props.value}
-            placeholder="4.7" 
             onChange={this.onChange}
             autoFocus
             styleName="distance-input" 
+            className={this.getValidationState()}
+            data-test="form-input-distance"
           />
-          <InputGroup.Addon>{this.props.unit}</InputGroup.Addon>
+          <InputGroup.Append>
+            <InputGroup.Text>
+              {this.props.unit}
+            </InputGroup.Text>            
+          </InputGroup.Append>
         </InputGroup>                    
-      </FormGroup>
+      </Form.Group>
     );
   }
 }

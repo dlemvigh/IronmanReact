@@ -1,5 +1,5 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { Table } from "react-bootstrap";
 import moment from "moment";
 
@@ -9,50 +9,59 @@ class PersonalGoalsList extends React.Component {
   getCurrentWeek() {
     const week = moment().isoWeek();
     const year = moment().weekYear();
-    return this.props.user.activities.edges.filter(x => x.node.week === week && x.node.year === year);
+    return this.props.user.activities.edges.filter(
+      x => x.node.week === week && x.node.year === year
+    );
   }
 
   render() {
     const goals = this.props.user && this.props.user.personalGoals;
-    if (!(goals && goals.length > 0)) { return null; }
+    if (!(goals && goals.length > 0)) {
+      return null;
+    }
 
-      const activities = this.getCurrentWeek();
-      
+    const activities = this.getCurrentWeek();
+
     return (
-      <Table striped hover>
+      <Table striped hover size="sm">
         <tbody>
-          { 
-            goals.map(goal => 
-              <PersonalGoalItem key={goal._id} user={this.props.user} goal={goal} activities={activities} />
-            ) 
-          }
+          {goals.map(goal => (
+            <PersonalGoalItem
+              key={goal._id}
+              user={this.props.user}
+              goal={goal}
+              activities={activities}
+            />
+          ))}
         </tbody>
       </Table>
     );
   }
 }
 
-PersonalGoalsList = Relay.createContainer(PersonalGoalsList, {
-  fragments: {
-    user: () => Relay.QL`
-      fragment on User {
-        ${PersonalGoalItem.getFragment("user")}
-        activities(first: 1000) {
-          edges {
-            ${PersonalGoalItem.getFragment("activities")}
-            node {
-              week
-              year
-            }
+PersonalGoalsList.fragments = {
+  user: gql`
+    fragment PersonalGoalsList_user on User {
+      ...PersonalGoalItem_user
+      activities {
+        edges {
+          ...PersonalGoalItem_activities
+          node {
+            id
+            week
+            year
           }
         }
-        personalGoals {
-          _id
-          ${PersonalGoalItem.getFragment("goal")}
-        }
       }
-    `
-  }
-});
+      personalGoals {
+        _id
+        ...PersonalGoalItem_goal
+      }
+    }
+    ${PersonalGoalItem.fragments.user}
+    ${PersonalGoalItem.fragments.activities}
+    ${PersonalGoalItem.fragments.goal}
+  `
+};
 
 export default PersonalGoalsList;

@@ -1,50 +1,67 @@
-import Relay from "react-relay";
+import React from "react";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
-class RemoveActivityMutation extends Relay.Mutation {
+import {
+  GET_ACTIVITIES,
+  SummaryFragment,
+  updateSummary
+} from "./SharedActivityMutation";
 
-  getMutation() {
-    return Relay.QL`
-      mutation { removeActivity }
-    `;
-  }
-
-  getVariables() {
-    return {
-      id: this.props.id  
-    };
-  }
-
-  getFatQuery() {
-    return Relay.QL`
-      fragment on RemoveActivityPayload {
-        removedActivityId
-        medals
-        user { 
-          activities
-          summary {
-            score
-          } 
-        }
-        store
+const REMOVE_ACTIVITY = gql`
+  mutation RemoveActivityMutation($input: RemoveActivityInput!) {
+    removeActivity(input: $input) {
+      activity {
+        week
+        year
       }
-    `;
-  }
-
-  getConfigs() {
-    return [{
-      type: "NODE_DELETE",
-      parentName: "user",
-      parentID: this.props.nodeId,
-      connectionName: "activities",
-      deletedIDFieldName: "removedActivityId",
-    },{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        medals: this.props.medals,
-        store: this.props.store
+      summary {
+        ...SummaryFragment
       }
-    }];
+      medals {
+        id
+        gold
+        goldWeeks
+        silver
+        silverWeeks
+        bronze
+        bronzeWeeks
+      }
+      removedActivityId
+    }
   }
+  ${SummaryFragment}
+`;
+
+export function withRemoveActivityMutation(WrappedComponent) {
+  return ({ ...props }) => (
+    <Mutation
+      mutation={REMOVE_ACTIVITY}
+      update={(cache, { data: { removeActivity } }) => {
+        const username = props.user.username;
+        const { removedActivityId, activity, summary } = removeActivity;
+        const { week, year } = activity;
+
+        const { user } = cache.readQuery({
+          query: GET_ACTIVITIES,
+          variables: { username }
+        });
+        const activities = user.activities.edges.filter(
+          edge => edge.node.id !== removedActivityId
+        );
+        user.activities.edges = activities;
+        cache.writeQuery({
+          query: GET_ACTIVITIES,
+          variables: { username },
+          data: { user }
+        });
+
+        updateSummary(cache, summary, week, year);
+      }}
+    >
+      {removeActivity => (
+        <WrappedComponent {...props} removeActivity={removeActivity} />
+      )}
+    </Mutation>
+  );
 }
-
-export default RemoveActivityMutation;

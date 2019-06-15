@@ -1,51 +1,120 @@
-var path = require("path");
-var express = require("express");
-var cors = require("cors");
-var graphqlHTTP = require("express-graphql");
-var compression = require("compression");
+const bodyParser = require("body-parser");
+const compression = require("compression");
+const cors = require("cors");
+const express = require("express");
+const graphqlHTTP = require("express-graphql");
+const robots = require("express-robots-txt");
+const mongoose = require("mongoose");
+const path = require("path");
+const Sentry = require("@sentry/node");
 
-import mongoose from "mongoose";
-mongoose.Promise = global.Promise;
+const { getConfig } = require("../shared/config");
+const schema = require("./graphql/schema");
 
-import { populate } from "./util/data.js";
+const config = getConfig();
+const db = `mongodb://127.0.0.1/${config.db}`;
+const { populate } = require("./util/data.js");
 populate();
 
-import schema from "./graphql/schema";
-import { getConfig } from "../shared/config";
-const config = getConfig();
+Sentry.init({
+  dsn: "https://08e7875cccec4f35a420c0b278f27e08@sentry.io/1476748",
+  environment: process.env.NODE_ENV
+});
 
-var app = express();
+const isDev = process.env.NODE_ENV === "development";
+console.log("is dev", isDev, process.env.NODE_ENV);
+
+const app = express();
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.errorHandler());
 app.use(compression());
 app.use(cors());
+app.use(bodyParser.json());
 
-app.use("/graphql", graphqlHTTP({
-  schema: schema,
-  pretty: true,
-  graphiql: true,
-}));
+app.use(robots({ UserAgent: "*", Disallow: "/admin" }));
 
-app.use(function noCacheForRoot(req, res, next) {  
-  if (req.url === "/") {
-    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.header("Pragma", "no-cache");
-    res.header("Expires", 0);
-  }
-  next();
+app.use(
+  "/graphql",
+  graphqlHTTP(req => ({
+    schema: schema,
+    pretty: true,
+    graphiql: true,
+    customFormatErrorFn: error => {
+      if (error.path || error.name !== "GraphQLError") {
+        Sentry.withScope(scope => {
+          scope.addEventProcessor(async event => {
+            return Sentry.Handlers.parseRequest(event, req);
+          });
+
+          if (error.source && error.source.body) {
+            scope.setExtra("body", error.source.body);
+          }
+          scope.setExtra("positions", error.positions);
+          scope.setExtra("path", error.path);
+
+          Sentry.captureException(error);
+        });
+      }
+      return {
+        message: error.message,
+        stack:
+          process.env.NODE_ENV === "development"
+            ? error.stack.split("\n")
+            : null
+      };
+    }
+  }))
+);
+
+let compiler;
+if (isDev) {
+  const webpack = require("webpack");
+  const webpackDevMiddleware = require("webpack-dev-middleware");
+  const history = require("connect-history-api-fallback");
+  const webpackConfig = require("../webpack.config.dev");
+  compiler = webpack(webpackConfig);
+  app.use(history());
+  app.use(
+    webpackDevMiddleware(compiler, {
+      noInfo: true,
+      publicPath: webpackConfig.output.publicPath
+    })
+  );
+} else {
+  app.use(
+    express.static(path.join(__dirname, "..", "client"), {
+      setHeaders: (res, path) => {
+        if (/bundle\..*\.js/.test(path)) {
+          res.set("Cache-Control", "max-age=31557600000");
+        } else {
+          res.set("Cache-Control", "cache, no-store, must-revalidate");
+          res.set("Pragma", "no-cache");
+          res.set("Expires", 0);
+        }
+      }
+    })
+  );
+  app.get("*", function(req, res) {
+    res.set("Cache-Control", "cache, no-store, must-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", 0);
+    res.sendFile(path.join(__dirname, "..", "client", "index.html"));
+  });
+}
+
+mongoose.connect(db, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false
 });
-
-app.use(express.static(path.join(__dirname, "..", "client"), { maxAge: 31536000000}));
-
-app.get("*", function(req, res) { 
-  res.set({ 
-    'Cache-Control': 'no-cache, no-store, must-revalidate', 
-    'Expires': '-1', 
-    'Pragma': 'no-cache' 
-  }) ;
-  res.sendFile(path.join(__dirname, "..", "client", "index.html")); 
-});
-
-const db = `mongodb://127.0.0.1/${config.db}`;
-mongoose.connect(db, { useMongoClient: true });
-
-app.listen(config.port);
-console.log("Running a GraphQL API server");
+if (isDev) {
+  const webpackReload = require("webpack-express-reload");
+  const server = webpackReload(app, compiler, { path: "/_testapp" });
+  const listener = server.listen(config.port, () => {
+    console.log("Running a GraphQL API server - ", listener.address().port);
+  });
+} else {
+  const listener = app.listen(config.port, () => {
+    console.log("Running a GraphQL API server - ", listener.address().port);
+  });
+}

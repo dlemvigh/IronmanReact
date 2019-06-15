@@ -1,11 +1,11 @@
 import React from "react";
-import { ControlLabel, FormGroup } from "react-bootstrap";
+import { FormLabel, FormGroup } from "react-bootstrap";
 import DateTime from "react-datetime";
 import MobileDetect from "mobile-detect";
 import moment from "moment";
 import CSSModules from "react-css-modules";
 
-import styles from "./ControlDate.scss";
+import styles from "./ControlDate.modules.scss";
 
 const regex = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])-20\d\d$/;
 
@@ -26,7 +26,7 @@ class ControlDate extends React.Component {
   }
 
   getValidationState() {
-    return this.isValid() ? null : "error";
+    return this.isValid() ? null : "is-invalid";
   }
 
   getValue = () => {
@@ -57,8 +57,8 @@ class ControlDate extends React.Component {
 
   render() {
     return (
-      <FormGroup validationState={this.getValidationState()}>
-        <ControlLabel>Date</ControlLabel>
+      <FormGroup>
+        <FormLabel>Date</FormLabel>
         {
           this.isMobile() ? 
             <input 
@@ -67,12 +67,15 @@ class ControlDate extends React.Component {
               styleName="mobile-input" 
               value={this.getValue()} 
               onChange={this.onChangeMobile} 
+              data-test="form-input-date"
             /> :
             <DateTime
               dateFormat="D/M-YYYY"
               timeFormat={false}
               value={this.props.value}
               onChange={this.onChange}
+              className={this.getValidationState()}
+              data-test="form-input-date"
             />
         }
       </FormGroup>

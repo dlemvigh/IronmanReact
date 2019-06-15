@@ -1,10 +1,9 @@
-import mongoose from "mongoose";
-import moment from "moment";
-
+const mongoose = require("mongoose");
+const moment = require("moment");
 const activitySchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true        
+    required: true
   },
   userName: {
     type: String,
@@ -34,13 +33,10 @@ const activitySchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-activitySchema.virtual("week").get(function(){
+activitySchema.virtual("week").get(function () {
   return moment(this.date).isoWeek();
 });
-
-activitySchema.virtual("year").get(function(){
+activitySchema.virtual("year").get(function () {
   return moment(this.date).weekYear();
 });
-
-export default mongoose.model("Activity", activitySchema);
+module.exports = mongoose.model("Activity", activitySchema);

@@ -25,7 +25,7 @@ class CatchupItemTriathlon extends React.Component {
 
   render() {
     return (
-      <td className="hidden-xs">{this.getDistance()}</td>
+      <td className="d-none d-sm-table-cell">{this.getDistance()}</td>
     );
   }
 }

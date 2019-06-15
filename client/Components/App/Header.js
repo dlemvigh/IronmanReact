@@ -1,18 +1,20 @@
 import React from "react";
-import Relay from "react-relay";
-import { Link, withRouter } from "react-router";
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
+import gql from "graphql-tag";
+import { withRouter } from "react-router";
+import { Navbar, Nav, NavItem, NavDropdown, Container } from "react-bootstrap";
 import { IndexLinkContainer, LinkContainer } from "react-router-bootstrap";
 
 import CSSModules from "react-css-modules";
-import styles from "./Header.scss";
-import { getYearWeekId } from "../../../shared/util";
+import styles from "./Header.modules.scss";
+import { getYearWeekId } from "../../../shared/lib/util";
 
 class Header extends React.Component {
-
   renderUserNav() {
-    const username = this.props.params.username;
-    if (!username) return null;
+    // FIXME match doesn't contain username
+    const username = this.props.match.params.username;
+    if (!username) {
+      return null;
+    }
     return (
       <Nav>
         <IndexLinkContainer to={`/${username}`}>
@@ -26,7 +28,9 @@ class Header extends React.Component {
   }
 
   renderAthletes(compactMode) {
-    return compactMode ? this.renderAthleteDropdown() : this.renderAthleteLinks();
+    return compactMode
+      ? this.renderAthleteDropdown()
+      : this.renderAthleteLinks();
   }
 
   renderAthleteLinks() {
@@ -39,13 +43,14 @@ class Header extends React.Component {
 
   renderAthleteDropdown() {
     return (
-      <NavDropdown title="Athletes" id="athletes">
-        {
-        this.props.store.users.map(user => (
+      <NavDropdown title="Athletes" id="athletes" data-test="nav-athletes-menu">
+        {this.props.store.users.map(user => (
           <LinkContainer key={user.username} to={`/${user.username}`}>
-            <MenuItem>{user.name}</MenuItem>
-          </LinkContainer>))
-      }
+            <NavDropdown.Item data-test={`nav-athletes-item-${user.username}`}>
+              {user.name}
+            </NavDropdown.Item>
+          </LinkContainer>
+        ))}
       </NavDropdown>
     );
   }
@@ -54,69 +59,65 @@ class Header extends React.Component {
     const currentWeek = getYearWeekId();
     return (
       <header>
-        <Navbar collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Ironman 70.3 Club</Link>
-            </Navbar.Brand>
+        <Navbar bg="dark" variant="dark" expand="sm">
+          <Container>
+            <LinkContainer to="/">
+              <Navbar.Brand data-test="brand">Ironman 70.3 Club</Navbar.Brand>
+            </LinkContainer>
             <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            {
-              this.renderUserNav()
-            }
-            <Nav pullRight>
-              <LinkContainer to="/graphs">
-                <NavItem>Graphs</NavItem>
-              </LinkContainer>
-                { this.renderAthletes(true) }
-              <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
-                {
-                  this.props.store.allSeasons
+            <Navbar.Collapse>
+              {this.renderUserNav()}
+              <Nav className="ml-auto">
+                {/* <LinkContainer to="/graphs">
+                  FIXME re-implement graphs
+                  <Nav.Link>Graphs</Nav.Link>
+                </LinkContainer> */}
+                {this.renderAthletes(true)}
+                <NavDropdown title="Seasons" id="seasons" styleName="dropdown">
+                  {this.props.store.allSeasons
                     .filter(x => x.from <= currentWeek)
-                    .sort((a,b) => b.from - a.from)
+                    .sort((a, b) => b.from - a.from)
                     .map(season => (
-                      <LinkContainer to={`/season/${season._id}`} key={season._id}>
-                        <MenuItem>
-                          {season.name}
-                        </MenuItem>
+                      <LinkContainer
+                        to={`/season/${season._id}`}
+                        key={season._id}
+                      >
+                        <NavDropdown.Item>{season.name}</NavDropdown.Item>
                       </LinkContainer>
-                    ))
-                }
-                <LinkContainer to="/season">
-                  <MenuItem>
-                      All time
-                  </MenuItem>
-                </LinkContainer>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+                    ))}
+                  <LinkContainer to="/season" exact>
+                    <NavDropdown.Item>All time</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
         </Navbar>
       </header>
     );
-  }    
+  }
 }
 
 Header = CSSModules(Header, styles);
 
 Header = withRouter(Header);
 
-Header = Relay.createContainer(Header, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          name
-          username                        
-        }
-        allSeasons {
-          _id
-          name
-          from
-        }
+Header.fragments = {
+  store: gql`
+    fragment Header_store on Store {
+      users {
+        id
+        name
+        username
       }
-    `
-  }
-});
+      allSeasons {
+        _id
+        id
+        name
+        from
+      }
+    }
+  `
+};
 
 export default Header;

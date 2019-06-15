@@ -1,41 +1,57 @@
 const base = {
   db: "ironman",
+  apiUrl: "/graphql"
 };
 
-export const prod = {
+const dev = {
   ...base,
-  port: 4000, 
-  callbackUrl: "https://ironman.dlemvigh.dk/callback"
+  db: "ironman-dev",
+  port: 8080
 };
 
-export const test = {
+const test = {
   ...base,
-  db: "test",
-  port: 4001,
-  callbackUrl: "https://test.ironman.dlemvigh.dk/callback"
+  db: "ironman-test",
+  port: 4001
 };
 
-export const dev = {
+const staging = {
   ...base,
-  port: 8080,
-  callbackUrl: "http://localhost:8080/callback"
+  port: 4002
 };
 
-export const config = { prod, test, dev };
+const prod = {
+  ...base,
+  port: 4000
+};
 
-export function getEnv() {
-  switch(process.env.NODE_ENV) {
+const config = { prod, test, staging, dev };
+
+function getEnv() {
+  switch (process.env.NODE_ENV) {
     case "development":
       return "dev";
     case "test":
       return "test";
+    case "staging":
+      return "staging";
     case "production":
     default:
       return "prod";
   }
 }
 
-export function getConfig() {
+function getConfig() {
   const env = getEnv();
   return config[env];
 }
+
+module.exports = {
+  config,
+  prod,
+  test,
+  staging,
+  dev,
+  getEnv,
+  getConfig
+};

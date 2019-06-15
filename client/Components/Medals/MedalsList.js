@@ -1,13 +1,12 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 
-import { filterMedals } from "../../../shared/util";
+import { filterMedals } from "../../../shared/lib/util";
 import MedalsItem from "./MedalsItem";
 
 class MedalsList extends React.Component {
-
   getSortedUsers() {
     const sorted = _(this.props.store.users)
       .sortBy([
@@ -23,7 +22,7 @@ class MedalsList extends React.Component {
 
   render() {
     return (
-      <Table hover striped>
+      <Table hover striped size="sm">
         <thead>
           <tr>
             <th className="col-xs-3">Name</th>
@@ -33,39 +32,43 @@ class MedalsList extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {
-            this.getSortedUsers().map((user, index) => (
-              <MedalsItem key={user._id} user={user} pos={index + 1} season={this.props.season} />
-            ))
-          }
+          {this.getSortedUsers().map((user, index) => (
+            <MedalsItem
+              key={user._id}
+              user={user}
+              pos={index + 1}
+              season={this.props.season}
+            />
+          ))}
         </tbody>
       </Table>
     );
   }
 }
 
-MedalsList = Relay.createContainer(MedalsList, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        users {
-          ${MedalsItem.getFragment("user")}
-          _id
-          medals {
-            goldWeeks
-            silverWeeks
-            bronzeWeeks
-          }
+MedalsList.fragments = {
+  store: gql`
+    fragment MedalsList_store on Store {
+      users {
+        id
+        ...MedalsItem_user
+        _id
+        medals {
+          id
+          goldWeeks
+          silverWeeks
+          bronzeWeeks
         }
       }
-    `,
-    season: () => Relay.QL`
-      fragment on Season {
-        from
-        to
-      }
-    `
-  }
-});
+    }
+    ${MedalsItem.fragments.user}
+  `,
+  season: gql`
+    fragment MedalsList_season on Season {
+      from
+      to
+    }
+  `
+};
 
 export default MedalsList;

@@ -1,0 +1,29 @@
+image: node:8
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules
+
+before_script:
+  - npm install
+
+stages:
+  - build
+
+build_client:
+  stage: build
+  image: node:8
+  script: 
+    - npm run lint
+    - npm rebuild node-sass
+    - npm run build:client
+  artifacts:
+    paths:
+      - build/client
+      - server
+      - shared
+      - package.json
+      - package-lock.json
+
+  

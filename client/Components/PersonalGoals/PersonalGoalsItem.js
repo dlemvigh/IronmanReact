@@ -1,13 +1,19 @@
 import React from "react";
-import Relay from "react-relay";
+import gql from "graphql-tag";
 import { withRouter } from "react-router";
 import CSSModules from "react-css-modules";
 
-import styles from "./PersonalGoalsItem.scss";
+import styles from "./PersonalGoalsItem.modules.scss";
 
 class PersonalGoalItem extends React.Component {
   renderDiscipline() {
-    return <strong>{this.props.goal.discipline ? this.props.goal.discipline.name : "exercise"}</strong>;
+    return (
+      <strong>
+        {this.props.goal.discipline
+          ? this.props.goal.discipline.name
+          : "exercise"}
+      </strong>
+    );
   }
 
   renderAmount() {
@@ -18,7 +24,7 @@ class PersonalGoalItem extends React.Component {
       unit = this.props.goal.count != 1 ? "times" : "time";
     }
 
-    if (this.props.goal.dist) {
+    if (this.props.goal.dist && this.props.goal.discipline) {
       number = this.props.goal.dist;
       unit = this.props.goal.discipline.unit;
     }
@@ -28,15 +34,21 @@ class PersonalGoalItem extends React.Component {
       unit = this.props.goal.score != 1 ? "points" : "point";
     }
 
-    return <strong>{number} {unit}</strong>;
+    return (
+      <strong>
+        {number} {unit}
+      </strong>
+    );
   }
 
   calcProgress() {
     let progress, total;
     const goal = this.props.goal;
-    const activities = goal.disciplineId ? 
-      this.props.activities.filter(edge => edge.node.disciplineId == goal.disciplineId) : 
-      this.props.activities;
+    const activities = goal.disciplineId
+      ? this.props.activities.filter(
+        edge => edge.node.disciplineId == goal.disciplineId
+      )
+      : this.props.activities;
 
     if (goal.count) {
       progress = activities.length;
@@ -57,18 +69,23 @@ class PersonalGoalItem extends React.Component {
   }
 
   onClick = () => {
-    this.props.router.push(`/${this.props.user.username}/goals`);
-  }
+    this.props.history.push(`/${this.props.user.username}/goals`);
+  };
 
   render() {
     const [progres, total] = this.calcProgress();
-    const width = 100 * progres / total;
+    const width = (100 * progres) / total;
     return (
       <tr styleName="row" onClick={this.onClick}>
         <td>
-          I want to {this.renderDiscipline()} at least {this.renderAmount()} per week.
+          I want to {this.renderDiscipline()} at least {this.renderAmount()} per
+          week.
           <div className="progress" styleName="progress">
-            <div className="progress-bar" styleName="progress-bar" style={{width: width + "%"}} />
+            <div
+              className="progress-bar"
+              styleName="progress-bar"
+              style={{ width: width + "%" }}
+            />
           </div>
         </td>
       </tr>
@@ -80,36 +97,35 @@ PersonalGoalItem = CSSModules(PersonalGoalItem, styles);
 
 PersonalGoalItem = withRouter(PersonalGoalItem);
 
-PersonalGoalItem = Relay.createContainer(PersonalGoalItem, {
-  fragments: {
-    activities: () => Relay.QL`
-      fragment on ActivityEdge @relay(plural: true) {
-        node {
-          disciplineId
-          disciplineName
-          distance
-          score
-        }
-      }
-    `,
-    goal: () => Relay.QL`
-      fragment on PersonalGoal {
+PersonalGoalItem.fragments = {
+  activities: gql`
+    fragment PersonalGoalItem_activities on ActivityEdge {
+      node {
         disciplineId
-        discipline {
-          name
-          unit
-        }
-        count
-        dist
+        disciplineName
+        distance
         score
       }
-    `,
-    user: () => Relay.QL`
-      fragment on User {
-        username
+    }
+  `,
+  goal: gql`
+    fragment PersonalGoalItem_goal on PersonalGoal {
+      disciplineId
+      discipline {
+        id
+        name
+        unit
       }
-    `
-  }
-});
+      count
+      dist
+      score
+    }
+  `,
+  user: gql`
+    fragment PersonalGoalItem_user on User {
+      username
+    }
+  `
+};
 
 export default PersonalGoalItem;

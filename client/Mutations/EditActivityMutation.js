@@ -1,48 +1,61 @@
-import Relay from "react-relay";
+import React from "react";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
-class EditActivityMutation extends Relay.Mutation {
+import {
+  ActivityFragment,
+  SummaryFragment,
+  updateSummary
+} from "./SharedActivityMutation";
 
-  getMutation() {
-    return Relay.QL`
-      mutation { editActivity }
-    `;
-  }
-
-  getVariables() {
-    return {
-      id: this.props._id,
-      disciplineId: this.props.disciplineId,
-      userId: this.props.userId,
-      distance: this.props.distance,
-      date: this.props.date
-    };
-  }
-
-  getFatQuery() {
-    return Relay.QL`
-      fragment on EditActivityPayload {
-        activity
-        medals
-        user { 
-          summary {
-            score
-          }
-        }
-        store
+const UPDATE_ACTIVITY = gql`
+  mutation UpdateActivityMuataion($input: EditActivityInput!) {
+    editActivity(input: $input) {
+      summary {
+        ...SummaryFragment
       }
-    `;
+      summaryPrev {
+        ...SummaryFragment
+      }
+      medals {
+        id
+        gold
+        goldWeeks
+        silver
+        silverWeeks
+        bronze
+        bronzeWeeks
+      }
+      activity {
+        ...ActivityFragment
+      }
+      activityPrev {
+        week
+        year
+      }
+    }
   }
+  ${ActivityFragment}
+  ${SummaryFragment}
+`;
 
-  getConfigs() {
-    return [{
-      type: "FIELDS_CHANGE",
-      fieldIDs: {
-        activity: this.props.id,
-        medals: this.props.medals,
-        store: this.props.store
-      },
-    }];
-  }
+export function withEditActivityMutation(WrappedComponent) {
+  return ({ ...props }) => (
+    <Mutation
+      mutation={UPDATE_ACTIVITY}
+      update={(cache, { data: { editActivity } }) => {
+        const { activity, activityPrev, summary, summaryPrev } = editActivity;
+        cache.writeData({
+          id: `Activity:${activity.id}`,
+          data: activity
+        });
+        updateSummary(cache, summaryPrev, activityPrev.week, activityPrev.year);
+        updateSummary(cache, summary, activity.week, activity.year);
+      }}
+    >
+      {editActivity => (
+        <WrappedComponent {...props} editActivity={editActivity} />
+      )}
+    </Mutation>
+  );
 }
-
-export default EditActivityMutation;

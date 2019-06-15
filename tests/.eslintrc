@@ -1,0 +1,13 @@
+{
+  "plugins": ["cypress", "no-skip-tests", "no-only-tests"],
+  "env": {
+    "cypress/globals": true
+  },
+  "extends": [
+    "plugin:cypress/recommended"
+  ],
+  "rules": {
+    "no-skip-tests/no-skip-tests": "warn",
+    "no-only-tests/no-only-tests": "error"
+  }
+}

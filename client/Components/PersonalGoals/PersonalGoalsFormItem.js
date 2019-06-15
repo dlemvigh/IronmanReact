@@ -1,12 +1,12 @@
 import React from "react";
-import Relay from "react-relay";
-import { ControlLabel, FormControl, FormGroup, Glyphicon, Row, Col } from "react-bootstrap";
+import gql from "graphql-tag";
+import { FormLabel, FormControl, FormGroup, Row, Col } from "react-bootstrap";
 import CSSModules from "react-css-modules";
 
-import styles from "./PersonalGoalsFormItem.scss";
+import Icon from "../Common/Icon";
+import styles from "./PersonalGoalsFormItem.modules.scss";
 
 class PersonalGoalsFormItem extends React.Component {
-
   isEnabledDist() {
     return !!this.props.goal.disc;
   }
@@ -15,40 +15,40 @@ class PersonalGoalsFormItem extends React.Component {
     return !this.props.goal.disc;
   }
 
-  onChangeDisc = (event) => {
-    const goal = {...this.props.goal};
+  onChangeDisc = event => {
+    const goal = { ...this.props.goal };
     goal.disc = event.target.value;
     if (goal.disc && goal.type == "score") {
       goal.type = "dist";
     } else if (!goal.disc && goal.type == "disc") {
       goal.type = "score";
     }
-    this.props.update(goal, this.props.index);    
-  }
+    this.props.update(goal, this.props.index);
+  };
 
-  onChange = (event) => {
-    const goal = {...this.props.goal};
+  onChange = event => {
+    const goal = { ...this.props.goal };
     goal[event.target.name] = event.target.value;
     this.props.update(goal, this.props.index);
-  }
+  };
 
   onClickUp = () => {
     const index = this.props.index;
     if (index > 0) {
       this.props.swap(index, index - 1);
     }
-  }
+  };
 
   onClickRemove = () => {
     this.props.remove(this.props.index);
-  }
+  };
 
   onClickDown = () => {
     const index = this.props.index;
     if (index + 1 < this.props.numGoals) {
       this.props.swap(index, index + 1);
     }
-  }
+  };
 
   getUnit() {
     const discId = this.props.goal.disc;
@@ -72,30 +72,26 @@ class PersonalGoalsFormItem extends React.Component {
         <Row>
           <Col xs={12} sm={4}>
             <FormGroup>
-              <ControlLabel>I want to</ControlLabel>
+              <FormLabel>I want to</FormLabel>
               <select
-                name="disc" 
+                name="disc"
                 className="form-control"
                 value={this.props.goal.disc || ""}
                 onChange={this.onChangeDisc}
               >
-                {
+                {this.props.store &&
                   this.props.store.disciplines.map(disc => (
-                    <option 
-                      key={disc._id}
-                      value={disc._id}
-                    >
+                    <option key={disc._id} value={disc._id}>
                       {disc.name}
                     </option>
-                  ))
-                }
+                  ))}
                 <option value="">any exercise</option>
               </select>
             </FormGroup>
           </Col>
           <Col xs={4} sm={3}>
             <FormGroup>
-              <ControlLabel>At least</ControlLabel>
+              <FormLabel>At least</FormLabel>
               <FormControl
                 name="value"
                 type="text"
@@ -106,24 +102,45 @@ class PersonalGoalsFormItem extends React.Component {
           </Col>
           <Col xs={6} sm={4}>
             <FormGroup>
-              <ControlLabel>per week</ControlLabel>
-              <select 
+              <FormLabel>per week</FormLabel>
+              <select
                 name="type"
                 className="form-control"
                 value={this.props.goal.type}
                 onChange={this.onChange}
               >
                 <option value="count">times</option>
-                {this.isEnabledDist() && <option value="dist">{this.getUnit()}</option>}
+                {this.isEnabledDist() && (
+                  <option value="dist">{this.getUnit()}</option>
+                )}
                 {this.isEnabledScore() && <option value="score">score</option>}
               </select>
             </FormGroup>
           </Col>
           <Col xs={1}>
             <div styleName="icons">
-              <Glyphicon glyph="chevron-up" styleName={this.getIconStyles({up: true})} onClick={this.onClickUp} />
-              <Glyphicon glyph="trash" styleName={this.getIconStyles({})} onClick={this.onClickRemove} />
-              <Glyphicon glyph="chevron-down" styleName={this.getIconStyles({down: true})} onClick={this.onClickDown} />
+              <a
+                styleName={this.getIconStyles({ up: true })}
+                href="javascript:void(0)"
+                onClick={this.onClickUp}
+              >
+                <Icon name="up" />
+              </a>
+              <a
+                styleName={this.getIconStyles({})}
+                href="javascript:void(0)"
+                onClick={this.onClickRemove}
+              >
+                <Icon name="delete" />
+
+              </a>
+              <a
+                styleName={this.getIconStyles({ down: true })}
+                href="javascript:void(0)"
+                onClick={this.onClickDown}
+              >
+                <Icon name="down" />
+              </a>
             </div>
           </Col>
         </Row>
@@ -132,20 +149,21 @@ class PersonalGoalsFormItem extends React.Component {
   }
 }
 
-PersonalGoalsFormItem = CSSModules(PersonalGoalsFormItem, styles, { allowMultiple: true });
-
-PersonalGoalsFormItem = Relay.createContainer(PersonalGoalsFormItem, {
-  fragments: {
-    store: () => Relay.QL`
-      fragment on Store {
-        disciplines {
-          _id
-          name
-          unit
-        }
-      }
-    `
-  }
+PersonalGoalsFormItem = CSSModules(PersonalGoalsFormItem, styles, {
+  allowMultiple: true
 });
 
-export default PersonalGoalsFormItem; 
+PersonalGoalsFormItem.fragments = {
+  store: gql`
+    fragment PersonalGoalsFormItem_store on Store {
+      disciplines {
+        id
+        _id
+        name
+        unit
+      }
+    }
+  `
+};
+
+export default PersonalGoalsFormItem;

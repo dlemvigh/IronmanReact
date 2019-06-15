@@ -1,9 +1,15 @@
-import Relay from "react-relay";
+import gql from "graphql-tag";
 
-export default {
-  store: () => Relay.QL`
-        query Store {
-            store    
-        }
-    `,
-};
+import App from "./App";
+import { withApollo } from "../Common/ApolloLoader";
+
+export default withApollo(App, {
+  query: gql`
+    query AppQuery {
+      store {
+        ...App_store
+      }
+    }
+    ${App.fragments.store}
+  `
+});
