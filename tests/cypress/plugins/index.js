@@ -28,4 +28,6 @@ module.exports = (on, config) => {
   if (config.env.configFile) {
     return getConfigFile(config.env.configFile);
   }
+
+  return config;
 };

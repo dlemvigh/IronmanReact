@@ -33,8 +33,8 @@ const getStyle = (size, disabled) => {
   return style;
 };
 
-let DisciplineIcon = ({ value, size = "small", disabled = false }) => (
-  <img src={getIcon(value)} styleName={getStyle(size, disabled)} />
+let DisciplineIcon = ({ value, size = "small", disabled = false, ...props }) => (
+  <img src={getIcon(value)} styleName={getStyle(size, disabled)} {...props} />
 );
 
 DisciplineIcon = CSSModules(DisciplineIcon, styles, { allowMultiple: true });

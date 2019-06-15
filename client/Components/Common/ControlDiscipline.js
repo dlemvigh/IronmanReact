@@ -14,7 +14,11 @@ class ControlDiscipline extends React.Component {
 
   handleClick = discipline => {
     if (this.props.onChange) {
-      this.props.onChange(discipline);
+      const disc = {
+        ...discipline,
+        id: discipline._id,
+      }
+      this.props.onChange(disc);
     }
   };
 
@@ -34,7 +38,8 @@ class ControlDiscipline extends React.Component {
               key={discipline._id}
               value={discipline.name}
               size="large"
-              disabled={this.props.value !== discipline._id}
+              disabled={this.props.value !== discipline.name}
+              data-test={`form-input-discipline-button-${discipline.name}`}
             />
           </span>
         ))}
