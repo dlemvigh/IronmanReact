@@ -1,4 +1,4 @@
-describe("Activity tests", () => {
+describe("Activity desktop tests", () => {
   let username;
 
   before(() => {
