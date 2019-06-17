@@ -146,6 +146,10 @@ const summaryType = new GraphQLObjectType({
     },
     year: {
       type: GraphQLInt
+    },
+    weekyear: {
+      type: GraphQLInt,
+      resolve: obj => `${obj.year}${obj.week < 10 ? "0" : ""}${obj.week}`
     }
   }),
   interfaces: [nodeInterface]
@@ -184,6 +188,10 @@ const activityType = new GraphQLObjectType({
     },
     year: {
       type: GraphQLInt
+    },
+    weekyear: {
+      type: GraphQLInt,
+      resolve: obj => `${obj.year}${obj.week < 10 ? "0" : ""}${obj.week}`
     },
     user: {
       type: userType,
