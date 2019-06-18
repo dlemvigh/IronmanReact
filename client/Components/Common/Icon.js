@@ -11,7 +11,7 @@ const icons = {
 };
 
 let Icon = ({ name }) => (
-  <img src={icons[name]} styleName="icon" />
+  <img alt={name} src={icons[name]} styleName="icon" />
 );
 
 Icon = CSSModules(Icon, styles);
