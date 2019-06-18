@@ -1,9 +1,11 @@
 import React from "react";
+// import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 import ActivityForm from "./ActivityForm";
 import ActivityList from "./ActivityList";
 import PersonalGoals from "../PersonalGoals/PersonalGoals";
+import { MyQuery } from "../Common/ApolloLoader";
 
 class Activity extends React.Component {
   state = {
@@ -25,7 +27,7 @@ class Activity extends React.Component {
   };
 
   render() {
-    // const component = null;
+    const { user } = this.props;
     const component =
       this.state.editing === null ? (
         <ActivityForm
@@ -46,8 +48,32 @@ class Activity extends React.Component {
       <div>
         <h3>{this.getName()} activities</h3>
         {component}
-        <PersonalGoals user={this.props.user} />
-        <ActivityList {...this.props} onEdit={this.onBeginEdit} />
+        <MyQuery
+          query={gql`
+            query ActivityQuerySplit($username: String!) {
+              store {
+                id
+                ...ActivityList_store
+              }
+              user (username: $username) {
+                id
+                ...ActivityList_user
+                ...PersonalGoals_user
+              }
+            }
+            ${ActivityList.fragments.store}
+            ${ActivityList.fragments.user}
+            ${PersonalGoals.fragments.user}
+          `}
+          variables={{ username: user.username }}
+        >
+          {({ store, user }) => (
+            <React.Fragment>
+              <PersonalGoals user={user} />
+              <ActivityList store={store} user={user} onEdit={this.onBeginEdit} />
+            </React.Fragment>
+          )}
+        </MyQuery>
       </div>
     );
   }
@@ -58,22 +84,16 @@ Activity.fragments = {
     fragment Activity_store on Store {
       id
       ...ActivityForm_store
-      ...ActivityList_store
     }
     ${ActivityForm.fragments.store}
-    ${ActivityList.fragments.store}
   `,
   user: gql`
     fragment Activity_user on User {
       name
       username
       ...ActivityForm_user
-      ...ActivityList_user
-      ...PersonalGoals_user
     }
     ${ActivityForm.fragments.user}
-    ${ActivityList.fragments.user}
-    ${PersonalGoals.fragments.user}
   `
 };
 
