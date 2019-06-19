@@ -1,7 +1,8 @@
 import React from "react";
-import { render } from "react-dom";
+import { hydrate } from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
+import { loadableReady } from "@loadable/component";
 import * as Sentry from "@sentry/browser";
 
 import { client } from "./apolloClient";
@@ -12,11 +13,13 @@ Sentry.init({
   environment: process.env.NODE_ENV
 });
 
-render(
-  <ApolloProvider client={client}>
-    <BrowserRouter>
-      <AppQueries />
-    </BrowserRouter>
-  </ApolloProvider>,
-  document.getElementById("app")
+loadableReady(() =>
+  hydrate(
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <AppQueries />
+      </BrowserRouter>
+    </ApolloProvider>,
+    document.getElementById("app")
+  )
 );

@@ -3,8 +3,6 @@ import gql from "graphql-tag";
 import Activity from "./Activity";
 import { withApollo } from "../Common/ApolloLoader";
 
-// export default Activity;
-
 export default withApollo(Activity, {
   query: gql`
     query ActivityQuery($username: String!) {

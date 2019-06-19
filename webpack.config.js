@@ -1,6 +1,7 @@
 const path = require("path");
 // const CompressionPlugin = require("compression-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const LoadablePlugin = require('@loadable/webpack-plugin')
 // var ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const WebpackBar = require("webpackbar");
 
@@ -10,7 +11,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "build", "client"),
     publicPath: "/",
-    filename: "bundle.[contenthash].js"
+    filename: "[name].bundle.[contenthash].js"
   },
   devtool: "source-map",
   module: {
@@ -75,6 +76,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "client/index.html"
     }),
+    new LoadablePlugin(),
     new WebpackBar()
     // new BundleAnalyzerPlugin()
   ]

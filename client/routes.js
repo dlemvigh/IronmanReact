@@ -1,13 +1,14 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import loadable from '@loadable/component';
 
-import ActivityQueries from "./Components/Activity/ActivityQueries";
-import Admin from "./Components/Admin/Admin";
+const ActivityQueries = loadable(() => import("./Components/Activity/ActivityQueries"));
+const Admin = loadable(() => import("./Components/Admin/Admin"));
 // import Graphs from "./Componen ts/Graphs";
 // import GraphsQueries from "./Components/Graphs/GraphsQueries";
-import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
-import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFormQueries";
-import SeasonPageQueries from "./Components/Season/SeasonPageQueries";
+const LeaderboardQueries = loadable(() => import("./Components/Leaderboard/LeaderboardQueries"));
+const PersonalGoalsFormQueries = loadable(() => import("./Components/PersonalGoals/PersonalGoalsFormQueries"));
+const SeasonPageQueries = loadable(() => import('./Components/Season/SeasonPageQueries'));
 
 export default () => (
   <Switch>
