@@ -21,6 +21,8 @@ const {
   mutationWithClientMutationId,
   nodeDefinitions
 } = require("graphql-relay");
+const strava = require("strava-v3");
+
 const database = require("./database");
 const CustomGraphQLDateType = require("graphql-custom-datetype");
 const { nodeInterface, nodeField } = nodeDefinitions(
@@ -406,6 +408,56 @@ const storeType = new GraphQLObjectType({
   }),
   interfaces: [nodeInterface]
 });
+const stravaType = new GraphQLObjectType({
+  name: "Strava",
+  fields: () => ({
+    getRequestAccessURL: {
+      type: GraphQLString,
+      resolve: () => strava.oauth.getRequestAccessURL({ scope: "read,activity:read" })
+    },
+    getToken: {
+      type: GraphQLString,
+      args: {
+        code: {
+          name: "Code",
+          type: GraphQLString
+        }
+      },
+      resolve(root, { code }) {
+        return new Promise((resolve, reject) => {
+          strava.oauth.getToken(code, (err, payload) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(payload.access_token);
+            }
+          });
+        });
+      }
+    },
+    listActivities: {
+      type: GraphQLString,
+      args: {
+        access_token: {
+          name: "Access Token",
+          type: GraphQLString
+        }
+      },
+      resolve(root, { access_token }) {
+        return new Promise((resolve, reject) => {
+          strava.athlete.listActivities({ access_token }, async (err, payload) => {
+            if (err) {
+              reject(err);
+            } else {
+              await database.saveSyncLog(payload);
+              resolve(JSON.stringify(payload));
+            }
+          });
+        });
+      }
+    }
+  })
+});
 const queryType = new GraphQLObjectType({
   name: "Query",
   fields: () => ({
@@ -450,6 +502,10 @@ const queryType = new GraphQLObjectType({
 
         throw new Error("No arguments supplied to get user");
       }
+    },
+    strava: {
+      type: stravaType,
+      resolve: () => true
     },
     node: nodeField
   })

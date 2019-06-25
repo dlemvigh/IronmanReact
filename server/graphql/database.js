@@ -10,6 +10,7 @@ const SummaryModel = require("../models/summary");
 const MedalsModel = require("../models/medals");
 const LoginModel = require("../models/login");
 const PersonalGoalModel = require("../models/personalGoal");
+const SyncLogModel = require("../models/syncLog");
 const staticStore = new StoreModel(42);
 
 function getStore() {
@@ -588,6 +589,13 @@ async function setPersonalGoals(userId, goals) {
   return user;
 }
 
+async function saveSyncLog(activities) {
+  return Promise.all(activities.map(async activity => {
+    const { id } = activity;
+    return SyncLogModel.findOneAndUpdate({ id }, activity, { upsert: true, new: true}).exec();
+  }));
+}
+
 module.exports = {
   ActivityModel,
   DisciplineModel,
@@ -626,5 +634,6 @@ module.exports = {
   ensureLogin,
   getPersonalGoal,
   getPersonalGoalsByUser,
-  setPersonalGoals
+  setPersonalGoals,
+  saveSyncLog
 };
