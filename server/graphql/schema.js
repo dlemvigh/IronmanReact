@@ -408,6 +408,44 @@ const storeType = new GraphQLObjectType({
   }),
   interfaces: [nodeInterface]
 });
+const syncLogType = new GraphQLObjectType({
+  name: "SyncLog",
+  fields: () => ({
+    _id: {
+      type: new GraphQLNonNull(GraphQLID)
+    },
+    id: {
+      type: GraphQLFloat
+    },
+    external_id: {
+      type: GraphQLString
+    },
+    name: {
+      type: GraphQLString
+    },
+    distance: {
+      type: GraphQLFloat
+    },
+    moving_time: {
+      type: GraphQLInt
+    },
+    elapsed_time: {
+      type: GraphQLInt
+    },
+    start_date: {
+      type: CustomGraphQLDateType
+    },
+    start_date_local: {
+      type: CustomGraphQLDateType
+    },
+    type: {
+      type: GraphQLString
+    },
+    status: {
+      type: GraphQLString,
+    }
+  })    
+});
 const stravaType = new GraphQLObjectType({
   name: "Strava",
   fields: () => ({
@@ -435,6 +473,12 @@ const stravaType = new GraphQLObjectType({
         });
       }
     },
+    syncLog: {
+      type: new GraphQLList(syncLogType),
+      resolve() {
+        return database.getSyncLog();
+      }
+    },
     listActivities: {
       type: GraphQLString,
       args: {
@@ -450,7 +494,7 @@ const stravaType = new GraphQLObjectType({
               reject(err);
             } else {
               await database.saveSyncLog(payload);
-              resolve(JSON.stringify(payload));
+              resolve(JSON.stringify(payload, null, 2));
             }
           });
         });

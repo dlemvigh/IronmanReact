@@ -30,7 +30,26 @@ const syncLogSchema = new mongoose.Schema({
   },
   type: {
     type: String
+  },
+  raw: {
+    type: Object
+  },
+  status: {
+    type: String,
+    required: true,
+    default: "UNKNOWN"
   }
 });
 
-module.exports = mongoose.model("SyncLog", syncLogSchema);
+const SyncLogModel = exports = mongoose.model("SyncLog", syncLogSchema);
+
+SyncLogModel.Status = {
+  NEW: "NEW", // newly imported, not yet added to activities
+  ADDED: "ADDED", // added to activities
+  CHANGED: "CHANGED", // added but later changed
+  REMOVED: "REMOVED", // added but later removed
+  CONFLICT: "CONFLICT", // conflicting activities existed at import, 
+  UNKNOWN: "UNKNOWN" // fallback state
+};
+
+module.exports = SyncLogModel;

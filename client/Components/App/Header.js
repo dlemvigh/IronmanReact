@@ -68,6 +68,9 @@ class Header extends React.Component {
             <Navbar.Collapse>
               {this.renderUserNav()}
               <Nav className="ml-auto">
+                <LinkContainer to="/sync">
+                  <Nav.Link>Sync</Nav.Link>
+                </LinkContainer>
                 {/* <LinkContainer to="/graphs">
                   FIXME re-implement graphs
                   <Nav.Link>Graphs</Nav.Link>

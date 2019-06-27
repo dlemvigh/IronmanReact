@@ -7,6 +7,7 @@ const robots = require("express-robots-txt");
 const mongoose = require("mongoose");
 const path = require("path");
 const Sentry = require("@sentry/node");
+const strava = require("strava-v3");
 
 const { getConfig } = require("../shared/config");
 const schema = require("./graphql/schema");
@@ -32,6 +33,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use(robots({ UserAgent: "*", Disallow: "/admin" }));
+
+app.get("/strava", (req, res) => {
+  const url = strava.oauth.getRequestAccessURL({ scope: "read,activity:read" });
+  res.redirect(url);
+});
 
 app.use(
   "/graphql",

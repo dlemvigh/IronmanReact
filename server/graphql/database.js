@@ -590,10 +590,26 @@ async function setPersonalGoals(userId, goals) {
 }
 
 async function saveSyncLog(activities) {
-  return Promise.all(activities.map(async activity => {
-    const { id } = activity;
-    return SyncLogModel.findOneAndUpdate({ id }, activity, { upsert: true, new: true}).exec();
-  }));
+  return Promise.all(activities.map(importItem));
+}
+
+async function importItem(activity) {
+  const { id } = activity;
+  const syncLog = await SyncLogModel.findOne({ id }).exec();
+
+  if (syncLog == null) {
+    return new SyncLogModel({
+      ...activity,
+      raw: activity,
+      status: SyncLogModel.Status.NEW
+    }).save().exec();
+  } else {
+    // TODO handle previously imported activities, that might have changed
+  }
+}
+
+async function getSyncLog() {
+  return SyncLogModel.find({}).exec();
 }
 
 module.exports = {
@@ -635,5 +651,6 @@ module.exports = {
   getPersonalGoal,
   getPersonalGoalsByUser,
   setPersonalGoals,
-  saveSyncLog
+  saveSyncLog,
+  getSyncLog
 };

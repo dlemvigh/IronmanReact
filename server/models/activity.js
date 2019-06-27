@@ -31,6 +31,9 @@ const activitySchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  syncLogId: {
+    type: Number,    
   }
 });
 activitySchema.virtual("week").get(function () {
