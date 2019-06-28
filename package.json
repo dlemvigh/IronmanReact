@@ -46,6 +46,8 @@
     "graphql-relay": "^0.6.0",
     "moment": "^2.24.0",
     "mongoose": "^5.5.13",
+    "query-string": "^6.8.1",
+    "react-use": "^9.7.2",
     "strava-v3": "^1.14.0"
   },
   "devDependencies": {

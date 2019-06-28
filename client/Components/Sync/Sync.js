@@ -1,55 +1,51 @@
 import React from "react";
-import { client } from "../../apolloClient";
+import { Button } from "react-bootstrap";
+import CSSModules from "react-css-modules";
 import gql from "graphql-tag";
+import toastr from "toastr";
 
-const GET_TOKEN = gql`
-  query GetToken($code: String!) {
-    strava {
-      access_token: getToken(code: $code)
-    }
-  }
-`;
+import { client } from "../../apolloClient";
+import useStravaAccessToken from "./useStravaAccessToken";
+import styles from "./Sync.modules.scss";
 
 const GET_ACTIVITIES = gql`
-  query GetStravaActivities($token: String!) {
+  query GetStravaActivities($access_token: String!) {
     strava {
-      listActivities(access_token: $token) 
+      listActivities(access_token: $access_token)
     }
   }
 `;
 
-const Sync = () => {
-  const [token, setToken] = React.useState(sessionStorage.getItem("access_token"));
-  const [data, setData] = React.useState("");
-  React.useEffect(() => {
-    client.query({
-      query: GET_TOKEN,
-      variables: {
-        code: "" // get from query params
-      }
-    }).then(({ data }) => {      
-      const { access_token } = data.strava;
-      sessionStorage.setItem("access_token", access_token);
-      setToken(access_token);
-    });
-  });
+let Sync = () => {
+  const access_token = useStravaAccessToken();
 
-  React.useEffect(() => {
-    client.query({
-      query: GET_ACTIVITIES,
-      variables: { token }
-    }).then(({ data }) => {
-      console.log("activity data", data);
-      setData(data.strava.listActivities);
-    });
-  }, [token]);
+  const handleAuth = () => {
+    window.location = "/strava";
+  };
+
+  const fetchLatest = () => {
+    client
+      .query({
+        query: GET_ACTIVITIES,
+        variables: { access_token }
+      })
+      .then(
+        () => toastr.success("Fetched latest activities"),
+        () => toastr.error("Failed to fetch latest activities")
+      );
+  };
 
   return (
     <React.Fragment>
       <h3>Strava sync</h3>
-      <pre>{data}</pre>
+      <div styleName="buttons">
+        <Button onClick={handleAuth}>Auth</Button>
+        <Button onClick={fetchLatest}>Fetch</Button>
+      </div>
     </React.Fragment>
-)
+  );
 };
+
+Sync = CSSModules(Sync, styles);
 
 export default Sync;

@@ -6,6 +6,8 @@ module.exports = {
   ...config,
   entry: [
     ...config.entry,
-    `webpack-express-reload/client?http://0.0.0.0:${getConfig().port}/_testapp`
+    `webpack-express-reload/client?http://127.0.0.1:${
+      getConfig().port
+    }/_testapp`
   ]
 };
