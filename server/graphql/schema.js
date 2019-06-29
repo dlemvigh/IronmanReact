@@ -204,6 +204,9 @@ const activityType = new GraphQLObjectType({
     },
     userName: {
       type: GraphQLString
+    },
+    syncLogId: {
+      type: GraphQLFloat
     }
   }),
   interfaces: [nodeInterface]
@@ -288,6 +291,9 @@ const userType = new GraphQLObjectType({
       resolve: root => {
         return database.getPersonalGoalsByUser(root._id);
       }
+    },
+    syncActivityId: {
+      type: GraphQLInt
     }
   }),
   interfaces: [nodeInterface]
@@ -442,16 +448,17 @@ const syncLogType = new GraphQLObjectType({
       type: GraphQLString
     },
     status: {
-      type: GraphQLString,
+      type: GraphQLString
     }
-  })    
+  })
 });
 const stravaType = new GraphQLObjectType({
   name: "Strava",
   fields: () => ({
     getRequestAccessURL: {
       type: GraphQLString,
-      resolve: () => strava.oauth.getRequestAccessURL({ scope: "read,activity:read" })
+      resolve: () =>
+        strava.oauth.getRequestAccessURL({ scope: "read,activity:read" })
     },
     getToken: {
       type: GraphQLString,
@@ -489,14 +496,17 @@ const stravaType = new GraphQLObjectType({
       },
       resolve(root, { access_token }) {
         return new Promise((resolve, reject) => {
-          strava.athlete.listActivities({ access_token }, async (err, payload) => {
-            if (err) {
-              reject(err);
-            } else {
-              await database.saveSyncLog(payload);
-              resolve(JSON.stringify(payload, null, 2));
+          strava.athlete.listActivities(
+            { access_token },
+            async (err, payload) => {
+              if (err) {
+                reject(err);
+              } else {
+                await database.saveSyncLog(payload);
+                resolve(JSON.stringify(payload, null, 2));
+              }
             }
-          });
+          );
         });
       }
     }

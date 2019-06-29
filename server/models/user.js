@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     default: true
+  },
+  syncAthleteId: {
+    type: Number
   }
 });
 module.exports = mongoose.model("User", userSchema);
