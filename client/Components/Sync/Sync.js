@@ -6,6 +6,7 @@ import toastr from "toastr";
 
 import { client } from "../../apolloClient";
 import useStravaAccessToken from "./useStravaAccessToken";
+import SyncAthlete from "./SyncAthlete";
 import SyncList from "./SyncList";
 import styles from "./Sync.modules.scss";
 
@@ -44,6 +45,8 @@ let Sync = props => {
         <Button>Get Athlete</Button>
         <Button onClick={fetchLatest}>Fetch activities</Button>
       </div>
+      <h3>Athlete</h3>
+      <SyncAthlete users={props.store.users} />
       <h3>Activities</h3>
       <SyncList syncLog={props.strava.syncLog} />
     </React.Fragment>
@@ -53,6 +56,14 @@ let Sync = props => {
 Sync = CSSModules(Sync, styles);
 
 Sync.fragments = {
+  store: gql`
+    fragment Sync_store on Store {
+      users {
+        ...SyncAthlete_users
+      }
+    }
+    ${SyncAthlete.fragments.users}
+  `,
   strava: gql`
     fragment Sync_strava on Strava {
       syncLog {
