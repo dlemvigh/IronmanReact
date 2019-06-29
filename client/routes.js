@@ -8,11 +8,11 @@ import Admin from "./Components/Admin/Admin";
 import LeaderboardQueries from "./Components/Leaderboard/LeaderboardQueries";
 import PersonalGoalsFormQueries from "./Components/PersonalGoals/PersonalGoalsFormQueries";
 import SeasonPageQueries from "./Components/Season/SeasonPageQueries";
-import SyncPage from "./Components/Sync/Sync";
+import SyncQueries from "./Components/Sync/SyncQueries";
 
 export default () => (
   <Switch>
-    <Route path="/sync" component={SyncPage} />
+    <Route path="/sync" component={SyncQueries} />
     <Route path="/season/:id?" component={SeasonPageQueries} />
     <Route path="/admin" component={Admin} />
     <Route path="/:username">

@@ -6,6 +6,7 @@ import toastr from "toastr";
 
 import { client } from "../../apolloClient";
 import useStravaAccessToken from "./useStravaAccessToken";
+import SyncList from "./SyncList";
 import styles from "./Sync.modules.scss";
 
 const GET_ACTIVITIES = gql`
@@ -16,7 +17,7 @@ const GET_ACTIVITIES = gql`
   }
 `;
 
-let Sync = () => {
+let Sync = props => {
   const access_token = useStravaAccessToken();
 
   const handleAuth = () => {
@@ -40,12 +41,26 @@ let Sync = () => {
       <h3>Strava sync</h3>
       <div styleName="buttons">
         <Button onClick={handleAuth}>Auth</Button>
-        <Button onClick={fetchLatest}>Fetch</Button>
+        <Button>Get Athlete</Button>
+        <Button onClick={fetchLatest}>Fetch activities</Button>
       </div>
+      <h3>Activities</h3>
+      <SyncList syncLog={props.strava.syncLog} />
     </React.Fragment>
   );
 };
 
 Sync = CSSModules(Sync, styles);
+
+Sync.fragments = {
+  strava: gql`
+    fragment Sync_strava on Strava {
+      syncLog {
+        ...SyncList_syncLog
+      }
+    }
+    ${SyncList.fragments.syncLog}
+  `
+};
 
 export default Sync;
