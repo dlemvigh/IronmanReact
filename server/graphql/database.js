@@ -250,6 +250,11 @@ async function editActivity(id, userId, disciplineId, distance, date) {
     throw new Error("Error updating activity");
   }
 
+  const { syncLogId } = activity;
+  if (syncLogId) {
+    await setSyncLogStatus(syncLogId, SyncLogModel.status.CHANGED);
+  }
+
   await updateSummary(userId, user.name, date);
 
   if (date.diff(beforeDate, "days") != 0) {
@@ -264,6 +269,11 @@ async function removeActivity(activityId) {
 
   if (!activity) {
     throw new Error("Error removing activity");
+  }
+
+  const { syncLogId } = activity;
+  if (syncLogId) {
+    await setSyncLogStatus(syncLogId, SyncLogModel.status.REMOVED);
   }
 
   await activity.remove();
@@ -601,15 +611,27 @@ async function importItem(activity) {
     return new SyncLogModel({
       ...activity,
       raw: activity,
-      status: SyncLogModel.Status.NEW
-    }).save().exec();
+      status: SyncLogModel.status.NEW
+    })
+      .save()
+      .exec();
   } else {
     // TODO handle previously imported activities, that might have changed
   }
 }
 
+async function addSyncedActivity(syncLogId) {
+  // TODO map strava activity to ironman activity
+}
+
 async function getSyncLog() {
   return SyncLogModel.find({}).exec();
+}
+
+async function setSyncLogStatus(id, status) {
+  const syncLog = await SyncLogModel.findById(id).exec();
+  syncLog.status = status;
+  await syncLog.save();
 }
 
 module.exports = {
@@ -652,5 +674,6 @@ module.exports = {
   getPersonalGoalsByUser,
   setPersonalGoals,
   saveSyncLog,
-  getSyncLog
+  getSyncLog,
+  setSyncLogStatus
 };
