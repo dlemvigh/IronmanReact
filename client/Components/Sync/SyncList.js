@@ -15,6 +15,9 @@ const SyncList = ({ syncLog }) => (
         <th>Distance</th>
         <th>Duration</th>
         <th>Date</th>
+        <th>Discipline</th>
+        <th>Distance</th>
+        <th>Score</th>
       </tr>
     </thead>
     <tbody>

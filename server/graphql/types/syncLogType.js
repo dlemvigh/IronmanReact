@@ -8,6 +8,8 @@ const {
 } = require("graphql");
 const CustomGraphQLDateType = require("graphql-custom-datetype");
 
+const { mapSyncLog } = require("../database");
+
 const syncLogType = new GraphQLObjectType({
   name: "SyncLog",
   fields: () => ({
@@ -43,6 +45,10 @@ const syncLogType = new GraphQLObjectType({
     },
     status: {
       type: GraphQLString
+    },
+    activity: {
+      type: require("./activityType").activityType,
+      resolve: obj => mapSyncLog(obj)
     }
   })
 });

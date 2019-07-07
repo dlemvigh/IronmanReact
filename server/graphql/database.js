@@ -99,6 +99,10 @@ function getDiscipline(id) {
   return DisciplineModel.findById(id).exec();
 }
 
+function getDisciplineByName(name) {
+  return DisciplineModel.findOne({ name }).exec();
+}
+
 function getDisciplines() {
   return DisciplineModel.find({})
     .sort({
@@ -634,6 +638,48 @@ async function setSyncLogStatus(id, status) {
   await syncLog.save();
 }
 
+async function mapSyncLog(syncLog) {
+  const disciplineName = mapSyncLogDiscipline(syncLog);
+  const discipline = await getDisciplineByName(disciplineName);
+  const distance = mapSyncLogDistance(syncLog, discipline);
+  const score = discipline.score * distance;
+
+  return {
+    id: syncLog.id,
+    distance,
+    unit: discipline.unit,
+    score,
+    year: 2019,
+    week: 1,
+    disciplineName
+  };
+}
+
+function mapSyncLogDiscipline(syncLog) {
+  switch (syncLog.type) {
+    case "Run":
+      return "run";
+    case "Ride":
+      return "bike";
+    case "Swim":
+      return "swim";
+    case "Workout	":
+    case "WeightTraining":
+      return "misc";
+    default:
+      return "misc";
+  }
+}
+
+function mapSyncLogDistance(syncLog, discipline) {
+  if (discipline.unit === "km") {
+    return Math.round(syncLog.distance / 10) / 100;
+  }
+  if (discipline.unit === "hours") {
+    return Math.round(syncLog.moving_time / 36) / 100;
+  }
+}
+
 module.exports = {
   ActivityModel,
   DisciplineModel,
@@ -675,5 +721,6 @@ module.exports = {
   setPersonalGoals,
   saveSyncLog,
   getSyncLog,
-  setSyncLogStatus
+  setSyncLogStatus,
+  mapSyncLog
 };
