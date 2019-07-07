@@ -1,9 +1,13 @@
 import React from "react";
+import CSSModules from "react-css-modules";
 import gql from "graphql-tag";
 
 import Date from "../Common/Date";
 import Discipline from "../Common/Discipline";
 import Score from "../Common/Score";
+import Icon from "../Common/Icon";
+
+import styles from "./SyncItem.modules.scss";
 
 const SyncItem = ({ syncLog }) => {
   const { activity } = syncLog;
@@ -28,6 +32,10 @@ const SyncItem = ({ syncLog }) => {
         </td>
         <td>
           <Score value={activity.score} />
+        </td>
+        <td>
+          <Icon name="edit" styleName="icon" />
+          <Icon name="delete" styleName="icon" />
         </td>
       </tr>
     </React.Fragment>
@@ -56,4 +64,4 @@ SyncItem.fragments = {
   `
 };
 
-export default SyncItem;
+export default CSSModules(SyncItem, styles);
