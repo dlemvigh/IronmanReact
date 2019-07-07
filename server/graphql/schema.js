@@ -1,3 +1,7 @@
+const disciplineType = require("./disciplineType");
+const seasonType = require("./seasonType");
+const medalsType = require("./medalsType");
+
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -24,54 +28,6 @@ const strava = require("strava-v3");
 const database = require("./database");
 const CustomGraphQLDateType = require("graphql-custom-datetype");
 
-const medalsType = new GraphQLObjectType({
-  name: "Medals",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("Medals"),
-    gold: {
-      type: GraphQLInt
-    },
-    goldWeeks: {
-      type: new GraphQLList(GraphQLInt)
-    },
-    silver: {
-      type: GraphQLInt
-    },
-    silverWeeks: {
-      type: new GraphQLList(GraphQLInt)
-    },
-    bronze: {
-      type: GraphQLInt
-    },
-    bronzeWeeks: {
-      type: new GraphQLList(GraphQLInt)
-    }
-  })
-});
-const seasonType = new GraphQLObjectType({
-  name: "Season",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("Season"),
-    name: {
-      type: GraphQLString
-    },
-    url: {
-      type: GraphQLString
-    },
-    from: {
-      type: GraphQLInt
-    },
-    to: {
-      type: GraphQLInt
-    }
-  })
-});
 const summaryType = new GraphQLObjectType({
   name: "Summary",
   fields: () => ({
@@ -164,24 +120,6 @@ const {
 } = connectionDefinitions({
   name: "Activity",
   nodeType: activityType
-});
-const disciplineType = new GraphQLObjectType({
-  name: "Discipline",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("Discipline"),
-    name: {
-      type: GraphQLString
-    },
-    score: {
-      type: GraphQLFloat
-    },
-    unit: {
-      type: GraphQLString
-    }
-  })
 });
 const userType = new GraphQLObjectType({
   name: "User",
