@@ -1,7 +1,7 @@
 const { GraphQLNonNull, GraphQLString } = require("graphql");
 const { mutationWithClientMutationId } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const removeUserMutation = mutationWithClientMutationId({
   name: "RemoveUser",
@@ -10,13 +10,13 @@ const removeUserMutation = mutationWithClientMutationId({
   },
   outputFields: {
     user: {
-      type: require("./userType"),
+      type: require("../types/userType"),
       resolve: obj => {
         return obj;
       }
     },
     store: {
-      type: require("./storeType"),
+      type: require("../types/storeType"),
       resolve: () => {
         return database.getStore();
       }

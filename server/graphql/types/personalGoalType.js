@@ -8,7 +8,7 @@ const {
 } = require("graphql");
 const { globalIdField } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const personalGoalType = new GraphQLObjectType({
   name: "PersonalGoal",

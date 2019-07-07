@@ -9,7 +9,7 @@ const {
 } = require("graphql");
 const { mutationWithClientMutationId } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const personalGoalInputType = new GraphQLInputObjectType({
   name: "PersonalGoalInput",
@@ -40,7 +40,7 @@ const setPersonalGoalsMutation = mutationWithClientMutationId({
   },
   outputFields: {
     user: {
-      type: require("./userType"),
+      type: require("../types/userType"),
       resolve: obj => {
         return obj;
       }

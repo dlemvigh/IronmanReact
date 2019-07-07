@@ -9,7 +9,7 @@ const {
 const { connectionDefinitions, globalIdField } = require("graphql-relay");
 const CustomGraphQLDateType = require("graphql-custom-datetype");
 
-const database = require("./database");
+const database = require("../database");
 
 const activityType = new GraphQLObjectType({
   name: "Activity",

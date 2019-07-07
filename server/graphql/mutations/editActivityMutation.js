@@ -6,7 +6,7 @@ const {
 } = require("graphql");
 const { mutationWithClientMutationId } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const editActivityMutation = mutationWithClientMutationId({
   name: "EditActivity",
@@ -29,27 +29,27 @@ const editActivityMutation = mutationWithClientMutationId({
   },
   outputFields: {
     activity: {
-      type: require("./activityType").activityType,
+      type: require("../types/activityType").activityType,
       resolve: async ({ newActivity }) => newActivity
     },
     activityPrev: {
-      type: require("./activityType").activityType,
+      type: require("../types/activityType").activityType,
       resolve: async ({ oldActivity }) => oldActivity
     },
     user: {
-      type: require("./userType"),
+      type: require("../types/userType"),
       resolve: ({ newActivity }) => {
         return database.getUser(newActivity.userId);
       }
     },
     medals: {
-      type: new GraphQLList(require("./medalsType")),
+      type: new GraphQLList(require("../types/medalsType")),
       resolve: () => {
         return database.getAllMedals();
       }
     },
     summary: {
-      type: new GraphQLList(require("./summaryType")),
+      type: new GraphQLList(require("../types/summaryType")),
       resolve: async ({ newActivity }) => {
         const summary = await database.getAllSummaries(
           newActivity.week,
@@ -59,7 +59,7 @@ const editActivityMutation = mutationWithClientMutationId({
       }
     },
     summaryPrev: {
-      type: new GraphQLList(require("./summaryType")),
+      type: new GraphQLList(require("../types/summaryType")),
       resolve: async ({ oldActivity }) => {
         const summary = await database.getAllSummaries(
           oldActivity.week,
@@ -69,7 +69,7 @@ const editActivityMutation = mutationWithClientMutationId({
       }
     },
     store: {
-      type: require("./storeType"),
+      type: require("../types/storeType"),
       resolve: () => {
         return database.getStore();
       }

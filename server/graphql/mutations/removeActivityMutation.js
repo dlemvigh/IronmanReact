@@ -1,7 +1,7 @@
 const { GraphQLList, GraphQLNonNull, GraphQLString } = require("graphql");
 const { toGlobalId, mutationWithClientMutationId } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const removeActivityMutation = mutationWithClientMutationId({
   name: "RemoveActivity",
@@ -19,29 +19,29 @@ const removeActivityMutation = mutationWithClientMutationId({
       }
     },
     activity: {
-      type: require("./activityType").activityType,
+      type: require("../types/activityType").activityType,
       resolve: activity => activity
     },
     summary: {
-      type: new GraphQLList(require("./summaryType")),
+      type: new GraphQLList(require("../types/summaryType")),
       resolve: activity => {
         return database.getAllSummaries(activity.week, activity.year);
       }
     },
     user: {
-      type: require("./userType"),
+      type: require("../types/userType"),
       resolve: obj => {
         return database.getUser(obj.userId);
       }
     },
     medals: {
-      type: new GraphQLList(require("./medalsType")),
+      type: new GraphQLList(require("../types/medalsType")),
       resolve: () => {
         return database.getAllMedals();
       }
     },
     store: {
-      type: require("./storeType"),
+      type: require("../types/storeType"),
       resolve: () => {
         return database.getStore();
       }

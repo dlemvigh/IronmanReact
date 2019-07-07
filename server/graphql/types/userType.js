@@ -13,7 +13,7 @@ const {
   globalIdField
 } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const userType = new GraphQLObjectType({
   name: "User",

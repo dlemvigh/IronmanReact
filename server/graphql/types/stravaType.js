@@ -1,7 +1,7 @@
 const { GraphQLObjectType, GraphQLList, GraphQLString } = require("graphql");
 const strava = require("strava-v3");
 
-const database = require("./database");
+const database = require("../database");
 
 const stravaType = new GraphQLObjectType({
   name: "Strava",

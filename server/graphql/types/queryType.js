@@ -1,6 +1,6 @@
 const { GraphQLObjectType, GraphQLString } = require("graphql");
 
-const database = require("./database");
+const database = require("../database");
 
 const queryType = new GraphQLObjectType({
   name: "Query",

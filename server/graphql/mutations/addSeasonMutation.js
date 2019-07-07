@@ -1,7 +1,7 @@
 const { GraphQLNonNull, GraphQLString, GraphQLInt } = require("graphql");
 const { mutationWithClientMutationId } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const addSeasonMutation = mutationWithClientMutationId({
   name: "AddSeason",
@@ -21,13 +21,13 @@ const addSeasonMutation = mutationWithClientMutationId({
   },
   outputFields: {
     season: {
-      type: require("./seasonType"),
+      type: require("../types/seasonType"),
       resolve: obj => {
         return obj;
       }
     },
     store: {
-      type: require("./storeType"),
+      type: require("../types/storeType"),
       resolve: () => {
         return database.getStore();
       }

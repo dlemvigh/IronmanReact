@@ -1,7 +1,7 @@
 const { GraphQLNonNull, GraphQLString } = require("graphql");
 const { mutationWithClientMutationId } = require("graphql-relay");
 
-const database = require("./database");
+const database = require("../database");
 
 const ensureLoginMutation = mutationWithClientMutationId({
   name: "EnsureLogin",
@@ -18,7 +18,7 @@ const ensureLoginMutation = mutationWithClientMutationId({
   },
   outputFields: {
     user: {
-      type: require("./userType"),
+      type: require("../types/userType"),
       resolve: obj => {
         return obj;
       }
