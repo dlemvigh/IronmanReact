@@ -3,20 +3,17 @@ import { FormGroup, FormLabel } from "react-bootstrap";
 import gql from "graphql-tag";
 
 const ControlUser = ({ users }) => (
-  console.log("users", users),
-  (
-    <FormGroup>
-      <FormLabel>User</FormLabel>
-      <select className="form-control" name="user" type="select">
-        <option value="" />
-        {users.map(({ name, username }) => (
-          <option key={username} value={username}>
-            {name}
-          </option>
-        ))}
-      </select>
-    </FormGroup>
-  )
+  <FormGroup>
+    <FormLabel>User</FormLabel>
+    <select className="form-control" name="user" type="select">
+      <option value="" />
+      {users.map(({ name, username }) => (
+        <option key={username} value={username}>
+          {name}
+        </option>
+      ))}
+    </select>
+  </FormGroup>
 );
 
 ControlUser.fragments = {
