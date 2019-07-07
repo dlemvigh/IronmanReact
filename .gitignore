@@ -20,3 +20,4 @@ dump
 .env
 .idea/
 npm-debug.log*
+data/strava_config
