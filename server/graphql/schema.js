@@ -15,66 +15,15 @@ const {
   connectionDefinitions,
   connectionFromPromisedArray,
   offsetToCursor,
-  fromGlobalId,
   toGlobalId,
   globalIdField,
-  mutationWithClientMutationId,
-  nodeDefinitions
+  mutationWithClientMutationId
 } = require("graphql-relay");
 const strava = require("strava-v3");
 
 const database = require("./database");
 const CustomGraphQLDateType = require("graphql-custom-datetype");
-const { nodeInterface, nodeField } = nodeDefinitions(
-  globalId => {
-    const { type, id } = fromGlobalId(globalId);
 
-    if (type == "Store") {
-      return database.getStore();
-    } else if (type === "User") {
-      return database.getUser(id);
-    } else if (type === "Activity") {
-      return database.getActivity(id);
-    } else if (type === "Discipline") {
-      return database.getDiscipline(id);
-    } else if (type === "Summary") {
-      return database.getSummary(id);
-    } else if (type === "Medals") {
-      return database.getMedals(id);
-    } else if (type == "Season") {
-      return database.getSeason(id);
-    } else if (type == "Login") {
-      return database.getLogin(id);
-    } else if (type == "PersonalGoal") {
-      return database.getPersonalGoal(id);
-    }
-
-    return null;
-  },
-  obj => {
-    if (obj instanceof database.StoreModel) {
-      return storeType;
-    } else if (obj instanceof database.UserModel) {
-      return userType;
-    } else if (obj instanceof database.ActivityModel) {
-      return activityType;
-    } else if (obj instanceof database.DisciplineModel) {
-      return disciplineType;
-    } else if (obj instanceof database.SummaryModel) {
-      return summaryType;
-    } else if (obj instanceof database.MedalsModel) {
-      return medalsType;
-    } else if (obj instanceof database.SeasonModel) {
-      return seasonType;
-    } else if (obj instanceof database.LoginModel) {
-      return loginType;
-    } else if (obj instanceof database.PersonalGoalModel) {
-      return personalGoalType;
-    }
-
-    return null;
-  }
-);
 const medalsType = new GraphQLObjectType({
   name: "Medals",
   fields: () => ({
@@ -153,8 +102,7 @@ const summaryType = new GraphQLObjectType({
       type: GraphQLInt,
       resolve: obj => `${obj.year}${obj.week < 10 ? "0" : ""}${obj.week}`
     }
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 const activityType = new GraphQLObjectType({
   name: "Activity",
@@ -208,8 +156,7 @@ const activityType = new GraphQLObjectType({
     syncLogId: {
       type: GraphQLFloat
     }
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 const {
   connectionType: activityConnection,
@@ -234,8 +181,7 @@ const disciplineType = new GraphQLObjectType({
     unit: {
       type: GraphQLString
     }
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 const userType = new GraphQLObjectType({
   name: "User",
@@ -295,31 +241,30 @@ const userType = new GraphQLObjectType({
     syncActivityId: {
       type: GraphQLInt
     }
-  }),
-  interfaces: [nodeInterface]
-});
-const loginType = new GraphQLObjectType({
-  name: "Login",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("User"),
-    user: {
-      type: userType,
-      resolve: obj => database.getUser(obj.userId)
-    },
-    userId: {
-      type: GraphQLID
-    },
-    provider: {
-      type: GraphQLString
-    },
-    providerUserId: {
-      type: GraphQLString
-    }
   })
 });
+// const loginType = new GraphQLObjectType({
+//   name: "Login",
+//   fields: () => ({
+//     _id: {
+//       type: new GraphQLNonNull(GraphQLID)
+//     },
+//     id: globalIdField("User"),
+//     user: {
+//       type: userType,
+//       resolve: obj => database.getUser(obj.userId)
+//     },
+//     userId: {
+//       type: GraphQLID
+//     },
+//     provider: {
+//       type: GraphQLString
+//     },
+//     providerUserId: {
+//       type: GraphQLString
+//     }
+//   })
+// });
 const personalGoalType = new GraphQLObjectType({
   name: "PersonalGoal",
   fields: () => ({
@@ -411,8 +356,7 @@ const storeType = new GraphQLObjectType({
         return database.getAllSummaries(args.week, args.year);
       }
     }
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 const syncLogType = new GraphQLObjectType({
   name: "SyncLog",
@@ -560,8 +504,7 @@ const queryType = new GraphQLObjectType({
     strava: {
       type: stravaType,
       resolve: () => true
-    },
-    node: nodeField
+    }
   })
 });
 const addActivityMutation = mutationWithClientMutationId({
