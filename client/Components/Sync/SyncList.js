@@ -8,16 +8,16 @@ const SyncList = ({ syncLog }) => (
   <Table>
     <thead>
       <tr>
-        <th>Status</th>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Distance</th>
-        <th>Duration</th>
-        <th>Date</th>
+        {/* <th>Id</th> */}
+        {/* <th>Name</th> */}
+        {/* <th>Type</th> */}
         <th>Discipline</th>
         <th>Distance</th>
         <th>Score</th>
+        {/* <th>Duration</th> */}
+        <th>Date</th>
+        <th>Status</th>
+        {/* <th>Distance</th> */}
         <th />
       </tr>
     </thead>

@@ -11,19 +11,15 @@ import styles from "./SyncItem.modules.scss";
 
 const SyncItem = ({ syncLog }) => {
   const { activity } = syncLog;
-
+  const [expanded, setExpanded] = React.useState(true);
   return (
     <React.Fragment>
       <tr>
-        <td>{syncLog.status}</td>
-        <td>{syncLog.id}</td>
+        {/* <td>{syncLog.id}</td>
         <td>{syncLog.name}</td>
         <td>{syncLog.type}</td>
         <td>{syncLog.distance}</td>
-        <td>{syncLog.moving_time}</td>
-        <td>
-          <Date value={syncLog.start_date_local} />
-        </td>
+        <td>{syncLog.moving_time}</td> */}
         <td>
           <Discipline value={activity.disciplineName} />
         </td>
@@ -34,10 +30,41 @@ const SyncItem = ({ syncLog }) => {
           <Score value={activity.score} />
         </td>
         <td>
-          <Icon name="edit" styleName="icon" />
-          <Icon name="delete" styleName="icon" />
+          <Date value={syncLog.start_date_local} />
+        </td>
+        <td>{syncLog.status}</td>
+        <td>
+          <button type="button">add</button>
+          <button type="button">delete</button>
+          <button type="button" onClick={() => setExpanded(!expanded)}>
+            advanced
+          </button>
         </td>
       </tr>
+      {expanded && (
+        <tr>
+          <td colSpan={10}>
+            <dl
+              style={{
+                display: "grid",
+                gridTemplateRows: "1fr 1fr",
+                gridAutoFlow: "column"
+              }}
+            >
+              <dt>Id</dt>
+              <dd>{syncLog.id}</dd>
+              <dt>Name</dt>
+              <dd>{syncLog.name}</dd>
+              <dt>Type</dt>
+              <dd>{syncLog.type}</dd>
+              <dt>Distance</dt>
+              <dd>{syncLog.distance}</dd>
+              <dt>Moving time</dt>
+              <dd>{syncLog.moving_time}</dd>
+            </dl>
+          </td>
+        </tr>
+      )}
     </React.Fragment>
   );
 };
