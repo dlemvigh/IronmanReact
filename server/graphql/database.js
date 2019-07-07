@@ -681,6 +681,10 @@ function mapSyncLogDistance(syncLog, discipline) {
   }
 }
 
+function addSyncLog(id) {}
+
+function removeSyncLog(id) {}
+
 module.exports = {
   ActivityModel,
   DisciplineModel,
@@ -723,5 +727,7 @@ module.exports = {
   saveSyncLog,
   getSyncLog,
   setSyncLogStatus,
-  mapSyncLog
+  mapSyncLog,
+  addSyncLog,
+  removeSyncLog
 };

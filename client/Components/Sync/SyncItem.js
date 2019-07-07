@@ -11,7 +11,11 @@ import styles from "./SyncItem.modules.scss";
 
 const SyncItem = ({ syncLog }) => {
   const { activity } = syncLog;
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = React.useState(false);
+  const time = syncLog.moving_time;
+  const ss = time % 60;
+  const mm = Math.floor(time / 60) % 60;
+  const hh = Math.floor(time / (60 * 60));
   return (
     <React.Fragment>
       <tr>
@@ -58,9 +62,10 @@ const SyncItem = ({ syncLog }) => {
               <dt>Type</dt>
               <dd>{syncLog.type}</dd>
               <dt>Distance</dt>
-              <dd>{syncLog.distance}</dd>
+              <dd>{Math.round(syncLog.distance / 100) / 10} km</dd>
               <dt>Moving time</dt>
-              <dd>{syncLog.moving_time}</dd>
+              {/* <dd>{syncLog.moving_time} s</dd> */}
+              <dd>{`${hh === 0 ? "" : hh + "h"} ${mm}m ${ss}s`}</dd>
             </dl>
           </td>
         </tr>

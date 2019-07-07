@@ -11,6 +11,7 @@ const editActivityMutation = require("./editActivityMutation");
 const addActivityMutation = require("./addActivityMutation");
 
 const addSyncLogMutation = require("./addSyncLogMutation");
+const removeSyncLogMutation = require("./removeSyncLogMutation");
 
 const mutationType = new GraphQLObjectType({
   name: "Mutation",
@@ -23,7 +24,8 @@ const mutationType = new GraphQLObjectType({
     addSeason: addSeasonMutation,
     ensureLogin: ensureLoginMutation,
     setPersonalGoals: setPersonalGoalsMutation,
-    addSyncLog: addSyncLogMutation
+    addSyncLog: addSyncLogMutation,
+    removeSyncLog: removeSyncLogMutation
   })
 });
 

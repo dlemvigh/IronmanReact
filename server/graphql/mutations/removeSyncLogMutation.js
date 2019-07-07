@@ -44,7 +44,7 @@ const removeSyncLogMutation = mutationWithClientMutationId({
     }
   },
   mutateAndGetPayload: ({ id }) => {
-    return database.addSyncLog(id);
+    return database.removeSyncLog(id);
   }
 });
 
