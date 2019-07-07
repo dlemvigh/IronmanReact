@@ -1,3 +1,7 @@
+const stravaType = require("./stravaType");
+const summaryType = require("./summaryType");
+const { activityEdge } = require("./activityType");
+const userType = require("./userType");
 const disciplineType = require("./disciplineType");
 const seasonType = require("./seasonType");
 const medalsType = require("./medalsType");
@@ -11,239 +15,17 @@ const {
   GraphQLString,
   GraphQLFloat,
   GraphQLInt,
-  GraphQLBoolean,
   GraphQLID
 } = require("graphql");
 const {
-  connectionArgs,
-  connectionDefinitions,
-  connectionFromPromisedArray,
   offsetToCursor,
   toGlobalId,
   globalIdField,
   mutationWithClientMutationId
 } = require("graphql-relay");
-const strava = require("strava-v3");
 
 const database = require("./database");
-const CustomGraphQLDateType = require("graphql-custom-datetype");
 
-const summaryType = new GraphQLObjectType({
-  name: "Summary",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("Summary"),
-    user: {
-      type: userType,
-      resolve: obj => database.getUser(obj.userId)
-    },
-    userId: {
-      type: GraphQLID
-    },
-    userName: {
-      type: GraphQLString
-    },
-    score: {
-      type: GraphQLFloat
-    },
-    week: {
-      type: GraphQLInt
-    },
-    year: {
-      type: GraphQLInt
-    },
-    weekyear: {
-      type: GraphQLInt,
-      resolve: obj => `${obj.year}${obj.week < 10 ? "0" : ""}${obj.week}`
-    }
-  })
-});
-const activityType = new GraphQLObjectType({
-  name: "Activity",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("Activity"),
-    discipline: {
-      type: disciplineType,
-      resolve: obj => database.getDiscipline(obj.disciplineId)
-    },
-    disciplineId: {
-      type: GraphQLID
-    },
-    disciplineName: {
-      type: GraphQLString
-    },
-    distance: {
-      type: GraphQLFloat
-    },
-    unit: {
-      type: GraphQLString
-    },
-    score: {
-      type: GraphQLFloat
-    },
-    date: {
-      type: CustomGraphQLDateType
-    },
-    week: {
-      type: GraphQLInt
-    },
-    year: {
-      type: GraphQLInt
-    },
-    weekyear: {
-      type: GraphQLInt,
-      resolve: obj => `${obj.year}${obj.week < 10 ? "0" : ""}${obj.week}`
-    },
-    user: {
-      type: userType,
-      resolve: obj => database.getUser(obj.userId)
-    },
-    userId: {
-      type: GraphQLID
-    },
-    userName: {
-      type: GraphQLString
-    },
-    syncLogId: {
-      type: GraphQLFloat
-    }
-  })
-});
-const {
-  connectionType: activityConnection,
-  edgeType: activityEdge
-} = connectionDefinitions({
-  name: "Activity",
-  nodeType: activityType
-});
-const userType = new GraphQLObjectType({
-  name: "User",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("User"),
-    name: {
-      type: GraphQLString
-    },
-    username: {
-      type: GraphQLString
-    },
-    active: {
-      type: GraphQLBoolean
-    },
-    activities: {
-      type: activityConnection,
-      args: connectionArgs,
-      resolve: (root, args) =>
-        connectionFromPromisedArray(
-          database.getActivities({
-            userId: root._id
-          }),
-          args
-        )
-    },
-    summary: {
-      type: summaryType,
-      args: {
-        week: {
-          name: "week",
-          type: GraphQLInt
-        },
-        year: {
-          name: "year",
-          type: GraphQLInt
-        }
-      },
-      resolve: (root, args) => {
-        return database.getWeekSummary(root._id, args.week, args.year);
-      }
-    },
-    medals: {
-      type: medalsType,
-      resolve: root => {
-        return database.getMedalsByUserId(root._id);
-      }
-    },
-    personalGoals: {
-      type: new GraphQLList(personalGoalType),
-      resolve: root => {
-        return database.getPersonalGoalsByUser(root._id);
-      }
-    },
-    syncActivityId: {
-      type: GraphQLInt
-    }
-  })
-});
-// const loginType = new GraphQLObjectType({
-//   name: "Login",
-//   fields: () => ({
-//     _id: {
-//       type: new GraphQLNonNull(GraphQLID)
-//     },
-//     id: globalIdField("User"),
-//     user: {
-//       type: userType,
-//       resolve: obj => database.getUser(obj.userId)
-//     },
-//     userId: {
-//       type: GraphQLID
-//     },
-//     provider: {
-//       type: GraphQLString
-//     },
-//     providerUserId: {
-//       type: GraphQLString
-//     }
-//   })
-// });
-const personalGoalType = new GraphQLObjectType({
-  name: "PersonalGoal",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: globalIdField("User"),
-    user: {
-      type: userType,
-      resolve: obj => database.getUser(obj.userId)
-    },
-    userId: {
-      type: GraphQLID
-    },
-    userName: {
-      type: GraphQLString
-    },
-    discipline: {
-      type: disciplineType,
-      resolve: obj => database.getDiscipline(obj.disciplineId)
-    },
-    disciplineId: {
-      type: GraphQLID
-    },
-    disciplineName: {
-      type: GraphQLString
-    },
-    count: {
-      type: GraphQLInt
-    },
-    dist: {
-      type: GraphQLFloat
-    },
-    score: {
-      type: GraphQLInt
-    },
-    priority: {
-      type: GraphQLInt
-    }
-  })
-});
 const storeType = new GraphQLObjectType({
   name: "Store",
   fields: () => ({
@@ -292,104 +74,6 @@ const storeType = new GraphQLObjectType({
       },
       resolve: (root, args) => {
         return database.getAllSummaries(args.week, args.year);
-      }
-    }
-  })
-});
-const syncLogType = new GraphQLObjectType({
-  name: "SyncLog",
-  fields: () => ({
-    _id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    id: {
-      type: GraphQLFloat
-    },
-    external_id: {
-      type: GraphQLString
-    },
-    name: {
-      type: GraphQLString
-    },
-    distance: {
-      type: GraphQLFloat
-    },
-    moving_time: {
-      type: GraphQLInt
-    },
-    elapsed_time: {
-      type: GraphQLInt
-    },
-    start_date: {
-      type: CustomGraphQLDateType
-    },
-    start_date_local: {
-      type: CustomGraphQLDateType
-    },
-    type: {
-      type: GraphQLString
-    },
-    status: {
-      type: GraphQLString
-    }
-  })
-});
-const stravaType = new GraphQLObjectType({
-  name: "Strava",
-  fields: () => ({
-    getRequestAccessURL: {
-      type: GraphQLString,
-      resolve: () =>
-        strava.oauth.getRequestAccessURL({ scope: "read,activity:read" })
-    },
-    getToken: {
-      type: GraphQLString,
-      args: {
-        code: {
-          name: "Code",
-          type: GraphQLString
-        }
-      },
-      resolve(root, { code }) {
-        return new Promise((resolve, reject) => {
-          strava.oauth.getToken(code, (err, payload) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(payload.access_token);
-            }
-          });
-        });
-      }
-    },
-    syncLog: {
-      type: new GraphQLList(syncLogType),
-      resolve() {
-        return database.getSyncLog();
-      }
-    },
-    listActivities: {
-      type: GraphQLString,
-      args: {
-        access_token: {
-          name: "Access Token",
-          type: GraphQLString
-        }
-      },
-      resolve(root, { access_token }) {
-        return new Promise((resolve, reject) => {
-          strava.athlete.listActivities(
-            { access_token },
-            async (err, payload) => {
-              if (err) {
-                reject(err);
-              } else {
-                await database.saveSyncLog(payload);
-                resolve(JSON.stringify(payload, null, 2));
-              }
-            }
-          );
-        });
       }
     }
   })
@@ -463,7 +147,7 @@ const addActivityMutation = mutationWithClientMutationId({
   },
   outputFields: {
     activity: {
-      type: activityType,
+      type: require("./activityType").activityType,
       resolve: async obj => {
         return obj;
       }
@@ -533,11 +217,11 @@ const editActivityMutation = mutationWithClientMutationId({
   },
   outputFields: {
     activity: {
-      type: activityType,
+      type: require("./activityType").activityType,
       resolve: async ({ newActivity }) => newActivity
     },
     activityPrev: {
-      type: activityType,
+      type: require("./activityType").activityType,
       resolve: async ({ oldActivity }) => oldActivity
     },
     user: {
@@ -599,7 +283,7 @@ const removeActivityMutation = mutationWithClientMutationId({
       }
     },
     activity: {
-      type: activityType,
+      type: require("./activityType").activityType,
       resolve: activity => activity
     },
     summary: {
